@@ -1,0 +1,15 @@
+development:
+    host   : "ucswseval1.cac.washington.edu"
+    port   : "443"
+    cert   : "" 
+    key    : ""
+    log    : "" 
+    timeout: 500
+
+production:
+    host   : "ws.admin.washington.edu"
+    port   : "443"
+    cert   : ""
+    key    : ""
+    log    : ""    
+    timeout: 500
