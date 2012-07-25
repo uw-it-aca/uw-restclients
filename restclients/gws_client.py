@@ -7,8 +7,15 @@ class GWSClient(RestBase):
     QTRS = {'win': 'winter', 'spr': 'spring', 'sum': 'summer', 'aut': 'autumn'}
 
     def __init__(self, cfg):
-        self._cfg = cfg
-        self._cfg['logname'] = __name__
+        self._cfg = {
+            'host': settings.GWS_HOST,
+            'port': settings.GWS_PORT,
+            'cert': settings.GWS_CERT,
+            'key': settings.GWS_KEY,
+            'timeout': settings.GWS_TIMEOUT,
+            'log': settings.GWS_LOG,
+            'logname': __name__
+        }
         RestBase.__init__(self)
 
     def get_xml(self, url, fields=None, headers={}):

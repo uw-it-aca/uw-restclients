@@ -1,4 +1,5 @@
 from rest_base import RestBase
+from django.conf import settings
 import json
 import re
 
@@ -6,9 +7,16 @@ import re
 class PWSClient(RestBase):
     URL_BASE = '/identity/v1'
 
-    def __init__(self, cfg):
-        self._cfg = cfg
-        self._cfg['logname'] = __name__
+    def __init__(self):
+        self._cfg = {
+            'host': settings.PWS_HOST,
+            'port': settings.PWS_PORT,
+            'cert': settings.PWS_CERT,
+            'key': settings.PWS_KEY,
+            'timeout': settings.PWS_TIMEOUT,
+            'log': settings.PWS_LOG,
+            'logname': __name__
+        }
         RestBase.__init__(self)
 
     def get_json(self, url, fields=None):

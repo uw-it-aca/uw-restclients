@@ -1,4 +1,5 @@
 from rest_base import RestBase
+from django.conf import settings
 import json
 import re
 
@@ -6,9 +7,16 @@ import re
 class SWSClient(RestBase):
     URL_BASE = '/student/v4'
 
-    def __init__(self, cfg):
-        self._cfg = cfg
-        self._cfg['logname'] = __name__
+    def __init__(self):
+        self._cfg = {
+            'host': settings.SWS_HOST,
+            'port': settings.SWS_PORT,
+            'cert': settings.SWS_CERT,
+            'key': settings.SWS_KEY,
+            'timeout': settings.SWS_TIMEOUT,
+            'log': settings.SWS_LOG,
+            'logname': __name__
+        }
         RestBase.__init__(self)
 
     def get_json(self, url, fields=None):
