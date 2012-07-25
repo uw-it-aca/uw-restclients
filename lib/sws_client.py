@@ -196,7 +196,7 @@ class SWSClient(RestBase):
             'curriculum_abbreviation': '',
             'course_number': '',
             'reg_id': '',
-            'search_by': 'Instructor',
+            'search_by': 'Instructor',  # Instructor|GradeSubmissionDelegate
             'include_secondaries': 'on'
         }
 
