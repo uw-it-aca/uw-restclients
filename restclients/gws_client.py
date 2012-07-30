@@ -1,4 +1,5 @@
 from rest_base import RestBase
+from django.conf import settings
 import xml.etree.ElementTree
 
 
