@@ -6,7 +6,7 @@ class GWSClient(RestBase):
     URL_BASE = '/group_sws/v2/group'
     QTRS = {'win': 'winter', 'spr': 'spring', 'sum': 'summer', 'aut': 'autumn'}
 
-    def __init__(self, cfg):
+    def __init__(self):
         self._cfg = {
             'host': settings.GWS_HOST,
             'port': settings.GWS_PORT,
