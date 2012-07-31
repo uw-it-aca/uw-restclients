@@ -197,7 +197,7 @@ class SWSClient(RestBase):
         return self.get_json(self.URL_BASE + '/course/' +
                              re.sub(r'\s', '%20', section_id) + '.json')
 
-    def get_sections(self, opts={}):
+    def section_search(self, opts={}):
         fields = {
             'year': '',
             'quarter': '',
@@ -222,7 +222,10 @@ class SWSClient(RestBase):
             fields['quarter'] = curr_term['Quarter']
 
         data = self.get_json(self.URL_BASE + '/section.json', fields)
-        sections = data.get('Sections', [])
+        return data.get('Sections', [])
+
+    def get_sections(self, opts={}):
+        sections = self.section_search(opts)
 
         ret = []
         for section in sections:
@@ -232,7 +235,7 @@ class SWSClient(RestBase):
 
         return ret
 
-    def get_registrations(self, opts={}):
+    def registration_search(self, opts={}):
         fields = {
             'year': '',
             'quarter': '',
@@ -265,8 +268,8 @@ class SWSClient(RestBase):
         data = self.get_json(self.URL_BASE + '/registration.json', fields)
         return data.get('Registrations', [])
 
-    def get_full_registrations(self, opts={}):
-        registrations = self.get_registrations(opts)
+    def get_registrations(self, opts={}):
+        registrations = self.search_registrations(opts)
         registrations.reverse()
 
         seen = {}
