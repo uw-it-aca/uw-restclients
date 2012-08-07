@@ -86,6 +86,46 @@ class SWSClient(RestBase):
 
         return ret
 
+    def get_departments(self, opts={}):
+        fields = {
+            'year': '',
+            'quarter': '',
+            'college_abbreviation': '',
+            'future_terms': '0',
+            'page_size': '100',
+            'page_start': 1        
+        }
+
+        for field in fields:
+            if field in opts:
+                fields[field] = opts[field]
+
+        if (not fields['year'] or not fields['quarter']):
+            curr_term = self.get_current_term()
+            fields['year'] = curr_term['Year']
+            fields['quarter'] = curr_term['Quarter']
+
+        total_count = 1
+        ret = []
+        while fields['page_start'] <= total_count:
+            data = self.get_json(self.URL_BASE + '/department.json', fields)
+
+            total_count = int(data.get('TotalCount', '0'))
+            if not total_count:
+                break
+
+            departments = data.get('Departments', [])
+            for department in departments:
+                ret.append(department)
+
+            next_page = data.get('Next', None)
+            if not next_page:
+                break
+            else:
+                fields['page_start'] = int(next_page['PageStart'])
+
+        return ret
+
     def get_curricula(self, opts={}):
         fields = {
             'year': '',
