@@ -308,7 +308,7 @@ class SWSClient(RestBase):
         return data.get('Registrations', [])
 
     def get_registrations(self, opts={}):
-        registrations = self.search_registrations(opts)
+        registrations = self.registration_search(opts)
         registrations.reverse()
 
         seen = {}
