@@ -9,8 +9,7 @@ class GWSClient(RestBase):
 
     def __init__(self):
         self._cfg = {
-            'host': settings.GWS_HOST,
-            'port': settings.GWS_PORT,
+            'url': settings.GWS_URL,
             'cert': settings.GWS_CERT,
             'key': settings.GWS_KEY,
             'timeout': settings.GWS_TIMEOUT,

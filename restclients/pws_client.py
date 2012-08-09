@@ -9,8 +9,7 @@ class PWSClient(RestBase):
 
     def __init__(self):
         self._cfg = {
-            'host': settings.PWS_HOST,
-            'port': settings.PWS_PORT,
+            'url': settings.PWS_URL,
             'cert': settings.PWS_CERT,
             'key': settings.PWS_KEY,
             'timeout': settings.PWS_TIMEOUT,

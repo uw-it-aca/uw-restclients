@@ -1,4 +1,4 @@
-from urllib3 import HTTPConnectionPool, HTTPSConnectionPool
+from urllib3 import connection_from_url
 from urllib import urlencode
 import logging
 
@@ -49,19 +49,11 @@ class RestBase:
             return self._pool
 
         cfg = self._cfg
-        if cfg.get('protocol') is 'http':
-            self._pool = HTTPConnectionPool(
-                host=cfg.get('host'),
-                port=cfg.get('port'),
-                timeout=cfg.get('timeout')
-            )
-        else:
-            self._pool = HTTPSConnectionPool(
-                host=cfg.get('host'),
-                port=cfg.get('port'),
-                key_file=cfg.get('key'),
-                cert_file=cfg.get('cert'),
-                timeout=cfg.get('timeout')
-            )
+        kwargs = {'timeout': cfg.get('timeout')}
 
+        if cfg.get('key') and cfg.get('cert'):
+            kwargs['key_file'] = cfg.get('key')
+            kwargs['cert_file'] = cfg.get('cert')
+
+        self._pool = connection_from_url(cfg.get('url'), **kwargs)
         return self._pool

@@ -9,8 +9,7 @@ class SWSClient(RestBase):
 
     def __init__(self):
         self._cfg = {
-            'host': settings.SWS_HOST,
-            'port': settings.SWS_PORT,
+            'url': settings.SWS_URL,
             'cert': settings.SWS_CERT,
             'key': settings.SWS_KEY,
             'timeout': settings.SWS_TIMEOUT,
