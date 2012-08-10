@@ -36,7 +36,7 @@ class PWSClient(RestBase):
 
     :PWS_LOG:
         Path of a file where logging will be written.
-        Ex. /usr/local/logs/eval/pws.log
+        Ex. /usr/local/logs/eval/log
 
     """
     URL_BASE = '/identity/v1'
@@ -59,7 +59,7 @@ class PWSClient(RestBase):
 
     def get_person_by_regid(self, regid):
         """
-        Retrieves person data for a person identified by the passed UWRegID.
+        Returns person data for a person identified by the passed UWRegID.
         """
         if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
             raise InvalidRegID(regid)
@@ -68,7 +68,7 @@ class PWSClient(RestBase):
 
     def get_person_by_netid(self, netid):
         """
-        Retrieves person data for a person identified by the passed UWNetID.
+        Returns person data for a person identified by the passed UWNetID.
         """
         if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', netid, re.I):
             raise InvalidNetID(netid)
