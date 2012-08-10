@@ -469,11 +469,11 @@ class SWSClient(RestBase):
             Student UW RegID
 
         :param instructor_reg_id:
-            Instructor UW RegID
+            Instructor UW RegID, for independent study sections
 
         :param is_active:
-            Specifies whether to include only active registrations. Default is
-            ''.
+            Specifies whether to include only active registrations. Default
+            is ''.
 
         """
         fields = {
@@ -491,10 +491,15 @@ class SWSClient(RestBase):
             if field in opts:
                 fields[field] = opts[field]
 
-        if (not fields['curriculum_abbreviation'] or
-                not fields['course_number'] or not fields['section_id']):
-            raise Exception("Curriculum_abbreviation, course_number, and " +
-                            "section_id are required")
+        if (fields['curriculum_abbreviation'] or fields['course_number'] or
+                fields['section_id']):
+            if (not fields['curriculum_abbreviation'] or not
+                    fields['course_number'] or not fields['section_id']):
+                raise Exception("Curriculum_abbreviation, course_number, " +
+                                "and section_id are required")
+        else:
+            if not fields['reg_id']:
+                raise Exception("Student reg_id is required")
 
         if (not fields['year'] or not fields['quarter']):
             curr_term = self.get_current_term()
