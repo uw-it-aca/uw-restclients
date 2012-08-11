@@ -4,6 +4,9 @@ import logging
 
 
 class RestBase:
+    """
+    Base class for REST clients. 
+    """
     def __init__(self):
         cfg = self._cfg
         self._pool = None
@@ -45,15 +48,14 @@ class RestBase:
             self._logger = logger
 
     def _get_pool(self):
-        if self._pool is not None:
-            return self._pool
+        if not self._pool:
+            cfg = self._cfg
+            kwargs = {'timeout': cfg.get('timeout')}
 
-        cfg = self._cfg
-        kwargs = {'timeout': cfg.get('timeout')}
+            if cfg.get('key') and cfg.get('cert'):
+                kwargs['key_file'] = cfg.get('key')
+                kwargs['cert_file'] = cfg.get('cert')
 
-        if cfg.get('key') and cfg.get('cert'):
-            kwargs['key_file'] = cfg.get('key')
-            kwargs['cert_file'] = cfg.get('cert')
+            self._pool = connection_from_url(cfg.get('url'), **kwargs)
 
-        self._pool = connection_from_url(cfg.get('url'), **kwargs)
         return self._pool
