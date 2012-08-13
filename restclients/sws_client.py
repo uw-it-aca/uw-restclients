@@ -16,23 +16,24 @@ class InvalidSectionID(Exception):
 
 class SWSClient(RestBase):
     """
-    Client for retrieving person data from the UW Student Web Service. Configuration
-    parameters for this client are:
+    Client for retrieving person data from the UW Student Web Service.
+    Configuration parameters for this client are:
 
     :SWS_URL:
-        The absolute URL of the SWS host. URL must include scheme and port (if not 80).
-        Ex. https://ucswseval1.cac.washington.edu:443
+        The absolute URL of the SWS host. URL must include scheme and port (if
+        not 80). Ex. https://ucswseval1.cac.washington.edu:443
 
     :SWS_CERT:
-        Path of a certficate file. Required for access to eval and production SWS.
-        Ex. /usr/local/ssl/foo.cert
+        Path of a certficate file. Required for access to eval and production
+        SWS. Ex. /usr/local/ssl/foo.cert
 
     :SWS_KEY:
-        Path of a public key file. Required for access to eval and production SWS.
-        Ex. /usr/local/ssl/foo.key
+        Path of a public key file. Required for access to eval and production
+        SWS. Ex. /usr/local/ssl/foo.key
 
     :SWS_TIMEOUT:
-        Socket timeout for each individual connection, can be a float. None disables timeout.
+        Socket timeout for each individual connection, can be a float. None
+        disables timeout.
 
     :SWS_LOG:
         Path of a file where logging will be written.
@@ -396,8 +397,8 @@ class SWSClient(RestBase):
             Instructor or GradeSubmissionDelegate UW RegID.
 
         :param search_by:
-            Specifies whether search is for Instructor or GradeSubmissionDelegate,
-            when reg_id is included.
+            Specifies whether search is for Instructor or
+            GradeSubmissionDelegate, when reg_id is included.
 
         :param include_secondaries:
             Include secondary sections, effective only when reg_id is included.

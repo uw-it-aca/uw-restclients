@@ -10,23 +10,24 @@ class InvalidGroupID(Exception):
 
 class GWSClient(RestBase):
     """
-    REST Client for retrieving group data from the UW Group Service. Configuration
-    parameters for this client are:
+    REST Client for retrieving group data from the UW Group Service.
+    Configuration parameters for this client are:
 
     :GWS_URL:
-        The absolute URL of the GWS host. URL must include scheme and port (if not 80).
-        Ex. https://https://iam-ws.u.washington.edu:443
+        The absolute URL of the GWS host. URL must include scheme and port (if
+        not 80). Ex. https://https://iam-ws.u.washington.edu:443
 
     :GWS_CERT:
-        Path of a certficate file. Required for access to eval and production GWS.
-        Ex. /usr/local/ssl/foo.cert
+        Path of a certficate file. Required for access to eval and production
+        GWS. Ex. /usr/local/ssl/foo.cert
 
     :GWS_KEY:
-        Path of a public key file. Required for access to eval and production GWS.
-        Ex. /usr/local/ssl/foo.key
+        Path of a public key file. Required for access to eval and production
+        GWS. Ex. /usr/local/ssl/foo.key
 
     :GWS_TIMEOUT:
-        Socket timeout for each individual connection, can be a float. None disables timeout.
+        Socket timeout for each individual connection, can be a float. None
+        disables timeout.
 
     :GWS_LOG:
         Path of a file where logging will be written.
@@ -90,7 +91,7 @@ class GWSClient(RestBase):
         """
         Returns a list of group data for UW groups. Valid parameters for
         searching are:
-        
+
         :param name:
             The entire group ID, or a portion of it.
 
@@ -107,7 +108,7 @@ class GWSClient(RestBase):
         :param type:
             Specifies whether the name is itself a member or administrator, not
             in a subgroup. Default is 'direct'.
-        
+
         :param scope:
             Returns only the next level of groups and stems from the search.
             Default is 'one'.
@@ -121,7 +122,7 @@ class GWSClient(RestBase):
             'type': 'direct',
             'scope': 'one'
         }
-        
+
         for field in fields:
             if field in opts:
                 fields[field] = opts[field]
@@ -143,7 +144,7 @@ class GWSClient(RestBase):
                 'description': element.find('.//*[@class="description"]').text
             })
 
-        return groups    
+        return groups
 
     def get_members(self, group_id):
         """

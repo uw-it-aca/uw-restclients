@@ -5,7 +5,7 @@ import logging
 
 class RestBase:
     """
-    Base class for REST clients. 
+    Base class for REST clients.
     """
     def __init__(self):
         cfg = self._cfg

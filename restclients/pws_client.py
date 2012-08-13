@@ -16,23 +16,24 @@ class InvalidRegID(Exception):
 
 class PWSClient(RestBase):
     """
-    Client for retrieving person data from the UW Person Web Service. Configuration
-    parameters for this client are:
+    Client for retrieving person data from the UW Person Web Service.
+    Configuration parameters for this client are:
 
     :PWS_URL:
-        The absolute URL of the PWS host. URL must include scheme and port (if not 80).
-        Ex. https://ucswseval1.cac.washington.edu:443
+        The absolute URL of the PWS host. URL must include scheme and port (if
+        not 80). Ex. https://ucswseval1.cac.washington.edu:443
 
     :PWS_CERT:
-        Path of a certficate file. Required for access to eval and production PWS.
-        Ex. /usr/local/ssl/foo.cert
+        Path of a certficate file. Required for access to eval and production
+        PWS. Ex. /usr/local/ssl/foo.cert
 
     :PWS_KEY:
-        Path of a public key file. Required for access to eval and production PWS.
-        Ex. /usr/local/ssl/foo.key
+        Path of a public key file. Required for access to eval and production
+        PWS. Ex. /usr/local/ssl/foo.key
 
     :PWS_TIMEOUT:
-        Socket timeout for each individual connection, can be a float. None disables timeout.
+        Socket timeout for each individual connection, can be a float. None
+        disables timeout.
 
     :PWS_LOG:
         Path of a file where logging will be written.
