@@ -1,6 +1,6 @@
 from rest_base import RestBase
 from django.conf import settings
-import xml.etree.ElementTree
+from lxml import etree
 
 
 class InvalidGroupID(Exception):
@@ -51,7 +51,7 @@ class GWSClient(RestBase):
     def get_xml(self, url, fields=None, headers={}):
         headers.update({'Accept': 'text/xhtml'})
         r = self.GET(url, fields, headers)
-        return xml.etree.ElementTree.fromstring(r.data)
+        return etree.fromstring(r.data)
 
     def get_group_by_id(self, group_id):
         """
