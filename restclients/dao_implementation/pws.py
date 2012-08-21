@@ -3,7 +3,7 @@ from os.path import abspath, dirname
 
 class File(object):
     def getURL(self, url, headers):
-        RESOURCE_ROOT = abspath(dirname(__file__)+"/../../resources/file")
+        RESOURCE_ROOT = abspath(dirname(__file__)+"/../resources/pws/file")
         if url == "///":
             # Just a placeholder to put everything else in an else.
             # If there are things that need dynamic work, they'd go here

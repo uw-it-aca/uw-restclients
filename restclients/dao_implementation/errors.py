@@ -7,3 +7,11 @@ class Always404(object):
         response.body = "Not found"
 
         return response
+
+class Always500(object):
+    def getURL(self, url, headers):
+        response =  MockHTTP()
+        response.status = 500
+        response.body = ""
+
+        return response
