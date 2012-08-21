@@ -25,17 +25,26 @@ class PWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.read())
 
-        person_data = json.loads(response.data)
+        return self._person_from_json(response.data)
+
+    def get_person_by_netid(self, netid):
+        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', netid, re.I):
+            raise InvalidNetID(netid)
+
+        dao = PWS_DAO()
+        url = "/identity/v1/person.json?netid=%s" % netid.lower()
+        response = dao.getURL(url, { "Accept":"application/json"})
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        return self._person_from_json(response.data)
+
+    def _person_from_json(self, data):
+        person_data = json.loads(data)
         person = Person()
         person.uwnetid = person_data["UWNetID"]
         person.uwregid = person_data["UWRegID"]
 
         return person
 
-
-    def get_person_by_netid(self, netid):
-        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', netid, re.I):
-            raise InvalidNetID(netid)
-
-        # ... fill out the person model
 
