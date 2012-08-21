@@ -1,5 +1,7 @@
 from django.utils import unittest
 
+from restclients.test.sws.term import SWSTestTerm
+
 from restclients.test.sws.err404.dao import SWSTestDAO404
 from restclients.test.sws.err500.dao import SWSTestDAO500
 from restclients.test.sws.invalid_dao import SWSTestInvalidDAO

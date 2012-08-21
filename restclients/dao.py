@@ -2,6 +2,7 @@ from django.utils.importlib import import_module
 from django.conf import settings
 from django.core.exceptions import *
 from restclients.dao_implementation.pws import File as PWSFile
+from restclients.dao_implementation.sws import File as SWSFile
 
 class SWS_DAO(object):
     def __new__(*args, **named_args):
@@ -21,7 +22,7 @@ class SWS_DAO(object):
 
             return DAOModule()
         else:
-            raise ImproperlyConfigured("Don't have a default DAO object yet :(")
+            return SWSFile()
 
 class PWS_DAO(object):
     def __new__(*args, **named_args):
