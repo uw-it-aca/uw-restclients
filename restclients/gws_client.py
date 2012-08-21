@@ -29,9 +29,8 @@ class GWSClient(RestBase):
         Socket timeout for each individual connection, can be a float. None
         disables timeout.
 
-    :GWS_LOG:
-        Path of a file where logging will be written.
-        Ex. /usr/local/logs/eval/log
+    :GWS_LOGNAME:
+        Name to use for GWS client logging, defaults to module name
 
     """
     URL_BASE = '/group_sws/v2'
@@ -43,8 +42,7 @@ class GWSClient(RestBase):
             'cert': settings.GWS_CERT,
             'key': settings.GWS_KEY,
             'timeout': settings.GWS_TIMEOUT,
-            'log': settings.GWS_LOG,
-            'logname': __name__
+            'logname': settings.GWS_LOGNAME
         }
         RestBase.__init__(self)
 

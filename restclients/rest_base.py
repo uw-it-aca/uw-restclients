@@ -1,6 +1,6 @@
 from urllib3 import connection_from_url
 from urllib import urlencode
-import logging
+from logging import getLogger
 
 
 class RestBase:
@@ -10,7 +10,7 @@ class RestBase:
     def __init__(self):
         cfg = self._cfg
         self._pool = None
-        self._init_logger()
+        self._log = getLogger(self._cfg.get('logname'))
 
     def GET(self, url, fields=None, headers=None):
         return self._request('GET', url, None, fields, headers)
@@ -31,21 +31,9 @@ class RestBase:
         pool = self._get_pool()
         r = pool.urlopen(method, url, body, headers=headers)
 
-        self._logger.info("\"%s %s\" %s %s" % (method, url, r.status,
-                                               len(r.data)))
+        self._log.info("\"%s %s\" %s %s" % (method, url, r.status, len(r.data)))
 
         return r
-
-    def _init_logger(self):
-        cfg = self._cfg
-        if cfg.get('logname') and cfg.get('log'):
-            logger = logging.getLogger(cfg['logname'])
-            logger.setLevel(logging.INFO)
-            fh = logging.FileHandler(cfg['log'])
-            fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-            fh.setFormatter(fmt)
-            logger.addHandler(fh)
-            self._logger = logger
 
     def _get_pool(self):
         if not self._pool:

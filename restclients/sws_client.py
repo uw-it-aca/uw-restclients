@@ -35,9 +35,8 @@ class SWSClient(RestBase):
         Socket timeout for each individual connection, can be a float. None
         disables timeout.
 
-    :SWS_LOG:
-        Path of a file where logging will be written.
-        Ex. /usr/local/logs/eval/log
+    :SWS_LOGNAME:
+        Name to use for SWS client logging. Defaults to module name.
 
     """
     URL_BASE = '/student/v4'
@@ -48,9 +47,9 @@ class SWSClient(RestBase):
             'cert': settings.SWS_CERT,
             'key': settings.SWS_KEY,
             'timeout': settings.SWS_TIMEOUT,
-            'log': settings.SWS_LOG,
-            'logname': __name__
+            'logname': settings.SWS_LOGNAME
         }
+
         RestBase.__init__(self)
 
     def get_json(self, url, fields=None):

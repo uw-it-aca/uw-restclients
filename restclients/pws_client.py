@@ -35,9 +35,8 @@ class PWSClient(RestBase):
         Socket timeout for each individual connection, can be a float. None
         disables timeout.
 
-    :PWS_LOG:
-        Path of a file where logging will be written.
-        Ex. /usr/local/logs/eval/log
+    :PWS_LOGNAME:
+        Name to use for PWS client logging. Defaults to module name.
 
     """
     URL_BASE = '/identity/v1'
@@ -48,8 +47,7 @@ class PWSClient(RestBase):
             'cert': settings.PWS_CERT,
             'key': settings.PWS_KEY,
             'timeout': settings.PWS_TIMEOUT,
-            'log': settings.PWS_LOG,
-            'logname': __name__
+            'logname': settings.PWS_LOGNAME
         }
         RestBase.__init__(self)
 
