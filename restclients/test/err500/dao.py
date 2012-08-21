@@ -1,10 +1,10 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.dao import DAO
+from restclients.dao import *
 
 class TestDAO500(TestCase):
     def test_dao_response(self):
-        with self.settings(RESTCLIENTS_DAO_CLASS='restclients.dao_implementation.always500.Always500'):
-            dao = DAO()
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.always500.Always500'):
+            dao = SWS_DAO()
             response = dao.getURL("/v4/", {})
             self.assertEqual(response.status, 500, "Always 500 always returns a 500")

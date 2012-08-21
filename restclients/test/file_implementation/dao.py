@@ -1,12 +1,12 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.dao import DAO
+from restclients.dao import *
 import re
 
 class TestFileDAO(TestCase):
     def test_dao_response(self):
-        with self.settings(RESTCLIENTS_DAO_CLASS='restclients.dao_implementation.file.File'):
-            dao = DAO()
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.file.File'):
+            dao = SWS_DAO()
             response = dao.getURL("/file_doesnt_exist", {})
             self.assertEqual(response.status, 404, "File DAO returns a 404 for missing files")
 
