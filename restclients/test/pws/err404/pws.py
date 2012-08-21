@@ -14,4 +14,4 @@ class PWSTest404(TestCase):
                 self.fail("This needs to be an exception")
             except DataFailureException as ex:
                 self.assertEqual(ex.status, 404, "Exception has the right status")
-                self.assertEqual(ex.url, "/person/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.json", "Exception has the right url")
+                self.assertEqual(ex.url, "/identity/v1/person/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.json", "Exception has the right url")

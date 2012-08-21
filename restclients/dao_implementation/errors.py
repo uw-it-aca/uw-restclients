@@ -19,7 +19,7 @@ class Always404(object):
         """
         response = MockHTTP()
         response.status = 404
-        response.body = "Not found"
+        response.data = "Not found"
 
         return response
 
@@ -37,6 +37,6 @@ class Always500(object):
         """
         response = MockHTTP()
         response.status = 500
-        response.body = ""
+        response.data = ""
 
         return response

@@ -31,5 +31,5 @@ class File(object):
 
             response = MockHTTP()
             response.status = 200
-            response.body = handle.read()
+            response.data = handle.read()
             return response

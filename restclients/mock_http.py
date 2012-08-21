@@ -10,10 +10,10 @@ class MockHTTP(object):
     as needed.
     """
     status = 0
-    body = ""
+    data = ""
 
     def read(self):
         """
         Returns the document body of the request.
         """
-        return self.body
+        return self.data
