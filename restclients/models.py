@@ -9,6 +9,25 @@ class Person(models.Model):
                                db_index=True,
                                unique=True)
 
+    whitepages_publish = models.BooleanField()
+
+    first_name = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=250)
+
+
+
+    def json_data(self):
+        data = {
+            'uwnetid': self.uwnetid,
+            'uwregid': self.uwregid,
+            'first_name': self.first_name,
+            'surname': self.surname,
+            'full_name': self.full_name,
+            'whitepages_publish': self.whitepages_publish,
+        }
+        return data
+
 class Term(models.Model):
     year = models.PositiveSmallIntegerField()
     QUARTERNAME_CHOICES = (
@@ -117,6 +136,10 @@ class SectionMeeting(models.Model):
                 'phone': '206-...',
             }
         }
+
+        for instructor in self.instructors:
+            data["instructors"].append(instructor.json_data())
+
         return data
 
 class ClassSchedule(models.Model):

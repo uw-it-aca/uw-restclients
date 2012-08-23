@@ -2,6 +2,7 @@
 This is the interface for interacting with the Student Web Service.
 """
 
+from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models import Term, Section, SectionMeeting
 from restclients.models import ClassSchedule
@@ -44,6 +45,7 @@ class SWS(object):
         Returns a restclients.ClassSchedule for the regid and term passed in.
         """
         dao = SWS_DAO()
+        pws = PWS()
         url = "/student/v4/registration.json?" + urlencode({
             'year': term.year,
             'quarter': term.quarter,
@@ -116,6 +118,15 @@ class SWS(object):
                 meeting.start_time = meeting_data["StartTime"]
                 meeting.end_time = meeting_data["EndTime"]
 
+                instructors = []
+                for instructor_data in meeting_data["Instructors"]:
+                    instructor = pws.get_person_by_regid(instructor_data["Person"]["RegID"])
+
+                    if instructor != None:
+                        instructors.append(instructor)
+
+
+                meeting.instructors = instructors
                 section_meetings.append(meeting)
 
             section.meetings = section_meetings
