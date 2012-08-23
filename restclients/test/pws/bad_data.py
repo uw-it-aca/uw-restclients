@@ -11,6 +11,14 @@ class PWSTestBadData(TestCase):
             self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG")
 
-
+            self.assertRaises(InvalidNetID, pws.get_person_by_netid, "")
+            self.assertRaises(InvalidNetID, pws.get_person_by_netid, " ")
+            self.assertRaises(InvalidNetID, pws.get_person_by_netid, "hi mom")
+            self.assertRaises(InvalidNetID, pws.get_person_by_netid, "$y0l0")
+            self.assertRaises(InvalidNetID, pws.get_person_by_netid, "</html>")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "aaaaaaaaa")
-
+            
+            expected_empty_string = pws.get_person_by_netid('hello') #no file for that netid
+            self.assertEquals(None, expected_empty_string)
+            expected_empty_string = pws.get_person_by_regid('9136CCB8F66711D5BE060004AC494FFF') #no file for that regid
+            self.assertEquals(None, expected_empty_string)
