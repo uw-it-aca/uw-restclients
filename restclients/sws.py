@@ -69,6 +69,10 @@ class SWS(object):
             reg_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', reg_url)
             reg_url = re.sub(',([^,]*).json', '/\\1.json', reg_url)
             response = dao.getURL(reg_url, {"Accept":"application/json"})
+
+            if response.status != 200:
+                raise DataFailureException(reg_url, response.status, response.read())
+
             section_data = json.loads(response.data)
 
             section = Section()
