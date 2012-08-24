@@ -34,7 +34,7 @@ class Term(models.Model):
         ('1', 'Winter'),
         ('2', 'Spring'),
         ('3', 'Summer'),
-        ('4', 'Fall')
+        ('4', 'Autumn')
         )
     quarter = models.CharField(max_length=1,
                                choices=QUARTERNAME_CHOICES)
