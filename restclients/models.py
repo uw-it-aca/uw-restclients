@@ -72,6 +72,14 @@ class Section(models.Model):
     final_exam_end_time = models.TimeField()
     final_exam_building = models.CharField(max_length=5)
     final_exam_room_number = models.CharField(max_length=5)
+
+    primary_section_href = models.CharField(max_length=200)
+    primary_section_curriculum_abbr = models.CharField(max_length=6)
+    primary_section_course_number = models.PositiveSmallIntegerField()
+    primary_section_id = models.CharField(max_length=2)
+
+    is_primary_section = models.BooleanField()
+
     class Meta:
         unique_together = ('term',
                            'curriculum_abbr',
@@ -82,6 +90,12 @@ class Section(models.Model):
         return "%s,%s,%s,%s/%s" % (self.term.year,
             self.term.quarter, self.curriculum_abbr,
             self.course_number, self.section_id)
+
+
+    def primary_section_label(self):
+        return "%s,%s,%s,%s/%s" % (self.term.year,
+            self.term.quarter, self.primary_section_curriculum_abbr,
+            self.primary_section_course_number, self.primary_section_id)
 
     def json_data(self):
         data = {

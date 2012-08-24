@@ -125,6 +125,16 @@ class SWS(object):
             section.sln = section_data["SLN"]
             section.summer_term = section_data["SummerTerm"]
 
+            primary_section_id = section_data["PrimarySection"]["SectionID"]
+            if primary_section_id == section.section_id:
+                section.is_primary_section = True
+            else:
+                section.is_primary_section = False
+                section.primary_section_href = section_data["PrimarySection"]["Href"]
+                section.primary_section_id = section_data["PrimarySection"]["SectionID"]
+                section.primary_section_curriculum_abbr = section_data["PrimarySection"]["CurriculumAbbreviation"]
+                section.primary_section_course_number = section_data["PrimarySection"]["CourseNumber"]
+
             # These come from the Term resource
             # section.start_date = ...
             # section.end_date = ...
