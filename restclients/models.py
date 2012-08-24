@@ -43,6 +43,9 @@ class Term(models.Model):
     aterm_last_date = models.DateField()
     bterm_first_date = models.DateField()
     last_final_exam_date = models.DateField()
+    grading_period_open = models.DateTimeField()
+    grading_period_close = models.DateTimeField()
+    grade_submission_deadline = models.DateTimeField()
     class Meta:
         unique_together = ('year',
                            'quarter')

@@ -11,34 +11,68 @@ from urllib import urlencode
 import json
 import re
 
+
 class SWS(object):
     """
     The SWS object has methods for getting information
     about courses, and everything related.
     """
 
-    def get_current_term(self):
+    def get_term_by_year_and_quarter(self, year, quarter):
         """
-        Returns a restclients.Term object, for the current term.
+        Returns a restclients.Term object, for the passed year and quarter.
         """
+        url = "/student/v4/term/%s,%s.json" % (str(year), quarter.lower())
+
         dao = SWS_DAO()
-        url = "/student/v4/term/current.json"
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.read())
 
-        term_data = json.loads(response.data)
-        term = Term()
-        term.year = term_data["Year"]
-        term.quarter = term_data["Quarter"]
-        term.first_day_quarter = term_data["FirstDay"]
-        term.last_day_instruction = term_data["LastDayOfClasses"]
-        term.aterm_last_date = term_data["ATermLastDay"]
-        term.bterm_first_date = term_data["BTermFirstDay"]
-        term.last_final_exam_date = term_data["LastFinalExamDay"]
+        return self._term_from_json(response.data)
 
-        return term
+    def get_current_term(self):
+        """
+        Returns a restclients.Term object, for the current term.
+        """
+        url = "/student/v4/term/current.json"
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        return self._term_from_json(response.data)
+
+    def get_next_term(self):
+        """
+        Returns a restclients.Term object, for the next term.
+        """
+        url = "/student/v4/term/next.json"
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        return self._term_from_json(response.data)
+
+    def get_previous_term(self):
+        """
+        Returns a restclients.Term object, for the previous term.
+        """
+        url = "/student/v4/term/previous.json"
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        return self._term_from_json(response.data)
 
     def schedule_for_regid_and_term(self, regid, term):
         """
@@ -68,7 +102,7 @@ class SWS(object):
             reg_url = re.sub('registration', 'course', reg_url)
             reg_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', reg_url)
             reg_url = re.sub(',([^,]*).json', '/\\1.json', reg_url)
-            response = dao.getURL(reg_url, {"Accept":"application/json"})
+            response = dao.getURL(reg_url, {"Accept": "application/json"})
 
             if response.status != 200:
                 raise DataFailureException(reg_url, response.status, response.read())
@@ -126,9 +160,8 @@ class SWS(object):
                 for instructor_data in meeting_data["Instructors"]:
                     instructor = pws.get_person_by_regid(instructor_data["Person"]["RegID"])
 
-                    if instructor != None:
+                    if instructor is not None:
                         instructors.append(instructor)
-
 
                 meeting.instructors = instructors
                 section_meetings.append(meeting)
@@ -141,4 +174,19 @@ class SWS(object):
         schedule.term = term
 
         return schedule
- 
+
+    def _term_from_json(self, data):
+        term_data = json.loads(data)
+        term = Term()
+        term.year = term_data["Year"]
+        term.quarter = term_data["Quarter"]
+        term.first_day_quarter = term_data["FirstDay"]
+        term.last_day_instruction = term_data["LastDayOfClasses"]
+        term.aterm_last_date = term_data["ATermLastDay"]
+        term.bterm_first_date = term_data["BTermFirstDay"]
+        term.last_final_exam_date = term_data["LastFinalExamDay"]
+        term.grading_period_open = term_data["GradingPeriodOpen"]
+        term.grading_period_close = term_data["GradingPeriodClose"]
+        term.grade_submission_deadline = term_data["GradeSubmissionDeadline"]
+
+        return term
