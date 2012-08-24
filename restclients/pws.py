@@ -66,5 +66,11 @@ class PWS(object):
         person = Person()
         person.uwnetid = person_data["UWNetID"]
         person.uwregid = person_data["UWRegID"]
+        
+        person.whitepages_publish = person_data["WhitepagesPublish"]
+        person.surname = person_data["RegisteredSurname"]
+        person.full_name = person_data["RegisteredName"]
+        
+        #TODO: person.first_name = person_data[""] 
 
         return person

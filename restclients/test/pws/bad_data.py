@@ -13,6 +13,7 @@ class PWSTestBadData(TestCase):
 
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, " ")
+            self.assertRaises(InvalidNetID, pws.get_person_by_netid, "one two")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "</html>")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "aaaaaaaaa")
             

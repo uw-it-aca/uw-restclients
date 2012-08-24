@@ -19,7 +19,13 @@ class SWSTestBadScheduleData(TestCase):
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
             term.year = 1929
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
-            term.year = 2012
+            term.year = 2399
+            self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
+            term.year = 0
+            self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
+            term.year = -2012
+            self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
+            
             term.quarter = "spring"
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
             term.quarter = "fall"
@@ -27,4 +33,6 @@ class SWSTestBadScheduleData(TestCase):
             term.quarter = ""
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
             term.quarter = " "
+            self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
+            term.quarter = "Spring"
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
