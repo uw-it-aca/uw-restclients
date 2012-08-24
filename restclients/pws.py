@@ -69,8 +69,7 @@ class PWS(object):
         
         person.whitepages_publish = person_data["WhitepagesPublish"]
         person.surname = person_data["RegisteredSurname"]
+        person.first_name = person_data["RegisteredFirstMiddleName"]
         person.full_name = person_data["RegisteredName"]
-        
-        #TODO: person.first_name = person_data[""] 
 
         return person
