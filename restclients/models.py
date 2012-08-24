@@ -75,6 +75,11 @@ class Section(models.Model):
                            'course_number',
                            'section_id')
 
+    def section_label(self):
+        return "%s,%s,%s,%s/%s" % (self.term.year,
+            self.term.quarter, self.curriculum_abbr,
+            self.course_number, self.section_id)
+
     def json_data(self):
         data = {
             'curriculum_abbr': self.curriculum_abbr,
