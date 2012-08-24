@@ -13,6 +13,7 @@ class SWSTestBadScheduleData(TestCase):
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFX", term)
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "javerage", term)
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "", term)
+            self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, " ", term)
 
             term.year = None
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFE", term)
