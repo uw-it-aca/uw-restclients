@@ -48,6 +48,7 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.bterm_first_date, expected_bterm_first_date, "Return %s for the current bterm first date" % expected_bterm_first_date)
             self.assertEquals(term.last_final_exam_date, expected_last_final_exam_date, "Return %s for the current last final exam date" % expected_last_final_exam_date)            
     
+    #Expected values will have to change when the json files are updated
     def test_next_quarter(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
@@ -70,7 +71,7 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.last_final_exam_date, expected_last_final_exam_date, "Return %s for next quarter's final exam date" % expected_last_final_exam_date)  
     
     def test_specific_quarters(self):
-        #bad data - get_term_by_year_and_quarter
+        #testing bad data - get_term_by_year_and_quarter
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
             self.assertRaises(DataFailureException, sws.get_term_by_year_and_quarter, -2012, 'summer')

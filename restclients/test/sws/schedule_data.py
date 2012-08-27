@@ -3,12 +3,23 @@ from django.conf import settings
 from restclients.sws import SWS
 from restclients.exceptions import DataFailureException
 
-class SWSTestBadScheduleData(TestCase):
-    def test_sws_bad_schedule_data(self):
+class SWSTestScheduleData(TestCase):
+    def test_sws_schedule_data(self):
         with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
-            term = sws.get_current_term()
             
+            #Valid data, shouldn't throw exceptions
+            term = sws.get_previous_term()
+            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            term = sws.get_current_term()
+            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            term = sws.get_next_term()
+            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            term = sws.get_term_by_year_and_quarter(2012, 'summer')
+            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+          
+
+            #Bad data, should throw exceptions
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFF", term)
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "9136CCB8F66711D5BE060004AC494FFX", term)
             self.assertRaises(DataFailureException, sws.schedule_for_regid_and_term, "javerage", term)

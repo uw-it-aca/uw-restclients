@@ -1,10 +1,12 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.pws import PWS
+from restclients.exceptions import InvalidRegID, InvalidNetID
 
 class PWSTestPersonData(TestCase):
     
     def test_by_regid(self):
+        #Valid data, shouldn't throw exceptions
         self._test_regid('javerage', '9136CCB8F66711D5BE060004AC494FFE')
         self._test_regid('pmichaud', 'A9D2DDFA6A7D11D5A4AE0004AC494FFE')
         self._test_regid('kroberts', '0F01799E6A7D11D5A4AE0004AC494FFE')
@@ -14,6 +16,7 @@ class PWSTestPersonData(TestCase):
         self._test_regid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
 
     def test_by_netid(self):
+        #Valid data, shouldn't throw exceptions
         self._test_netid('javerage', '9136CCB8F66711D5BE060004AC494FFE')
         self._test_netid('pmichaud', 'A9D2DDFA6A7D11D5A4AE0004AC494FFE')
         self._test_netid('kroberts', '0F01799E6A7D11D5A4AE0004AC494FFE')
@@ -21,6 +24,30 @@ class PWSTestPersonData(TestCase):
         self._test_netid('lmanes', '260A0DEC95CB11D78BAA000629C31437')
         self._test_netid('tbohn', 'B814EFBC6A7C11D5A4AE0004AC494FFE')
         self._test_netid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
+
+    def test_bad_netids(self):
+        #Invalid data, should throw exceptions
+        pws = PWS()
+        self.assertRaises(InvalidNetID, pws.get_person_by_netid, "")
+        self.assertRaises(InvalidNetID, pws.get_person_by_netid, " ")
+        self.assertRaises(InvalidNetID, pws.get_person_by_netid, "one two")
+        self.assertRaises(InvalidNetID, pws.get_person_by_netid, "</html>")
+        self.assertRaises(InvalidNetID, pws.get_person_by_netid, "aaaaaaaaa")
+            
+        expected_empty_string = pws.get_person_by_netid('hello') #no file for that netid
+        self.assertEquals(None, expected_empty_string)
+
+    def test_bad_regids(self):
+        #Invalid data, should throw exceptions
+        pws = PWS()
+        self.assertRaises(InvalidRegID, pws.get_person_by_regid, "")
+        self.assertRaises(InvalidRegID, pws.get_person_by_regid, " ")
+        self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAA")
+        self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG")
+        
+        expected_empty_string = pws.get_person_by_regid('9136CCB8F66711D5BE060004AC494FFF') #no file for that regid
+        self.assertEquals(None, expected_empty_string)
         
     def _test_regid(self, netid, regid):
         with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
@@ -38,6 +65,4 @@ class PWSTestPersonData(TestCase):
 
             self.assertEquals(person.uwnetid, netid, netid + "'s netid")
             self.assertEquals(person.uwregid, regid, netid + "'s regid")
-
-
 
