@@ -31,7 +31,8 @@ class RestBase:
         pool = self._get_pool()
         r = pool.urlopen(method, url, body, headers=headers)
 
-        self._log.info("\"%s %s\" %s %s" % (method, url, r.status, len(r.data)))
+        self._log.info("\"%s %s\" %s %s" %
+                        (method, url, r.status, len(r.data)))
 
         return r
 

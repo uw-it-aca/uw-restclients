@@ -105,20 +105,26 @@ class SWS(object):
             response = dao.getURL(reg_url, {"Accept": "application/json"})
 
             if response.status != 200:
-                raise DataFailureException(reg_url, response.status, response.read())
+                raise DataFailureException(
+                                            reg_url,
+                                            response.status,
+                                            response.read(),
+                                          )
 
             section_data = json.loads(response.data)
 
             section = Section()
             section_term = Term()
-            section_term.year = section_data["Course"]["Year"]
-            section_term.quarter = section_data["Course"]["Quarter"]
+
+            course_data = section_data["Course"]
+            section_term.year = course_data["Year"]
+            section_term.quarter = course_data["Quarter"]
             section.term = section_term
 
-            section.curriculum_abbr = section_data["Course"]["CurriculumAbbreviation"]
-            section.course_number = section_data["Course"]["CourseNumber"]
+            section.curriculum_abbr = course_data["CurriculumAbbreviation"]
+            section.course_number = course_data["CourseNumber"]
             section.section_id = section_data["SectionID"]
-            section.course_title = section_data["Course"]["CourseTitle"]
+            section.course_title = course_data["CourseTitle"]
             section.course_campus = section_data["CourseCampus"]
             section.section_type = section_data["SectionType"]
             section.class_website_url = section_data["ClassWebsiteUrl"]
@@ -130,10 +136,17 @@ class SWS(object):
                 section.is_primary_section = True
             else:
                 section.is_primary_section = False
-                section.primary_section_href = section_data["PrimarySection"]["Href"]
-                section.primary_section_id = section_data["PrimarySection"]["SectionID"]
-                section.primary_section_curriculum_abbr = section_data["PrimarySection"]["CurriculumAbbreviation"]
-                section.primary_section_course_number = section_data["PrimarySection"]["CourseNumber"]
+                section.primary_section_href = section_data[
+                    "PrimarySection"]["Href"]
+
+                section.primary_section_id = section_data[
+                    "PrimarySection"]["SectionID"]
+
+                section.primary_section_curriculum_abbr = section_data[
+                    "PrimarySection"]["CurriculumAbbreviation"]
+
+                section.primary_section_course_number = section_data[
+                    "PrimarySection"]["CourseNumber"]
 
             # These come from the Term resource
             # section.start_date = ...
@@ -168,7 +181,8 @@ class SWS(object):
 
                 instructors = []
                 for instructor_data in meeting_data["Instructors"]:
-                    instructor = pws.get_person_by_regid(instructor_data["Person"]["RegID"])
+                    pdata = instructor_data["Person"]
+                    instructor = pws.get_person_by_regid(pdata["RegID"])
 
                     if instructor is not None:
                         instructors.append(instructor)

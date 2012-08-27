@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Person(models.Model):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
@@ -15,8 +16,6 @@ class Person(models.Model):
     surname = models.CharField(max_length=100)
     full_name = models.CharField(max_length=250)
 
-
-
     def json_data(self):
         data = {
             'uwnetid': self.uwnetid,
@@ -28,13 +27,14 @@ class Person(models.Model):
         }
         return data
 
+
 class Term(models.Model):
     year = models.PositiveSmallIntegerField()
     QUARTERNAME_CHOICES = (
         ('1', 'Winter'),
         ('2', 'Spring'),
         ('3', 'Summer'),
-        ('4', 'Autumn')
+        ('4', 'Autumn'),
         )
     quarter = models.CharField(max_length=1,
                                choices=QUARTERNAME_CHOICES)
@@ -46,9 +46,11 @@ class Term(models.Model):
     grading_period_open = models.DateTimeField()
     grading_period_close = models.DateTimeField()
     grade_submission_deadline = models.DateTimeField()
+
     class Meta:
         unique_together = ('year',
                            'quarter')
+
 
 class Section(models.Model):
     term = models.ForeignKey(Term,
@@ -91,7 +93,6 @@ class Section(models.Model):
             self.term.quarter, self.curriculum_abbr,
             self.course_number, self.section_id)
 
-
     def primary_section_label(self):
         return "%s,%s,%s,%s/%s" % (self.term.year,
             self.term.quarter, self.primary_section_curriculum_abbr,
@@ -109,13 +110,14 @@ class Section(models.Model):
             'summer_term': self.summer_term,
             'start_date': '',
             'end_date': '',
-            'meetings': []
+            'meetings': [],
         }
 
         for meeting in self.meetings:
             data["meetings"].append(meeting.json_data())
 
         return data
+
 
 class SectionMeeting(models.Model):
     term = models.ForeignKey(Term,
@@ -134,6 +136,7 @@ class SectionMeeting(models.Model):
     end_time = models.TimeField()
 #    instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
     last_verified = models.DateTimeField()
+
     class Meta:
         unique_together = ('term',
                            'section',
@@ -163,6 +166,7 @@ class SectionMeeting(models.Model):
             data["instructors"].append(instructor.json_data())
 
         return data
+
 
 class ClassSchedule(models.Model):
     user = models.ForeignKey(Person)

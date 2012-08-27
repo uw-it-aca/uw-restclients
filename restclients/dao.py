@@ -4,6 +4,7 @@ from django.core.exceptions import *
 from restclients.dao_implementation.pws import File as PWSFile
 from restclients.dao_implementation.sws import File as SWSFile
 
+
 class SWS_DAO(object):
     def __new__(*args, **named_args):
         if hasattr(settings, 'RESTCLIENTS_SWS_DAO_CLASS'):
@@ -17,12 +18,13 @@ class SWS_DAO(object):
             try:
                 DAOModule = getattr(mod, attr)
             except AttributeError:
-                raise ImproperlyConfigured('Module "%s" does not define a "%s" '
-                                   'class.' % (module, attr))
+                raise ImproperlyConfigured('Module "%s" does not define a '
+                                   '"%s" class' % (module, attr))
 
             return DAOModule()
         else:
             return SWSFile()
+
 
 class PWS_DAO(object):
     def __new__(*args, **named_args):
@@ -37,10 +39,9 @@ class PWS_DAO(object):
             try:
                 DAOModule = getattr(mod, attr)
             except AttributeError:
-                raise ImproperlyConfigured('Module "%s" does not define a "%s" '
-                                   'class.' % (module, attr))
+                raise ImproperlyConfigured('Module "%s" does not define a '
+                                   '"%s" class ' % (module, attr))
 
             return DAOModule()
         else:
             return PWSFile()
-

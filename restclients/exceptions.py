@@ -12,6 +12,7 @@ class InvalidRegID(Exception):
     """Exception for invalid regid."""
     pass
 
+
 class DataFailureException(Exception):
     """
     This exception means there was an error fetching content
@@ -25,4 +26,5 @@ class DataFailureException(Exception):
         self.msg = msg
 
     def __str__(self):
-        return "Error fetching %s.  Status code: %s.  Message: %s." % (self.url, self.status, self.msg)
+        return ("Error fetching %s.  Status code: %s.  Message: %s." %
+                (self.url, self.status, self.msg))

@@ -66,7 +66,7 @@ class PWS(object):
         person = Person()
         person.uwnetid = person_data["UWNetID"]
         person.uwregid = person_data["UWRegID"]
-        
+
         person.whitepages_publish = person_data["WhitepagesPublish"]
         person.surname = person_data["RegisteredSurname"]
         person.first_name = person_data["RegisteredFirstMiddleName"]
