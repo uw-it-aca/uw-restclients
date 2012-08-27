@@ -7,9 +7,9 @@ from restclients.cache_implementation import NoCache
 
 class MY_DAO(object):
     def _getCache(self):
-        if hasattr(settings, 'DAO_CACHE_CLASS'):
+        if hasattr(settings, 'RESTCLIENTS_DAO_CACHE_CLASS'):
             # This is all taken from django's static file finder
-            module, attr = settings.DAO_CACHE_CLASS.rsplit('.', 1)
+            module, attr = settings.RESTCLIENTS_DAO_CACHE_CLASS.rsplit('.', 1)
             try:
                 mod = import_module(module)
             except ImportError, e:

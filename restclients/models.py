@@ -1,4 +1,5 @@
 from django.db import models
+import pickle
 
 
 class Person(models.Model):
@@ -186,3 +187,33 @@ class ClassSchedule(models.Model):
             data["sections"].append(section.json_data())
 
         return data
+
+class CacheEntry(models.Model):
+    service = models.CharField(max_length=50, db_index=True)
+    url = models.CharField(max_length=500, unique=True, db_index=True)
+    status = models.PositiveIntegerField()
+    header_pickle = models.CharField(max_length=1000)
+    content = models.TextField()
+
+    class Meta:
+        unique_together = ('service', 'url')
+
+    def getHeaders(self):
+        if self.headers == None:
+            if self.header_pickle == None:
+                self.headers = {}
+            else:
+                self.headers = pickle.loads(self.header_pickle)
+        return self.headers
+
+    def setHeaders(self, headers):
+        self.headers = headers
+
+    def save(*args, **kwargs):
+       self = args[0]
+       self.header_pickle = pickle.dumps(self.headers)
+       super(CacheEntry, self).save(*args, **kwargs)
+
+
+class CacheEntryTimed(CacheEntry):
+    time_saved = models.DateTimeField()
