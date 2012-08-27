@@ -5,7 +5,7 @@ from restclients.exceptions import DataFailureException
 
 class SWSTestScheduleData(TestCase):
     def test_sws_schedule_data(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
             
             #Valid data, shouldn't throw exceptions

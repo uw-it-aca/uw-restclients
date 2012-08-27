@@ -5,7 +5,7 @@ from restclients.exceptions import DataFailureException, InvalidSectionID
 
 class SWSTestSectionData(TestCase):
     def test_section_by_label(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
         
             #Valid data, shouldn't throw any exceptions
@@ -32,10 +32,12 @@ class SWSTestSectionData(TestCase):
 
     #Failing because linked section json files haven't been made (Train 100 AA/AB)
     def test_linked_sections(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
             #Valid data, shouldn't throw any exceptions
             section = sws.get_section_by_label('2012,summer,TRAIN,100/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,PHYS,121/A')
             sws.get_linked_sections(section)
 
             #Invalid data, should throw exceptions
