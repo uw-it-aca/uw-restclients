@@ -33,3 +33,26 @@ class File(object):
             response.status = 200
             response.data = handle.read()
             return response
+
+class ETag(object):
+    """
+    The ETag DAO is a testing DAO, that is just here for
+    testing the ETag cache class.  You don't want to use it
+    for anything else.
+    """
+    def getURL(self, url, headers):
+        if "If-None-Match" in headers and url == "/same":
+            response = MockHTTP()
+            response.status = 304
+            return response
+
+        else:
+            response = MockHTTP()
+            response.status = 200
+            response.data = "Body Content"
+            response.headers = { "ETag": "A123BBB" }
+
+            return response
+
+
+

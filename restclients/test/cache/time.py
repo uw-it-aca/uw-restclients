@@ -22,7 +22,6 @@ class BasicTimeCacheTest(TestCase):
             hit = cache.getCache('sws', '/student', {})
             response = hit["response"]
 
-            print "Response: ", response
             self.assertEquals(response.status, 200)
 
             html = response.read()

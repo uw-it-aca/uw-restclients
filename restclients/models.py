@@ -1,5 +1,6 @@
 from django.db import models
 import pickle
+from base64 import b64encode, b64decode
 
 
 class Person(models.Model):
@@ -193,8 +194,10 @@ class CacheEntry(models.Model):
     service = models.CharField(max_length=50, db_index=True)
     url = models.CharField(max_length=500, unique=True, db_index=True)
     status = models.PositiveIntegerField()
-    header_pickle = models.CharField(max_length=1000)
+    header_pickle = models.TextField()
     content = models.TextField()
+    headers = None
+
 
     class Meta:
         unique_together = ('service', 'url')
@@ -204,7 +207,7 @@ class CacheEntry(models.Model):
             if self.header_pickle == None:
                 self.headers = {}
             else:
-                self.headers = pickle.loads(self.header_pickle)
+                self.headers = pickle.loads(b64decode(self.header_pickle))
         return self.headers
 
     def setHeaders(self, headers):
@@ -212,7 +215,14 @@ class CacheEntry(models.Model):
 
     def save(*args, **kwargs):
         self = args[0]
-        self.header_pickle = pickle.dumps(self.headers)
+
+        pickle_content = ""
+        if self.headers:
+            pickle_content = pickle.dumps(self.headers)
+        else:
+            pickle_content = pickle.dumps({})
+
+        self.header_pickle = b64encode(pickle_content)
         super(CacheEntry, self).save(*args, **kwargs)
 
 

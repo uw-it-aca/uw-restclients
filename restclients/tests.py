@@ -21,3 +21,4 @@ from restclients.test.pws.file_implementation.dao import PWSTestFileDAO
 
 from restclients.test.cache.none import NoCacheTest
 from restclients.test.cache.time import BasicTimeCacheTest
+from restclients.test.cache.etag import ETagCacheTest

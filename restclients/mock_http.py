@@ -11,6 +11,7 @@ class MockHTTP(object):
     """
     status = 0
     data = ""
+    headers = {}
 
     def read(self):
         """
