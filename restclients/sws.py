@@ -105,7 +105,8 @@ class SWS(object):
             response = dao.getURL(url, {"Accept": "application/json"})
 
             if response.status != 200:
-                raise DataFailureException(url, response.status, response.read())
+                raise DataFailureException(url, response.status,
+                                           response.read())
 
             section = self._section_from_json(response.data)
             linked_sections.append(section)
@@ -268,7 +269,8 @@ class SWS(object):
         section.term = Term()
         section.term.year = section_data["Course"]["Year"]
         section.term.quarter = section_data["Course"]["Quarter"]
-        section.curriculum_abbr = section_data["Course"]["CurriculumAbbreviation"]
+        section.curriculum_abbr = section_data["Course"][
+            "CurriculumAbbreviation"]
         section.course_number = section_data["Course"]["CourseNumber"]
         section.course_title = section_data["Course"]["CourseTitle"]
         section.course_title_long = section_data["Course"]["CourseTitleLong"]
@@ -286,15 +288,18 @@ class SWS(object):
             section.is_primary_section = False
             section.primary_section_href = primary_section["Href"]
             section.primary_section_id = primary_section["SectionID"]
-            section.primary_section_curriculum_abbr = primary_section["CurriculumAbbreviation"]
-            section.primary_section_course_number = primary_section["CourseNumber"]
+            section.primary_section_curriculum_abbr = primary_section[
+                "CurriculumAbbreviation"]
+            section.primary_section_course_number = primary_section[
+                "CourseNumber"]
         else:
             section.is_primary_section = True
 
         section.linked_section_urls = []
         for linked_section_type in section_data["LinkedSectionTypes"]:
             for linked_section_data in linked_section_type["LinkedSections"]:
-                section.linked_section_urls.append(linked_section_data["Section"]["Href"])
+                url = linked_section_data["Section"]["Href"]
+                section.linked_section_urls.append(url)
 
         section.meetings = []
         for meeting_data in section_data["Meetings"]:
