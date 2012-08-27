@@ -6,7 +6,7 @@ from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models import Term, Section, SectionMeeting
 from restclients.models import ClassSchedule
-from restclients.exceptions import DataFailureException
+from restclients.exceptions import DataFailureException, InvalidSectionID
 from urllib import urlencode
 import json
 import re
@@ -73,6 +73,44 @@ class SWS(object):
             raise DataFailureException(url, response.status, response.read())
 
         return self._term_from_json(response.data)
+
+    def get_section_by_label(self, label):
+        """
+        Returns a restclients.Section object for the passed section label.
+        """
+        if not re.match(r'^\d{4},(?:winter|spring|summer|autumn),[\w& ]+,\d+\/[A-Z][A-Z0-9]?$',
+                        label):
+            raise InvalidSectionID(label)
+
+        url = "/student/v4/course/%s.json" % re.sub(r'\s', '%20', label)
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        return self._section_from_json(response.data)
+
+    def get_linked_sections(self, section):
+        """
+        Returns a list of restclients.Section objects, representing linked
+        sections for the passed section.
+        """
+        dao = SWS_DAO()
+        linked_sections = []
+
+        urls = section.linked_section_urls
+        for url in urls:
+            response = dao.getURL(url, {"Accept": "application/json"})
+
+            if response.status != 200:
+                raise DataFailureException(url, response.status, response.read())
+
+            section = self._section_from_json(response.data)
+            linked_sections.append(section)
+
+        return linked_sections
 
     def schedule_for_regid_and_term(self, regid, term):
         """
@@ -200,7 +238,11 @@ class SWS(object):
         return schedule
 
     def _term_from_json(self, data):
+        """
+        Returns a term model created from the passed json.
+        """
         term_data = json.loads(data)
+
         term = Term()
         term.year = term_data["Year"]
         term.quarter = term_data["Quarter"]
@@ -214,3 +256,80 @@ class SWS(object):
         term.grade_submission_deadline = term_data["GradeSubmissionDeadline"]
 
         return term
+
+    def _section_from_json(self, data):
+        """
+        Returns a section model created from the passed json.
+        """
+        pws = PWS()
+        section_data = json.loads(data)
+
+        section = Section()
+        section.term = Term()
+        section.term.year = section_data["Course"]["Year"]
+        section.term.quarter = section_data["Course"]["Quarter"]
+        section.curriculum_abbr = section_data["Course"]["CurriculumAbbreviation"]
+        section.course_number = section_data["Course"]["CourseNumber"]
+        section.course_title = section_data["Course"]["CourseTitle"]
+        section.course_title_long = section_data["Course"]["CourseTitleLong"]
+        section.course_campus = section_data["CourseCampus"]
+        section.section_id = section_data["SectionID"]
+        section.section_type = section_data["SectionType"]
+        section.class_website_url = section_data["ClassWebsiteUrl"]
+        section.sln = section_data["SLN"]
+        section.summer_term = section_data["SummerTerm"]
+        section.delete_flag = section_data["DeleteFlag"]
+
+        primary_section = section_data["PrimarySection"]
+        if (primary_section is not None and
+                primary_section["SectionID"] != section.section_id):
+            section.is_primary_section = False
+            section.primary_section_href = primary_section["Href"]
+            section.primary_section_id = primary_section["SectionID"]
+            section.primary_section_curriculum_abbr = primary_section["CurriculumAbbreviation"]
+            section.primary_section_course_number = primary_section["CourseNumber"]
+        else:
+            section.is_primary_section = True
+
+        section.linked_section_urls = []
+        for linked_section_type in section_data["LinkedSectionTypes"]:
+            for linked_section_data in linked_section_type["LinkedSections"]:
+                section.linked_section_urls.append(linked_section_data["Section"]["Href"])
+
+        section.meetings = []
+        for meeting_data in section_data["Meetings"]:
+            meeting = SectionMeeting()
+            meeting.meeting_index = meeting_data["MeetingIndex"]
+            meeting.meeting_type = meeting_data["MeetingType"]
+            meeting.building = meeting_data["Building"]
+            if meeting_data["BuildingToBeArranged"]:
+                meeting.building_to_be_arranged = True
+            else:
+                meeting.building_to_be_arranged = False
+
+            meeting.room_number = meeting_data["RoomNumber"]
+            if meeting_data["RoomToBeArranged"]:
+                meeting.room_to_be_arranged = True
+            else:
+                meeting.room_to_be_arranged = False
+
+            meeting.days_week = meeting_data["DaysOfWeek"]["Text"]
+            if meeting_data["DaysOfWeekToBeArranged"]:
+                meeting.days_to_be_arranged = True
+            else:
+                meeting.days_to_be_arranged = False
+
+            meeting.start_time = meeting_data["StartTime"]
+            meeting.end_time = meeting_data["EndTime"]
+
+            meeting.instructors = []
+            for instructor_data in meeting_data["Instructors"]:
+                pdata = instructor_data["Person"]
+                instructor = pws.get_person_by_regid(pdata["RegID"])
+
+                if instructor is not None:
+                    meeting.instructors.append(instructor)
+
+            section.meetings.append(meeting)
+
+        return section

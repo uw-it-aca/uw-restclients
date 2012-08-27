@@ -61,11 +61,13 @@ class Section(models.Model):
     section_id = models.CharField(max_length=2,
                                   db_index=True)
     course_title = models.CharField(max_length=20)
+    course_title_long = models.CharField(max_length=50)
     course_campus = models.CharField(max_length=7)
-    section_type = models.CharField(max_length=2)
+    section_type = models.CharField(max_length=30)
     class_website_url = models.URLField(max_length=255,
                               verify_exists=False)
     sln = models.PositiveIntegerField()
+    delete_flag = models.CharField(max_length=20)
     summer_term = models.CharField(max_length=1)
     start_date = models.DateField()
     end_date = models.DateField()

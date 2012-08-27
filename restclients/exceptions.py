@@ -13,6 +13,11 @@ class InvalidRegID(Exception):
     pass
 
 
+class InvalidSectionID(Exception):
+    """Exception for invalid section id."""
+    pass
+
+
 class DataFailureException(Exception):
     """
     This exception means there was an error fetching content
