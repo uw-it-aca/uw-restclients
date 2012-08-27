@@ -188,6 +188,7 @@ class ClassSchedule(models.Model):
 
         return data
 
+
 class CacheEntry(models.Model):
     service = models.CharField(max_length=50, db_index=True)
     url = models.CharField(max_length=500, unique=True, db_index=True)
@@ -210,9 +211,9 @@ class CacheEntry(models.Model):
         self.headers = headers
 
     def save(*args, **kwargs):
-       self = args[0]
-       self.header_pickle = pickle.dumps(self.headers)
-       super(CacheEntry, self).save(*args, **kwargs)
+        self = args[0]
+        self.header_pickle = pickle.dumps(self.headers)
+        super(CacheEntry, self).save(*args, **kwargs)
 
 
 class CacheEntryTimed(CacheEntry):

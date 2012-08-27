@@ -6,6 +6,7 @@ from restclients.models import CacheEntryTimed
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware, get_current_timezone
 
+
 class NoCache(object):
     """
     This never caches anything.
@@ -39,7 +40,7 @@ class TimeSimpleCache(object):
             response.data = hit.content
 
             return {
-                "response": response
+                "response": response,
             }
         return None
 

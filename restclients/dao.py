@@ -5,6 +5,7 @@ from restclients.dao_implementation.pws import File as PWSFile
 from restclients.dao_implementation.sws import File as SWSFile
 from restclients.cache_implementation import NoCache
 
+
 class MY_DAO(object):
     def _getCache(self):
         if hasattr(settings, 'RESTCLIENTS_DAO_CACHE_CLASS'):
