@@ -47,7 +47,7 @@ class PWS(object):
             raise InvalidNetID(netid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/person.json?netid=%s" % netid.lower()
+        url = "/identity/v1/person/%s.json" % netid.lower()
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status == 404:

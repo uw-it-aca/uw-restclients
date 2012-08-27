@@ -9,7 +9,7 @@ from restclients.test.sws.file_implementation.dao import SWSTestFileDAO
 
 from restclients.test.sws.bad_schedule_data import SWSTestBadScheduleData
 
-from restclients.test.pws.javerage import PWSTestJAverage
+from restclients.test.pws.person import PWSTestPersonData
 
 from restclients.test.pws.bad_data import PWSTestBadData
 from restclients.test.pws.err404.dao import PWSTestDAO404

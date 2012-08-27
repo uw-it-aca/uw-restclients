@@ -26,4 +26,4 @@ class PWSTest500(TestCase):
                 self.fail("This needs to be an exception")
             except DataFailureException as ex:
                 self.assertEqual(ex.status, 500, "Exception has the right status")
-                self.assertEqual(ex.url, "/identity/v1/person.json?netid=fake", "Exception has the right url")
+                self.assertEqual(ex.url, "/identity/v1/person/fake.json", "Exception has the right url")
