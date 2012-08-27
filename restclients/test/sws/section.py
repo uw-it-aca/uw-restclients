@@ -27,4 +27,34 @@ class SWSTestSectionData(TestCase):
             self.assertRaises(DataFailureException, sws.get_section_by_label, '2012,summer,TRAIN,102/A')
             self.assertRaises(DataFailureException, sws.get_section_by_label, '2012,summer,TRAIN,100/B')
             self.assertRaises(DataFailureException, sws.get_section_by_label, '9999,summer,TRAIN,100/A')
-            self.assertRaises(DataFailureException, sws.get_section_by_label, '2012,summer,PHYS,121/AB')
+            self.assertRaises(DataFailureException, sws.get_section_by_label, '2012,summer,PHYS,121/B')
+            self.assertRaises(DataFailureException, sws.get_section_by_label, '2012,summer,PHYS,121/BB')
+
+    #Failing because linked section json files haven't been made (Train 100 AA/AB)
+    def test_linked_sections(self):
+        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+            sws = SWS()
+            #Valid data, shouldn't throw any exceptions
+            section = sws.get_section_by_label('2012,summer,TRAIN,100/A')
+            sws.get_linked_sections(section)
+
+            #Invalid data, should throw exceptions
+            section.linked_section_urls = ['']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = [' ']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['2012,summer,TRAIN,100/A']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['-2012,summer,TRAIN,100/A.json']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['9999,summer,TRAIN,100/A.json']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['2012,summer,PHYS,121/B.json']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['2012,fall,PHYS,121/A.json']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['2012,fall,PHYS,121/A.json', '2012,fall,PHYS,121/AC.json', '2012,fall,PHYS,121/BT.json']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+            section.linked_section_urls = ['2012,fall,PHYS,121/A.json', '2012,fall,PHYS,121/AC.json', '2012,fall,PHYS,121/AAA.json']
+            self.assertRaises(DataFailureException, sws.get_linked_sections, section)
+
