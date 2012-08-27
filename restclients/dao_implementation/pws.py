@@ -3,6 +3,8 @@ Contains PWS DAO implementations.
 """
 from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
+from django.conf import settings
+from urllib3 import connection_from_url
 
 
 class File(object):
@@ -54,3 +56,30 @@ class ETag(object):
             response.headers = {"ETag": "A123BBB"}
 
             return response
+
+
+class Live(object):
+    """
+    This DAO provides real data.  It requires further configuration, e.g.
+
+    RESTCLIENTS_PWS_CERT_FILE='/path/to/an/authorized/cert.cert',
+    RESTCLIENTS_PWS_KEY_FILE='/path/to/the/certs_key.key',
+    RESTCLIENTS_PWS_HOST='https://ucswseval1.cac.washington.edu:443',
+    """
+    pool = None
+
+    def getURL(self, url, headers):
+        if Live.pool == None:
+            key_file = settings.RESTCLIENTS_PWS_KEY_FILE
+            cert_file = settings.RESTCLIENTS_PWS_CERT_FILE
+            pws_host = settings.RESTCLIENTS_PWS_HOST
+
+            kwargs = {
+                "key_file": key_file,
+                "cert_file": cert_file,
+            }
+
+            Live.pool = connection_from_url(pws_host, **kwargs)
+
+        r = Live.pool.urlopen('GET', url, headers=headers)
+        return r

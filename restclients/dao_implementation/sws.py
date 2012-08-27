@@ -3,6 +3,8 @@ Contains SWS DAO implementations.
 """
 from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
+from django.conf import settings
+from urllib3 import connection_from_url
 
 
 class File(object):
@@ -35,9 +37,28 @@ class File(object):
             return response
 
 
-class HTTP(object):
+class Live(object):
     """
-    This is just here to show where an alternate, more productiony DAO
-    implementation might live.
+    This DAO provides real data.  It requires further configuration, e.g.
+
+    RESTCLIENTS_SWS_CERT_FILE='/path/to/an/authorized/cert.cert',
+    RESTCLIENTS_SWS_KEY_FILE='/path/to/the/certs_key.key',
+    RESTCLIENTS_SWS_HOST='https://ucswseval1.cac.washington.edu:443',
     """
-    pass
+    pool = None
+
+    def getURL(self, url, headers):
+        if Live.pool == None:
+            key_file = settings.RESTCLIENTS_SWS_KEY_FILE
+            cert_file = settings.RESTCLIENTS_SWS_CERT_FILE
+            pws_host = settings.RESTCLIENTS_SWS_HOST
+
+            kwargs = {
+                "key_file": key_file,
+                "cert_file": cert_file,
+            }
+
+            Live.pool = connection_from_url(pws_host, **kwargs)
+
+        r = Live.pool.urlopen('GET', url, headers=headers)
+        return r
