@@ -198,7 +198,6 @@ class CacheEntry(models.Model):
     content = models.TextField()
     headers = None
 
-
     class Meta:
         unique_together = ('service', 'url')
 

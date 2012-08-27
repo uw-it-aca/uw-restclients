@@ -34,6 +34,7 @@ class File(object):
             response.data = handle.read()
             return response
 
+
 class ETag(object):
     """
     The ETag DAO is a testing DAO, that is just here for
@@ -50,9 +51,6 @@ class ETag(object):
             response = MockHTTP()
             response.status = 200
             response.data = "Body Content"
-            response.headers = { "ETag": "A123BBB" }
+            response.headers = {"ETag": "A123BBB"}
 
             return response
-
-
-

@@ -65,6 +65,7 @@ class TimeSimpleCache(object):
 
         return
 
+
 class ETagCache(object):
     """
     This caches objects just based on ETags.
@@ -110,7 +111,7 @@ class ETagCache(object):
             response.status = cache_entry.status
             response.data = cache_entry.content
             response.headers = cache_entry.headers
-            return { "response": response }
+            return {"response": response}
         else:
             now = make_aware(datetime.now(), get_current_timezone())
             cache_entry.service = service
@@ -123,6 +124,3 @@ class ETagCache(object):
             cache_entry.save()
 
         return
-
-
-
