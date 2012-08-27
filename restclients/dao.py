@@ -6,7 +6,11 @@ from restclients.dao_implementation.sws import File as SWSFile
 
 
 class SWS_DAO(object):
-    def __new__(*args, **named_args):
+    def getURL(self, url, headers):
+        dao = self._getDAO()
+        return dao.getURL(url, headers)
+
+    def _getDAO(self):
         if hasattr(settings, 'RESTCLIENTS_SWS_DAO_CLASS'):
             # This is all taken from django's static file finder
             module, attr = settings.RESTCLIENTS_SWS_DAO_CLASS.rsplit('.', 1)
@@ -27,7 +31,12 @@ class SWS_DAO(object):
 
 
 class PWS_DAO(object):
-    def __new__(*args, **named_args):
+    def getURL(self, url, headers):
+        dao = self._getDAO()
+        return dao.getURL(url, headers)
+
+
+    def _getDAO(self):
         if hasattr(settings, 'RESTCLIENTS_PWS_DAO_CLASS'):
             # This is all taken from django's static file finder
             module, attr = settings.RESTCLIENTS_PWS_DAO_CLASS.rsplit('.', 1)
