@@ -1,0 +1,23 @@
+{ "DisplayName" : "BOTHELL AVERAGE STUDENT",
+  "EduPersonAffiliations" : [ "member",
+      "student",
+      "alum",
+      "staff",
+      "employee"
+    ],
+  "IsTestEntity" : true,
+  "PersonAffiliations" : { "PersonFullURI" : { "DisplayName" : "BOTHELL AVERAGE STUDENT",
+          "Href" : "\/identity\/v1\/person\/AABBCCDDEEFFAABBCCDDEEFFAABBCCDD\/full.json",
+          "UWNetID" : "bothell",
+          "UWRegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDD"
+        } },
+  "PriorUWNetIDs" : [],
+  "PriorUWRegIDs" : [],
+  "RegisteredFirstMiddleName" : "BOTHELL AVERAGE",
+  "RegisteredName" : "BOTHELL AVERAGE STUDENT",
+  "RegisteredSurname" : "STUDENT",
+  "UIDNumber" : "99999",
+  "UWNetID" : "bothell",
+  "UWRegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDD",
+  "WhitepagesPublish" : true
+}
