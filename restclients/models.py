@@ -176,11 +176,6 @@ class SectionMeeting(models.Model):
             'room_tbd': self.room_to_be_arranged,
             'room': self.room_number,
             'instructors': [],
-            'instructor': {
-                'name': 'This isnt real',
-                'email': 'fake@fake.fake',
-                'phone': '206-...',
-            }
         }
 
         for instructor in self.instructors:
