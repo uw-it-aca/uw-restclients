@@ -159,7 +159,6 @@ class SectionMeeting(models.Model):
             'index': self.meeting_index,
             'type': self.meeting_type,
             'days_tbd': self.days_to_be_arranged,
-            'days': self.days_week,
             'meeting_days': {
                 'monday': self.meets_monday,
                 'tuesday': self.meets_tuesday,
