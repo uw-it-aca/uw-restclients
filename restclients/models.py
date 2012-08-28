@@ -138,6 +138,14 @@ class SectionMeeting(models.Model):
     days_week = models.CharField(max_length=10)
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+    meets_monday = models.BooleanField()
+    meets_tuesday = models.BooleanField()
+    meets_wednesday = models.BooleanField()
+    meets_thursday = models.BooleanField()
+    meets_friday = models.BooleanField()
+    meets_saturday = models.BooleanField()
+    meets_sunday = models.BooleanField()
 #    instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
     last_verified = models.DateTimeField()
 
@@ -152,6 +160,15 @@ class SectionMeeting(models.Model):
             'type': self.meeting_type,
             'days_tbd': self.days_to_be_arranged,
             'days': self.days_week,
+            'meeting_days': {
+                'monday': self.meets_monday,
+                'tuesday': self.meets_tuesday,
+                'wednesday': self.meets_wednesday,
+                'thursday': self.meets_thursday,
+                'friday': self.meets_friday,
+                'saturday': self.meets_saturday,
+                'sunday': self.meets_sunday,
+            },
             'start_time': self.start_time,
             'end_time': self.end_time,
             'building_tbd': self.building_to_be_arranged,

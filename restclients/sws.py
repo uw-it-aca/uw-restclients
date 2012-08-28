@@ -156,86 +156,7 @@ class SWS(object):
                                             response.read(),
                                           )
 
-            section_data = json.loads(response.data)
-
-            section = Section()
-            section_term = Term()
-
-            course_data = section_data["Course"]
-            section_term.year = course_data["Year"]
-            section_term.quarter = course_data["Quarter"]
-            section.term = section_term
-
-            section.curriculum_abbr = course_data["CurriculumAbbreviation"]
-            section.course_number = course_data["CourseNumber"]
-            section.section_id = section_data["SectionID"]
-            section.course_title = course_data["CourseTitle"]
-            section.course_campus = section_data["CourseCampus"]
-            section.section_type = section_data["SectionType"]
-            section.class_website_url = section_data["ClassWebsiteUrl"]
-            section.sln = section_data["SLN"]
-            section.summer_term = section_data["SummerTerm"]
-
-            primary_section_id = section_data["PrimarySection"]["SectionID"]
-            if primary_section_id == section.section_id:
-                section.is_primary_section = True
-            else:
-                section.is_primary_section = False
-                section.primary_section_href = section_data[
-                    "PrimarySection"]["Href"]
-
-                section.primary_section_id = section_data[
-                    "PrimarySection"]["SectionID"]
-
-                section.primary_section_curriculum_abbr = section_data[
-                    "PrimarySection"]["CurriculumAbbreviation"]
-
-                section.primary_section_course_number = section_data[
-                    "PrimarySection"]["CourseNumber"]
-
-            # These come from the Term resource
-            # section.start_date = ...
-            # section.end_date = ...
-            # final exam schedule...
-
-            section_meetings = []
-            for meeting_data in section_data["Meetings"]:
-                meeting = SectionMeeting()
-                meeting.meeting_index = meeting_data["MeetingIndex"]
-                meeting.meeting_type = meeting_data["MeetingType"]
-                meeting.building = meeting_data["Building"]
-                if meeting_data["BuildingToBeArranged"]:
-                    meeting.building_to_be_arranged = True
-                else:
-                    meeting.building_to_be_arranged = False
-
-                meeting.room_number = meeting_data["RoomNumber"]
-                if meeting_data["RoomToBeArranged"]:
-                    meeting.room_to_be_arranged = True
-                else:
-                    meeting.room_to_be_arranged = False
-
-                meeting.days_week = meeting_data["DaysOfWeek"]["Text"]
-                if meeting_data["DaysOfWeekToBeArranged"]:
-                    meeting.days_to_be_arranged = True
-                else:
-                    meeting.days_to_be_arranged = False
-
-                meeting.start_time = meeting_data["StartTime"]
-                meeting.end_time = meeting_data["EndTime"]
-
-                instructors = []
-                for instructor_data in meeting_data["Instructors"]:
-                    pdata = instructor_data["Person"]
-                    instructor = pws.get_person_by_regid(pdata["RegID"])
-
-                    if instructor is not None:
-                        instructors.append(instructor)
-
-                meeting.instructors = instructors
-                section_meetings.append(meeting)
-
-            section.meetings = section_meetings
+            section = self._section_from_json(response.data)
             sections.append(section)
 
         schedule = ClassSchedule()
@@ -430,6 +351,10 @@ class SWS(object):
                 meeting.days_to_be_arranged = True
             else:
                 meeting.days_to_be_arranged = False
+
+            for day_data in meeting_data["DaysOfWeek"]["Days"]:
+                attribute = "meets_%s" % day_data["Name"].lower()
+                setattr(meeting, attribute, True)
 
             meeting.start_time = meeting_data["StartTime"]
             meeting.end_time = meeting_data["EndTime"]
