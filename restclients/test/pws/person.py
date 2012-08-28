@@ -6,7 +6,8 @@ from restclients.exceptions import InvalidRegID, InvalidNetID
 class PWSTestPersonData(TestCase):
     
     def test_by_regid(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             #Valid data, shouldn't throw exceptions
             self._test_regid('javerage', '9136CCB8F66711D5BE060004AC494FFE')
             self._test_regid('pmichaud', 'A9D2DDFA6A7D11D5A4AE0004AC494FFE')
@@ -17,7 +18,8 @@ class PWSTestPersonData(TestCase):
             self._test_regid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
 
     def test_by_netid(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             #Valid data, shouldn't throw exceptions
             self._test_netid('javerage', '9136CCB8F66711D5BE060004AC494FFE')
             self._test_netid('pmichaud', 'A9D2DDFA6A7D11D5A4AE0004AC494FFE')
@@ -28,7 +30,8 @@ class PWSTestPersonData(TestCase):
             self._test_netid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
 
     def test_bad_netids(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             #Invalid data, should throw exceptions
             pws = PWS()
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "")
@@ -36,25 +39,32 @@ class PWSTestPersonData(TestCase):
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "one two")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "</html>")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "aaaaaaaaa")
-            
-            expected_empty_string = pws.get_person_by_netid('hello') #no file for that netid
-            self.assertEquals(None, expected_empty_string)
+
+            self.assertEquals(None, pws.get_person_by_netid('hello'))
 
     def test_bad_regids(self):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             #Invalid data, should throw exceptions
             pws = PWS()
             self.assertRaises(InvalidRegID, pws.get_person_by_regid, "")
             self.assertRaises(InvalidRegID, pws.get_person_by_regid, " ")
             self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAA")
-            self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            self.assertRaises(InvalidRegID, pws.get_person_by_regid, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG")
-        
-            expected_empty_string = pws.get_person_by_regid('9136CCB8F66711D5BE060004AC494FFF') #no file for that regid
-            self.assertEquals(None, expected_empty_string)
+
+            self.assertRaises(InvalidRegID, 
+                              pws.get_person_by_regid, 
+                              "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+            self.assertRaises(InvalidRegID, 
+                              pws.get_person_by_regid, 
+                              "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG")
+
+            self.assertEquals(None, 
+                              pws.get_person_by_regid('9136CCB8F66711D5BE060004AC494FFF'))
         
     def _test_regid(self, netid, regid):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             
             pws = PWS()
             person = pws.get_person_by_regid(regid)
@@ -63,7 +73,8 @@ class PWSTestPersonData(TestCase):
             self.assertEquals(person.uwregid, regid, netid + "'s regid")
 
     def _test_netid(self, netid, regid):
-        with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             pws = PWS()
             person = pws.get_person_by_netid(netid)
 
