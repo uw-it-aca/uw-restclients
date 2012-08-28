@@ -6,6 +6,7 @@ from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models import Term, Section, SectionMeeting
 from restclients.models import ClassSchedule
+from restclients.models import Campus, College, Department, Curriculum
 from restclients.exceptions import DataFailureException, InvalidSectionID
 from urllib import urlencode
 import json
@@ -78,8 +79,13 @@ class SWS(object):
         """
         Returns a restclients.Section object for the passed section label.
         """
-        if not re.match(r'^\d{4},(?:winter|spring|summer|autumn),[\w& ]+,\d+\/[A-Z][A-Z0-9]?$',
-                        label):
+        valid = re.compile('^\d{4},'                           # year
+                           '(?:winter|spring|summer|autumn),'  # quarter
+                           '[\w& ]+,'                          # curriculum
+                           '\d{3}\/'                           # course number
+                           '[A-Z][A-Z0-9]?$',                  # section id
+                           re.VERBOSE)
+        if not valid.match(label):
             raise InvalidSectionID(label)
 
         url = "/student/v4/course/%s.json" % re.sub(r'\s', '%20', label)
@@ -237,6 +243,107 @@ class SWS(object):
         schedule.term = term
 
         return schedule
+
+    def get_all_campuses(self):
+        """
+        Returns a list of restclients.Campus models, representing all
+        campuses.
+        """
+        url = "/student/v4/campus.json"
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        data = json.loads(response.data)
+
+        campuses = []
+        for campus_data in data.get("Campuses", []):
+            campus = Campus()
+            campus.label = campus_data["CampusShortName"]
+            campus.name = campus_data["CampusName"]
+            campus.full_name = campus_data["CampusFullName"]
+            campuses.append(campus)
+
+        return campuses
+
+    def get_all_colleges(self):
+        """
+        Returns a list of restclients.College models, representing all
+        colleges.
+        """
+        url = "/student/v4/college.json"
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        data = json.loads(response.data)
+
+        colleges = []
+        for college_data in data.get("Colleges", []):
+            college = College()
+            college.campus_label = college_data["CampusShortName"]
+            college.label = college_data["CollegeAbbreviation"]
+            college.name = college_data["CollegeName"]
+            college.full_name = college_data["CollegeFullName"]
+            colleges.append(college)
+
+        return colleges
+
+    def get_departments_for_college(self, college):
+        """
+        Returns a list of restclients.Department models, for the passed
+        College model.
+        """
+        url = "/student/v4/college.json?" + urlencode({
+              "college_abbreviation": college.label})
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        data = json.loads(response.data)
+
+        departments = []
+        for dept_data in data.get("Departments", []):
+            department = Department()
+            department.college_label = college.label
+            department.label = dept_data["DepartmentAbbreviation"]
+            department.name = dept_data["DepartmentFullName"]
+            department.full_name = dept_data["DepartmentFullName"]
+            departments.append(department)
+
+        return departments
+
+    def get_curricula_for_department(self, department):
+        """
+        Returns a list of restclients.Curriculum models, for the passed
+        Department model.
+        """
+        url = "/student/v4/college.json?" + urlencode({
+              "department_abbreviation": department.label})
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        data = json.loads(response.data)
+
+        curricula = []
+        for curr_data in data.get("Curricula", []):
+            curriculum = Curriculum()
+            curriculum.department_label = department.label
+            curriculum.label = curr_data["CurriculumAbbreviation"]
+            curriculum.name = curr_data["CurriculumName"]
+            curriculum.full_name = curr_data["CurriculumFullName"]
+            curricula.append(curriculum)
+
+        return curricula
 
     def _term_from_json(self, data):
         """

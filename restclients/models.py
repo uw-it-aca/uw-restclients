@@ -37,7 +37,7 @@ class Term(models.Model):
         ('2', 'Spring'),
         ('3', 'Summer'),
         ('4', 'Autumn'),
-        )
+    )
     quarter = models.CharField(max_length=1,
                                choices=QUARTERNAME_CHOICES)
     first_day_quarter = models.DateField(db_index=True)
@@ -67,7 +67,7 @@ class Section(models.Model):
     course_campus = models.CharField(max_length=7)
     section_type = models.CharField(max_length=30)
     class_website_url = models.URLField(max_length=255,
-                              verify_exists=False)
+                                        verify_exists=False)
     sln = models.PositiveIntegerField()
     delete_flag = models.CharField(max_length=20)
     summer_term = models.CharField(max_length=1)
@@ -94,13 +94,13 @@ class Section(models.Model):
 
     def section_label(self):
         return "%s,%s,%s,%s/%s" % (self.term.year,
-            self.term.quarter, self.curriculum_abbr,
-            self.course_number, self.section_id)
+               self.term.quarter, self.curriculum_abbr,
+               self.course_number, self.section_id)
 
     def primary_section_label(self):
         return "%s,%s,%s,%s/%s" % (self.term.year,
-            self.term.quarter, self.primary_section_curriculum_abbr,
-            self.primary_section_course_number, self.primary_section_id)
+               self.term.quarter, self.primary_section_curriculum_abbr,
+               self.primary_section_course_number, self.primary_section_id)
 
     def json_data(self):
         data = {
@@ -190,6 +190,33 @@ class ClassSchedule(models.Model):
         return data
 
 
+class Campus(models.Model):
+    label = models.SlugField(max_length=15, unique=True)
+    name = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=50)
+
+
+class College(models.Model):
+    campus_label = models.SlugField(max_length=15)
+    label = models.SlugField(max_length=15, unique=True)
+    name = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=50)
+
+
+class Department(models.Model):
+    college_label = models.SlugField(max_length=15)
+    label = models.SlugField(max_length=15, unique=True)
+    name = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=50)
+
+
+class Curriculum(models.Model):
+    department_label = models.SlugField(max_length=15)
+    label = models.SlugField(max_length=15, unique=True)
+    name = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=50)
+
+
 class CacheEntry(models.Model):
     service = models.CharField(max_length=50, db_index=True)
     url = models.CharField(max_length=500, unique=True, db_index=True)
@@ -202,8 +229,8 @@ class CacheEntry(models.Model):
         unique_together = ('service', 'url')
 
     def getHeaders(self):
-        if self.headers == None:
-            if self.header_pickle == None:
+        if self.headers is None:
+            if self.header_pickle is None:
                 self.headers = {}
             else:
                 self.headers = pickle.loads(b64decode(self.header_pickle))
