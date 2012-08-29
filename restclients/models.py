@@ -265,3 +265,14 @@ class CacheEntry(models.Model):
 
 class CacheEntryTimed(CacheEntry):
     time_saved = models.DateTimeField()
+
+
+class Book(models.Model):
+    isbn = models.CharField(max_length=15)
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    used_price = models.DecimalField(max_digits=7, decimal_places=2)
+    is_required = models.BooleanField()
+    notes = models.TextField()
+    cover_image_url = models.CharField(max_length=2048)
