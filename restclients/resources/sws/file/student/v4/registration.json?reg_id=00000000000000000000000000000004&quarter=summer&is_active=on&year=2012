@@ -27,11 +27,11 @@
       { "CourseNumber" : "098",
         "CurriculumAbbreviation" : "TEST",
         "DuplicateCode" : "1",
-        "Href" : "\/student\/v4\/registration\/2012,summer,TEST,098,A,00000000000000000000000000000004,2.json",
+        "Href" : "\/student\/v4\/registration\/2012,summer,TEST,098,T,00000000000000000000000000000004,2.json",
         "Instructor" : null,
         "Quarter" : "summer",
         "RegID" : "00000000000000000000000000000004",
-        "SectionID" : "A",
+        "SectionID" : "T",
         "Year" : "2012"
       }
     ],

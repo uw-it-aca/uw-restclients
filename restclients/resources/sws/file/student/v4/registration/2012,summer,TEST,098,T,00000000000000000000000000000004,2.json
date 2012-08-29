@@ -19,9 +19,9 @@
   "RequestStatus" : "",
   "Section" : { "CourseNumber" : "098",
       "CurriculumAbbreviation" : "TEST",
-      "Href" : "\/student\/v4\/course\/2012,summer,TEST,098\/A.json",
+      "Href" : "\/student\/v4\/course\/2012,summer,TEST,098\/T.json",
       "Quarter" : "summer",
-      "SectionID" : "A",
+      "SectionID" : "T",
       "Year" : "2012"
     },
   "VariableCredit" : false,
