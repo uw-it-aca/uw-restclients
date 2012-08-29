@@ -43,7 +43,7 @@
         "DaysOfWeekToBeArranged" : false,
         "EndTime" : "12:20",
         "Instructors" : [ { "FacultySequenceNumber" : "",
-              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,T,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
                   "Name" : "JANSSON,ROBERT E",
                   "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
@@ -65,7 +65,7 @@
         "DaysOfWeekToBeArranged" : false,
         "EndTime" : "21:20",
         "Instructors" : [ { "FacultySequenceNumber" : "",
-              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,T,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
                   "Name" : "JANSSON,ROBERT E",
                   "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
@@ -85,9 +85,9 @@
             "Text" : "W"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "",
+        "EndTime" : "13:50",
         "Instructors" : [ { "FacultySequenceNumber" : "",
-              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,T,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
                   "Name" : "JANSSON,ROBERT E",
                   "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
@@ -98,18 +98,18 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "*",
         "RoomToBeArranged" : true,
-        "StartTime" : ""
+        "StartTime" : "11:30"
       },
       { "Building" : "CMU",
         "BuildingToBeArranged" : false,
-        "DaysOfWeek" : { "Days" : [ { "Name" : "Thursday" }
+        "DaysOfWeek" : { "Days" : [ { "Name" : "Thursday" }, { "Name" : "Friday" }
               ],
             "Text" : "Th F"
           },
         "DaysOfWeekToBeArranged" : false,
         "EndTime" : "16:50",
         "Instructors" : [ { "FacultySequenceNumber" : "",
-              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,T,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
                   "Name" : "JANSSON,ROBERT E",
                   "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
@@ -121,27 +121,13 @@
         "RoomNumber" : "B006",
         "RoomToBeArranged" : false,
         "StartTime" : "15:30"
-      },
-      { "Building" : "*",
-        "BuildingToBeArranged" : true,
-        "DaysOfWeek" : { "Days" : [{ "Name" : "Friday" }],
-            "Text" : "to be arranged"
-          },
-        "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "",
-        "Instructors" : [],
-        "MeetingIndex" : "1",
-        "MeetingType" : "lecture",
-        "RoomNumber" : "*",
-        "RoomToBeArranged" : true,
-        "StartTime" : ""
       }
  ],
   "PrimarySection" : { "CourseNumber" : "098",
       "CurriculumAbbreviation" : "TEST",
       "Href" : "\/student\/v4\/course\/2012,summer,TEST,098\/A.json",
       "Quarter" : "summer",
-      "SectionID" : "A",
+      "SectionID" : "T",
       "Year" : "2012"
     },
   "Registrations" : { "CourseNumber" : "098",
@@ -153,7 +139,7 @@
       "PageStart" : null,
       "Quarter" : "summer",
       "RegID" : null,
-      "SectionID" : "A",
+      "SectionID" : "T",
       "Year" : "2012"
     },
   "ResearchCredit" : false,
