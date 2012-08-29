@@ -25,7 +25,7 @@
         "Year" : "2012"
       },
       { "CourseNumber" : "180",
-        "CurriculumAbbreviation" : "BIOL",
+        "CurriculumAbbreviation" : "B BIO",
         "DuplicateCode" : "1",
         "Href" : "\/student\/v4\/registration\/2012,summer,B BIO,180,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDD,1.json",
         "Instructor" : null,
@@ -35,7 +35,7 @@
         "Year" : "2012"
       },
       { "CourseNumber" : "180",
-        "CurriculumAbbreviation" : "BIOL",
+        "CurriculumAbbreviation" : "B BIO",
         "DuplicateCode" : "1",
         "Href" : "\/student\/v4\/registration\/2012,summer,B BIO,180,AA,AABBCCDDEEFFAABBCCDDEEFFAABBCCDD,2.json",
         "Instructor" : null,
