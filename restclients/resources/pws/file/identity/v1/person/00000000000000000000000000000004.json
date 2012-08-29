@@ -1,0 +1,23 @@
+{ "DisplayName" : "JOHN SUPER STUDENT",
+  "EduPersonAffiliations" : [ "member",
+      "student",
+      "alum",
+      "staff",
+      "employee"
+    ],
+  "IsTestEntity" : true,
+  "PersonAffiliations" : { "PersonFullURI" : { "DisplayName" : "JOHN SUPER STUDENT",
+          "Href" : "\/identity\/v1\/person\/00000000000000000000000000000004\/full.json",
+          "UWNetID" : "jsuper",
+          "UWRegID" : "00000000000000000000000000000004"
+        } },
+  "PriorUWNetIDs" : [],
+  "PriorUWRegIDs" : [],
+  "RegisteredFirstMiddleName" : "JOHN SUPER",
+  "RegisteredName" : "JOHN SUPER STUDENT",
+  "RegisteredSurname" : "STUDENT",
+  "UIDNumber" : "99989",
+  "UWNetID" : "jsuper",
+  "UWRegID" : "00000000000000000000000000000004",
+  "WhitepagesPublish" : true
+}
