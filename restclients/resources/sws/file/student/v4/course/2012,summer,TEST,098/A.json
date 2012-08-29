@@ -1,0 +1,170 @@
+{ "Auditors" : "0",
+  "ClassWebsiteUrl" : "",
+  "Course" : { "CourseNumber" : "098",
+      "CourseTitle" : "TST COURSE",
+      "CourseTitleLong" : "TEST COURSE",
+      "CurriculumAbbreviation" : "TEST",
+      "Href" : "\/student\/v4\/course\/2012,summer,TEST,098.json",
+      "Quarter" : "summer",
+      "Year" : "2012"
+    },
+  "CourseCampus" : "Seattle",
+  "CourseDescription" : "This is a test course description.",
+  "CourseTitle" : "TST COURSE",
+  "CourseTitleLong" : "TEST COURSE",
+  "CurrentEnrollment" : "0",
+  "Curriculum" : { "TimeScheduleLinkAbbreviation" : "" },
+  "DeleteFlag" : "active",
+  "DuplicateEnrollmentAllowed" : false,
+  "GeneralEducationRequirements" : { "EnglishComposition" : true,
+      "IndividualsAndSocieties" : true,
+      "NaturalWorld" : true,
+      "QuantitativeAndSymbolicReasoning" : true,
+      "VisualLiteraryAndPerformingArts" : true,
+      "Writing" : true
+    },
+  "GradeSubmissionDelegates" : [ { "DelegateLevel" : "curriculum",
+        "Person" : { "Href" : "\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
+            "Name" : "WINSLOW,MATTHEW S.",
+            "RegID" : "6DF0A9206A7D11D5A4AE0004AC494FFE"
+          }
+      } ],
+  "GradingSystem" : "standard",
+  "HonorsCourse" : false,
+  "LimitEstimateEnrollment" : "5",
+  "LimitEstimateEnrollmentIndicator" : "limit",
+  "LinkedSectionTypes" : [  ],
+  "Meetings" : [ { "Building" : "EXED",
+        "BuildingToBeArranged" : false,
+        "DaysOfWeek" : { "Days" : [ { "Name" : "Monday" }
+              ],
+            "Text" : "M"
+          },
+        "DaysOfWeekToBeArranged" : false,
+        "EndTime" : "12:20",
+        "Instructors" : [ { "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
+                  "Name" : "JANSSON,ROBERT E",
+                  "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
+                }
+            }
+          ],
+        "MeetingIndex" : "1",
+        "MeetingType" : "lecture",
+        "RoomNumber" : "001",
+        "RoomToBeArranged" : false,
+        "StartTime" : "07:30"
+      },
+      { "Building" : "FSH",
+        "BuildingToBeArranged" : false,
+        "DaysOfWeek" : { "Days" : [ { "Name" : "Tuesday" }
+              ],
+            "Text" : "T"
+          },
+        "DaysOfWeekToBeArranged" : false,
+        "EndTime" : "21:20",
+        "Instructors" : [ { "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
+                  "Name" : "JANSSON,ROBERT E",
+                  "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
+                }
+            }
+          ],
+        "MeetingIndex" : "1",
+        "MeetingType" : "lecture",
+        "RoomNumber" : "999T",
+        "RoomToBeArranged" : false,
+        "StartTime" : "20:30"
+      },
+      { "Building" : "*",
+        "BuildingToBeArranged" : true,
+        "DaysOfWeek" : { "Days" : [ { "Name" : "Wednesday" }
+              ],
+            "Text" : "W"
+          },
+        "DaysOfWeekToBeArranged" : false,
+        "EndTime" : "",
+        "Instructors" : [ { "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
+                  "Name" : "JANSSON,ROBERT E",
+                  "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
+                }
+            }
+          ],
+        "MeetingIndex" : "1",
+        "MeetingType" : "lecture",
+        "RoomNumber" : "*",
+        "RoomToBeArranged" : true,
+        "StartTime" : ""
+      },
+      { "Building" : "CMU",
+        "BuildingToBeArranged" : false,
+        "DaysOfWeek" : { "Days" : [ { "Name" : "Thursday" }
+              ],
+            "Text" : "Th F"
+          },
+        "DaysOfWeekToBeArranged" : false,
+        "EndTime" : "16:50",
+        "Instructors" : [ { "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
+                  "Name" : "JANSSON,ROBERT E",
+                  "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
+                }
+            }
+          ],
+        "MeetingIndex" : "1",
+        "MeetingType" : "lecture",
+        "RoomNumber" : "B006",
+        "RoomToBeArranged" : false,
+        "StartTime" : "15:30"
+      },
+      { "Building" : "*",
+        "BuildingToBeArranged" : true,
+        "DaysOfWeek" : { "Days" : [{ "Name" : "Friday" }],
+            "Text" : "to be arranged"
+          },
+        "DaysOfWeekToBeArranged" : false,
+        "EndTime" : "",
+        "Instructors" : [],
+        "MeetingIndex" : "1",
+        "MeetingType" : "lecture",
+        "RoomNumber" : "*",
+        "RoomToBeArranged" : true,
+        "StartTime" : ""
+      }
+ ],
+  "PrimarySection" : { "CourseNumber" : "098",
+      "CurriculumAbbreviation" : "TEST",
+      "Href" : "\/student\/v4\/course\/2012,summer,TEST,098\/A.json",
+      "Quarter" : "summer",
+      "SectionID" : "A",
+      "Year" : "2012"
+    },
+  "Registrations" : { "CourseNumber" : "098",
+      "CurriculumAbbreviation" : "TEST",
+      "Href" : "\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=TEST&course_number=098§ion_id=T®_id=&is_active=on&instructor_reg_id=",
+      "InstructorRegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE",
+      "IsActive" : "on",
+      "PageSize" : null,
+      "PageStart" : null,
+      "Quarter" : "summer",
+      "RegID" : null,
+      "SectionID" : "A",
+      "Year" : "2012"
+    },
+  "ResearchCredit" : false,
+  "SLN" : "14003",
+  "SecondaryGradingOption" : false,
+  "SectionID" : "T",
+  "SectionType" : "lecture",
+  "ServiceLearning" : false,
+  "SummerTerm" : "Full-term",
+  "Term" : { "Href" : "\/student\/v4\/term\/2012,summer.json",
+      "Quarter" : "summer",
+      "Year" : "2012"
+    }
+}
