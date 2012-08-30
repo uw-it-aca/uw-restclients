@@ -5,6 +5,7 @@ from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
 from django.conf import settings
 from urllib3 import connection_from_url
+import re
 
 
 class File(object):
@@ -35,6 +36,19 @@ class File(object):
             response.status = 200
             response.data = handle.read()
             return response
+
+
+class AlwaysJAverage(object):
+    """
+    This DAO ensures that all users have javerage's regid
+    """
+    def getURL(self, url, headers):
+        real = File()
+
+        if re.search('/identity/v1/person/([\w]+).json', url):
+            return real.getURL('/identity/v1/person/javerage.json', headers)
+
+        return real.getURL(url, headers)
 
 
 class ETag(object):
