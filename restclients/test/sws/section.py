@@ -14,6 +14,14 @@ class SWSTestSectionData(TestCase):
             sws.get_section_by_label('2012,summer,PHYS,121/A')
             sws.get_section_by_label('2012,summer,PHYS,121/AC')
             sws.get_section_by_label('2012,summer,PHYS,121/AQ')
+            sws.get_section_by_label('2012,summer,TEST,098/T')
+            sws.get_section_by_label('2012,summer,B BIO,180/A')
+            sws.get_section_by_label('2012,summer,B BIO,180/AA')
+            sws.get_section_by_label('2012,summer,EDC&I,461/A')
+            sws.get_section_by_label('2012,summer,CSS,161/A')
+            sws.get_section_by_label('2012,summer,T BUS,310/A')
+            sws.get_section_by_label('2012,summer,MATH,125/G')
+            sws.get_section_by_label('2012,summer,MATH,125/GA')
 
             #Invalid data, should throw exceptions
             self.assertRaises(InvalidSectionID, 
@@ -101,6 +109,29 @@ class SWSTestSectionData(TestCase):
             sws.get_linked_sections(section)
             section = sws.get_section_by_label('2012,summer,PHYS,121/A')
             sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,PHYS,121/AC')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,PHYS,121/AQ')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,B BIO,180/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,B BIO,180/AA')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,CSS,161/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,T BUS,310/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TEST,098/T')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TRAIN,101/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,MATH,125/G')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,MATH,125/GA')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,EDC&I,461/A')
+            sws.get_linked_sections(section)
+
 
             #Invalid data, should throw exceptions
             section.linked_section_urls = ['']

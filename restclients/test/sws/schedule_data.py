@@ -18,6 +18,11 @@ class SWSTestScheduleData(TestCase):
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
             term = sws.get_term_by_year_and_quarter(2012, 'summer')
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            term = sws.get_current_term()
+            sws.schedule_for_regid_and_term('00000000000000000000000000000003', term)
+            sws.schedule_for_regid_and_term('00000000000000000000000000000004', term)
+            sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDD', term)
+            sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDE', term)
           
 
             #Bad data, should throw exceptions

@@ -16,6 +16,10 @@ class PWSTestPersonData(TestCase):
             self._test_regid('lmanes', '260A0DEC95CB11D78BAA000629C31437')
             self._test_regid('tbohn', 'B814EFBC6A7C11D5A4AE0004AC494FFE')
             self._test_regid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
+            self._test_regid('seattle', '00000000000000000000000000000003')
+            self._test_regid('tacoma', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDE')
+            self._test_regid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
+            self._test_regid('jsuper', '00000000000000000000000000000004')
 
     def test_by_netid(self):
         with self.settings(
@@ -28,6 +32,10 @@ class PWSTestPersonData(TestCase):
             self._test_netid('lmanes', '260A0DEC95CB11D78BAA000629C31437')
             self._test_netid('tbohn', 'B814EFBC6A7C11D5A4AE0004AC494FFE')
             self._test_netid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
+            self._test_netid('seattle', '00000000000000000000000000000003')
+            self._test_netid('tacoma', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDE')
+            self._test_netid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
+            self._test_netid('jsuper', '00000000000000000000000000000004')
 
     def test_bad_netids(self):
         with self.settings(
