@@ -22,6 +22,7 @@ class SWSTestSectionData(TestCase):
             sws.get_section_by_label('2012,summer,T BUS,310/A')
             sws.get_section_by_label('2012,summer,MATH,125/G')
             sws.get_section_by_label('2012,summer,MATH,125/GA')
+            sws.get_section_by_label('2012,summer,TEDADM,572/A')
 
             #Invalid data, should throw exceptions
             self.assertRaises(InvalidSectionID, 

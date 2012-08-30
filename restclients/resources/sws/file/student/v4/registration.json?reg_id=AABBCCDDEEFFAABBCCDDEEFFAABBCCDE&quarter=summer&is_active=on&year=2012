@@ -23,7 +23,17 @@
         "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDE",
         "SectionID" : "A",
         "Year" : "2012"
+      }, 
+      { "CourseNumber" : "572",
+        "CurriculumAbbreviation" : "TEDADM",
+        "DuplicateCode" : "1",
+        "Href" : "\/student\/v4\/registration\/2012,summer,TEDADM,572,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDE,1.json",
+        "Instructor" : null,
+        "Quarter" : "summer",
+        "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDE",
+        "SectionID" : "A",
+        "Year" : "2012"
       }
     ],
-  "TotalCount" : 1
+  "TotalCount" : 2
 }
