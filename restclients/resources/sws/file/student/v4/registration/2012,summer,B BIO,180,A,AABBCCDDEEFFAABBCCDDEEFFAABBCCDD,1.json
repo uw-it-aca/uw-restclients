@@ -2,7 +2,7 @@
   "Auditor" : false,
   "Credits" : "5.0",
   "DropAccessCode" : "",
-  "DuplicateCode" : "2",
+  "DuplicateCode" : "1",
   "FacultySequenceNumber" : "",
   "FeeBaseType" : "",
   "Grade" : "X",
@@ -10,9 +10,9 @@
   "GradeDocumentID" : "000000000",
   "HonorsCourse" : false,
   "IsActive" : true,
-  "Person" : { "Href" : "\/student\/v4\/person\/AABBCCDDEEFFAABBCCDDEEFFAABBCCDD.json",
-      "Name" : "Student, Bothell Average",
-      "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDD"
+  "Person" : { "Href" : "\/student\/v4\/person\/12345678901234567890123456789012.json",
+      "Name" : "Student, Eight Clas",
+      "RegID" : "12345678901234567890123456789012"
     },
   "RepeatCourse" : false,
   "RequestDate" : "",

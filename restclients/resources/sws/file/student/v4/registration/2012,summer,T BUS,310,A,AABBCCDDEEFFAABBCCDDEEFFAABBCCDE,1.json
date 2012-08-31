@@ -2,7 +2,7 @@
   "Auditor" : false,
   "Credits" : "5.0",
   "DropAccessCode" : "",
-  "DuplicateCode" : "2",
+  "DuplicateCode" : "1",
   "FacultySequenceNumber" : "",
   "FeeBaseType" : "",
   "Grade" : "X",
@@ -11,8 +11,8 @@
   "HonorsCourse" : false,
   "IsActive" : true,
   "Person" : { "Href" : "\/student\/v4\/person\/AABBCCDDEEFFAABBCCDDEEFFAABBCCDE.json",
-      "Name" : "Student, Tacoma Average",
-      "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDE"
+      "Name" : "Student, Eight Class",
+      "RegID" : "12345678901234567890123456789012"
     },
   "RepeatCourse" : false,
   "RequestDate" : "",

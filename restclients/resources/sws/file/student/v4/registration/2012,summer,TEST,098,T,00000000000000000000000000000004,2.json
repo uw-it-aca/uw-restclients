@@ -10,9 +10,9 @@
   "GradeDocumentID" : "000000000",
   "HonorsCourse" : false,
   "IsActive" : true,
-  "Person" : { "Href" : "\/student\/v4\/person\/00000000000000000000000000000004.json",
+  "Person" : { "Href" : "\/student\/v4\/person\/12345678901234567890123456789012.json",
       "Name" : "Student, John Super",
-      "RegID" : "00000000000000000000000000000004"
+      "RegID" : "12345678901234567890123456789012"
     },
   "RepeatCourse" : false,
   "RequestDate" : "",
