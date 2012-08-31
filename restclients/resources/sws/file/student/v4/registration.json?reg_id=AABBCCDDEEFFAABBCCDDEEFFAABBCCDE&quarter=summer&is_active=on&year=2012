@@ -33,7 +33,17 @@
         "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDE",
         "SectionID" : "A",
         "Year" : "2012"
+      }, 
+      { "CourseNumber" : "110",
+        "CurriculumAbbreviation" : "TMATH",
+        "DuplicateCode" : "1",
+        "Href" : "\/student\/v4\/registration\/2012,summer,TMATH,110,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDE,1.json",
+        "Instructor" : null,
+        "Quarter" : "summer",
+        "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDE",
+        "SectionID" : "A",
+        "Year" : "2012"
       }
     ],
-  "TotalCount" : 2
+  "TotalCount" : 3
 }
