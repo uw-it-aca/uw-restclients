@@ -20,6 +20,7 @@ class PWSTestPersonData(TestCase):
             self._test_regid('tacoma', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDE')
             self._test_regid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
             self._test_regid('jsuper', '00000000000000000000000000000004')
+            self._test_regid('eight', '12345678901234567890123456789012')
 
     def test_by_netid(self):
         with self.settings(
@@ -36,6 +37,7 @@ class PWSTestPersonData(TestCase):
             self._test_netid('tacoma', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDE')
             self._test_netid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
             self._test_netid('jsuper', '00000000000000000000000000000004')
+            self._test_netid('eight', '12345678901234567890123456789012')
 
     def test_bad_netids(self):
         with self.settings(

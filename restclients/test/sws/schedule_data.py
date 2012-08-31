@@ -23,6 +23,7 @@ class SWSTestScheduleData(TestCase):
             sws.schedule_for_regid_and_term('00000000000000000000000000000004', term)
             sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDD', term)
             sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDE', term)
+            sws.schedule_for_regid_and_term('12345678901234567890123456789012', term)
           
 
             #Bad data, should throw exceptions
