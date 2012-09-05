@@ -47,13 +47,13 @@
             "Text" : "T"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "14:50",
+        "EndTime" : "13:50",
         "Instructors" : [  ],
         "MeetingIndex" : "1",
         "MeetingType" : "quiz",
         "RoomNumber" : "311",
         "RoomToBeArranged" : false,
-        "StartTime" : "13:30"
+        "StartTime" : "12:30"
       }, 
       { "Building" : "SMI",
         "BuildingToBeArranged" : false,

@@ -55,7 +55,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "GWP216",
         "RoomToBeArranged" : false,
-        "StartTime" : "09:00"
+        "StartTime" : "11:30"
       },
       { "Building" : "ADMC",
         "BuildingToBeArranged" : false,
@@ -77,7 +77,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "WCG209",
         "RoomToBeArranged" : false,
-        "StartTime" : "09:00"
+        "StartTime" : "11:30"
       }
  ],
   "PrimarySection" : { "CourseNumber" : "310",

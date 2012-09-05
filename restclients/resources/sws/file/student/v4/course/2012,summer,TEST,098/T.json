@@ -41,7 +41,7 @@
             "Text" : "M"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "12:20",
+        "EndTime" : "08:20",
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,T,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
@@ -85,7 +85,7 @@
             "Text" : "W"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "13:50",
+        "EndTime" : "13:20",
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,TEST,098,T,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
@@ -98,7 +98,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "*",
         "RoomToBeArranged" : true,
-        "StartTime" : "11:30"
+        "StartTime" : "12:30"
       },
       { "Building" : "CMU",
         "BuildingToBeArranged" : false,

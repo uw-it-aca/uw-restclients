@@ -42,7 +42,7 @@
             "Text" : "M W"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "22:00",
+        "EndTime" : "19:00",
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,ELCBUS,451,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
@@ -55,7 +55,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "EVEREST",
         "RoomToBeArranged" : false,
-        "StartTime" : "17:30"
+        "StartTime" : "14:30"
       } ],
   "PrimarySection" : { "CourseNumber" : "451",
       "CurriculumAbbreviation" : "ELCBUS",

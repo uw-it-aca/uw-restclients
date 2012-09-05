@@ -62,7 +62,7 @@
             "Text" : "M W F"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "10:45",
+        "EndTime" : "22:45",
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,B%20BIO,180,A,260A0DEC95CB11D78BAA000629C31437" },
               "Person" : { "Href" : "\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
@@ -74,7 +74,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "005",
         "RoomToBeArranged" : false,
-        "StartTime" : "08:45"
+        "StartTime" : "19:45"
       }
   ],
   "PrimarySection" : { "CourseNumber" : "180",

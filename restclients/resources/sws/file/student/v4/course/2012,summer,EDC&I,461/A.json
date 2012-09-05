@@ -42,7 +42,7 @@
             "Text" : "M W"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "11:50",
+        "EndTime" : "18:50",
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,EDC&I,461,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
               "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
@@ -55,7 +55,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "116",
         "RoomToBeArranged" : false,
-        "StartTime" : "08:30"
+        "StartTime" : "16:30"
       } ],
   "PrimarySection" : { "CourseNumber" : "461",
       "CurriculumAbbreviation" : "EDC&I",
