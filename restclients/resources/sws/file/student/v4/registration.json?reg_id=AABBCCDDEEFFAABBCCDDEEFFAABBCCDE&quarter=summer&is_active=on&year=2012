@@ -17,7 +17,7 @@
   "Registrations" : [ { "CourseNumber" : "310",
         "CurriculumAbbreviation" : "T BUS",
         "DuplicateCode" : "1",
-        "Href" : "\/student\/v4\/registration\/2012,summer,T BUS,310,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDE,1.json",
+        "Href" : "\/student\/v4\/registration\/2012,summer,T%20BUS,310,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDE,1.json",
         "Instructor" : null,
         "Quarter" : "summer",
         "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDE",
