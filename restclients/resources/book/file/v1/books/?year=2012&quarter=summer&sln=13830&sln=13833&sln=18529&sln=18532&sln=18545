@@ -12,7 +12,7 @@
                 "used_price":null,
                 "required":true,
                 "notes":"Not sure what would go here, other than required",
-                "cover_image": ""
+                "cover_image": "http://s3.amazonaws.com/semesterly/covers/92093d45-7a04-5d77-8f33-c098e1635a76.jpg"
             }
         ]
 }
