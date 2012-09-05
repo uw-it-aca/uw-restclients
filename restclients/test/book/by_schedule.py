@@ -15,7 +15,7 @@ class BookstoreScheduleTest(TestCase):
             books = Bookstore()
 
             term = sws.get_current_term()
-            schedule = sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            schedule = sws.schedule_for_regid_and_term('AA36CCB8F66711D5BE060004AC494FFE', term)
 
             book_data = books.get_books_for_schedule(schedule)
 
