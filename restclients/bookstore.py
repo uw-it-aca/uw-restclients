@@ -4,7 +4,7 @@ This is the interface for interacting with the UW Bookstore's book service.
 
 from restclients.dao import Book_DAO
 from restclients.exceptions import DataFailureException
-from restclients.models import Book
+from restclients.models import Book, BookAuthor
 import json
 import re
 
@@ -47,12 +47,17 @@ class Bookstore(object):
                 book = Book()
                 book.isbn = book_data["isbn"]
                 book.title = book_data["title"]
-                book.author = book_data["author"]
                 book.price = book_data["price"]
                 book.used_price = book_data["used_price"]
                 book.is_required = book_data["required"]
                 book.notes = book_data["notes"]
                 book.cover_image_url = book_data["cover_image"]
+                book.authors = []
+
+                for author_data in book_data["authors"]:
+                    author = BookAuthor()
+                    author.name = author_data["name"]
+                    book.authors.append(author);
 
                 response[section.sln].append(book)
 

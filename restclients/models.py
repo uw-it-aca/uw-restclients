@@ -270,7 +270,6 @@ class CacheEntryTimed(CacheEntry):
 class Book(models.Model):
     isbn = models.CharField(max_length=15)
     title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     used_price = models.DecimalField(max_digits=7, decimal_places=2)
     is_required = models.BooleanField()
@@ -281,11 +280,25 @@ class Book(models.Model):
         data = {
             'isbn': self.isbn,
             'title': self.title,
-            'author': self.author,
+            'authors': [],
             'price': self.price,
             'used_price': self.used_price,
             'is_required': self.is_required,
             'notes': self.notes,
             'cover_image_url': self.cover_image_url,
         }
+
+        for author in self.authors:
+            data["authors"].append(author.json_data())
         return data
+
+class BookAuthor(models.Model):
+    name = models.CharField(max_length=255)
+
+    def json_data(self):
+        data = {
+            'name': self.name
+        }
+
+        return data
+
