@@ -48,7 +48,14 @@
           },
         "DaysOfWeekToBeArranged" : false,
         "EndTime" : "13:50",
-        "Instructors" : [  ],
+        "Instructors" : [{ "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,ELCBUS,451,A,FBB38FE46A7C11D5A4AE0004AC494FFE" },
+              "Person" : { "Href" : "\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
+                  "Name" : "JANSSON,ROBERT E",
+                  "RegID" : "FBB38FE46A7C11D5A4AE0004AC494FFE"
+                }
+            }
+        ],
         "MeetingIndex" : "1",
         "MeetingType" : "quiz",
         "RoomNumber" : "311",
@@ -62,7 +69,13 @@
           },
         "DaysOfWeekToBeArranged" : false,
         "EndTime" : "15:20",
-        "Instructors" : [  ],
+        "Instructors" : [{ "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,B%20BIO,180,A,260A0DEC95CB11D78BAA000629C31437" },
+              "Person" : { "Href" : "\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
+                  "Name" : "MANES,LAUREN MEREDITH",
+                  "RegID" : "260A0DEC95CB11D78BAA000629C31437"
+                }
+            }],
         "MeetingIndex" : "1",
         "MeetingType" : "quiz",
         "RoomNumber" : "313",
