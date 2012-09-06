@@ -157,6 +157,18 @@ class SWS(object):
                                           )
 
             section = self._section_from_json(response.data)
+
+            # For independent study courses, only include the one relevant 
+            # instructor
+            if registration["Instructor"]:
+                regid = registration["Instructor"]["RegID"]
+
+                for instructor in section.meetings[0].instructors:
+                    if instructor.uwregid == regid:
+                        actual_instructor = instructor
+
+                section.meetings[0].instructors = [ actual_instructor ]
+                section.independent_study_instructor_regid = registration["Instructor"]
             sections.append(section)
 
         schedule = ClassSchedule()

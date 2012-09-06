@@ -1,0 +1,29 @@
+{ "Current" : { "CourseNumber" : null,
+      "CurriculumAbbreviation" : null,
+      "Href" : "\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=&course_number=&section_id=&reg_id=BB000000000000000000000000000004&is_active=&instructor_reg_id=",
+      "InstructorRegID" : null,
+      "IsActive" : null,
+      "PageSize" : null,
+      "PageStart" : null,
+      "Quarter" : "summer",
+      "RegID" : "BB000000000000000000000000000004",
+      "SectionID" : null,
+      "Year" : "2012"
+    },
+  "Next" : null,
+  "PageSize" : "10",
+  "PageStart" : "1",
+  "Previous" : null,
+  "Registrations" : [ { "CourseNumber" : "600",
+        "CurriculumAbbreviation" : "PHIL",
+        "DuplicateCode" : "",
+        "Href" : "\/student\/v4\/registration\/2012,summer,PHIL,600,A,BB000000000000000000000000000004,.json",
+        "Instructor" : {"Href":"\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json","RegID":"FBB38FE46A7C11D5A4AE0004AC494FFE"},
+        "Quarter" : "summer",
+        "RegID" : "BB000000000000000000000000000004",
+        "SectionID" : "A",
+        "Year" : "2012"
+      }
+    ],
+  "TotalCount" : 1
+}
