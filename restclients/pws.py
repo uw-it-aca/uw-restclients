@@ -58,6 +58,28 @@ class PWS(object):
 
         return self._person_from_json(response.data)
 
+    def get_contact(self, regid):
+        """ 
+        Returns a restclients.Person object for the given regid.  If the
+        regid isn't found, nothing will be returned.  If there is an error
+        communicating with the PWS, a DataFailureException will be thrown.
+        """
+        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
+            raise InvalidRegID(regid)
+
+        dao = PWS_DAO()
+        url = "/identity/v1/person/%s/full.json" % regid.upper()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status == 404:
+            return
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.read())
+
+        return json.loads(response.data)
+
+
     def _person_from_json(self, data):
         """
         Internal method, for creating the Person object.
