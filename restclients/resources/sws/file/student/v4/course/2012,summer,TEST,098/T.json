@@ -54,7 +54,7 @@
         "MeetingType" : "lecture",
         "RoomNumber" : "001",
         "RoomToBeArranged" : false,
-        "StartTime" : "07:30"
+        "StartTime" : "06:30"
       },
       { "Building" : "FSH",
         "BuildingToBeArranged" : false,

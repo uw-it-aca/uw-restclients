@@ -62,7 +62,7 @@
             "Text" : "M W F"
           },
         "DaysOfWeekToBeArranged" : false,
-        "EndTime" : "22:45",
+        "EndTime" : "22:00",
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,B%20BIO,180,A,260A0DEC95CB11D78BAA000629C31437" },
               "Person" : { "Href" : "\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
