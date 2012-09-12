@@ -18,6 +18,12 @@ class Person(models.Model):
     surname = models.CharField(max_length=100)
     full_name = models.CharField(max_length=250)
 
+    is_student = models.BooleanField()
+    is_staff = models.BooleanField()
+    is_employee = models.BooleanField()
+    is_alum = models.BooleanField()
+    is_faculty = models.BooleanField()
+
     def json_data(self):
         data = {
             'uwnetid': self.uwnetid,
