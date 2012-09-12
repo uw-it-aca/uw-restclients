@@ -9,6 +9,7 @@ from restclients.models import ClassSchedule
 from restclients.models import Campus, College, Department, Curriculum
 from restclients.exceptions import DataFailureException, InvalidSectionID
 from urllib import urlencode
+from datetime import datetime
 import json
 import re
 
@@ -45,7 +46,16 @@ class SWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.read())
 
-        return self._term_from_json(response.data)
+        term = self._term_from_json(response.data)
+
+        # A term doesn't become "current" until 2 days before the start of
+        # classes.  That's too late to be useful, so if we're after the last
+        # day of grade submission window, use the next term resource.
+        if datetime.now() > term.grade_submission_deadline:
+            return self.get_next_term()
+
+        return term
+
 
     def get_next_term(self):
         """
@@ -294,7 +304,7 @@ class SWS(object):
         term.last_final_exam_date = term_data["LastFinalExamDay"]
         term.grading_period_open = term_data["GradingPeriodOpen"]
         term.grading_period_close = term_data["GradingPeriodClose"]
-        term.grade_submission_deadline = term_data["GradeSubmissionDeadline"]
+        term.grade_submission_deadline = datetime.strptime(term_data["GradeSubmissionDeadline"], "%Y-%m-%dT%H:%M:%S")
 
         return term
 
