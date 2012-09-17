@@ -294,18 +294,54 @@ class SWS(object):
         """
         term_data = json.loads(data)
 
+        strptime = datetime.strptime
+        day_format = "%Y-%m-%d"
+        datetime_format = "%Y-%m-%dT%H:%M:%S"
+
         term = Term()
         term.year = term_data["Year"]
         term.quarter = term_data["Quarter"]
-        term.first_day_quarter = term_data["FirstDay"]
-        term.last_day_instruction = term_data["LastDayOfClasses"]
-        term.aterm_last_date = term_data["ATermLastDay"]
-        term.bterm_first_date = term_data["BTermFirstDay"]
-        term.last_final_exam_date = term_data["LastFinalExamDay"]
-        term.grading_period_open = term_data["GradingPeriodOpen"]
-        term.grading_period_close = term_data["GradingPeriodClose"]
-        term.grade_submission_deadline = datetime.strptime(term_data["GradeSubmissionDeadline"], "%Y-%m-%dT%H:%M:%S")
+        term.first_day_quarter = strptime(
+                                    term_data["FirstDay"], day_format
+                                    )
 
+        term.last_day_instruction = strptime(
+                                    term_data["LastDayOfClasses"],
+                                    day_format
+                                    )
+
+        if term_data["ATermLastDay"] is not None:
+            term.aterm_last_date = strptime(
+                                    term_data["ATermLastDay"],
+                                    day_format
+                                    )
+
+        if term_data["BTermFirstDay"] is not None:
+            term.bterm_first_date = strptime(
+                                    term_data["BTermFirstDay"],
+                                    day_format
+                                    )
+
+        term.last_final_exam_date = strptime(
+                                    term_data["LastFinalExamDay"],
+                                    day_format
+                                    )
+
+        term.grading_period_open = strptime(
+                                    term_data["GradingPeriodOpen"],
+                                    datetime_format
+                                    )
+
+        term.grading_period_close = strptime(
+                                    term_data["GradingPeriodClose"],
+                                    datetime_format
+                                    )
+
+        term.grade_submission_deadline = strptime(
+                                    term_data["GradeSubmissionDeadline"],
+                                    datetime_format)
+
+        term.full_clean()
         return term
 
     def _section_from_json(self, data):

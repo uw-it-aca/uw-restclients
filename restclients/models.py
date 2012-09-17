@@ -37,19 +37,25 @@ class Person(models.Model):
 
 
 class Term(models.Model):
-    year = models.PositiveSmallIntegerField()
+    SPRING = 'spring'
+    SUMMER = 'summer'
+    AUTUMN = 'autumn'
+    WINTER = 'winter'
+
     QUARTERNAME_CHOICES = (
-        ('1', 'Winter'),
-        ('2', 'Spring'),
-        ('3', 'Summer'),
-        ('4', 'Autumn'),
+        (SPRING, 'Spring'),
+        (SUMMER, 'Summer'),
+        (AUTUMN, 'Autumn'),
+        (WINTER, 'Winter'),
     )
-    quarter = models.CharField(max_length=1,
+
+    quarter = models.CharField(max_length=6,
                                choices=QUARTERNAME_CHOICES)
+    year = models.PositiveSmallIntegerField()
     first_day_quarter = models.DateField(db_index=True)
     last_day_instruction = models.DateField(db_index=True)
-    aterm_last_date = models.DateField()
-    bterm_first_date = models.DateField()
+    aterm_last_date = models.DateField(blank=True)
+    bterm_first_date = models.DateField(blank=True)
     last_final_exam_date = models.DateField()
     grading_period_open = models.DateTimeField()
     grading_period_close = models.DateTimeField()
