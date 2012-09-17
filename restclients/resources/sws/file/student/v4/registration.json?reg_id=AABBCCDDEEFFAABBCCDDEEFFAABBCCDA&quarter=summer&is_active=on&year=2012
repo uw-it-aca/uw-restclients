@@ -1,6 +1,6 @@
 { "Current" : { "CourseNumber" : null,
       "CurriculumAbbreviation" : null,
-      "Href" : "\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=&course_number=§ion_id=®_id=AABBCCDDEEFFAABBCCDDEEFFAABBCCDD&is_active=&instructor_reg_id=",
+      "Href" : "\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=&course_number=§ion_id=®_id=AABBCCDDEEFFAABBCCDDEEFFAABBCCDA&is_active=&instructor_reg_id=",
       "InstructorRegID" : null,
       "IsActive" : null,
       "PageSize" : null,
