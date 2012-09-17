@@ -1,0 +1,23 @@
+{ "DisplayName" : "MIDDAY AVERAGE STUDENT",
+  "EduPersonAffiliations" : [ "member",
+      "student",
+      "alum",
+      "staff",
+      "employee"
+    ],
+  "IsTestEntity" : true,
+  "PersonAffiliations" : { "PersonFullURI" : { "DisplayName" : "MIDDAY AVERAGE STUDENT",
+          "Href" : "\/identity\/v1\/person\/AABBCCDDEEFFAABBCCDDEEFFAABBCCDB\/full.json",
+          "UWNetID" : "midday",
+          "UWRegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDB"
+        } },
+  "PriorUWNetIDs" : [],
+  "PriorUWRegIDs" : [],
+  "RegisteredFirstMiddleName" : "MIDDAY AVERAGE",
+  "RegisteredName" : "MIDDAY AVERAGE STUDENT",
+  "RegisteredSurname" : "STUDENT",
+  "UIDNumber" : "99799",
+  "UWNetID" : "midday",
+  "UWRegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDB",
+  "WhitepagesPublish" : true
+}

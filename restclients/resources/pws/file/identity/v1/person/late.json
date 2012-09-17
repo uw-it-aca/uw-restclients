@@ -1,0 +1,23 @@
+{ "DisplayName" : "LATE AVERAGE STUDENT",
+  "EduPersonAffiliations" : [ "member",
+      "student",
+      "alum",
+      "staff",
+      "employee"
+    ],
+  "IsTestEntity" : true,
+  "PersonAffiliations" : { "PersonFullURI" : { "DisplayName" : "LATE AVERAGE STUDENT",
+          "Href" : "\/identity\/v1\/person\/AABBCCDDEEFFAABBCCDDEEFFAABBCCDC\/full.json",
+          "UWNetID" : "late",
+          "UWRegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDC"
+        } },
+  "PriorUWNetIDs" : [],
+  "PriorUWRegIDs" : [],
+  "RegisteredFirstMiddleName" : "LATE AVERAGE",
+  "RegisteredName" : "LATE AVERAGE STUDENT",
+  "RegisteredSurname" : "STUDENT",
+  "UIDNumber" : "99899",
+  "UWNetID" : "late",
+  "UWRegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDC",
+  "WhitepagesPublish" : true
+}
