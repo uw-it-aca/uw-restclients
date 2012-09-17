@@ -1,0 +1,23 @@
+{ "DisplayName" : "NONE AVERAGE STUDENT",
+  "EduPersonAffiliations" : [ "member",
+      "student",
+      "alum",
+      "staff",
+      "employee"
+    ],
+  "IsTestEntity" : true,
+  "PersonAffiliations" : { "PersonFullURI" : { "DisplayName" : "NONE AVERAGE STUDENT",
+          "Href" : "\/identity\/v1\/person\/00000000000000000000000000000001\/full.json",
+          "UWNetID" : "none",
+          "UWRegID" : "00000000000000000000000000000001"
+        } },
+  "PriorUWNetIDs" : [],
+  "PriorUWRegIDs" : [],
+  "RegisteredFirstMiddleName" : "NONE AVERAGE",
+  "RegisteredName" : "NONE AVERAGE STUDENT",
+  "RegisteredSurname" : "STUDENT",
+  "UIDNumber" : "99099",
+  "UWNetID" : "none",
+  "UWRegID" : "00000000000000000000000000000001",
+  "WhitepagesPublish" : true
+}
