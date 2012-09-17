@@ -23,7 +23,25 @@
         "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDA",
         "SectionID" : "A",
         "Year" : "2012"
+      }, { "CourseNumber" : "102",
+        "CurriculumAbbreviation" : "TRAIN",
+        "DuplicateCode" : "1",
+        "Href" : "\/student\/v4\/registration\/2012,summer,TRAIN,102,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDA,1.json",
+        "Instructor" : null,
+        "Quarter" : "summer",
+        "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDA",
+        "SectionID" : "A",
+        "Year" : "2012"
+      }, { "CourseNumber" : "103",
+        "CurriculumAbbreviation" : "TRAIN",
+        "DuplicateCode" : "1",
+        "Href" : "\/student\/v4\/registration\/2012,summer,TRAIN,103,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDA,1.json",
+        "Instructor" : null,
+        "Quarter" : "summer",
+        "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDA",
+        "SectionID" : "A",
+        "Year" : "2012"
       }
     ],
-  "TotalCount" : 1
+  "TotalCount" : 3
 }

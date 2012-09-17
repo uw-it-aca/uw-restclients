@@ -2,9 +2,9 @@
    "Auditors":"0",
    "ClassWebsiteUrl":"",
    "Course":{
-      "Href":"\/student\/v4\/course\/2012,summer,TRAIN,101.json",
-      "CourseNumber":"101",
-      "CourseTitle":"INTRO TRAIN I",
+      "Href":"\/student\/v4\/course\/2012,summer,TRAIN,103.json",
+      "CourseNumber":"103",
+      "CourseTitle":"INTRO TRAIN III",
       "CourseTitleLong":"INTRO TRAIN",
       "CurriculumAbbreviation":"TRAIN",
       "Quarter":"summer",
@@ -12,8 +12,8 @@
    },
    "CourseCampus":"Seattle",
    "CourseDescription":null,
-   "CourseTitle":"INTRO TRAIN I",
-   "CourseTitleLong":"INTRO TRAIN",
+   "CourseTitle":"INTRO TRAIN III",
+   "CourseTitleLong":"INTRO TRAIN III",
    "CurrentEnrollment":"0",
    "Curriculum":{
       "TimeScheduleLinkAbbreviation":""
@@ -61,12 +61,12 @@
             "Text":"M W"
          },
          "DaysOfWeekToBeArranged":false,
-         "EndTime":"09:20",
+         "EndTime":"11:20",
          "Instructors":[
             {
                "FacultySequenceNumber":"",
                "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,101,A,FBB38FE46A7C11D5A4AE0004AC494FFE"
+                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,FBB38FE46A7C11D5A4AE0004AC494FFE"
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
@@ -77,7 +77,7 @@
             {
                "FacultySequenceNumber":"",
                "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,101,A,260A0DEC95CB11D78BAA000629C31437"
+                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,260A0DEC95CB11D78BAA000629C31437"
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
@@ -88,7 +88,7 @@
             {
                "FacultySequenceNumber":"",
                "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,101,A,0F01799E6A7D11D5A4AE0004AC494FFE"
+                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,0F01799E6A7D11D5A4AE0004AC494FFE"
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/0F01799E6A7D11D5A4AE0004AC494FFE.json",
@@ -99,7 +99,7 @@
             {
                "FacultySequenceNumber":"",
                "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,101,A,B814EFBC6A7C11D5A4AE0004AC494FFE"
+                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,B814EFBC6A7C11D5A4AE0004AC494FFE"
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/B814EFBC6A7C11D5A4AE0004AC494FFE.json",
@@ -110,7 +110,7 @@
             {
                "FacultySequenceNumber":"",
                "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,101,A,6DF0A9206A7D11D5A4AE0004AC494FFE"
+                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,6DF0A9206A7D11D5A4AE0004AC494FFE"
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
@@ -123,20 +123,20 @@
          "MeetingType":"lecture",
          "RoomNumber":"*",
          "RoomToBeArranged":true,
-         "StartTime":"08:30"
+         "StartTime":"10:30"
       }
    ],
    "PrimarySection":{
-      "Href":"\/student\/v4\/course\/2012,summer,TRAIN,101\/A.json",
-      "CourseNumber":"101",
+      "Href":"\/student\/v4\/course\/2012,summer,TRAIN,103\/A.json",
+      "CourseNumber":"103",
       "CurriculumAbbreviation":"TRAIN",
       "Quarter":"summer",
       "SectionID":"A",
       "Year":"2012"
    },
    "Registrations":{
-      "Href":"\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=TRAIN&course_number=101§ion_id=A®_id=&is_active=on&instructor_reg_id=",
-      "CourseNumber":"101",
+      "Href":"\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=TRAIN&course_number=103§ion_id=A®_id=&is_active=on&instructor_reg_id=",
+      "CourseNumber":"103",
       "CurriculumAbbreviation":"TRAIN",
       "InstructorRegID":null,
       "IsActive":"on",
@@ -148,7 +148,7 @@
       "Year":"2012"
    },
    "ResearchCredit":false,
-   "SLN":"13833",
+   "SLN":"13835",
    "SecondaryGradingOption":false,
    "SectionID":"A",
    "SectionType":"lecture",
