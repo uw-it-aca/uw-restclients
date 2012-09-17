@@ -68,7 +68,7 @@ class SWSTestSectionData(TestCase):
             #Valid section labels, no files for them
             self.assertRaises(DataFailureException, 
                               sws.get_section_by_label, 
-                              '2012,summer,TRAIN,102/A')
+                              '2012,summer,TRAIN,110/A')
 
             self.assertRaises(DataFailureException, 
                               sws.get_section_by_label, 
