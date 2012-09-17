@@ -79,22 +79,36 @@ class Section(models.Model):
     course_campus = models.CharField(max_length=7)
     section_type = models.CharField(max_length=30)
     class_website_url = models.URLField(max_length=255,
-                                        verify_exists=False)
+                                        verify_exists=False,
+                                        blank=True)
     sln = models.PositiveIntegerField()
     delete_flag = models.CharField(max_length=20)
-    summer_term = models.CharField(max_length=1)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    final_exam_date = models.DateField()
-    final_exam_start_time = models.TimeField()
-    final_exam_end_time = models.TimeField()
-    final_exam_building = models.CharField(max_length=5)
-    final_exam_room_number = models.CharField(max_length=5)
+#    These are for non-standard start/end dates - don't have those yet
+#    start_date = models.DateField()
+#    end_date = models.DateField()
 
-    primary_section_href = models.CharField(max_length=200)
-    primary_section_curriculum_abbr = models.CharField(max_length=6)
-    primary_section_course_number = models.PositiveSmallIntegerField()
-    primary_section_id = models.CharField(max_length=2)
+#    We don't have final exam data yet :(
+#    final_exam_date = models.DateField()
+#    final_exam_start_time = models.TimeField()
+#    final_exam_end_time = models.TimeField()
+#    final_exam_building = models.CharField(max_length=5)
+#    final_exam_room_number = models.CharField(max_length=5)
+
+    primary_section_href = models.CharField(
+                                            max_length=200,
+                                            null=True,
+                                            blank=True
+                                            )
+    primary_section_curriculum_abbr = models.CharField(
+                                                        max_length=6,
+                                                        null=True,
+                                                        blank=True
+                                                        )
+    primary_section_course_number = models.PositiveSmallIntegerField(
+                                                            null=True,
+                                                            blank=True,
+                                                            )
+    primary_section_id = models.CharField(max_length=2, null=True, blank=True)
 
     is_primary_section = models.BooleanField()
 
@@ -141,15 +155,14 @@ class SectionMeeting(models.Model):
     section = models.ForeignKey(Section,
                                 on_delete=models.PROTECT)
     meeting_index = models.PositiveSmallIntegerField()
-    meeting_type = models.CharField(max_length=2)
+    meeting_type = models.CharField(max_length=20)
     building_to_be_arranged = models.BooleanField()
     building = models.CharField(max_length=5)
     room_to_be_arranged = models.BooleanField()
     room_number = models.CharField(max_length=5)
     days_to_be_arranged = models.BooleanField()
-    days_week = models.CharField(max_length=10)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    start_time = models.TimeField(blank=True)
+    end_time = models.TimeField(blank=True)
 
     meets_monday = models.BooleanField()
     meets_tuesday = models.BooleanField()
@@ -159,7 +172,6 @@ class SectionMeeting(models.Model):
     meets_saturday = models.BooleanField()
     meets_sunday = models.BooleanField()
 #    instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
-    last_verified = models.DateTimeField()
 
     class Meta:
         unique_together = ('term',

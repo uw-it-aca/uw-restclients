@@ -352,9 +352,10 @@ class SWS(object):
         section_data = json.loads(data)
 
         section = Section()
-        section.term = Term()
-        section.term.year = section_data["Course"]["Year"]
-        section.term.quarter = section_data["Course"]["Quarter"]
+        section.term = self.get_term_by_year_and_quarter(
+                                section_data["Course"]["Year"],
+                                section_data["Course"]["Quarter"]
+                                )
         section.curriculum_abbr = section_data["Course"][
             "CurriculumAbbreviation"]
         section.course_number = section_data["Course"]["CourseNumber"]
@@ -390,8 +391,11 @@ class SWS(object):
         section.meetings = []
         for meeting_data in section_data["Meetings"]:
             meeting = SectionMeeting()
+            meeting.section = section
+            meeting.term = section.term
             meeting.meeting_index = meeting_data["MeetingIndex"]
             meeting.meeting_type = meeting_data["MeetingType"]
+
             meeting.building = meeting_data["Building"]
             if meeting_data["BuildingToBeArranged"]:
                 meeting.building_to_be_arranged = True
@@ -404,7 +408,6 @@ class SWS(object):
             else:
                 meeting.room_to_be_arranged = False
 
-            meeting.days_week = meeting_data["DaysOfWeek"]["Text"]
             if meeting_data["DaysOfWeekToBeArranged"]:
                 meeting.days_to_be_arranged = True
             else:
