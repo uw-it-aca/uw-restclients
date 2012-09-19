@@ -21,6 +21,10 @@ class PWSTestPersonData(TestCase):
             self._test_regid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
             self._test_regid('jsuper', '00000000000000000000000000000004')
             self._test_regid('eight', '12345678901234567890123456789012')
+            self._test_regid('early', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDA')
+            self._test_regid('midday', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDB')
+            self._test_regid('late', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDC')
+            self._test_regid('none', '00000000000000000000000000000001')
 
     def test_by_netid(self):
         with self.settings(
@@ -38,6 +42,10 @@ class PWSTestPersonData(TestCase):
             self._test_netid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
             self._test_netid('jsuper', '00000000000000000000000000000004')
             self._test_netid('eight', '12345678901234567890123456789012')
+            self._test_netid('early', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDA')
+            self._test_netid('midday', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDB')
+            self._test_netid('late', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDC')
+            self._test_netid('none', '00000000000000000000000000000001')
 
     def test_bad_netids(self):
         with self.settings(
@@ -49,7 +57,6 @@ class PWSTestPersonData(TestCase):
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "one two")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "</html>")
             self.assertRaises(InvalidNetID, pws.get_person_by_netid, "aaaaaaaaa")
-
             self.assertEquals(None, pws.get_person_by_netid('hello'))
 
     def test_bad_regids(self):
