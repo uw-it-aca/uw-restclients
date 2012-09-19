@@ -326,3 +326,35 @@ class BookAuthor(models.Model):
 
         return data
 
+class Group(models.Model):
+    regid = models.CharField(max_length=32,
+                               db_index=True,
+                               unique=True)
+
+    name = models.CharField(max_length=500)
+    title = models.CharField(max_length=500)
+    description = models.CharField(max_length=2000)
+
+class CourseGroup(Group):
+    SPRING = 'spring'
+    SUMMER = 'summer'
+    AUTUMN = 'autumn'
+    WINTER = 'winter'
+
+    QUARTERNAME_CHOICES = (
+        (SPRING, 'Spring'),
+        (SUMMER, 'Summer'),
+        (AUTUMN, 'Autumn'),
+        (WINTER, 'Winter'),
+    )
+
+    curriculum_abbreviation = models.CharField(max_length=8)
+    course_number = models.CharField(max_length=3)
+    year = models.PositiveSmallIntegerField()
+    quarter = models.CharField(max_length=6,
+                               choices=QUARTERNAME_CHOICES)
+    section_id = models.CharField(max_length=2,
+                                  db_index=True)
+
+    sln = models.PositiveIntegerField()
+

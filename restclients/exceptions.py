@@ -17,6 +17,9 @@ class InvalidSectionID(Exception):
     """Exception for invalid section id."""
     pass
 
+class InvalidGroupID(Exception):
+    """Exception for invalid group id."""
+    pass
 
 class DataFailureException(Exception):
     """

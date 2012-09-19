@@ -20,6 +20,8 @@ from restclients.test.pws.err500.pws import PWSTest500
 from restclients.test.pws.invalid_dao import PWSTestInvalidDAO
 from restclients.test.pws.file_implementation.dao import PWSTestFileDAO
 
+from restclients.test.gws.group import GWSGroupBasics
+
 from restclients.test.cache.none import NoCacheTest
 from restclients.test.cache.time import BasicTimeCacheTest
 from restclients.test.cache.etag import ETagCacheTest
