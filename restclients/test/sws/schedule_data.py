@@ -19,13 +19,16 @@ class SWSTestScheduleData(TestCase):
             term = sws.get_term_by_year_and_quarter(2012, 'summer')
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
             term = sws.get_current_term()
+            sws.schedule_for_regid_and_term('00000000000000000000000000000001', term)
             sws.schedule_for_regid_and_term('00000000000000000000000000000003', term)
             sws.schedule_for_regid_and_term('00000000000000000000000000000004', term)
+            sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDA', term)
+            sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDB', term)
+            sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDC', term)
             sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDD', term)
             sws.schedule_for_regid_and_term('AABBCCDDEEFFAABBCCDDEEFFAABBCCDE', term)
             sws.schedule_for_regid_and_term('12345678901234567890123456789012', term)
           
-
             #Bad data, should throw exceptions
             self.assertRaises(DataFailureException, 
                               sws.schedule_for_regid_and_term, 

@@ -11,6 +11,10 @@ class SWSTestSectionData(TestCase):
         
             #Valid data, shouldn't throw any exceptions
             sws.get_section_by_label('2012,summer,TRAIN,100/A')
+            sws.get_section_by_label('2012,summer,TRAIN,101/A')
+            sws.get_section_by_label('2012,summer,TRAIN,102/A')
+            sws.get_section_by_label('2012,summer,TRAIN,103/A')
+            sws.get_section_by_label('2012,summer,TRAIN,104/A')
             sws.get_section_by_label('2012,summer,PHYS,121/A')
             sws.get_section_by_label('2012,summer,PHYS,121/AC')
             sws.get_section_by_label('2012,summer,PHYS,121/AQ')
@@ -23,6 +27,8 @@ class SWSTestSectionData(TestCase):
             sws.get_section_by_label('2012,summer,MATH,125/G')
             sws.get_section_by_label('2012,summer,MATH,125/GA')
             sws.get_section_by_label('2012,summer,TEDADM,572/A')
+            sws.get_section_by_label('2012,summer,TMATH,110/A')
+            sws.get_section_by_label('2012,summer,ELCBUS,451/A')
 
             #Invalid data, should throw exceptions
             self.assertRaises(InvalidSectionID, 
@@ -108,6 +114,14 @@ class SWSTestSectionData(TestCase):
             #Valid data, shouldn't throw any exceptions
             section = sws.get_section_by_label('2012,summer,TRAIN,100/A')
             sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TRAIN,101/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TRAIN,102/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TRAIN,103/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TRAIN,104/A')
+            sws.get_linked_sections(section)
             section = sws.get_section_by_label('2012,summer,PHYS,121/A')
             sws.get_linked_sections(section)
             section = sws.get_section_by_label('2012,summer,PHYS,121/AC')
@@ -132,6 +146,13 @@ class SWSTestSectionData(TestCase):
             sws.get_linked_sections(section)
             section = sws.get_section_by_label('2012,summer,EDC&I,461/A')
             sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TEDADM,572/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,TMATH,110/A')
+            sws.get_linked_sections(section)
+            section = sws.get_section_by_label('2012,summer,ELCBUS,451/A')
+            sws.get_linked_sections(section)
+            
 
 
             #Invalid data, should throw exceptions
