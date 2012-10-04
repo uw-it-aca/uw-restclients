@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO
 from restclients.gws import GWS
 from django.conf import settings
+import json
 
 def proxy(request, service, url):
 
@@ -39,7 +40,30 @@ def proxy(request, service, url):
         raise Exception("Unknown service: %s" % service)
 
     url = "/%s" % url
-    response = dao.getURL(url, {"Accept":"application/json"})
 
-    return HttpResponse(response.data)
+    response = dao.getURL(url, {})
+    content = response.data
+
+    # Assume json, and try to format it.
+    try:
+        content = format_json(content)
+    except Exception as e:
+        content = format_html(content)
+
+    return HttpResponse(content)
+
+
+def format_json(content):
+    json_data = json.loads(content)
+    formatted = json.dumps(json_data, sort_keys=True, indent=4)
+    formatted = formatted.replace("&", "&amp;")
+    formatted = formatted.replace("<", "&lt;")
+    formatted = formatted.replace(">", "&gt;")
+    formatted = formatted.replace(" ", "&nbsp;")
+    formatted = formatted.replace("\n", "<br/>\n")
+
+    return formatted
+
+def format_html(content):
+    return content
 
