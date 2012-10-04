@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO
 from restclients.gws import GWS
 from django.conf import settings
+import urllib
 import json
 import re
 
@@ -41,6 +42,9 @@ def proxy(request, service, url):
         raise Exception("Unknown service: %s" % service)
 
     url = "/%s" % url
+
+    if request.GET:
+        url = "%s?%s" % (url, urllib.urlencode(request.GET))
 
     response = dao.getURL(url, {})
     content = response.data
