@@ -49,7 +49,7 @@ def proxy(request, service, url):
     try:
         content = format_json(service, content)
     except Exception as e:
-        content = format_html(content)
+        content = format_html(service, content)
 
     content = add_response_info(response, content)
 
@@ -77,6 +77,7 @@ def format_json(service, content):
 
     return formatted
 
-def format_html(content):
-    return content
+def format_html(service, content):
+    formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", r"href='/restclients/view/%s/\1'" % service, content)
+    return formatted
 
