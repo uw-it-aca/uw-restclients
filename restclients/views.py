@@ -3,6 +3,7 @@ from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO
 from restclients.gws import GWS
 from django.conf import settings
 import json
+import re
 
 def proxy(request, service, url):
 
@@ -46,14 +47,14 @@ def proxy(request, service, url):
 
     # Assume json, and try to format it.
     try:
-        content = format_json(content)
+        content = format_json(service, content)
     except Exception as e:
         content = format_html(content)
 
     return HttpResponse(content)
 
 
-def format_json(content):
+def format_json(service, content):
     json_data = json.loads(content)
     formatted = json.dumps(json_data, sort_keys=True, indent=4)
     formatted = formatted.replace("&", "&amp;")
@@ -61,6 +62,8 @@ def format_json(content):
     formatted = formatted.replace(">", "&gt;")
     formatted = formatted.replace(" ", "&nbsp;")
     formatted = formatted.replace("\n", "<br/>\n")
+
+    formatted = re.sub(r"\"/(.*?)\"", r"<a href='/restclients/view/%s/\1'>/\1</a>" % service, formatted)
 
     return formatted
 
