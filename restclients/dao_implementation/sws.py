@@ -34,6 +34,7 @@ class File(object):
             response = MockHTTP()
             response.status = 200
             response.data = handle.read()
+            response.headers = { "X-Data-Source": "SWS File Mock Data", }
             return response
 
 

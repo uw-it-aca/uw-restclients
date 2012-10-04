@@ -51,8 +51,18 @@ def proxy(request, service, url):
     except Exception as e:
         content = format_html(content)
 
+    content = add_response_info(response, content)
+
     return HttpResponse(content)
 
+def add_response_info(response, content):
+    meta = []
+    meta.append("<b>Code</b>: %s" % response.status)
+
+    for header in response.headers:
+        meta.append("<b>%s</b>: %s" % (header, response.headers[header]))
+
+    return "<br />".join(["<br />".join(meta), "<b>Response Body:</b>", content])
 
 def format_json(service, content):
     json_data = json.loads(content)
