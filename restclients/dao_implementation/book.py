@@ -35,3 +35,22 @@ class File(object):
             response.status = 200
             response.data = handle.read()
             return response
+
+class Live(object):
+    """
+    This DAO provides real data.
+    Access is controlled by IP address.
+    """
+    pool = None
+
+    def getURL(self, url, headers):
+        if Live.pool == None:
+
+            host = 'http://www3.bookstore.washington.edu/'
+            Live.pool = connection_from_url(host)
+
+        r = Live.pool.urlopen('GET', url, headers=headers)
+
+        print r.status
+        print r.data
+        return r
