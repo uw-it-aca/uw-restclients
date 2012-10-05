@@ -22,12 +22,13 @@ class Bookstore(object):
         dao = Book_DAO()
 
         slns = []
+        sln_count = 1
         for section in schedule.sections:
-            slns.append(section.sln)
+            slns.append("sln%s=%s" % (sln_count, section.sln))
+            sln_count += 1
 
-        sln_string = "&sln=".join(slns)
-        url = "/v1/books/?year=%s&quarter=%s&sln=%s" % (
-                                                        schedule.term.year,
+        sln_string = "&".join(slns)
+        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&sln=%s" % (
                                                         schedule.term.quarter,
                                                         sln_string,
                                                        )
