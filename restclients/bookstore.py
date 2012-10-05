@@ -28,7 +28,7 @@ class Bookstore(object):
             sln_count += 1
 
         sln_string = "&".join(slns)
-        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&sln=%s" % (
+        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&%s" % (
                                                         schedule.term.quarter,
                                                         sln_string,
                                                        )
