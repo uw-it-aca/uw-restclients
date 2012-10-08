@@ -51,6 +51,7 @@ class Live(object):
 
         r = Live.pool.urlopen('GET', url, headers=headers)
 
+        print url
         print r.status
         print r.data
         return r

@@ -16,7 +16,7 @@ class GWSGroupBasics(TestCase):
         with self.settings(
                 RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
                     gws = GWS()
-                    members = gws.get_effective_members('u_acadev_tester')
+                    members = gws.get_effective_members('u_acadev_unittest')
 
                     self.assertEquals(len(members), 3)
                     has_pmichaud = False
