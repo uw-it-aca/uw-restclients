@@ -12,7 +12,7 @@ class File(object):
     The File DAO implementation returns generally static content.  Use this
     DAO with this configuration:
 
-    RESTCLIENTS_SWS_DAO_CLASS = 'restclients.dao_implementation.gws.File'
+    RESTCLIENTS_GWS_DAO_CLASS = 'restclients.dao_implementation.gws.File'
     """
     def getURL(self, url, headers):
         RESOURCE_ROOT = abspath(dirname(__file__) + "/../resources/gws/file")
