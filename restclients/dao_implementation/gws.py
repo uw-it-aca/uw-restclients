@@ -37,4 +37,28 @@ class File(object):
             response.headers = { "X-Data-Source": "SWS File Mock Data", }
             return response
 
+class Live(object):
+    """
+    This DAO provides real data.  It requires further configuration, e.g.
 
+    RESTCLIENTS_GWS_CERT_FILE='/path/to/an/authorized/cert.cert',
+    RESTCLIENTS_GWS_KEY_FILE='/path/to/the/certs_key.key',
+    RESTCLIENTS_GWS_HOST='https://iam-tools.u.washington.edu:443',
+    """
+    pool = None
+
+    def getURL(self, url, headers):
+        if Live.pool == None:
+            key_file = settings.RESTCLIENTS_GWS_KEY_FILE
+            cert_file = settings.RESTCLIENTS_GWS_CERT_FILE
+            gws_host = settings.RESTCLIENTS_GWS_HOST
+
+            kwargs = {
+                "key_file": key_file,
+                "cert_file": cert_file,
+            }
+
+            Live.pool = connection_from_url(gws_host, **kwargs)
+
+        r = Live.pool.urlopen('GET', url, headers=headers)
+        return r
