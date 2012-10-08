@@ -7,21 +7,21 @@
   "IsTestEntity" : false,
   "PersonAffiliations" : { "AlumPersonAffiliation" : { "DevelopmentID" : "0000799897" },
       "EmployeePersonAffiliation" : { "EmployeeID" : "129956791",
-          "EmployeeWhitePages" : { "Address1" : "4518 University Way NE Seattle, WA 98105",
+          "EmployeeWhitePages" : { "Address1" : "",
               "Address2" : null,
-              "Department1" : "UW-IT",
+              "Department1" : "",
               "Department2" : null,
-              "Email1" : "tbohn@u.washington.edu",
+              "Email1" : "",
               "Email2" : null,
-              "Fax" : "206 555-9555",
-              "Name" : "Bohn, Tsianina",
-              "Phone1" : "206 555-9556",
-              "Phone2" : "425 555-9557",
-              "PublishInDirectory" : true,
-              "Title1" : "QA Lead",
+              "Fax" : "",
+              "Name" : "",
+              "Phone1" : "",
+              "Phone2" : "",
+              "PublishInDirectory" : false,
+              "Title1" : "",
               "Title2" : null,
               "TouchDial" : null,
-              "VoiceMail" : "425-555-9558"
+              "VoiceMail" : ""
             },
           "HomeDepartment" : "OVP OF UW IT",
           "MailStop" : "354844"
@@ -35,5 +35,5 @@
   "UIDNumber" : "35943",
   "UWNetID" : "tbohn",
   "UWRegID" : "B814EFBC6A7C11D5A4AE0004AC494FFE",
-  "WhitepagesPublish" : false
+  "WhitepagesPublish" : true
 }
