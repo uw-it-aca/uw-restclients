@@ -65,6 +65,56 @@ class TimeSimpleCache(object):
 
         return
 
+class FourHourCache(object):
+    """
+    This caches all URLs for 4 hours.  Provides a basic way to cache
+    cache resources that don't give a useful expires header, but you don't
+    want to make a server round trip to validate an etag for.
+    """
+    def getCache(self, service, url, headers):
+        now = make_aware(datetime.now(), get_current_timezone())
+        time_limit = now - timedelta(hours=4)
+
+        query = CacheEntryTimed.objects.filter(
+                                                service=service,
+                                                url=url,
+                                                time_saved__gte=time_limit,
+                                              )
+
+        if len(query):
+            hit = query[0]
+
+            response = MockHTTP()
+            response.status = hit.status
+            response.data = hit.content
+
+            return {
+                "response": response,
+            }
+        return None
+
+    def processResponse(self, service, url, response):
+        query = CacheEntryTimed.objects.filter(
+                                                service=service,
+                                                url=url,
+                                              )
+
+        cache_entry = CacheEntryTimed()
+        if len(query):
+            cache_entry = query[0]
+
+        now = make_aware(datetime.now(), get_current_timezone())
+        cache_entry.service = service
+        cache_entry.url = url
+        cache_entry.status = response.status
+        cache_entry.content = response.read()
+        cache_entry.headers = []
+        cache_entry.time_saved = now
+        cache_entry.save()
+
+        return
+
+
 
 class ETagCache(object):
     """

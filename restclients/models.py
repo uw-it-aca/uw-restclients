@@ -290,6 +290,8 @@ class CacheEntry(models.Model):
 class CacheEntryTimed(CacheEntry):
     time_saved = models.DateTimeField()
 
+class CacheEntryExpires(CacheEntry):
+    time_expires = models.DateTimeField()
 
 class Book(models.Model):
     isbn = models.CharField(max_length=15)
