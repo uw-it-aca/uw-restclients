@@ -84,6 +84,30 @@ class GWS(object):
 
         return members
 
+    def is_effective_member(self, group_id, netid):
+        """
+        Returns True if the netid is in the group, False otherwise.
+        """
+        if not self._is_valid_group_id(group_id):
+            raise InvalidGroupID(group_id)
+
+        dao = GWS_DAO()
+        url = "/group_sws/v2/group/%s/effective_member/%s" % (
+                group_id, netid
+              )
+
+        response = dao.getURL(url, {"Accept": "text/xhtml"})
+
+        if response.status == 404:
+            return False
+
+        if response.status == 200:
+            return True
+
+        # If there's something odd going on, just return false?  Throw an
+        # exception instead?
+        return False
+
     def _is_valid_group_id(self, group_id):
         if not group_id:
             return False

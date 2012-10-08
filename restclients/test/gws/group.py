@@ -34,3 +34,13 @@ class GWSGroupBasics(TestCase):
                     self.assertEquals(has_pmichaud, True)
                     self.assertEquals(has_javerage, True)
                     self.assertEquals(has_eight, True)
+
+    def test_is_effective_member(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                    gws = GWS()
+
+                    self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'pmichaud'), True)
+                    self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'javerage'), True)
+                    self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'eight'), True)
+                    self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'not_member'), False)
