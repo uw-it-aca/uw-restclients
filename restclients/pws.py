@@ -25,7 +25,7 @@ class PWS(object):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/person/%s.json" % regid.upper()
+        url = "/identity/v1/person/%s/full.json" % regid.upper()
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status == 404:
@@ -47,7 +47,7 @@ class PWS(object):
             raise InvalidNetID(netid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/person/%s.json" % netid.lower()
+        url = "/identity/v1/person/%s/full.json" % netid.lower()
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status == 404:
@@ -102,7 +102,15 @@ class PWS(object):
             if affiliation == "faculty":
                 person.is_faculty = True
             if affiliation == "employee":
-                person.is_employee= True
+                person.is_employee = True
+
+                # This is for MUWM-417
+                affiliations = person_data["PersonAffiliations"]
+                employee = affiliations["EmployeePersonAffiliation"]
+                white_pages = employee["EmployeeWhitePages"]
+
+                if not white_pages["PublishInDirectory"]:
+                    person.whitepages_publish = False
             if affiliation == "alum":
                 person.is_alum = True
 
