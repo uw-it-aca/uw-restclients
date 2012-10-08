@@ -68,11 +68,10 @@ class GWS(object):
         url = "/group_sws/v2/group/"+group_id+"/effective_member"
         response = dao.getURL(url, {"Accept": "text/xhtml"})
 
-
         if response.status == 404:
             return
 
-        root = etree.fromstring(response.read())
+        root = etree.fromstring(response.data)
 
         members = []
         member_elements = root.findall('.//*[@class="members"]' +
