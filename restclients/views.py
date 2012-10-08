@@ -13,21 +13,15 @@ def proxy(request, service, url):
         print 'Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"'
         raise Exception("Missing RESTCLIENTS_ADMIN_GROUP in settings")
 
-    gws = GWS()
-    members = gws.get_effective_members(settings.MYUW_ADMIN_GROUP)
 
     if settings.DEBUG:
         actual_user = 'javerage'
     else:
         actual_user = request.user.username
 
-    is_admin = False
 
-    # XXX - use a new GWS method for is effective member :(
-    for member in members:
-        if member.uwnetid == actual_user:
-            is_admin = True
-            break
+    gws = GWS()
+    is_admin = gws.is_effective_member(settings.MYUW_ADMIN_GROUP, actual_user)
 
     if is_admin == False:
         return HttpResponseRedirect("/")
