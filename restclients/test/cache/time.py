@@ -44,7 +44,11 @@ class TimeCacheTest(TestCase):
             response = cache.getCache('sws', '/student', {})
             self.assertEquals(response, None)
             sws = SWS_DAO()
-            sws.getURL('/student', {})
+            response = sws.getURL('/student', {})
+
+            html = response.read()
+            if not re.search('student/v4', html):
+                self.fail("Doesn't contains a link to v4")
 
             # Make sure there's a response there after the get
             hit = cache.getCache('sws', '/student', {})
