@@ -101,7 +101,7 @@ class FourHourCache(object):
 
         cache_entry = CacheEntryTimed()
         if len(query):
-            cache_entry = query[0]
+            query[0].delete()
 
         now = make_aware(datetime.now(), get_current_timezone())
         cache_entry.service = service
@@ -110,6 +110,7 @@ class FourHourCache(object):
         cache_entry.content = response.data
         cache_entry.headers = []
         cache_entry.time_saved = now
+
         cache_entry.save()
 
         return
