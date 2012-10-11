@@ -24,6 +24,17 @@ class Person(models.Model):
     is_alum = models.BooleanField()
     is_faculty = models.BooleanField()
 
+    email1 = models.CharField(max_length=255)
+    email2 = models.CharField(max_length=255)
+    phone1 = models.CharField(max_length=255)
+    phone2 = models.CharField(max_length=255)
+    voicemail = models.CharField(max_length=255)
+    fax = models.CharField(max_length=255)
+    touchdial = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255)
+    address2 = models.CharField(max_length=255)
+    mailstop = models.CharField(max_length=255)
+
     def json_data(self):
         data = {
             'uwnetid': self.uwnetid,
@@ -32,6 +43,16 @@ class Person(models.Model):
             'surname': self.surname,
             'full_name': self.full_name,
             'whitepages_publish': self.whitepages_publish,
+            'email1': self.email1,
+            'email2': self.email2,
+            'phone1': self.phone1,
+            'phone2': self.phone2,
+            'voicemail': self.voicemail,
+            'fax': self.fax,
+            'touchdial': self.touchdial,
+            'address1': self.address1,
+            'address2': self.address2,
+            'mailstop': self.mailstop,
         }
         return data
 
