@@ -66,7 +66,7 @@
         "Instructors" : [ { "FacultySequenceNumber" : "",
               "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2012,summer,B%20BIO,180,A,260A0DEC95CB11D78BAA000629C31437" },
               "Person" : { "Href" : "\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
-                  "Name" : "MANES,LAUREN MEREDITH",
+                  "Name" : "TEACHER, JAMES AVERAGE",
                   "RegID" : "260A0DEC95CB11D78BAA000629C31437"
                 }
             } ],

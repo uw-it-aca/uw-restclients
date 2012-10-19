@@ -33,7 +33,7 @@
          "DelegateLevel":"curriculum",
          "Person":{
             "Href":"\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
-            "Name":"WINSLOW,MATTHEW S.",
+            "Name":"TEACHER, FRED AVERAGE",
             "RegID":"6DF0A9206A7D11D5A4AE0004AC494FFE"
          }
       }
@@ -70,52 +70,8 @@
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
-                  "Name":"JANSSON,ROBERT E",
+                  "Name":"TEACHER, BILL AVERAGE",
                   "RegID":"FBB38FE46A7C11D5A4AE0004AC494FFE"
-               }
-            },
-            {
-               "FacultySequenceNumber":"",
-               "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,260A0DEC95CB11D78BAA000629C31437"
-               },
-               "Person":{
-                  "Href":"\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
-                  "Name":"MANES,LAUREN MEREDITH",
-                  "RegID":"260A0DEC95CB11D78BAA000629C31437"
-               }
-            },
-            {
-               "FacultySequenceNumber":"",
-               "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,0F01799E6A7D11D5A4AE0004AC494FFE"
-               },
-               "Person":{
-                  "Href":"\/student\/v4\/person\/0F01799E6A7D11D5A4AE0004AC494FFE.json",
-                  "Name":"ROBERTS,KARIN I",
-                  "RegID":"0F01799E6A7D11D5A4AE0004AC494FFE"
-               }
-            },
-            {
-               "FacultySequenceNumber":"",
-               "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,B814EFBC6A7C11D5A4AE0004AC494FFE"
-               },
-               "Person":{
-                  "Href":"\/student\/v4\/person\/B814EFBC6A7C11D5A4AE0004AC494FFE.json",
-                  "Name":"BOHN,TSIANINA",
-                  "RegID":"B814EFBC6A7C11D5A4AE0004AC494FFE"
-               }
-            },
-            {
-               "FacultySequenceNumber":"",
-               "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,103,A,6DF0A9206A7D11D5A4AE0004AC494FFE"
-               },
-               "Person":{
-                  "Href":"\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
-                  "Name":"WINSLOW,MATTHEW S.",
-                  "RegID":"6DF0A9206A7D11D5A4AE0004AC494FFE"
                }
             }
          ],
