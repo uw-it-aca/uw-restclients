@@ -30,7 +30,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return self._term_from_json(response.data)
 
@@ -44,7 +44,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         term = self._term_from_json(response.data)
 
@@ -67,7 +67,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return self._term_from_json(response.data)
 
@@ -81,7 +81,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return self._term_from_json(response.data)
 
@@ -104,7 +104,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return self._section_from_json(response.data)
 
@@ -122,7 +122,7 @@ class SWS(object):
 
             if response.status != 200:
                 raise DataFailureException(url, response.status,
-                                           response.read())
+                                           response.data)
 
             section = self._section_from_json(response.data)
             linked_sections.append(section)
@@ -144,7 +144,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         term_data = json.loads(response.data)
 
@@ -163,7 +163,7 @@ class SWS(object):
                 raise DataFailureException(
                                             reg_url,
                                             response.status,
-                                            response.read(),
+                                            response.data,
                                           )
 
             section = self._section_from_json(response.data)
@@ -197,7 +197,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
 
@@ -221,7 +221,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
 
@@ -247,7 +247,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
 
@@ -273,7 +273,7 @@ class SWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
 

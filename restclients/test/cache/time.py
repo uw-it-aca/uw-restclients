@@ -24,7 +24,7 @@ class TimeCacheTest(TestCase):
 
             self.assertEquals(response.status, 200)
 
-            html = response.read()
+            html = response.data
             if not re.search('student/v4', html):
                 self.fail("Doesn't contains a link to v4")
 
@@ -46,7 +46,7 @@ class TimeCacheTest(TestCase):
             sws = SWS_DAO()
             response = sws.getURL('/student', {})
 
-            html = response.read()
+            html = response.data
             if not re.search('student/v4', html):
                 self.fail("Doesn't contains a link to v4")
 
@@ -56,7 +56,7 @@ class TimeCacheTest(TestCase):
 
             self.assertEquals(response.status, 200)
 
-            html = response.read()
+            html = response.data
             if not re.search('student/v4', html):
                 self.fail("Doesn't contains a link to v4")
 

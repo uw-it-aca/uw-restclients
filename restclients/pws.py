@@ -32,7 +32,7 @@ class PWS(object):
             return
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return self._person_from_json(response.data)
 
@@ -54,7 +54,7 @@ class PWS(object):
             return
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return self._person_from_json(response.data)
 
@@ -75,7 +75,7 @@ class PWS(object):
             return
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
         return json.loads(response.data)
 

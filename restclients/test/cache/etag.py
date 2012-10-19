@@ -20,7 +20,7 @@ class ETagCacheTest(TestCase):
             pws = PWS_DAO()
             initial_response = pws.getURL('/same', {})
 
-            content = initial_response.read()
+            content = initial_response.data
 
             # Make sure there's a response there after the get
             headers = {}
@@ -39,7 +39,7 @@ class ETagCacheTest(TestCase):
             response = hit["response"]
 
             self.assertEquals(response.status, 200)
-            self.assertEquals(response.read(), content)
+            self.assertEquals(response.data, content)
 
             # Make sure there's nothing for pws there after the get
             response = cache.getCache('sws', '/same', {})

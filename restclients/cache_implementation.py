@@ -58,7 +58,7 @@ class TimeSimpleCache(object):
         cache_entry.service = service
         cache_entry.url = url
         cache_entry.status = response.status
-        cache_entry.content = response.read()
+        cache_entry.content = response.data
         cache_entry.headers = []
         cache_entry.time_saved = now
         cache_entry.save()
@@ -168,7 +168,7 @@ class ETagCache(object):
             cache_entry.service = service
             cache_entry.url = url
             cache_entry.status = response.status
-            cache_entry.content = response.read()
+            cache_entry.content = response.data
 
             cache_entry.headers = response.headers
             cache_entry.time_saved = now

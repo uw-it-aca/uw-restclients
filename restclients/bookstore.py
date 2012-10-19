@@ -35,9 +35,9 @@ class Bookstore(object):
 
         response = dao.getURL(url, {"Accept": "application/json"})
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.read())
+            raise DataFailureException(url, response.status, response.data)
 
-        data = json.loads(response.read())
+        data = json.loads(response.data)
 
         response = {}
 

@@ -28,7 +28,7 @@ class GWS(object):
         if response.status == 404:
             return
 
-        root = etree.fromstring(response.read())
+        root = etree.fromstring(response.data)
         course_curr = root.find('.//*[@class="course_curr"]')
         if course_curr is not None:
             group = CourseGroup()
