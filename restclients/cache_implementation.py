@@ -99,9 +99,11 @@ class FourHourCache(object):
                                                 url=url,
                                               )
 
-        cache_entry = CacheEntryTimed()
+        cache_entry = None
         if len(query):
-            query[0].delete()
+            cache_entry = query[0]
+        else:
+            cache_entry = CacheEntryTimed()
 
         now = make_aware(datetime.now(), get_current_timezone())
         cache_entry.service = service
@@ -111,8 +113,12 @@ class FourHourCache(object):
         cache_entry.headers = []
         cache_entry.time_saved = now
 
-        cache_entry.save()
-
+        try:
+            cache_entry.save()
+        except IntegrityError as ex:
+            # If someone beat us in to saving a cache entry, that's ok.
+            # We just need a very recent entry.
+            return
         return
 
 

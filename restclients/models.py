@@ -295,9 +295,7 @@ class CacheEntry(models.Model):
     def setHeaders(self, headers):
         self.headers = headers
 
-    def save(*args, **kwargs):
-        self = args[0]
-
+    def save(self, *args, **kwargs):
         pickle_content = ""
         if self.headers:
             pickle_content = pickle.dumps(self.headers)
