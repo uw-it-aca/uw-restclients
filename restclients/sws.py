@@ -171,13 +171,17 @@ class SWS(object):
             # For independent study courses, only include the one relevant 
             # instructor
             if registration["Instructor"]:
+                actual_instructor = None
                 regid = registration["Instructor"]["RegID"]
 
                 for instructor in section.meetings[0].instructors:
                     if instructor.uwregid == regid:
                         actual_instructor = instructor
 
-                section.meetings[0].instructors = [ actual_instructor ]
+                if actual_instructor:
+                    section.meetings[0].instructors = [ actual_instructor ]
+                else:
+                    section.meetings[0].instructors = [ ]
                 section.independent_study_instructor_regid = registration["Instructor"]
             sections.append(section)
 
