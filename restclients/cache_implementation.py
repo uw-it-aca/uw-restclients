@@ -4,6 +4,7 @@ Contains DAO Cache implementations
 from restclients.mock_http import MockHTTP
 from restclients.models import CacheEntry, CacheEntryTimed
 from datetime import datetime, timedelta
+from django.db import IntegrityError
 from django.utils.timezone import make_aware, get_current_timezone
 
 
