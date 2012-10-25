@@ -427,10 +427,12 @@ class SWS(object):
             meeting.instructors = []
             for instructor_data in meeting_data["Instructors"]:
                 pdata = instructor_data["Person"]
-                instructor = pws.get_person_by_regid(pdata["RegID"])
 
-                if instructor is not None:
-                    meeting.instructors.append(instructor)
+                if "RegID" in pdata and pdata["RegID"] is not None:
+                    instructor = pws.get_person_by_regid(pdata["RegID"])
+
+                    if instructor is not None:
+                        meeting.instructors.append(instructor)
 
             section.meetings.append(meeting)
 
