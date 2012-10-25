@@ -118,12 +118,12 @@ class Section(models.Model):
     primary_section_href = models.CharField(
                                             max_length=200,
                                             null=True,
-                                            blank=True
+                                            blank=True,
                                             )
     primary_section_curriculum_abbr = models.CharField(
                                                         max_length=6,
                                                         null=True,
-                                                        blank=True
+                                                        blank=True,
                                                         )
     primary_section_course_number = models.PositiveSmallIntegerField(
                                                             null=True,
@@ -309,8 +309,10 @@ class CacheEntry(models.Model):
 class CacheEntryTimed(CacheEntry):
     time_saved = models.DateTimeField()
 
+
 class CacheEntryExpires(CacheEntry):
     time_expires = models.DateTimeField()
+
 
 class Book(models.Model):
     isbn = models.CharField(max_length=15)
@@ -337,15 +339,15 @@ class Book(models.Model):
             data["authors"].append(author.json_data())
         return data
 
+
 class BookAuthor(models.Model):
     name = models.CharField(max_length=255)
 
     def json_data(self):
-        data = {
-            'name': self.name
-        }
+        data = {'name': self.name}
 
         return data
+
 
 class Group(models.Model):
     regid = models.CharField(max_length=32,
@@ -355,6 +357,7 @@ class Group(models.Model):
     name = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=2000)
+
 
 class CourseGroup(Group):
     SPRING = 'spring'
@@ -379,3 +382,43 @@ class CourseGroup(Group):
 
     sln = models.PositiveIntegerField()
 
+
+class MockAmazonSQSQueue(models.Model):
+    name = models.CharField(max_length=80, unique=True, db_index=True)
+
+    def new_message(self, body=""):
+        message = MockAmazonSQSMessage()
+        message.body = body
+        message.queue = self
+        return message
+
+    def write(self, message):
+        message.save()
+        return message
+
+    def read(self):
+        rs = self.get_messages(1)
+        if len(rs) == 1:
+            return rs[0]
+        else:
+            return None
+
+    def delete_message(self, message):
+        message.delete()
+        return True
+
+    def get_messages(self, num_messages=1):
+        rs = MockAmazonSQSMessage.objects.filter(queue=self)
+        rs = rs.order_by('pk')
+        rs = rs[0:num_messages]
+
+        return rs
+
+
+class MockAmazonSQSMessage(models.Model):
+    body = models.CharField(max_length=8192)
+    queue = models.ForeignKey(MockAmazonSQSQueue,
+                             on_delete=models.PROTECT)
+
+    def get_body(self):
+        return self.body

@@ -5,6 +5,7 @@ from restclients.dao_implementation.pws import File as PWSFile
 from restclients.dao_implementation.sws import File as SWSFile
 from restclients.dao_implementation.gws import File as GWSFile
 from restclients.dao_implementation.book import File as BookFile
+from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
 from restclients.cache_implementation import NoCache
 
 
@@ -144,3 +145,33 @@ class Book_DAO(MY_DAO):
             return DAOModule()
         else:
             return BookFile()
+
+
+class AmazonSQS_DAO(MY_DAO):
+    def create_queue(self, queue_name):
+        dao = self._getDAO()
+        return dao.create_queue(queue_name)
+
+    def get_queue(self, queue_name):
+        dao = self._getDAO()
+        res = dao.get_queue(queue_name)
+        return res
+
+    def _getDAO(self):
+        if hasattr(settings, 'AMAZON_SQS_DAO_CLASS'):
+            # This is all taken from django's static file finder
+            module, attr = settings.AMAZON_SQS_DAO_CLASS.rsplit('.', 1)
+            try:
+                mod = import_module(module)
+            except ImportError, e:
+                raise ImproperlyConfigured('Error importing module %s: "%s"' %
+                                           (module, e))
+            try:
+                DAOModule = getattr(mod, attr)
+            except AttributeError:
+                raise ImproperlyConfigured('Module "%s" does not define a '
+                                   '"%s" class ' % (module, attr))
+
+            return DAOModule()
+        else:
+            return SQSLocal()

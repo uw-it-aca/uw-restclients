@@ -29,3 +29,5 @@ from restclients.test.cache.etag import ETagCacheTest
 
 from restclients.test.book.by_schedule import BookstoreScheduleTest
 
+from restclients.test.amazon_sqs.queues import SQSQueue
+
