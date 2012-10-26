@@ -122,7 +122,6 @@ class GWS_DAO(MY_DAO):
             return GWSFile()
 
 
-
 class Book_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('books', url, headers)
@@ -175,3 +174,28 @@ class AmazonSQS_DAO(MY_DAO):
             return DAOModule()
         else:
             return SQSLocal()
+
+
+class SMS_DAO(MY_DAO):
+    def create_message(self):
+        dao = self._getDAO()
+        return dao.create_message()
+
+    def _getDAO(self):
+        if hasattr(settings, 'SMS_DAO_CLASS'):
+            # This is all taken from django's static file finder
+            module, attr = settings.SMS_DAO_CLASS.rsplit('.', 1)
+            try:
+                mod = import_module(module)
+            except ImportError, e:
+                raise ImproperlyConfigured('Error importing module %s: "%s"' %
+                                           (module, e))
+            try:
+                DAOModule = getattr(mod, attr)
+            except AttributeError:
+                raise ImproperlyConfigured('Module "%s" does not define a '
+                                   '"%s" class ' % (module, attr))
+
+            return DAOModule()
+        else:
+            return SMSLocal()

@@ -422,3 +422,49 @@ class MockAmazonSQSMessage(models.Model):
 
     def get_body(self):
         return self.body
+
+
+class MockSMS(models.Model):
+    #+15005550006 a Twilio test number (no charge phone number)
+    def send_message(self, body="", to_number="+15005550006"):
+        request = MockSMSRequest()
+        request.body = body
+        request.to_number = to_number
+
+        response = MockSMSResponse()
+        response.status = "queued"
+        response.body = request.get_body()
+        response.to_number = request.get_to_number()
+
+        return response
+
+    def get_status(self, num_messages=1):
+        response = MockSMSResponse()
+        response.status = "queued"
+        return response.status
+
+
+class MockSMSRequest(models.Model):
+    body = models.CharField(max_length=8192)
+    to_number = models.CharField(max_length=40)
+
+    def get_body(self):
+        return self.body
+
+    def get_to_number(self):
+        return self.to_number
+
+
+class MockSMSResponse(models.Model):
+    body = models.CharField(max_length=8192)
+    to_number = models.CharField(max_length=40)
+    status = models.CharField(max_length=8192)
+
+    def get_body(self):
+        return self.body
+
+    def get_to_number(self):
+        return self.to_number
+
+    def get_status(self):
+        return self.status
