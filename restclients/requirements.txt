@@ -1,3 +1,4 @@
+# Make sure you also add things to ../setup.py
 Django==1.4
 lxml==2.3.5
 urllib3>=1.4
