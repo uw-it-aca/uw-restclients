@@ -32,3 +32,4 @@ from restclients.test.book.by_schedule import BookstoreScheduleTest
 from restclients.test.amazon_sqs.queues import SQSQueue
 
 from restclients.test.sms.send import SMS
+from restclients.test.sms.invalid_phone_number import SMSInvalidNumbers

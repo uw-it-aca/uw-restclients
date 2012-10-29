@@ -3,6 +3,10 @@ Contains the custom exceptions used by the restclients.
 """
 
 
+class InvalidPhoneNumber(Exception):
+    """Exception for invalid phone numbers."""
+    pass
+
 class InvalidNetID(Exception):
     """Exception for invalid netid."""
     pass

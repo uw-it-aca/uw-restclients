@@ -1,31 +1,89 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sms import SMSService
+from restclients.exceptions import DataFailureException
 
-
+'''
+This test requires internet connectivity.
+If no network is found you will get this exception:
+ServerNotFoundError
+'''
 class SMS(TestCase):
+#Live tests
+    def test_send_default_number_live(self):
+        with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Live'):
+            DEFAULT_NUMBER = "5005550006"
+            sms = SMSService()
 
-    def test_send_without_phonenumber(self):
-        with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Local'):
-            DEFAULT_NUMBER = "+15005550006"
+            message = sms.create_message(DEFAULT_NUMBER, "sending test message")
+
+            response = sms.send_message(message)
+            self.assertEquals(response.body, "sending test message")
+            self.assertEquals(response.to, "+1" + DEFAULT_NUMBER)
+            self.assertEquals(response.status, "queued")
+            self.assertTrue(response.rid != None) #Twilio sid confirms a live API call
+
+    def test_send_with_phonenumber_live(self):
+        with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Live'):
+            TEST_NUMBER = "2065555555"
             sms = SMSService()
 
             message = sms.create_message()
-            response = message.send_message("sending test message")
+            message.body = "sending test message"
+            message.to = TEST_NUMBER
+
+            response = sms.send_message(message)
             self.assertEquals(response.body, "sending test message")
-            self.assertEquals(response.to_number, DEFAULT_NUMBER)
+            self.assertEquals(response.to, "+1" + TEST_NUMBER)
             self.assertEquals(response.status, "queued")
+            self.assertTrue(response.rid != None) 
+   
+    def test_send_with_invalid_phonenumber_live(self):
+        with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Live'):
+            TEST_NUMBER = "5005550001"
+            sms = SMSService()
+
+            message = sms.create_message()
+            message.body = "sending test message"
+            message.to = TEST_NUMBER
+
+            with self.assertRaises(DataFailureException) as sms_exception:
+                sms.send_message(message)
+
+            the_exception = sms_exception.exception
+            self.assertEquals(the_exception.msg, "21211: The 'To' number +15005550001 is not a valid phone number.")
+            self.assertEquals(the_exception.status, 400)
+
+#Local tests
+    def test_send_without_phonenumber(self):
+        with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Local'):
+            DEFAULT_NUMBER = "5005550006"
+            sms = SMSService()
+
+            message = sms.create_message()
+            message.body = "sending test message"
+            message.to = DEFAULT_NUMBER
+            
+            response = sms.send_message(message)
+            self.assertEquals(response.body, "sending test message")
+            self.assertEquals(response.to, DEFAULT_NUMBER)
+            self.assertEquals(response.status, "queued")
+            self.assertTrue(response.rid != None) 
 
     def test_send_with_phonenumber(self):
         with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Local'):
-            TEST_NUMBER = "+12065555555"
+            TEST_NUMBER = "2065555555"
             sms = SMSService()
 
             message = sms.create_message()
-            response = message.send_message("sending test message", TEST_NUMBER)
+            message.body = "sending test message"
+            message.to = TEST_NUMBER
+            
+            response = sms.send_message(message)
             self.assertEquals(response.body, "sending test message")
-            self.assertEquals(response.to_number, TEST_NUMBER)
+            self.assertEquals(response.to, TEST_NUMBER)
             self.assertEquals(response.status, "queued")
+            self.assertTrue(response.rid != None) 
 
     def test_create_message(self):
         with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Local'):
@@ -33,11 +91,3 @@ class SMS(TestCase):
 
             message = sms.create_message()
             self.assertTrue(message != None)
-
-    def test_get_message_status(self):
-        with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Local'):
-            sms = SMSService()
-
-            message = sms.create_message()
-            status = message.get_status()
-            self.assertTrue(status, "queued")
