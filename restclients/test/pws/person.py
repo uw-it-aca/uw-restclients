@@ -10,42 +10,12 @@ class PWSTestPersonData(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             #Valid data, shouldn't throw exceptions
             self._test_regid('javerage', '9136CCB8F66711D5BE060004AC494FFE')
-            self._test_regid('pmichaud', 'A9D2DDFA6A7D11D5A4AE0004AC494FFE')
-            self._test_regid('kroberts', '0F01799E6A7D11D5A4AE0004AC494FFE')
-            self._test_regid('mwinslow', '6DF0A9206A7D11D5A4AE0004AC494FFE')
-            self._test_regid('lmanes', '260A0DEC95CB11D78BAA000629C31437')
-            self._test_regid('tbohn', 'B814EFBC6A7C11D5A4AE0004AC494FFE')
-            self._test_regid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
-            self._test_regid('seattle', '00000000000000000000000000000003')
-            self._test_regid('tacoma', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDE')
-            self._test_regid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
-            self._test_regid('jsuper', '00000000000000000000000000000004')
-            self._test_regid('eight', '12345678901234567890123456789012')
-            self._test_regid('early', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDA')
-            self._test_regid('midday', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDB')
-            self._test_regid('late', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDC')
-            self._test_regid('none', '00000000000000000000000000000001')
 
     def test_by_netid(self):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             #Valid data, shouldn't throw exceptions
             self._test_netid('javerage', '9136CCB8F66711D5BE060004AC494FFE')
-            self._test_netid('pmichaud', 'A9D2DDFA6A7D11D5A4AE0004AC494FFE')
-            self._test_netid('kroberts', '0F01799E6A7D11D5A4AE0004AC494FFE')
-            self._test_netid('mwinslow', '6DF0A9206A7D11D5A4AE0004AC494FFE')
-            self._test_netid('lmanes', '260A0DEC95CB11D78BAA000629C31437')
-            self._test_netid('tbohn', 'B814EFBC6A7C11D5A4AE0004AC494FFE')
-            self._test_netid('rjansson', 'FBB38FE46A7C11D5A4AE0004AC494FFE')
-            self._test_netid('seattle', '00000000000000000000000000000003')
-            self._test_netid('tacoma', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDE')
-            self._test_netid('bothell', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDD')
-            self._test_netid('jsuper', '00000000000000000000000000000004')
-            self._test_netid('eight', '12345678901234567890123456789012')
-            self._test_netid('early', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDA')
-            self._test_netid('midday', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDB')
-            self._test_netid('late', 'AABBCCDDEEFFAABBCCDDEEFFAABBCCDC')
-            self._test_netid('none', '00000000000000000000000000000001')
 
     def test_bad_netids(self):
         with self.settings(
