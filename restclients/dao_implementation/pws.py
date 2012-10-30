@@ -4,6 +4,7 @@ Contains PWS DAO implementations.
 
 from django.conf import settings
 from urllib3 import connection_from_url
+from restclients.mock_http import MockHTTP
 import re
 from mock import get_mockdata_url
 
