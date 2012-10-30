@@ -14,7 +14,7 @@ class PWSTest500(TestCase):
                 self.fail("This needs to be an exception")
             except DataFailureException as ex:
                 self.assertEqual(ex.status, 500, "Exception has the right status")
-                self.assertEqual(ex.url, "/identity/v1/person/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.json", "Exception has the right url")
+                self.assertEqual(ex.url, "/identity/v1/person/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/full.json", "Exception has the right url")
 
     def test_pws_netid_500(self):
         with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.errors.Always500'):
@@ -26,4 +26,4 @@ class PWSTest500(TestCase):
                 self.fail("This needs to be an exception")
             except DataFailureException as ex:
                 self.assertEqual(ex.status, 500, "Exception has the right status")
-                self.assertEqual(ex.url, "/identity/v1/person/fake.json", "Exception has the right url")
+                self.assertEqual(ex.url, "/identity/v1/person/fake/full.json", "Exception has the right url")
