@@ -438,11 +438,12 @@ class SMSRequest(models.Model):
     def get_from_number(self):
         return self.from_number
 
+
 class SMSResponse(models.Model):
     body = models.CharField(max_length=8192)
     to = models.CharField(max_length=40)
     status = models.CharField(max_length=8192)
-    #all sms requests have some sort of response id 
+    #all sms requests have some sort of response id
     rid = models.CharField(max_length=8192)
 
     def get_body(self):
@@ -453,6 +454,6 @@ class SMSResponse(models.Model):
 
     def get_status(self):
         return self.status
-    
+
     def get_rid(self):
         return self.id

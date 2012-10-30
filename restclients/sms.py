@@ -3,18 +3,21 @@ This is the interface for interacting with a SMS service.
 """
 import re
 from restclients.dao import SMS_DAO
-from restclients.exceptions import InvalidPhoneNumber
+from restclients.exceptions import InvalidPhoneNumber, PhoneNumberRequired
+
 
 class SMSService(object):
     """
     This creates a SMS message to be sent to a destination phone number.
     """
-    def create_message(self, to = "", body = ""):
+    def create_message(self, to, body):
         if to != "":
             self.validate_phone_number(to)
+        else:
+            raise PhoneNumberRequired
         dao = SMS_DAO()
         return dao.create_message(to, body)
-    
+
     """
     This sends a message to a destination phone number.
     """

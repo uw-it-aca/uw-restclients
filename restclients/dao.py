@@ -184,7 +184,7 @@ class SMS_DAO(MY_DAO):
     def send_message(self, message):
         dao = self._getDAO()
         return dao.send_message(message)
-    
+
     def _getDAO(self):
         if hasattr(settings, 'SMS_DAO_CLASS'):
             # This is all taken from django's static file finder
