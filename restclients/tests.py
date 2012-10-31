@@ -33,3 +33,5 @@ from restclients.test.amazon_sqs.queues import SQSQueue
 
 from restclients.test.sms.send import SMS
 from restclients.test.sms.invalid_phone_number import SMSInvalidNumbers
+
+from restclients.test.nws.subscription import NWSTestSubscription

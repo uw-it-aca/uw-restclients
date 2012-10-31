@@ -1,0 +1,39 @@
+{
+  "Subscriptions": [
+    {
+      "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+      "EndPoint": "jrenfro@uw.edu",
+      "Protocol": "Email",
+      "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95058",
+      "SubscriberID": "jrenfro"
+    },
+    {
+      "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+      "EndPoint": "ttchang@uw.edu",
+      "Protocol": "Email",
+      "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95054",
+      "SubscriberID": "jrenfro "
+    },
+    {
+      "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+      "EndPoint": "206-555-0000",
+      "Protocol": "Mobile",
+      "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd9505A",
+      "SubscriberID": "jrenfro"
+    }
+  ],
+  "Current": {
+    "SubscriberID": "jrenfo",
+    "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+    "PageSize": "10",
+    "PageStart": "1"
+  },
+  "Next": {
+    "SubscriberID": "jrenfo",
+    "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+    "PageSize": "10",
+    "PageStart": "11"
+  },
+  "Previous": null,
+  "TotalCount": 3
+}

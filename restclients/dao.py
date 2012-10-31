@@ -203,3 +203,27 @@ class SMS_DAO(MY_DAO):
             return DAOModule()
         else:
             return SMSLocal()
+
+
+class NWS_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('nws', url, headers)
+
+    def _getDAO(self):
+        if hasattr(settings, 'RESTCLIENTS_NWS_DAO_CLASS'):
+            # This is all taken from django's static file finder
+            module, attr = settings.RESTCLIENTS_NWS_DAO_CLASS.rsplit('.', 1)
+            try:
+                mod = import_module(module)
+            except ImportError, e:
+                raise ImproperlyConfigured('Error importing module %s: "%s"' %
+                                           (module, e))
+            try:
+                DAOModule = getattr(mod, attr)
+            except AttributeError:
+                raise ImproperlyConfigured('Module "%s" does not define a '
+                                   '"%s" class ' % (module, attr))
+
+            return DAOModule()
+        else:
+            return NWSFile()
