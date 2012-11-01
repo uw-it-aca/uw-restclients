@@ -25,8 +25,8 @@ def get_live_url(self,
             }
 
             con_pool = connection_from_url(host, **kwargs)
-    else:
-        Live.pool = connection_from_url(host)
+        else:
+            con_pool = connection_from_url(host)
 
     logger = logging.getLogger('restclients.dao_implementation.live')
     logger.info('%s %s%s', method, host, url) 
