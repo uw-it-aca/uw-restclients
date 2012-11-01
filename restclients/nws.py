@@ -28,5 +28,47 @@ class NWS(object):
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
+        #TODO: create subscription models when we start tying things together with live data
+        return self._subscription_from_json(response.data)
 
-        return response.data
+    def get_subscriptions_by_subscriber_id(self, subscriber_id):
+        """
+        Search for all subscriptions by a given subscriber
+        """
+        url = "/notification/v1/subscription.json?subscriber_id=%s" % (subscriber_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+        #TODO: create subscription models when we start tying things together with live data
+        return self._subscription_from_json(response.data)
+
+    def get_channels_by_channel_id(self, channel_id):
+        """
+        Search for all subscriptions on a given channel
+        """
+        url = "/notification/v1/channel/%s.json" % (channel_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+        #TODO: create subscription models when we start tying things together with live data
+        return self._channel_from_json(response.data)
+
+    def _subscription_from_json(self, data):
+        """
+        Returns a subscription model created from the passed json.
+        """
+        subscription_data = json.loads(data)
+        return subscription_data
+
+    def _channel_from_json(self, data):
+        """
+        Returns a channel model created from the passed json.
+        """
+        channel_data = json.loads(data)
+        return channel_data

@@ -35,3 +35,4 @@ from restclients.test.sms.send import SMS
 from restclients.test.sms.invalid_phone_number import SMSInvalidNumbers
 
 from restclients.test.nws.subscription import NWSTestSubscription
+from restclients.test.nws.channel import NWSTestChannel
