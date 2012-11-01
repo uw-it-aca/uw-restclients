@@ -98,6 +98,7 @@ class TimeCacheTest(TestCase):
             hit = cache.getCache('sws', '/invalid/url', {})
             self.assertEquals(hit, None, "No hit on old, bad status codes")
 
+            # Make sure bad responses don't overwrite good ones.
             ok_response = MockHTTP()
             ok_response.status = 200
             ok_response.data = "xx"
@@ -118,5 +119,37 @@ class TimeCacheTest(TestCase):
             response = cache_response["response"]
             self.assertEquals(response.status, 200)
             self.assertEquals(response.data, "xx")
+
+
+            # Make sure that an old, good hit is returned when there's a fresh,
+            # bad hit.
+            ok_response = MockHTTP()
+            ok_response.status = 200
+            ok_response.data = "valid"
+
+            cache.processResponse("sws", "/valid/url", ok_response)
+
+            response = sws.getURL("/valid/url", {})
+            self.assertEquals(response.status, 200)
+
+            query = CacheEntryTimed.objects.filter(
+                                                service="sws",
+                                                url="/valid/url",
+                                              )
+
+
+            cache_entry = query[0]
+            cache_entry.time_saved = cache_entry.time_saved - timedelta(hours=5)
+            cache_entry.save()
+
+            response = sws.getURL("/valid/url", {})
+            self.assertEquals(response.status, 200)
+
+            # But make sure eventually we stop using our cache.
+            cache_entry.time_saved = cache_entry.time_saved - timedelta(hours=9)
+            cache_entry.save()
+
+            response = sws.getURL("/valid/url", {})
+            self.assertEquals(response.status, 500)
 
 

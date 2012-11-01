@@ -125,7 +125,10 @@ class FourHourCache(object):
                 extended_cache_delta = timedelta(hours=8)
 
                 if save_delta < extended_cache_delta:
-                    return
+                    response = MockHTTP()
+                    response.status = cache_entry.status
+                    response.data = cache_entry.content
+                    return {"response":response}
 
         cache_entry.service = service
         cache_entry.url = url
