@@ -1,8 +1,8 @@
 """
 Contains UW Bookstore DAO implementations.
 """
-from django.conf import settings
-from urllib3 import connection_from_url
+
+from live import get_live_url
 from mock import get_mockdata_url
 
 class File(object):
@@ -23,11 +23,8 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool == None:
+        return get_live_url (Live.pool, 'GET', 
+                             'http://www3.bookstore.washington.edu/', 
+                             None, None,
+                             url, headers=headers)
 
-            host = 'http://www3.bookstore.washington.edu/'
-            Live.pool = connection_from_url(host)
-
-        r = Live.pool.urlopen('GET', url, headers=headers)
-
-        return r

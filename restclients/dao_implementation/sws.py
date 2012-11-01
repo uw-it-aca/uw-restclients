@@ -3,7 +3,7 @@ Contains SWS DAO implementations.
 """
 
 from django.conf import settings
-from urllib3 import connection_from_url
+from live import get_live_url
 from mock import get_mockdata_url
 
 class File(object):
@@ -27,17 +27,8 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool == None:
-            key_file = settings.RESTCLIENTS_SWS_KEY_FILE
-            cert_file = settings.RESTCLIENTS_SWS_CERT_FILE
-            pws_host = settings.RESTCLIENTS_SWS_HOST
-
-            kwargs = {
-                "key_file": key_file,
-                "cert_file": cert_file,
-            }
-
-            Live.pool = connection_from_url(pws_host, **kwargs)
-
-        r = Live.pool.urlopen('GET', url, headers=headers)
-        return r
+        return get_live_url(Live.pool, 'GET',
+                            settings.RESTCLIENTS_SWS_HOST,
+                            settings.RESTCLIENTS_SWS_KEY_FILE,
+                            settings.RESTCLIENTS_SWS_CERT_FILE,
+                            url, headers=headers)
