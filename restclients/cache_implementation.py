@@ -76,6 +76,7 @@ class FourHourCache(object):
         now = make_aware(datetime.now(), get_current_timezone())
         time_limit = now - timedelta(hours=4)
 
+        # The 4 hour policy only applies to successful requests.
         query = CacheEntryTimed.objects.filter(
                                                 service=service,
                                                 url=url,
@@ -84,6 +85,15 @@ class FourHourCache(object):
 
         if len(query):
             hit = query[0]
+
+            status = hit.status
+            if status != 200:
+                # Only keep non-200 responses as valid cache entries for
+                # 5 minutes - MUWM-509
+                max_error_delta = timedelta(minutes=5)
+                save_delta = now - hit.time_saved
+                if save_delta > max_error_delta:
+                    return None
 
             response = MockHTTP()
             response.status = hit.status
@@ -95,6 +105,7 @@ class FourHourCache(object):
         return None
 
     def processResponse(self, service, url, response):
+        now = make_aware(datetime.now(), get_current_timezone())
         query = CacheEntryTimed.objects.filter(
                                                 service=service,
                                                 url=url,
@@ -106,7 +117,16 @@ class FourHourCache(object):
         else:
             cache_entry = CacheEntryTimed()
 
-        now = make_aware(datetime.now(), get_current_timezone())
+        if response.status != 200:
+            # Only override a successful cache entry with an error if the
+            # Successful entry is older than 8 hours - MUWM-509
+            if cache_entry.id != None and cache_entry.status == 200:
+                save_delta = now - cache_entry.time_saved
+                extended_cache_delta = timedelta(hours=8)
+
+                if save_delta < extended_cache_delta:
+                    return
+
         cache_entry.service = service
         cache_entry.url = url
         cache_entry.status = response.status
