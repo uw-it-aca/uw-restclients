@@ -7,14 +7,13 @@ from urllib3 import connection_from_url
 def get_con_pool(host,
                  key_file,
                  cert_file):
-    if key_file is not None and cert_file is not None:
-        kwargs = {
-            "key_file": key_file,
-            "cert_file": cert_file
-            }
-
-        return connection_from_url(host, **kwargs)
-    return connection_from_url(host)
+    if key_file is None or cert_file is None:
+        return connection_from_url(host)
+    kwargs = {
+        "key_file": key_file,
+        "cert_file": cert_file
+        }
+    return connection_from_url(host, **kwargs)
 
 
 def get_live_url(con_pool, 
