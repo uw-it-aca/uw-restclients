@@ -4,8 +4,7 @@ The function to get the url for accessing live data from a web service
 import logging
 from urllib3 import connection_from_url
 
-def get_live_url(self, 
-                 con_pool, 
+def get_live_url(con_pool, 
                  method, 
                  host, 
                  key_file, 
