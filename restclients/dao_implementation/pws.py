@@ -63,7 +63,7 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = get_con_pool(settings.RESTCLIENTS_PWS_HOST,
                                      settings.RESTCLIENTS_PWS_KEY_FILE,
                                      settings.RESTCLIENTS_PWS_CERT_FILE)
