@@ -5,8 +5,8 @@ Contains PWS DAO implementations.
 from django.conf import settings
 from restclients.mock_http import MockHTTP
 import re
-from live import get_live_url
-from mock import get_mockdata_url
+from restclients.dao_implementation.live import get_con_pool, get_live_url
+from restclients.dao_implementation.mock import get_mockdata_url
 
 class File(object):
     """
@@ -63,8 +63,10 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
+        if Live.pool == None:
+            Live.pool = get_con_pool(settings.RESTCLIENTS_PWS_HOST,
+                                     settings.RESTCLIENTS_PWS_KEY_FILE,
+                                     settings.RESTCLIENTS_PWS_CERT_FILE)
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_PWS_HOST,
-                            settings.RESTCLIENTS_PWS_KEY_FILE,
-                            settings.RESTCLIENTS_PWS_CERT_FILE,
                             url, headers=headers)

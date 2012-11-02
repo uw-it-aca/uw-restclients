@@ -3,8 +3,8 @@ Contains SWS DAO implementations.
 """
 
 from django.conf import settings
-from live import get_live_url
-from mock import get_mockdata_url
+from restclients.dao_implementation.live import get_con_pool, get_live_url
+from restclients.dao_implementation.mock import get_mockdata_url
 
 class File(object):
     """
@@ -27,8 +27,11 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
+        if Live.pool == None:
+            Live.pool = get_con_pool(settings.RESTCLIENTS_SWS_HOST,
+                                     settings.RESTCLIENTS_SWS_KEY_FILE,
+                                     settings.RESTCLIENTS_SWS_CERT_FILE)
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_SWS_HOST,
-                            settings.RESTCLIENTS_SWS_KEY_FILE,
-                            settings.RESTCLIENTS_SWS_CERT_FILE,
                             url, headers=headers)
+
