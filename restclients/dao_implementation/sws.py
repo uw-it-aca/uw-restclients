@@ -27,7 +27,7 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool is None:
+        if Live.pool == None:
             Live.pool = get_con_pool(settings.RESTCLIENTS_SWS_HOST,
                                      settings.RESTCLIENTS_SWS_KEY_FILE,
                                      settings.RESTCLIENTS_SWS_CERT_FILE)
