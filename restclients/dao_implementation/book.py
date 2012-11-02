@@ -23,10 +23,9 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
+        host = 'http://www3.bookstore.washington.edu/'
         if Live.pool == None:
-            Live.pool = get_con_pool('http://www3.bookstore.washington.edu/',
-                                     None, None)
+            Live.pool = get_con_pool(host, None, None)
         return get_live_url (Live.pool, 'GET', 
-                             'http://www3.bookstore.washington.edu/', 
-                             url, headers=headers)
+                             host, url, headers=headers)
 
