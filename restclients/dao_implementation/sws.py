@@ -31,7 +31,7 @@ class Live(object):
             Live.pool = get_con_pool(settings.RESTCLIENTS_SWS_HOST,
                                      settings.RESTCLIENTS_SWS_KEY_FILE,
                                      settings.RESTCLIENTS_SWS_CERT_FILE,
-                                     max_pool_size=10)
+                                     max_pool_size=settings.RESTCLIENTS_SWS_MAX_POOL_SIZE)
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_SWS_HOST,
                             url, headers=headers)
