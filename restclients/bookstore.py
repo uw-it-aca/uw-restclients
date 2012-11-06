@@ -63,3 +63,33 @@ class Bookstore(object):
                 response[section.sln].append(book)
 
         return response
+
+    def get_verba_link_for_schedule(self, schedule):
+        """
+        Returns a link to verba.  The link varies by campus and schedule.
+        Multiple calls to this with the same schedule may result in
+        different urls.
+        """
+        dao = Book_DAO()
+
+        slns = []
+        sln_count = 1
+        for section in schedule.sections:
+            slns.append("sln%s=%s" % (sln_count, section.sln))
+            sln_count += 1
+
+        sln_string = "&".join(slns)
+        url = "/myuw/myuw_mobile_v.ubs?quarter=%s&%s" % (
+                                                        schedule.term.quarter,
+                                                        sln_string,
+                                                       )
+
+        response = dao.getURL(url, {"Accept": "application/json"})
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+
+        for key in data:
+            if re.match(r'^[A-Z]{2}[0-9]{5}$', key):
+                return "http://uw-seattle.verbacompare.com/m?section_id=%s&quarter=%s" % (key, schedule.term.quarter)
