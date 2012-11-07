@@ -457,3 +457,16 @@ class SMSResponse(models.Model):
 
     def get_rid(self):
         return self.id
+
+
+class CanvasEnrollment(models.Model):
+    course_url = models.CharField(max_length=2000)
+    sis_id = models.CharField(max_length=100)
+
+    def sws_course_id(self):
+        parts = self.sis_id.split("-")
+
+        sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
+                                    parts[4])
+
+        return sws_id

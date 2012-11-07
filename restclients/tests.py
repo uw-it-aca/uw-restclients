@@ -38,3 +38,5 @@ from restclients.test.nws.subscription import NWSTestSubscription
 from restclients.test.nws.channel import NWSTestChannel
 from restclients.test.nws.template import NWSTestTemplate
 
+from restclients.test.canvas.enrollments import CanvasTestEnrollment
+
