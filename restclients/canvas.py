@@ -35,6 +35,7 @@ class Canvas(object):
                 course_url = re.sub("/users/.*", "", user_url)
                 enrollment = CanvasEnrollment()
                 enrollment.course_url = course_url
+                enrollment.course_name = course_info["name"]
                 enrollment.sis_id = course_info["sis_course_id"]
 
                 enrollments.append(enrollment)

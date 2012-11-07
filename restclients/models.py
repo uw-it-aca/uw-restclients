@@ -462,6 +462,7 @@ class SMSResponse(models.Model):
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)
     sis_id = models.CharField(max_length=100)
+    course_name = models.CharField(max_length=100)
 
     def sws_course_id(self):
         parts = self.sis_id.split("-")
