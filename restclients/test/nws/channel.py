@@ -12,3 +12,10 @@ class NWSTestChannel(TestCase):
             nws = NWS()
             raw_channel_model = nws.get_channels_by_channel_id("uw_student_course_available|2012,winter,cse,120,w")
             self.assertEquals(len(raw_channel_model['Channel']), 10)
+
+    def test_channel_sln(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            nws = NWS()
+            raw_channel_model = nws.get_channels_by_sln("uw_course_available", "12345")
+            self.assertEquals(len(raw_channel_model['Channels']), 1)

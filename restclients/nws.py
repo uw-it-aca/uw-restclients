@@ -59,6 +59,20 @@ class NWS(object):
         #TODO: create models when we start tying things together with live data
         return self._channel_from_json(response.data)
 
+    def get_channels_by_sln(self, channel_type, sln):
+        """
+        Search for all subscriptions on a given channel
+        """
+        url = "/notification/v1/channel.json?type=%s&tag_sln=%s" % (channel_type, sln)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+        #TODO: create models when we start tying things together with live data
+        return self._channel_from_json(response.data)
+
     def get_template_by_surrogate_id(self, surrogate_id):
         """
         Get a template given a specific surrogate id

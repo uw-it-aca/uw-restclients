@@ -459,6 +459,15 @@ class SMSResponse(models.Model):
         return self.id
 
 
+class Subscription(models.Model):
+    #TODO: synch up model fields with database schema
+    channel_id = models.CharField(max_length=8192)
+    end_point = models.CharField(max_length=40)
+    protocol = models.CharField(max_length=40)
+    subscription_id = models.CharField(max_length=8192)
+    subscriber_id = models.CharField(max_length=40)
+
+
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)
     sis_id = models.CharField(max_length=100)
