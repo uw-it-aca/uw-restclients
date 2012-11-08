@@ -5,13 +5,17 @@ from os.path import abspath, dirname
 A centralized the mock data access 
 """
 
-def get_mockdata_url(service_name, implementation_name, url, headers):
+def get_mockdata_url(service_name, implementation_name, 
+                     url, headers,
+                     dir_base = dirname(__file__)):
     """
-    The service_name is somthing like "sws", "pws", "book", "hfs"
-    The implementation_name is somthing like "file", etc.
+    :param service_name:
+        possible "sws", "pws", "book", "hfs", etc.
+    :param implementation_name:
+        possible values: "file", etc.
     """
         
-    RESOURCE_ROOT = abspath(dirname(__file__) + "/../resources/" + 
+    RESOURCE_ROOT = abspath(dir_base + "/../resources/" + 
                             service_name + "/" + implementation_name)
     if url == "///":
         # Just a placeholder to put everything else in an else.
