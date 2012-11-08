@@ -9,7 +9,7 @@ from urllib3 import connection_from_url
 def get_con_pool(host,
                  key_file,
                  cert_file,
-                 socket_timeout=3.0,
+                 socket_timeout=15.0,
                  max_pool_size=3):
     """
     Return a ConnectionPool instance of given host
