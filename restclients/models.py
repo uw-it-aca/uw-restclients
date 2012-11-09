@@ -458,7 +458,6 @@ class SMSResponse(models.Model):
     def get_rid(self):
         return self.id
 
-
 class Subscription(models.Model):
     #TODO: synch up model fields with database schema
     channel_id = models.CharField(max_length=8192)
