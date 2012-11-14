@@ -1,25 +1,28 @@
 {
   "Subscriptions": [
     {
-      "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+      "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
       "EndPoint": "jrenfro@uw.edu",
       "Protocol": "Email",
       "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95058",
-      "SubscriberID": "jrenfro"
+      "SubscriberID": "jrenfro",
+      "OwnerID": "javerage"
     },
     {
-      "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+      "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
       "EndPoint": "ttchang@uw.edu",
       "Protocol": "Email",
       "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95054",
-      "SubscriberID": "jrenfro "
+      "SubscriberID": "ttchang",
+      "OwnerID": "javerage"
     },
     {
-      "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+      "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
       "EndPoint": "206-555-0000",
       "Protocol": "Mobile",
       "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd9505A",
-      "SubscriberID": "jrenfro"
+      "SubscriberID": "jrenfro",
+      "OwnerID": "javerage"
     }
   ],
   "Current": {

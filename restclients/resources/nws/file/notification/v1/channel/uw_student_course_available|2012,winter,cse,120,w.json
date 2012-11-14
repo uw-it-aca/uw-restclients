@@ -1,6 +1,6 @@
 {
   "Channel": {
-    "ChannelID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95058",
+    "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
     "SurrogateID": "2012,autumn,cse,100,w",
     "Type": "uw_student_section_available",
     "Name": "FLUENCY IN INFORMATION TECHNOLOGY",
@@ -18,8 +18,8 @@
         }
       }
     ],
-    "Expires": "2012-03-23T09:23:00",
-    "LastModified": "2012-03-13T09:23:00",
+    "Expires": "2012-11-13 22:51:51+00:00",
+    "LastModified": "2012-11-13 22:51:51+00:00",
     "Tags": {
       "SLN": 12345,
       "Year": 2012,

@@ -9,9 +9,9 @@ from django.conf import settings
 
 class Twilio(object):
     def __init__(self):
-        self.sid = settings.SMS[settings.MODE]['sid']
-        self.token = settings.SMS[settings.MODE]['token']
-        self.from_number = settings.SMS[settings.MODE]['from']
+        self.sid = settings.SMS[settings.SMS_MODE]['sid']
+        self.token = settings.SMS[settings.SMS_MODE]['token']
+        self.from_number = settings.SMS[settings.SMS_MODE]['from']
 
     def send(self, message):
         #Using Twilio Python Library
