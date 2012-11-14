@@ -21,7 +21,7 @@ class NWS(object):
         """
         Search for all subscriptions on a given channel
         """
-        url = "/notification/v1/subscription.json?channel_id=%s" % (channel_id)
+        url = "/notification/v1/subscription?channel_id=%s" % (channel_id)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -35,7 +35,7 @@ class NWS(object):
         """
         Search for all subscriptions by a given subscriber
         """
-        url = "/notification/v1/subscription.json?subscriber_id=%s" % (subscriber_id)
+        url = "/notification/v1/subscription?subscriber_id=%s" % (subscriber_id)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -49,7 +49,7 @@ class NWS(object):
         """
         Search for all subscriptions on a given channel
         """
-        url = "/notification/v1/channel/%s.json" % (channel_id)
+        url = "/notification/v1/channel/%s" % (channel_id)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -63,7 +63,7 @@ class NWS(object):
         """
         Search for all channels by surrogate id
         """
-        url = "/notification/v1/channel.json?type=%s&surrogate_id=%s" % (channel_type, surrogate_id)
+        url = "/notification/v1/channel?type=%s&surrogate_id=%s" % (channel_type, surrogate_id)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -77,7 +77,7 @@ class NWS(object):
         """
         Search for all channels by sln
         """
-        url = "/notification/v1/channel.json?type=%s&tag_sln=%s" % (channel_type, sln)
+        url = "/notification/v1/channel?type=%s&tag_sln=%s" % (channel_type, sln)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -91,7 +91,7 @@ class NWS(object):
         """
         Get a template given a specific surrogate id
         """
-        url = "/notification/v1/template/%s.json" % (surrogate_id)
+        url = "/notification/v1/template/%s" % (surrogate_id)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})

@@ -1,0 +1,9 @@
+ {
+  "Template": {
+    "TemplateID": "9a2cfb4c-8120-45c6-a7a6-9eac7cf95058",
+    "SurrogateID": "CourseAvailableNotificationTemplate",
+    "Subject": "${channel.name}",
+    "Short": "${channel.name} has ${event.seats} available!",
+    "Full": "There is space available for the course ${channel.name}, which is ${channel.tags.sln}, or ${channel.source.filter.dept}"
+  }
+}

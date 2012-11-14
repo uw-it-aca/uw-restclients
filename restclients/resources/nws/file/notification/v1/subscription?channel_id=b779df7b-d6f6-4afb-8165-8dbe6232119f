@@ -1,0 +1,42 @@
+{
+  "Subscriptions": [
+    {
+      "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
+      "EndPoint": "jrenfro@uw.edu",
+      "Protocol": "Email",
+      "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95058",
+      "SubscriberID": "jrenfro",
+      "OwnerID": "javerage"
+    },
+    {
+      "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
+      "EndPoint": "ttchang@uw.edu",
+      "Protocol": "Email",
+      "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95054",
+      "SubscriberID": "ttchang",
+      "OwnerID": "javerage"
+    },
+    {
+      "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
+      "EndPoint": "206-555-0000",
+      "Protocol": "Mobile",
+      "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd9505A",
+      "SubscriberID": "jrenfro",
+      "OwnerID": "javerage"
+    }
+  ],
+  "Current": {
+    "SubscriberID": "jrenfo",
+    "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
+    "PageSize": "10",
+    "PageStart": "1"
+  },
+  "Next": {
+    "SubscriberID": "jrenfo",
+    "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
+    "PageSize": "10",
+    "PageStart": "11"
+  },
+  "Previous": null,
+  "TotalCount": 3
+}
