@@ -3,10 +3,9 @@ Contains NWS DAO implementations.
 """
 
 from django.conf import settings
-from urllib3 import connection_from_url
+from restclients.dao_implementation.live import get_con_pool, get_live_url
+from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.mock_http import MockHTTP
-import re
-from mock import get_mockdata_url
 
 
 class File(object):
@@ -20,15 +19,19 @@ class File(object):
         return get_mockdata_url("nws", "file", url, headers)
 
 
-class ETag(object):
-    """
-    The ETag DAO is a testing DAO, that is just here for
-    testing the ETag cache class.  You don't want to use it
-    for anything else.
-    """
-
-
 class Live(object):
     """
     This DAO provides real data.  It requires further configuration, e.g.
+    RESTCLIENTS_NWS_HOST='https://notify-dev.s.uw.edu/notification/'
     """
+    pool = None
+
+    def getURL(self, url, headers):
+        if Live.pool == None:
+            Live.pool = get_con_pool(settings.RESTCLIENTS_NWS_HOST,
+                                     None,
+                                     None,
+                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
+        return get_live_url(Live.pool, 'GET',
+                            settings.RESTCLIENTS_NWS_HOST,
+                            url, headers=headers)

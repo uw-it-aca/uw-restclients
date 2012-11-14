@@ -9,6 +9,12 @@ from django.conf import settings
 
 class Twilio(object):
     def __init__(self):
+        '''
+        SMS_MODE needs to be configured in settings.py
+        Only two options are supported either 'Test' or 'Live'
+        Test - Twilio account test account that can be used without incurring msg charges but will call real Twilio APIs
+        Live - Twilio account that will send REAL SMS msgs and our account WILL be charged
+        '''
         self.sid = settings.SMS[settings.SMS_MODE]['sid']
         self.token = settings.SMS[settings.SMS_MODE]['token']
         self.from_number = settings.SMS[settings.SMS_MODE]['from']
