@@ -10,12 +10,12 @@ class NWSTestSubscription(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            subscriptions = nws.get_subscriptions_by_channel_id("uw_student_course_available|2012,winter,cse,120,w")
+            subscriptions = nws.get_subscriptions_by_channel_id("b779df7b-d6f6-4afb-8165-8dbe6232119f")
             self.assertEquals(len(subscriptions), 3)
 
     def test_subscription_subscriber_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            subscriptions = nws.get_subscriptions_by_subscriber_id("jrenfro")
+            subscriptions = nws.get_subscriptions_by_subscriber_id("javerage")
             self.assertEquals(len(subscriptions), 2)
