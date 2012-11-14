@@ -27,13 +27,13 @@
   ],
   "Current": {
     "SubscriberID": "jrenfo",
-    "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+    "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
     "PageSize": "10",
     "PageStart": "1"
   },
   "Next": {
     "SubscriberID": "jrenfo",
-    "ChannelID": "uw_student_course_available|2012,winter,cse,120,w",
+    "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
     "PageSize": "10",
     "PageStart": "11"
   },

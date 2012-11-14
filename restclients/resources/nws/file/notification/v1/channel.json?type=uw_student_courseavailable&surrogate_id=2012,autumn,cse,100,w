@@ -1,0 +1,53 @@
+{
+    "Channels": [
+        {
+            "ChannelID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95058",
+            "SurrogateID": "2012,autumn,cse,100,w",
+            "Type": "uw_student_section_available",
+            "Name": "FLUENCY IN INFORMATION TECHNOLOGY",
+            "Tags": {
+                "sln": 12345,
+                "year": 2012,
+                "quarter": "autumn "
+            },
+            "TemplateSurrogateID": "CourseAvailableNotificationTemplate",
+            "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n",
+            "Sources": [
+                {
+                    "Topic": "uw_student_section_available",
+                    "Filter": {
+                        "dept": "CSE",
+                        "course": 120,
+                        "year": 2012,
+                        "quarter": "autumn",
+                        "section": "w"
+                    }
+                }
+            ],
+            "Expires": "2012-11-13 22:51:51+00:00",
+            "LastModified": "2012-11-13 22:51:51+00:00"
+        }
+    ],
+    "Current": {
+        "Type": "uw_course_available",
+        "Label": "Algorithms",
+        "SurrogateID": "2012,winter,cse,120,w&tag_sln=12345",
+        "Tag_year": 2012,
+        "Tag_quarter": "autumn",
+        "Tag_sln": 12345,
+        "PageSize": "10",
+        "PageStart": "1"
+    },
+    "Next": {
+        "Type": "uw_course_available",
+        "Label": "Algorithms",
+        "SurrogateID": "2012,winter,cse,120,w&tag_sln=12345",
+        "Tag_year": 2012,
+        "Tag_quarter": "autumn",
+        "Tag_sln": 12345,
+        "PageSize": "10",
+        "PageStart": "11"
+    },
+    "Previous": null,
+    "TotalCount": 1
+}

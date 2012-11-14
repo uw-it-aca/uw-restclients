@@ -13,7 +13,7 @@ class NWSTestChannel(TestCase):
             channel = nws.get_channel_by_channel_id("b779df7b-d6f6-4afb-8165-8dbe6232119f")
             self.assertEquals(channel.channel_id, "b779df7b-d6f6-4afb-8165-8dbe6232119f")
             self.assertEquals(channel.surrogate_id, "2012,autumn,cse,100,w")
-            self.assertEquals(channel.type, "uw_student_section_available")
+            self.assertEquals(channel.type, "uw_student_courseavailable")
             self.assertEquals(channel.name, "FLUENCY IN INFORMATION TECHNOLOGY")
             self.assertEquals(channel.template_surrogate_id, "CourseAvailableNotificationTemplate")
             self.assertEquals(channel.description, "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n")
@@ -24,12 +24,12 @@ class NWSTestChannel(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            channels = nws.get_channels_by_sln("uw_course_available", "12345")
+            channels = nws.get_channels_by_sln("uw_student_courseavailable", "12345")
             self.assertEquals(len(channels), 1)
 
     def test_channel_surrogate_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            channels = nws.get_channels_by_surrogate_id("uw_course_available", "2012,autumn,cse,100,w")
+            channels = nws.get_channels_by_surrogate_id("uw_student_courseavailable", "2012,autumn,cse,100,w")
             self.assertEquals(len(channels), 1)
