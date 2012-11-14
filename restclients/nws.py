@@ -63,7 +63,7 @@ class NWS(object):
         """
         Search for all channels by surrogate id
         """
-        url = "/notification/v1/channel?type=%s&surrogate_id=%s" % (channel_type, surrogate_id)
+        url = "/notification/v1/channel/%s|%s" % (channel_type, surrogate_id)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -71,7 +71,7 @@ class NWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
   
-        return self._channels_from_json(json.loads(response.data))
+        return self._channel_from_json(json.loads(response.data))
 
     def get_channels_by_sln(self, channel_type, sln):
         """
