@@ -496,7 +496,9 @@ class Notification(models.Model):
 class CourseAvailableEvent(models.Model):
     status = models.CharField(max_length=10)
     space_available = models.PositiveIntegerField()
-    term = models.ForeignKey(Term)
+    #TODO: Need to learn how to use the Section and Term model instead
+    quarter = models.CharField(max_length=6)
+    year = models.PositiveSmallIntegerField()
     curriculum_abbr = models.CharField(max_length=6)
     course_number = models.PositiveSmallIntegerField()
     section_id = models.CharField(max_length=2)
