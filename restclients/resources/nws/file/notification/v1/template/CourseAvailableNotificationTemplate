@@ -3,7 +3,7 @@
     "TemplateID": "9a2cfb4c-8120-45c6-a7a6-9eac7cf95058",
     "SurrogateID": "CourseAvailableNotificationTemplate",
     "Subject": "{{ channel.name }}",
-    "Short": "Section is {{event.status}} for: {{ channel.surrogate_id }}",
-    "Full": "Section is {{event.status}} for your section. Year: {{event.course.year}} Quarter: {{event.course.quarter}} Course Title: {{channel.name}} Curriculum: {{event.course.curriculum}} Course Number: {{event.course.course_number}} Section ID: {{event.section.section_id}} Course Description: {{channel.description}}"
+    "Short": "Section is {{ event.status }} for: {{ channel.surrogate_id }}",
+    "Full": "Section is {{ event.status }} for your section. Year: {{ event.year }} Quarter: {{ event.quarter }} Course Title: {{ channel.name }} Curriculum: {{ event.curriculum }} Course Number: {{ event.course_number }} Section ID: {{ event.section_id }} Course Description: {{ channel.description }}"
   }
 }
