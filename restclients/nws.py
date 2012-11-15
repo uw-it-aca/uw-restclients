@@ -165,4 +165,4 @@ class NWS(object):
         Returns a template model created from the passed json.
         """
         template_data = json.loads(data)
-        return template_data
+        return template_data['Template']

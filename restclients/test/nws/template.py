@@ -13,4 +13,4 @@ class NWSTestTemplate(TestCase):
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
             raw_template_model = nws.get_template_by_surrogate_id("CourseAvailableNotificationTemplate")
-            self.assertEquals(len(raw_template_model['Template']), 5)
+            self.assertEquals(len(raw_template_model), 5)

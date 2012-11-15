@@ -485,6 +485,15 @@ class Notification(models.Model):
     full = models.CharField(max_length=8192)  
 
 
+class CourseAvailableEvent(models.Model):
+    status = models.CharField(max_length=10)
+    space_available = models.PositiveIntegerField()
+    term = models.ForeignKey(Term)
+    curriculum_abbr = models.CharField(max_length=6)
+    course_number = models.PositiveSmallIntegerField()
+    section_id = models.CharField(max_length=2)
+
+
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)
     sis_id = models.CharField(max_length=100)
@@ -497,6 +506,7 @@ class CanvasEnrollment(models.Model):
                                     parts[4])
 
         return sws_id
+
 
 class CanvasCourse(models.Model):
     course_url = models.CharField(max_length=2000)
