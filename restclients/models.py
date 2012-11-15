@@ -467,6 +467,14 @@ class Subscription(models.Model):
     subscriber_id = models.CharField(max_length=80)
     owner_id = models.CharField(max_length=80)
 
+    def json_data(self):
+        return {
+            "ChannelID": self.channel_id,
+            "EndPoint": self.end_point,
+            "Protocol": self.protocol,
+            "SubscriberID": self.subscriber_id,
+            "SubscriptionID": self.subscription_id,
+        }
 
 class Channel(models.Model):
     channel_id = models.CharField(max_length=36)
