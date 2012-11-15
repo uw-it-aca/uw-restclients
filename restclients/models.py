@@ -479,6 +479,12 @@ class Channel(models.Model):
     last_modified = models.DateTimeField()
 
 
+class Notification(models.Model):
+    subject = models.CharField(max_length=8192)
+    short = models.CharField(max_length=140) #SMS max body length
+    full = models.CharField(max_length=8192)  
+
+
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)
     sis_id = models.CharField(max_length=100)
