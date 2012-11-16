@@ -3,6 +3,7 @@ Contains Amazon SWS DAO implementations.
 """
 from restclients.models import MockAmazonSQSQueue
 from boto.sqs.connection import SQSConnection
+from boto.sqs.message import RawMessage
 from django.db import IntegrityError
 from django.conf import settings
 

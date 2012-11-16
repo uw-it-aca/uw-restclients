@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.amazon_sqs import AmazonSQS
+from boto.sqs.message import RawMessage
 
 class SQSQueue(TestCase):
+#Local tests
     def test_create_and_get(self):
         with self.settings(AMAZON_SQS_DAO_CLASS='restclients.dao_implementation.amazon_sqs.Local'):
             sqs = AmazonSQS()
@@ -59,3 +61,21 @@ class SQSQueue(TestCase):
             m3 = queue.read()
             self.assertEquals(m3.get_body(), "This is message #3", "Last in, last out")
             queue.delete_message(m3)
+#Live tests
+    def test_get_message(self):
+        """
+        Test for AWS SQS Connectivity and AWS settings
+        AMAZON_COURSEAVAIL_QUEUE is the name of the SQS
+        
+        The following are necessary for our test environment:
+        AMAZON_AWS_ACCESS_KEY = "AKIAI25R24BMZMYTVPEQ"
+        AMAZON_AWS_SECRET_KEY = "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"
+        AMAZON_COURSEAVAIL_QUEUE = "uw-student-courseavailable-eval"
+        """
+        with self.settings(AMAZON_SQS_DAO_CLASS='restclients.dao_implementation.amazon_sqs.Live'):
+            sqs = AmazonSQS()
+            queue = sqs.get_queue(settings.AMAZON_COURSEAVAIL_QUEUE)
+            queue.set_message_class(RawMessage)
+            m = queue.read()
+            body = m.get_body()
+            self.assertTrue(body != None)
