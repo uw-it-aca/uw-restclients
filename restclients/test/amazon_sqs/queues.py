@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.amazon_sqs import AmazonSQS
-from boto.sqs.message import RawMessage
 
 class SQSQueue(TestCase):
 #Local tests
@@ -75,7 +74,6 @@ class SQSQueue(TestCase):
         with self.settings(AMAZON_SQS_DAO_CLASS='restclients.dao_implementation.amazon_sqs.Live'):
             sqs = AmazonSQS()
             queue = sqs.get_queue(settings.AMAZON_COURSEAVAIL_QUEUE)
-            queue.set_message_class(RawMessage)
             m = queue.read()
             body = m.get_body()
             self.assertTrue(body != None)

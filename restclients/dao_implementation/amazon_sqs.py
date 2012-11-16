@@ -43,7 +43,9 @@ class Live(object):
 
     def get_queue(self, queue_name):
         conn = self._get_connection()
-        return conn.get_queue(queue_name)
+        queue = conn.get_queue(queue_name)
+        queue.set_message_class(RawMessage)
+        return queue
 
     def _get_connection(self):
         access_key = settings.AMAZON_AWS_ACCESS_KEY
