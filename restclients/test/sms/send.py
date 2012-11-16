@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.sms import SMSService
 from restclients.exceptions import DataFailureException
+from unittest import skipIf
 
 
 class SMS(TestCase):
@@ -11,6 +12,7 @@ class SMS(TestCase):
     ServerNotFoundError
     '''
 #Live tests
+    @skipIf(not hasattr(settings, 'SMS'), "Needs SMS configuration to test live SMS functionality")
     def test_send_default_number_live(self):
         with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Live'):
             DEFAULT_NUMBER = "5005550006"
@@ -25,6 +27,7 @@ class SMS(TestCase):
             #Twilio sid confirms a live API call
             self.assertTrue(response.rid != None)
 
+    @skipIf(not hasattr(settings, 'SMS'), "Needs SMS configuration to test live SMS functionality")
     def test_send_with_phonenumber_live(self):
         with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Live'):
             TEST_NUMBER = "2065555555"
@@ -38,6 +41,7 @@ class SMS(TestCase):
             self.assertEquals(response.status, "queued")
             self.assertTrue(response.rid != None)
 
+    @skipIf(not hasattr(settings, 'SMS'), "Needs SMS configuration to test live SMS functionality")
     def test_send_with_invalid_phonenumber_live(self):
         with self.settings(SMS_DAO_CLASS='restclients.dao_implementation.sms.Live'):
             TEST_NUMBER = "5005550001"
