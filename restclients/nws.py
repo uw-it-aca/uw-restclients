@@ -100,6 +100,20 @@ class NWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return self._template_from_json(response.data)
+    
+    def get_template_by_template_id(self, template_id):
+        """
+        Get a template given a specific template id
+        """
+        url = "/notification/v1/template/%s" % (template_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._template_from_json(response.data)
 
     def _subscriptions_from_json(self, data):
         """
@@ -155,7 +169,7 @@ class NWS(object):
         channel.name = channel_data['Name']
         channel.template_surrogate_id = channel_data['TemplateSurrogateID']
         channel.description = channel_data['Description']
-        channel.expires = channel_data['Expires']
+        #channel.expires = channel_data['Expires']
         channel.last_modified = channel_data['LastModified']
         channel.clean_fields()
         return channel

@@ -423,6 +423,8 @@ class MockAmazonSQSMessage(models.Model):
     def get_body(self):
         return self.body
 
+    def read(self):
+        return self.body
 
 class SMSRequest(models.Model):
     body = models.CharField(max_length=8192)
