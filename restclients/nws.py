@@ -133,7 +133,7 @@ class NWS(object):
 
         subscription.subscription_id = subscription_data['SubscriptionID']
         subscription.channel_id = subscription_data['ChannelID']
-        subscription.end_point = subscription_data['EndPoint']
+        subscription.end_point = subscription_data['Endpoint']
         subscription.protocol = subscription_data['Protocol']
         subscription.subscriber_id = subscription_data['SubscriberID']
         subscription.owner_id = subscription_data['OwnerID']

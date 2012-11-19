@@ -416,7 +416,7 @@ class MockAmazonSQSQueue(models.Model):
 
 
 class MockAmazonSQSMessage(models.Model):
-    body = models.CharField(max_length=8192)
+    body = models.TextField() #CharField(max_length=8192)
     queue = models.ForeignKey(MockAmazonSQSQueue,
                              on_delete=models.PROTECT)
 
