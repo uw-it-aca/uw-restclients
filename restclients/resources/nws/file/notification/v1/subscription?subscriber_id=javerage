@@ -2,7 +2,7 @@
   "Subscriptions": [
     {
       "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
-      "EndPoint": "javerage@uw.edu",
+      "Endpoint": "javerage@uw.edu",
       "Protocol": "Email",
       "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd95058",
       "SubscriberID": "javerage",
@@ -10,7 +10,7 @@
     },
     {
       "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
-      "EndPoint": "206-555-0000",
+      "Endpoint": "206-555-0000",
       "Protocol": "Mobile",
       "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd9505A",
       "SubscriberID": "javerage",

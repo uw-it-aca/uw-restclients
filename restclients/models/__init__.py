@@ -253,7 +253,7 @@ class Subscription(models.Model):
     def json_data(self):
         return {
             "ChannelID": self.channel_id,
-            "EndPoint": self.end_point,
+            "Endpoint": self.end_point,
             "Protocol": self.protocol,
             "SubscriberID": self.subscriber_id,
             "SubscriptionID": self.subscription_id,
