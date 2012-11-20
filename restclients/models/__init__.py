@@ -196,6 +196,8 @@ class MockAmazonSQSQueue(models.Model):
 
         return rs
 
+    def set_message_class(self, message_class):
+        pass
 
 class MockAmazonSQSMessage(models.Model):
     body = models.CharField(max_length=8192)
