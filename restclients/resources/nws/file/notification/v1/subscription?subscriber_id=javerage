@@ -11,7 +11,7 @@
     {
       "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
       "Endpoint": "206-555-0000",
-      "Protocol": "Mobile",
+      "Protocol": "SMS",
       "SubscriptionID": "9a2cfb4c-8120-45c6-a7a6-9eac7cd9505A",
       "SubscriberID": "javerage",
       "OwnerID": "javerage"
