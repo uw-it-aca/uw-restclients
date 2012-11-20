@@ -10,11 +10,11 @@ from django.conf import settings
 class Twilio(object):
     def __init__(self):
         '''
-        SMS_MODE needs to be configured in settings.py.  SMS_MODE allows you
+        RESTCLIENTS_SMS_MODE needs to be configured in settings.py.  RESTCLIENTS_SMS_MODE allows you
         to have multiple configuration in your settings.py file, such as 'Test'
         or 'Live'.  For 'Live', your settings.py should include this:
 
-        SMS = {
+        RESTCLIENTS_SMS_ACCOUNT = {
             'Live': {
                 "sid": <your twilio sid>,
                 "token": <your twilio token>,
@@ -22,9 +22,9 @@ class Twilio(object):
             }
         }
         '''
-        self.sid = settings.SMS[settings.SMS_MODE]['sid']
-        self.token = settings.SMS[settings.SMS_MODE]['token']
-        self.from_number = settings.SMS[settings.SMS_MODE]['from']
+        self.sid = settings.RESTCLIENTS_SMS_ACCOUNT[settings.RESTCLIENTS_SMS_MODE]['sid']
+        self.token = settings.RESTCLIENTS_SMS_ACCOUNT[settings.RESTCLIENTS_SMS_MODE]['token']
+        self.from_number = settings.RESTCLIENTS_SMS_ACCOUNT[settings.RESTCLIENTS_SMS_MODE]['from']
 
     def send(self, message):
         #Using Twilio Python Library

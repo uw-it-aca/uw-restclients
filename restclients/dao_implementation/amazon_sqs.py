@@ -33,8 +33,8 @@ class Live(object):
     This implements a connection to the Amazon SQS service.  Requires the
     following configuration:
 
-    AMAZON_AWS_ACCESS_KEY
-    AMAZON_AWS_SECRET_KEY
+    RESTCLIENTS_AMAZON_AWS_ACCESS_KEY
+    RESTCLIENTS_AMAZON_AWS_SECRET_KEY
     """
 
     def create_queue(self, queue_name):
@@ -48,8 +48,8 @@ class Live(object):
         return queue
 
     def _get_connection(self):
-        access_key = settings.AMAZON_AWS_ACCESS_KEY
-        secret_key = settings.AMAZON_AWS_SECRET_KEY
+        access_key = settings.RESTCLIENTS_AMAZON_AWS_ACCESS_KEY
+        secret_key = settings.RESTCLIENTS_AMAZON_AWS_SECRET_KEY
 
         conn = SQSConnection(access_key, secret_key)
         return conn

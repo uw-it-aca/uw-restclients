@@ -106,7 +106,7 @@ class AmazonSQS_DAO(MY_DAO):
         return res
 
     def _getDAO(self):
-        return self._getModule('AMAZON_SQS_DAO_CLASS', SQSLocal)
+        return self._getModule('RESTCLIENTS_AMAZON_SQS_DAO_CLASS', SQSLocal)
 
 
 class SMS_DAO(MY_DAO):
@@ -119,7 +119,7 @@ class SMS_DAO(MY_DAO):
         return dao.send_message(message)
 
     def _getDAO(self):
-        return self._getModule('SMS_DAO_CLASS', SMSLocal)
+        return self._getModule('RESTCLIENTS_SMS_DAO_CLASS', SMSLocal)
 
 
 class NWS_DAO(MY_DAO):
