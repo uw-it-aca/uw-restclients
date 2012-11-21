@@ -285,9 +285,18 @@ class CourseAvailableEvent(models.Model):
     quarter = models.CharField(max_length=6)
     year = models.PositiveSmallIntegerField()
     curriculum_abbr = models.CharField(max_length=6)
-    course_number = models.PositiveSmallIntegerField()
+    course_number = models.CharField(max_length=3)
     section_id = models.CharField(max_length=2)
 
+    def get_logging_description(self):
+        return "%s,%s,%s,%s/%s - %s" % (
+            self.year,
+            self.quarter,
+            self.curriculum_abbr,
+            self.course_number,
+            self.section_id,
+            self.status
+        )
 
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)
