@@ -5,6 +5,6 @@
         "SurrogateID": "CourseAvailableNotificationTemplate", 
         "Subject": "{{ channel.name }}", 
         "Short": "Section is {{ event.status }} for: {{ channel.surrogate_id }}", 
-        "Full": "Section is {{ event.status }} for your section. Year: {{ event.year }} Quarter: {{ event.quarter }} Course Title: {{ channel.name }} Curriculum: {{ event.curriculum }} Course Number: {{ event.course_number }} Section ID: {{ event.section_id }} Course Description: {{ channel.description }}"
+        "Full": "Section is {{ event.status }} for your section. Year: {{ event.year }} Quarter: {{ event.quarter }} Course Title: {{ channel.name }} Curriculum: {{ event.curriculum_abbr }} Course Number: {{ event.course_number }} Section ID: {{ event.section_id }} Course Description: {{ channel.description }}"
     }
 }
