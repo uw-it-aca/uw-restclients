@@ -11,6 +11,7 @@ from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
 from restclients.cache_implementation import NoCache
 
+
 class DAO_BASE(object):
     def _getModule(self, settings_key, default_class):
         if hasattr(settings, settings_key):
@@ -29,6 +30,7 @@ class DAO_BASE(object):
             return config_module()
         else:
             return default_class()
+
 
 class MY_DAO(DAO_BASE):
     def _getCache(self):
@@ -52,6 +54,21 @@ class MY_DAO(DAO_BASE):
             if "response" in cache_post_response:
                 return cache_post_response["response"]
 
+        return response
+
+    def _postURL(self, service, url, headers, body):
+        dao = self._getDAO()
+        response = dao.postURL(url, headers, body)
+        return response
+
+    def _deleteURL(self, service, url, headers):
+        dao = self._getDAO()
+        response = dao.deleteURL(url, headers)
+        return response
+
+    def _putURL(self, service, url, headers, body):
+        dao = self._getDAO()
+        response = dao.putURL(url, headers, body)
         return response
 
 
@@ -125,6 +142,15 @@ class SMS_DAO(MY_DAO):
 class NWS_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('nws', url, headers)
+
+    def postURL(self, url, headers, body):
+        return self._postURL('nws', url, headers, body)
+
+    def putURL(self, url, headers, body):
+        return self._putURL('nws', url, headers, body)
+
+    def deleteURL(self, url, headers):
+        return self._deleteURL('nws', url, headers)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_NWS_DAO_CLASS', NWSFile)

@@ -2,10 +2,11 @@ from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
 
 """
-A centralized the mock data access 
+A centralized the mock data access
 """
 
-def get_mockdata_url(service_name, implementation_name, 
+
+def get_mockdata_url(service_name, implementation_name,
                      url, headers,
                      dir_base = dirname(__file__)):
     """
@@ -14,8 +15,8 @@ def get_mockdata_url(service_name, implementation_name,
     :param implementation_name:
         possible values: "file", etc.
     """
-        
-    RESOURCE_ROOT = abspath(dir_base + "/../resources/" + 
+
+    RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
                             service_name + "/" + implementation_name)
     if url == "///":
         # Just a placeholder to put everything else in an else.
@@ -31,10 +32,67 @@ def get_mockdata_url(service_name, implementation_name,
                 response = MockHTTP()
                 response.status = 404
                 return response
-            
+
         response = MockHTTP()
         response.status = 200
         response.data = handle.read()
-        response.headers = { "X-Data-Source": service_name + " file mock data", }
+        response.headers = {"X-Data-Source": service_name + " file mock data", }
         return response
 
+
+def post_mockdata_url(service_name, implementation_name,
+                     url, headers, body,
+                     dir_base = dirname(__file__)):
+    """
+    :param service_name:
+        possible "sws", "pws", "book", "hfs", etc.
+    :param implementation_name:
+        possible values: "file", etc.
+    """
+    #Currently this post method does not return a response body
+    response = MockHTTP()
+    if body is not None:
+        #Debatable on whether all web services will return 201 on a successful POST submit
+        response.status = 201
+        response.headers = {"X-Data-Source": service_name + " file mock data", "Content-Type": headers['Accept']}
+    else:
+        response.status = 400
+        response.data = "Bad Request: no POST body"
+    return response
+
+
+def put_mockdata_url(service_name, implementation_name,
+                     url, headers, body,
+                     dir_base = dirname(__file__)):
+    """
+    :param service_name:
+        possible "sws", "pws", "book", "hfs", etc.
+    :param implementation_name:
+        possible values: "file", etc.
+    """
+    #Currently this put method does not return a response body
+    response = MockHTTP()
+    if body is not None:
+        response.status = 204
+        response.headers = {"X-Data-Source": service_name + " file mock data", "Content-Type": headers['Accept']}
+    else:
+        response.status = 400
+        response.data = "Bad Request: no POST body"
+    return response
+
+
+def delete_mockdata_url(service_name, implementation_name,
+                     url, headers,
+                     dir_base = dirname(__file__)):
+    """
+    :param service_name:
+        possible "sws", "pws", "book", "hfs", etc.
+    :param implementation_name:
+        possible values: "file", etc.
+    """
+    #Http response code 204 No Content:
+    #The server has fulfilled the request but does not need to return an entity-body
+    response = MockHTTP()
+    response.status = 204
+
+    return response

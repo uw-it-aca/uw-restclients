@@ -50,6 +50,7 @@ def Department(*args, **kwargs):
     deprecation("Use restclients.models.sws.Term")
     return swsDepartment(*args, **kwargs)
 
+
 def Curriculum(*args, **kwargs):
     deprecation("Use restclients.models.sws.Term")
     return swsCurriculum(*args, **kwargs)
@@ -199,6 +200,7 @@ class MockAmazonSQSQueue(models.Model):
     def set_message_class(self, message_class):
         pass
 
+
 class MockAmazonSQSMessage(models.Model):
     body = models.CharField(max_length=8192)
     queue = models.ForeignKey(MockAmazonSQSQueue,
@@ -254,12 +256,14 @@ class Subscription(models.Model):
 
     def json_data(self):
         return {
-            "ChannelID": self.channel_id,
-            "Endpoint": self.end_point,
-            "Protocol": self.protocol,
-            "SubscriberID": self.subscriber_id,
-            "SubscriptionID": self.subscription_id,
-        }
+            "Subscription":
+                {"ChannelID": self.channel_id,
+                 "Endpoint": self.end_point,
+                 "Protocol": self.protocol,
+                 "SubscriberID": self.subscriber_id,
+                 "OwnerID": self.owner_id
+                 }
+            }
 
 class Channel(models.Model):
     channel_id = models.CharField(max_length=36)
@@ -274,8 +278,8 @@ class Channel(models.Model):
 
 class Notification(models.Model):
     subject = models.CharField(max_length=8192)
-    short = models.CharField(max_length=140) #SMS max body length
-    full = models.CharField(max_length=8192)  
+    short = models.CharField(max_length=140)  # SMS max body length
+    full = models.CharField(max_length=8192)
 
 
 class CourseAvailableEvent(models.Model):
@@ -297,6 +301,7 @@ class CourseAvailableEvent(models.Model):
             self.section_id,
             self.status
         )
+
 
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)
@@ -324,4 +329,3 @@ class CanvasCourse(models.Model):
                                     parts[4])
 
         return sws_id
-

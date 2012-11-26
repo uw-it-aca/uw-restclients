@@ -15,11 +15,13 @@ class InvalidNetID(Exception):
     """Exception for invalid netid."""
     pass
 
-
 class InvalidRegID(Exception):
     """Exception for invalid regid."""
     pass
 
+class InvalidUUID(Exception):
+    """Exception for invalid UUID."""
+    pass
 
 class InvalidSectionID(Exception):
     """Exception for invalid section id."""
