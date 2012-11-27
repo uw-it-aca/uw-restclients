@@ -38,17 +38,18 @@ class NWS(object):
         Update an existing subscription on a given channel
 
         :param subscription:
-        is the updated subscription that the client wants to create
+        is the updated subscription that the client wants to update
         """
         #Validate
         self._validate_subscriber_id(subscription.subscriber_id)
         self._validate_uuid(subscription.channel_id)
+        self._validate_uuid(subscription.subscription_id)
 
         #Update the subscription
         dao = NWS_DAO()
-        url = "/notification/v1/subscription?subscriber_id=%s" % (subscription.subscriber_id)
+        url = "/notification/v1/subscription/%s" % (subscription.subscription_id)
 
-        put_response = dao.putURL(url, {"Accept": "application/json"}, subscription.json_data())
+        put_response = dao.putURL(url, {"Content-Type": "application/json"}, json.dumps(subscription.json_data()))
 
         #Http response code 204 No Content:
         #The server has fulfilled the request but does not need to return an entity-body
@@ -59,7 +60,7 @@ class NWS(object):
 
     def create_new_subscription(self, subscription):
         """
-        Create a new subscription on a given channel
+        Create a new subscription
 
         :param subscription:
         is the new subscription that the client wants to create
@@ -70,9 +71,9 @@ class NWS(object):
 
         #Create new subscription
         dao = NWS_DAO()
-        url = "/notification/v1/subscription?subscriber_id=%s" % (subscription.subscriber_id)
+        url = "/notification/v1/subscription"
 
-        post_response = dao.postURL(url, {"Accept": "application/json"}, subscription.json_data())
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, json.dumps(subscription.json_data()))
 
         #HTTP Status Code 201 Created: The request has been fulfilled and resulted
         #in a new resource being created
@@ -208,11 +209,12 @@ class NWS(object):
         subscription = Subscription()
 
         subscription.subscription_id = subscription_data['SubscriptionID']
-        subscription.channel_id = subscription_data['ChannelID']
-        subscription.end_point = subscription_data['Endpoint']
-        subscription.protocol = subscription_data['Protocol']
-        subscription.subscriber_id = subscription_data['SubscriberID']
-        subscription.owner_id = subscription_data['OwnerID']
+        subscription.channel_id = subscription_data['Channel']['ChannelID']
+        subscription.end_point = subscription_data['Endpoint']['EndpointAddress']
+        subscription.protocol = subscription_data['Endpoint']['Protocol']
+        subscription.subscriber_id = subscription_data['Endpoint']['SubscriberID']
+        subscription.owner_id = subscription_data['Endpoint']['OwnerID']
+        #subscription.subscriber_type = subscription_data['Endpoint']['SubscriberType']
         subscription.clean_fields()
 
         return subscription
@@ -246,7 +248,7 @@ class NWS(object):
         channel.template_surrogate_id = channel_data['TemplateSurrogateID']
         channel.description = channel_data['Description']
         #channel.expires = channel_data['Expires']
-        channel.last_modified = channel_data['LastModified']
+        #channel.last_modified = channel_data['LastModified']
         channel.clean_fields()
         return channel
 

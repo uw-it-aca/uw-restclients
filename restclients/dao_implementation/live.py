@@ -32,9 +32,10 @@ def get_con_pool(host,
 def get_live_url(con_pool, 
                  method, 
                  host, 
-                 url, 
+                 url,
                  headers,
-                 retries=1):
+                 retries=1,
+                 body=None):
     """
     Return a connection from the pool and perform an HTTP request.
     :param con_pool:
@@ -43,11 +44,9 @@ def get_live_url(con_pool,
         HTTP request method (such as GET, POST, PUT, etc.)
     :param host:
         the url of the server host.
-    
+    :param body:
+        the POST, PUT body of the request
     """
-
     logger = logging.getLogger('restclients.dao_implementation.live')
     logger.info('%s %s%s', method, host, url) 
-    return con_pool.urlopen(method, url, headers=headers, retries=retries)
-
-
+    return con_pool.urlopen(method, url, body=body, headers=headers, retries=retries)

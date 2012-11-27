@@ -54,7 +54,7 @@ def post_mockdata_url(service_name, implementation_name,
     if body is not None:
         #Debatable on whether all web services will return 201 on a successful POST submit
         response.status = 201
-        response.headers = {"X-Data-Source": service_name + " file mock data", "Content-Type": headers['Accept']}
+        response.headers = {"X-Data-Source": service_name + " file mock data", "Content-Type": headers['Content-Type']}
     else:
         response.status = 400
         response.data = "Bad Request: no POST body"
@@ -74,7 +74,7 @@ def put_mockdata_url(service_name, implementation_name,
     response = MockHTTP()
     if body is not None:
         response.status = 204
-        response.headers = {"X-Data-Source": service_name + " file mock data", "Content-Type": headers['Accept']}
+        response.headers = {"X-Data-Source": service_name + " file mock data", "Content-Type": headers['Content-Type']}
     else:
         response.status = 400
         response.data = "Bad Request: no POST body"

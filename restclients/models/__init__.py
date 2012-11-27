@@ -253,16 +253,26 @@ class Subscription(models.Model):
     protocol = models.CharField(max_length=40)
     subscriber_id = models.CharField(max_length=80)
     owner_id = models.CharField(max_length=80)
+    active = models.BooleanField(default=True)
+    default = models.BooleanField(default=False)
+    #subscriber_type = models.CharField(max_length=40)
 
     def json_data(self):
         return {
-            "Subscription":
-                {"ChannelID": self.channel_id,
-                 "Endpoint": self.end_point,
-                 "Protocol": self.protocol,
-                 "SubscriberID": self.subscriber_id,
-                 "OwnerID": self.owner_id
-                 }
+                "Subscription": {
+                    "SubscriptionID": self.subscription_id,
+                    "Channel": {
+                        "ChannelID": self.channel_id
+                    },
+                    "Endpoint": {
+                        "EndpointAddress": self.end_point,
+                        "Protocol": self.protocol,
+                        "SubscriberID": self.subscriber_id,
+                        "OwnerID": self.owner_id,
+                        "Active": self.active,
+                        "Default": self.default
+                    }
+                }
             }
 
 class Channel(models.Model):
@@ -272,8 +282,7 @@ class Channel(models.Model):
     name = models.CharField(max_length=255)
     template_surrogate_id = models.CharField(max_length=140)
     description = models.TextField()
-    expires = models.DateTimeField(blank=True)
-    last_modified = models.DateTimeField()
+    last_modified = models.DateTimeField(blank=True)
 
 
 class Notification(models.Model):

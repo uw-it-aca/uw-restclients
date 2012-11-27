@@ -56,7 +56,7 @@ class MY_DAO(DAO_BASE):
 
         return response
 
-    def _postURL(self, service, url, headers, body):
+    def _postURL(self, service, url, headers, body=None):
         dao = self._getDAO()
         response = dao.postURL(url, headers, body)
         return response
@@ -66,7 +66,7 @@ class MY_DAO(DAO_BASE):
         response = dao.deleteURL(url, headers)
         return response
 
-    def _putURL(self, service, url, headers, body):
+    def _putURL(self, service, url, headers, body=None):
         dao = self._getDAO()
         response = dao.putURL(url, headers, body)
         return response
