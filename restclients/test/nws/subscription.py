@@ -7,14 +7,14 @@ from unittest import skipIf
 
 
 class NWSTestSubscription(TestCase):
-    def test_subscription_channel_id(self):
+    def test_subscriptions_channel_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
             subscriptions = nws.get_subscriptions_by_channel_id("b779df7b-d6f6-4afb-8165-8dbe6232119f")
             self.assertEquals(len(subscriptions), 5)
 
-    def test_subscription_subscriber_id(self):
+    def test_subscriptions_subscriber_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
@@ -131,23 +131,30 @@ class NWSTestSubscription(TestCase):
             self.assertRaises(InvalidUUID, nws.delete_subscription, "652236c6-a85a-4845-8dc5-3e518bec044")
 
     @skipIf(True, "Used only for live testing")
-    def test_subscription_channel_id_live(self):
+    def test_subscription_live(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
+            self._subscription_channel_id_live()
+            self._create_subscription_live()
+            self._update_subscription_live()
+            self._delete_subscription_live()
+    
+    def _subscription_channel_id_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
             nws = NWS()
-            subscriptions = nws.get_subscriptions_by_channel_id("b779df7b-d6f6-4afb-8165-8dbe6232119f")
+            subscriptions = nws.get_subscriptions_by_channel_id("ce1d46fe-1cdf-4c5a-a316-20f6c99789b8")
             self.assertTrue(len(subscriptions) > 0)
-            #print len(subscriptions)
-
-    @skipIf(True, "Used only for live testing")
-    def test_create_subscription_live(self):
+    
+    def _create_subscription_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
             subscription = Subscription()
+            subscription.subscription_id = "6445864b-6d1c-47b7-a409-279ba4a4ccf4"
             subscription.end_point = "javerage09@uw.edu"
             subscription.protocol = "Email"
             subscription.subscriber_id = "javerage"
-            subscription.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
+            subscription.channel_id = "ce1d46fe-1cdf-4c5a-a316-20f6c99789b8"
             subscription.owner_id = "javerage"
             #subscription.subscriber_type = "Individual"
 
@@ -155,8 +162,7 @@ class NWSTestSubscription(TestCase):
             response_status = nws.create_new_subscription(subscription)
             self.assertEquals(response_status, 201)
 
-    @skipIf(True, "Used only for live testing")
-    def test_update_subscription_live(self):
+    def _update_subscription_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
             subscription = Subscription()
@@ -164,7 +170,7 @@ class NWSTestSubscription(TestCase):
             subscription.end_point = "javerage10@uw.edu"
             subscription.protocol = "Email"
             subscription.subscriber_id = "javerage"
-            subscription.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
+            subscription.channel_id = "ce1d46fe-1cdf-4c5a-a316-20f6c99789b8"
             subscription.owner_id = "javerage"
             #subscription.subscriber_type = "Individual"
 
@@ -172,8 +178,7 @@ class NWSTestSubscription(TestCase):
             response_status = nws.update_subscription(subscription)
             self.assertEquals(response_status, 204)
 
-    @skipIf(True, "Used only for live testing")
-    def test_delete_subscription_live(self):
+    def _delete_subscription_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
             nws = NWS()

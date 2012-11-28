@@ -3,7 +3,7 @@ This is the interface for interacting with the Notifications Web Service.
 """
 
 from restclients.dao import NWS_DAO
-from restclients.models import Subscription, Channel
+from restclients.models import Subscription, Channel, Endpoint
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID
 from urllib import urlencode
 from datetime import datetime
@@ -14,10 +14,125 @@ import re
 class NWS(object):
     """
     The NWS object has methods for getting, updating, deleting information
-    about channels, subscriptions, and templates.
+    about channels, subscriptions, endpoints, and templates.
     """
 
+    def get_endpoint_by_endpoint_id(self, end_point_id):
+        """
+        Get an endpoint by endpoint id
+        """
+        #Validate the channel_id
+        self._validate_uuid(end_point_id)
+
+        url = "/notification/v1/endpoint/%s" % (end_point_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._endpoint_from_json(json.loads(response.data))
+
+    def get_endpoints_by_subscriber_id(self, subscriber_id):
+        """
+        Search for all endpoints by a given subscriber
+        """
+        #Validate input
+        self._validate_subscriber_id(subscriber_id)
+
+        url = "/notification/v1/endpoint?subscriber_id=%s" % (subscriber_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._endpoints_from_json(json.loads(response.data))
+
+    def delete_endpoint(self, endpoint_id):
+        """
+        Deleting an existing endpoint
+
+        :param endpoint_id:
+        is the endpoint that the client wants to delete
+        """
+        
+        #Validate the subscription_id
+        self._validate_uuid(endpoint_id)
+
+        #Delete the subscription
+        url = "/notification/v1/endpoint/%s" % (endpoint_id)
+        dao = NWS_DAO()
+        delete_response = dao.deleteURL(url, None)
+
+        #Http response code 204 No Content:
+        #The server has fulfilled the request but does not need to return an entity-body
+        if delete_response.status != 204:
+            raise DataFailureException(url, delete_response.status, delete_response.data)
+
+        return delete_response.status
+
+    def update_endpoint(self, endpoint):
+        """
+        Update an existing endpoint
+
+        :param endpoint:
+        is the updated endpoint that the client wants to update
+        """
+        #Validate
+        self._validate_uuid(endpoint.end_point_id)
+        self._validate_subscriber_id(endpoint.subscriber_id)
+        
+        #Update the subscription
+        dao = NWS_DAO()
+        url = "/notification/v1/endpoint/%s" % (endpoint.end_point_id)
+
+        put_response = dao.putURL(url, {"Content-Type": "application/json"}, json.dumps(endpoint.json_data()))
+
+        #Http response code 204 No Content:
+        #The server has fulfilled the request but does not need to return an entity-body
+        if put_response.status != 204:
+            raise DataFailureException(url, put_response.status, put_response.data)
+
+        return put_response.status
+
+    def create_new_endpoint(self, endpoint):
+        """
+        Create a new endpoint
+
+        :param endpoint:
+        is the new endpoint that the client wants to create
+        """
+        #Validate
+        
+        #For creating new endpoints an endpointid is optional however if
+        #its present we should validate it
+        if endpoint.end_point_id:
+            self._validate_uuid(endpoint.end_point_id)
+        self._validate_subscriber_id(endpoint.subscriber_id)
+        
+        #Create new subscription
+        dao = NWS_DAO()
+        url = "/notification/v1/endpoint"
+
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, json.dumps(endpoint.json_data()))
+
+        #HTTP Status Code 201 Created: The request has been fulfilled and resulted
+        #in a new resource being created
+        if post_response.status != 201:
+            raise DataFailureException(url, post_response.status, post_response.data)
+
+        return post_response.status
+
     def delete_subscription(self, subscription_id):
+        """
+        Deleting an existing subscription
+
+        :param subscription_id:
+        is the subscription that the client wants to delete
+        """
         #Validate the subscription_id
         self._validate_uuid(subscription_id)
 
@@ -118,7 +233,7 @@ class NWS(object):
 
     def get_channel_by_channel_id(self, channel_id):
         """
-        Search for all subscriptions on a given channel
+        Get a channel by channel id
         """
         #Validate the channel_id
         self._validate_uuid(channel_id)
@@ -135,7 +250,7 @@ class NWS(object):
 
     def get_channels_by_surrogate_id(self, channel_type, surrogate_id):
         """
-        Search for all channels by surrogate id
+        Get a channel by surrogate id
         """
         url = "/notification/v1/channel/%s|%s" % (channel_type, surrogate_id)
 
@@ -251,6 +366,40 @@ class NWS(object):
         #channel.last_modified = channel_data['LastModified']
         channel.clean_fields()
         return channel
+    
+    def _endpoints_from_json(self, data):
+        """
+        Returns a list of endpoints created from the passed json.
+        """
+        endpoints = []
+        for endpoint_data in data['Endpoints']:
+            endpoints.append(self._get_endpoint(endpoint_data))
+        return endpoints
+
+    def _endpoint_from_json(self, data):
+        """
+        Returns a endpoint created from the passed json.
+        """
+
+        return self._get_endpoint(data['Endpoint'])
+
+    def _get_endpoint(self, endpoint_data):
+        """
+        Returns a endpoint model
+        """
+        endpoint = Endpoint()
+
+        endpoint.end_point_id = endpoint_data['EndpointID']
+        endpoint.end_point_uri = endpoint_data['EndpointURI']
+        endpoint.end_point = endpoint_data['EndpointAddress']
+        endpoint.carrier = endpoint_data['Carrier']
+        endpoint.protocol = endpoint_data['Protocol']
+        endpoint.subscriber_id = endpoint_data['SubscriberID']
+        endpoint.owner_id = endpoint_data['OwnerID']
+        endpoint.active = endpoint_data['Active']
+        endpoint.default = endpoint_data['Default']
+        endpoint.clean_fields()
+        return endpoint
 
     def _template_from_json(self, data):
         """

@@ -244,7 +244,32 @@ class SMSResponse(models.Model):
     def get_rid(self):
         return self.id
 
-
+class Endpoint(models.Model):
+    end_point_id = models.CharField(max_length=36)
+    end_point_uri = models.CharField(max_length=255)
+    end_point = models.CharField(max_length=255)
+    carrier = models.CharField(max_length=80, blank=True)
+    protocol = models.CharField(max_length=40)
+    subscriber_id = models.CharField(max_length=80)
+    owner_id = models.CharField(max_length=80)
+    active = models.BooleanField(default=True)
+    default = models.BooleanField(default=False)
+    
+    def json_data(self):
+        return {
+                "Endpoint": {
+                    "EndpointID": self.end_point_id, 
+                    "EndpointURI": self.end_point_uri, 
+                    "EndpointAddress": self.end_point, 
+                    "Carrier": self.carrier, 
+                    "Protocol": self.protocol, 
+                    "SubscriberID": self.subscriber_id, 
+                    "OwnerID": self.owner_id, 
+                    "Active": self.active, 
+                    "Default": self.default
+                }
+            }
+    
 class Subscription(models.Model):
     #PrimaryKey
     subscription_id = models.CharField(max_length=36, db_index=True)
