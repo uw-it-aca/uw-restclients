@@ -16,7 +16,8 @@ class NWS(object):
     The NWS object has methods for getting, updating, deleting information
     about channels, subscriptions, endpoints, and templates.
     """
-
+    
+    #ENDPOINT RESOURCE
     def get_endpoint_by_endpoint_id(self, end_point_id):
         """
         Get an endpoint by endpoint id
@@ -126,6 +127,7 @@ class NWS(object):
 
         return post_response.status
 
+    #SUBSCRIPTION RESOURCE
     def delete_subscription(self, subscription_id):
         """
         Deleting an existing subscription
@@ -181,6 +183,9 @@ class NWS(object):
         is the new subscription that the client wants to create
         """
         #Validate input
+        if subscription.subscription_id:
+            self._validate_uuid(subscription.subscription_id)
+
         self._validate_subscriber_id(subscription.subscriber_id)
         self._validate_uuid(subscription.channel_id)
 
@@ -231,6 +236,56 @@ class NWS(object):
 
         return self._subscriptions_from_json(json.loads(response.data))
 
+    #CHANNEL RESOURCE
+    def create_new_channel(self, channel):
+        """
+        Create a new channel
+        
+        :param channel:
+        is the new channel that the client wants to create
+        """
+        #Validate
+        #For creating new channels an channel_id is optional however if
+        #its present we should validate it
+        if channel.channel_id:
+            self._validate_uuid(channel.channel_id)
+        
+        #Create new channel
+        dao = NWS_DAO()
+        url = "/notification/v1/channel"
+        
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, json.dumps(channel.json_data()))
+        
+        #HTTP Status Code 201 Created: The request has been fulfilled and resulted
+        #in a new resource being created
+        if post_response.status != 201:
+            raise DataFailureException(url, post_response.status, post_response.data)
+        
+        return post_response.status
+    
+    def delete_channel(self, channel_id):
+        """
+        Deleting an existing channel
+
+        :param channel_id:
+        is the channel that the client wants to delete
+        """
+        
+        #Validate the subscription_id
+        self._validate_uuid(channel_id)
+
+        #Delete the subscription
+        url = "/notification/v1/channel/%s" % (channel_id)
+        dao = NWS_DAO()
+        delete_response = dao.deleteURL(url, None)
+
+        #Http response code 204 No Content:
+        #The server has fulfilled the request but does not need to return an entity-body
+        if delete_response.status != 204:
+            raise DataFailureException(url, delete_response.status, delete_response.data)
+
+        return delete_response.status
+
     def get_channel_by_channel_id(self, channel_id):
         """
         Get a channel by channel id
@@ -276,6 +331,7 @@ class NWS(object):
 
         return self._channels_from_json(json.loads(response.data))
 
+    #TEMPLATE RESOURCE
     def get_template_by_surrogate_id(self, surrogate_id):
         """
         Get a template given a specific surrogate id

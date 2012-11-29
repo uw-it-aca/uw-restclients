@@ -309,6 +309,36 @@ class Channel(models.Model):
     description = models.TextField()
     last_modified = models.DateTimeField(blank=True)
 
+    def json_data(self):
+        #"SurrogateID": "2012,autumn,cse,999,b"
+        surrogate_data = self.surrogate_id.split(",")
+        return{
+            "Channel": {
+                "ChannelID": self.channel_id,
+                "SurrogateID": self.surrogate_id, 
+                "Type": self.type, 
+                "Name": self.name, 
+                "Tags": {
+                    "sln": "", 
+                    "quarter": surrogate_data[1], 
+                    "year": surrogate_data[0]
+                }, 
+                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+                "Description": "This class sucks\n", 
+                "Sources": [
+                    {
+                        "Topic": self.type,
+                        "Filter": {
+                            "year": surrogate_data[0],
+                            "section": surrogate_data[4], 
+                            "dept": surrogate_data[2],
+                            "quarter": surrogate_data[1],
+                            "course": surrogate_data[3]
+                        }
+                    }
+                ] 
+            }
+        }
 
 class Notification(models.Model):
     subject = models.CharField(max_length=8192)

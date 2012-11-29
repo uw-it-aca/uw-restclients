@@ -1,5 +1,3 @@
-#get_template_by_surrogate_id
-
 from django.test import TestCase
 from django.conf import settings
 from restclients.nws import NWS
