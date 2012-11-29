@@ -90,6 +90,13 @@ class Term(models.Model):
         unique_together = ('year',
                            'quarter')
 
+    def json_data(self):
+        data = {
+            'quarter': self.get_quarter_display(),
+            'year': self.year,
+        }
+        return data
+
 
 class Section(models.Model):
     term = models.ForeignKey(Term,
