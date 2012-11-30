@@ -135,12 +135,13 @@ class SWS(object):
         """
         dao = SWS_DAO()
         pws = PWS()
-        url = "/student/v4/registration.json?" + urlencode({
-            'year': term.year,
-            'quarter': term.quarter,
-            'reg_id': regid,
-            'is_active': 'on',
-        })
+        url = "/student/v4/registration.json?" + urlencode([
+            ('reg_id', regid),
+            ('quarter', term.quarter),
+            ('is_active', 'on'),
+            ('year', term.year),
+        ])
+
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
