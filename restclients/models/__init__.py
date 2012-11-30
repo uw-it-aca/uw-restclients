@@ -306,7 +306,8 @@ class Channel(models.Model):
     type = models.CharField(max_length=140)
     name = models.CharField(max_length=255)
     template_surrogate_id = models.CharField(max_length=140)
-    description = models.TextField()
+    sln = models.CharField(max_length=5, blank=True)
+    description = models.TextField(blank=True)
     last_modified = models.DateTimeField(blank=True)
 
     def json_data(self):
@@ -319,12 +320,12 @@ class Channel(models.Model):
                 "Type": self.type, 
                 "Name": self.name, 
                 "Tags": {
-                    "sln": "", 
+                    "sln": self.sln, 
                     "quarter": surrogate_data[1], 
                     "year": surrogate_data[0]
                 }, 
                 "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
-                "Description": "This class sucks\n", 
+                "Description": None, 
                 "Sources": [
                     {
                         "Topic": self.type,
