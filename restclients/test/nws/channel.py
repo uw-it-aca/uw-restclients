@@ -38,7 +38,7 @@ class NWSTestChannel(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            channel = nws.get_channels_by_surrogate_id("uw_student_courseavailable", "2012,autumn,cse,100,w")
+            channel = nws.get_channel_by_surrogate_id("uw_student_courseavailable", "2012,autumn,cse,100,w")
             self._assert_channel(channel)
 
     def _assert_channel(self, channel):

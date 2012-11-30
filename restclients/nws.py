@@ -303,7 +303,7 @@ class NWS(object):
 
         return self._channel_from_json(json.loads(response.data))
 
-    def get_channels_by_surrogate_id(self, channel_type, surrogate_id):
+    def get_channel_by_surrogate_id(self, channel_type, surrogate_id):
         """
         Get a channel by surrogate id
         """
