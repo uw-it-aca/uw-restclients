@@ -274,6 +274,7 @@ class Subscription(models.Model):
     #PrimaryKey
     subscription_id = models.CharField(max_length=36, db_index=True)
     channel_id = models.CharField(max_length=36)
+    end_point_id = models.CharField(max_length=36, blank=True)
     end_point = models.CharField(max_length=255)
     protocol = models.CharField(max_length=40)
     subscriber_id = models.CharField(max_length=80)
@@ -290,6 +291,7 @@ class Subscription(models.Model):
                         "ChannelID": self.channel_id
                     },
                     "Endpoint": {
+                        "EndpointID:": self.end_point_id,
                         "EndpointAddress": self.end_point,
                         "Protocol": self.protocol,
                         "SubscriberID": self.subscriber_id,

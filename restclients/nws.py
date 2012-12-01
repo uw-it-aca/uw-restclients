@@ -330,6 +330,20 @@ class NWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return self._channels_from_json(json.loads(response.data))
+    
+    def get_channels(self):
+        """
+        Search for all channels
+        """
+        url = "/notification/v1/channel"
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._channels_from_json(json.loads(response.data))
 
     #TEMPLATE RESOURCE
     def get_template_by_surrogate_id(self, surrogate_id):
