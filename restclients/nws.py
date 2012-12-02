@@ -185,8 +185,13 @@ class NWS(object):
         #Validate input
         if subscription.subscription_id:
             self._validate_uuid(subscription.subscription_id)
+        
+        if subscription.subscriber_id:
+            self._validate_subscriber_id(subscription.subscriber_id)
 
-        self._validate_subscriber_id(subscription.subscriber_id)
+        if subscription.end_point_id:
+            self._validate_uuid(subscription.end_point_id)
+
         self._validate_uuid(subscription.channel_id)
 
         #Create new subscription
@@ -395,6 +400,7 @@ class NWS(object):
 
         subscription.subscription_id = subscription_data['SubscriptionID']
         subscription.channel_id = subscription_data['Channel']['ChannelID']
+        subscription.end_point_id = subscription_data['Endpoint']['EndpointID']
         subscription.end_point = subscription_data['Endpoint']['EndpointAddress']
         subscription.protocol = subscription_data['Endpoint']['Protocol']
         subscription.subscriber_id = subscription_data['Endpoint']['SubscriberID']

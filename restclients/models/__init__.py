@@ -285,22 +285,16 @@ class Subscription(models.Model):
 
     def json_data(self):
         return {
-                "Subscription": {
-                    "SubscriptionID": self.subscription_id,
-                    "Channel": {
-                        "ChannelID": self.channel_id
-                    },
-                    "Endpoint": {
-                        "EndpointID:": self.end_point_id,
-                        "EndpointAddress": self.end_point,
-                        "Protocol": self.protocol,
-                        "SubscriberID": self.subscriber_id,
-                        "OwnerID": self.owner_id,
-                        "Active": self.active,
-                        "Default": self.default
-                    }
+            "Subscription": {
+                "SubscriptionID": self.subscription_id,
+                "Channel": {
+                    "ChannelID": self.channel_id
+                },
+                "Endpoint": {
+                    "EndpointID": self.end_point_id
                 }
             }
+        }
 
 class Channel(models.Model):
     channel_id = models.CharField(max_length=36)

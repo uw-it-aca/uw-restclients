@@ -50,19 +50,19 @@ class NWSTestSubscription(TestCase):
             nws = NWS()
             self.assertRaises(InvalidNetID, nws.create_new_subscription, subscription)
 
-    def test_create_empty_subscriberid_subscription(self):
+    def test_create_empty_channelid_subscription(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             subscription = Subscription()
             subscription.end_point = "javerage0@uw.edu"
             subscription.protocol = "Email"
-            subscription.subscriber_id = ""
-            subscription.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
+            subscription.subscriber_id = "javerage"
+            subscription.channel_id = ""
             subscription.owner_id = "javerage"
             #subscription.subscriber_type = "Individual"
 
             nws = NWS()
-            self.assertRaises(InvalidNetID, nws.create_new_subscription, subscription)
+            self.assertRaises(InvalidUUID, nws.create_new_subscription, subscription)
 
     def test_create_empty_subscription(self):
         with self.settings(
@@ -70,7 +70,7 @@ class NWSTestSubscription(TestCase):
             subscription = Subscription()
 
             nws = NWS()
-            self.assertRaises(InvalidNetID, nws.create_new_subscription, subscription)
+            self.assertRaises(InvalidUUID, nws.create_new_subscription, subscription)
 
     def test_update_subscription(self):
         with self.settings(
