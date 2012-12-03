@@ -1,28 +1,6 @@
 {
     "Channels": [
         {
-            "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f", 
-            "ChannelURI": "/notification/v1/channel/b779df7b-d6f6-4afb-8165-8dbe6232119f", 
-            "SurrogateID": "2012,autumn,cse,100,w", 
-            "Type": "uw_student_courseavailable", 
-            "Name": "FLUENCY IN INFORMATION TECHNOLOGY", 
-            "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
-            "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
-            "Created": "2012-11-13 22:51:51+00:00", 
-            "LastModified": "2012-11-13 22:51:51+00:00"
-        }, 
-        {
-            "ChannelID": "c75403ee-313d-4726-b7c6-c24c4d0258c0", 
-            "ChannelURI": "/notification/v1/channel/c75403ee-313d-4726-b7c6-c24c4d0258c0", 
-            "SurrogateID": "2012,autumn,cse,100,w", 
-            "Type": "uw_student_courseavailable", 
-            "Name": "FLUENCY IN INFORMATION TECHNOLOGY", 
-            "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
-            "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
-            "Created": "2012-11-13 22:51:51+00:00", 
-            "LastModified": "2012-11-13 22:51:51+00:00"
-        }, 
-        {
             "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b8", 
             "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b8", 
             "SurrogateID": "2012,autumn,cse,100,w", 
