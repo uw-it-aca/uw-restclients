@@ -455,7 +455,8 @@ class NWS(object):
         channel.type = channel_data['Type']
         channel.name = channel_data['Name']
         channel.template_surrogate_id = channel_data['TemplateSurrogateID']
-        channel.description = channel_data['Description']
+        if 'Description' in channel_data:
+            channel.description = channel_data['Description']
         #channel.expires = channel_data['Expires']
         #channel.last_modified = channel_data['LastModified']
         channel.clean_fields()
