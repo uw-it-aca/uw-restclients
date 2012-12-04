@@ -1,0 +1,148 @@
+{
+   "Auditors":"0",
+   "ClassWebsiteUrl":"",
+   "Course":{
+      "Href":"\/student\/v4\/course\/2013,summer,TRAIN,100.json",
+      "CourseNumber":"100",
+      "CourseTitle":"SCRUM MASTER",
+      "CourseTitleLong":"NOT A COURSE FOR DUMMIES",
+      "CurriculumAbbreviation":"TRAIN",
+      "Quarter":"summer",
+      "Year":"2013"
+   },
+   "CourseCampus":"Seattle",
+   "CourseDescription":null,
+   "CourseTitle":"SCRUM MASTER",
+   "CourseTitleLong":"NOT A COURSE FOR DUMMIES",
+   "CurrentEnrollment":"0",
+   "Curriculum":{
+      "TimeScheduleLinkAbbreviation":""
+   },
+   "DeleteFlag":"active",
+   "DuplicateEnrollmentAllowed":false,
+   "GeneralEducationRequirements":{
+      "EnglishComposition":false,
+      "IndividualsAndSocieties":false,
+      "NaturalWorld":false,
+      "QuantitativeAndSymbolicReasoning":false,
+      "VisualLiteraryAndPerformingArts":false,
+      "Writing":false
+   },
+   "GradeSubmissionDelegates":[
+      {
+         "DelegateLevel":"curriculum",
+         "Person":{
+            "Href":"\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
+            "Name":"STUDENT, FRED AVERAGE",
+            "RegID":"6DF0A9206A7D11D5A4AE0004AC494FFE"
+         }
+      }
+   ],
+   "GradingSystem":"standard",
+   "HonorsCourse":false,
+   "LimitEstimateEnrollment":"0",
+   "LimitEstimateEnrollmentIndicator":"limit",
+   "LinkedSectionTypes":[
+      {
+         "LinkedSections":[
+            {
+               "IsPrimarySection":false,
+               "Section":{
+                  "Href":"\/student\/v4\/course\/2013,summer,TRAIN,100\/AA.json",
+                  "CourseNumber":"100",
+                  "CurriculumAbbreviation":"TRAIN",
+                  "Quarter":"summer",
+                  "SectionID":"AA",
+                  "Year":"2013"
+               }
+            },
+            {
+               "IsPrimarySection":false,
+               "Section":{
+                  "Href":"\/student\/v4\/course\/2013,summer,TRAIN,100\/AB.json",
+                  "CourseNumber":"100",
+                  "CurriculumAbbreviation":"TRAIN",
+                  "Quarter":"summer",
+                  "SectionID":"AB",
+                  "Year":"2013"
+               }
+            }
+         ],
+         "Type":"quiz"
+      }
+   ],
+   "Meetings":[
+      {
+         "Building":"*",
+         "BuildingToBeArranged":true,
+         "DaysOfWeek":{
+            "Days":[
+
+            ],
+            "Text":"to be arranged"
+         },
+         "DaysOfWeekToBeArranged":true,
+         "EndTime":"",
+         "Instructors":[
+            {
+               "FacultySequenceNumber":"",
+               "GradeRoster":{
+                  "Href":"\/student\/v4\/graderoster\/2013,summer,TRAIN,100,A,260A0DEC95CB11D78BAA000629C31437"
+               },
+               "Person":{
+                  "Href":"\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
+                  "Name":"STUDENT, JAMES AVERAGE",
+                  "RegID":"260A0DEC95CB11D78BAA000629C31437"
+               }
+            }
+         ],
+         "MeetingIndex":"1",
+         "MeetingType":"lecture",
+         "RoomNumber":"*",
+         "RoomToBeArranged":true,
+         "StartTime":""
+      }
+   ],
+    "FinalExam": {
+        "Building": "KNE",
+        "Date": "2013-06-02",
+        "EndTime": "16:20",
+        "MeetingStatus": "2",
+        "RoomNumber": "130",
+        "StartTime": "13:30"
+    },
+
+   "PrimarySection":{
+      "Href":"\/student\/v4\/course\/2013,summer,TRAIN,100\/A.json",
+      "CourseNumber":"100",
+      "CurriculumAbbreviation":"TRAIN",
+      "Quarter":"summer",
+      "SectionID":"A",
+      "Year":"2013"
+   },
+   "Registrations":{
+      "Href":"\/student\/v4\/registration.json?year=2013&quarter=summer&curriculum_abbreviation=TRAIN&course_number=100§ion_id=A®_id=&is_active=on&instructor_reg_id=",
+      "CourseNumber":"100",
+      "CurriculumAbbreviation":"TRAIN",
+      "InstructorRegID":null,
+      "IsActive":"on",
+      "PageSize":null,
+      "PageStart":null,
+      "Quarter":"summer",
+      "RegID":null,
+      "SectionID":"A",
+      "Year":"2013"
+   },
+   "ResearchCredit":false,
+   "SLN":"13830",
+   "SecondaryGradingOption":false,
+   "SectionID":"A",
+   "SectionType":"lecture",
+   "ServiceLearning":false,
+   "SummerTerm":"Full-term",
+   "Term":{
+      "Href":"\/student\/v4\/term\/2013,summer.json",
+      "Quarter":"summer",
+      "Year":"2013"
+   }
+}
