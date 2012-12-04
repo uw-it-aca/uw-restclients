@@ -21,6 +21,13 @@ class NWSTestSubscription(TestCase):
             subscriptions = nws.get_subscriptions_by_subscriber_id("javerage")
             self.assertEquals(len(subscriptions), 5)
 
+    def test_subscriptions_channel_id_subscriber_id(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            nws = NWS()
+            subscriptions = nws.get_subscriptions_by_channel_id_and_subscriber_id("b779df7b-d6f6-4afb-8165-8dbe6232119f", "javerage")
+            self.assertEquals(len(subscriptions), 5)
+
     def test_create_subscription(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
@@ -138,14 +145,14 @@ class NWSTestSubscription(TestCase):
             self._create_subscription_live()
             self._update_subscription_live()
             self._delete_subscription_live()
-    
+
     def _subscription_channel_id_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
             nws = NWS()
             subscriptions = nws.get_subscriptions_by_channel_id("ce1d46fe-1cdf-4c5a-a316-20f6c99789b8")
             self.assertTrue(len(subscriptions) > 0)
-    
+
     def _create_subscription_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):

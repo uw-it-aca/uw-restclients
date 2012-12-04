@@ -16,7 +16,7 @@ class NWS(object):
     The NWS object has methods for getting, updating, deleting information
     about channels, subscriptions, endpoints, and templates.
     """
-    
+
     #ENDPOINT RESOURCE
     def get_endpoint_by_endpoint_id(self, end_point_id):
         """
@@ -59,7 +59,7 @@ class NWS(object):
         :param endpoint_id:
         is the endpoint that the client wants to delete
         """
-        
+
         #Validate the subscription_id
         self._validate_uuid(endpoint_id)
 
@@ -85,7 +85,7 @@ class NWS(object):
         #Validate
         self._validate_uuid(endpoint.end_point_id)
         self._validate_subscriber_id(endpoint.subscriber_id)
-        
+
         #Update the subscription
         dao = NWS_DAO()
         url = "/notification/v1/endpoint/%s" % (endpoint.end_point_id)
@@ -107,13 +107,13 @@ class NWS(object):
         is the new endpoint that the client wants to create
         """
         #Validate
-        
+
         #For creating new endpoints an endpointid is optional however if
         #its present we should validate it
         if endpoint.end_point_id:
             self._validate_uuid(endpoint.end_point_id)
         self._validate_subscriber_id(endpoint.subscriber_id)
-        
+
         #Create new subscription
         dao = NWS_DAO()
         url = "/notification/v1/endpoint"
@@ -185,7 +185,7 @@ class NWS(object):
         #Validate input
         if subscription.subscription_id:
             self._validate_uuid(subscription.subscription_id)
-        
+
         if subscription.subscriber_id:
             self._validate_subscriber_id(subscription.subscriber_id)
 
@@ -241,11 +241,29 @@ class NWS(object):
 
         return self._subscriptions_from_json(json.loads(response.data))
 
+    def get_subscriptions_by_channel_id_and_subscriber_id(self, channel_id, subscriber_id):
+        """
+        Search for all subscriptions by a given channel and subscriber
+        """
+        #Validate input
+        self._validate_uuid(channel_id)
+        self._validate_subscriber_id(subscriber_id)
+
+        url = "/notification/v1/subscription?channel_id=%s&subscriber_id=%s" % (channel_id, subscriber_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._subscriptions_from_json(json.loads(response.data))
+
     #CHANNEL RESOURCE
     def create_new_channel(self, channel):
         """
         Create a new channel
-        
+
         :param channel:
         is the new channel that the client wants to create
         """
@@ -254,20 +272,20 @@ class NWS(object):
         #its present we should validate it
         if channel.channel_id:
             self._validate_uuid(channel.channel_id)
-        
+
         #Create new channel
         dao = NWS_DAO()
         url = "/notification/v1/channel"
-        
+
         post_response = dao.postURL(url, {"Content-Type": "application/json"}, json.dumps(channel.json_data()))
-        
+
         #HTTP Status Code 201 Created: The request has been fulfilled and resulted
         #in a new resource being created
         if post_response.status != 201:
             raise DataFailureException(url, post_response.status, post_response.data)
-        
+
         return post_response.status
-    
+
     def delete_channel(self, channel_id):
         """
         Deleting an existing channel
@@ -275,7 +293,7 @@ class NWS(object):
         :param channel_id:
         is the channel that the client wants to delete
         """
-        
+
         #Validate the subscription_id
         self._validate_uuid(channel_id)
 
@@ -335,7 +353,7 @@ class NWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return self._channels_from_json(json.loads(response.data))
-    
+
     def get_channels(self):
         """
         Search for all channels
@@ -442,7 +460,7 @@ class NWS(object):
         #channel.last_modified = channel_data['LastModified']
         channel.clean_fields()
         return channel
-    
+
     def _endpoints_from_json(self, data):
         """
         Returns a list of endpoints created from the passed json.
