@@ -1,8 +1,8 @@
 {
     "Channels": [
         {
-            "ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f", 
-            "ChannelURI": "/notification/v1/channel/b779df7b-d6f6-4afb-8165-8dbe6232119f", 
+            "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b8", 
+            "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b8", 
             "SurrogateID": "2012,autumn,cse,100,w", 
             "Type": "uw_student_courseavailable", 
             "Name": "FLUENCY IN INFORMATION TECHNOLOGY", 
