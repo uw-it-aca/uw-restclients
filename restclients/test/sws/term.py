@@ -102,6 +102,7 @@ class SWSTestTerm(TestCase):
             expected_quarter = "summer"
             expected_year = 2012
 
+            print term.year
             self.assertEquals(term.year, expected_year,
                               "Return %s for the next year" %
                               expected_year)

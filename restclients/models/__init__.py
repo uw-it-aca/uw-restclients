@@ -5,6 +5,7 @@ import warnings
 
 from restclients.models.sws import Term as swsTerm
 from restclients.models.sws import Person as swsPerson
+from restclients.models.sws import FinalExam as swsFinalExam
 from restclients.models.sws import Section as swsSection
 from restclients.models.sws import SectionMeeting as swsSectionMeeting
 from restclients.models.sws import ClassSchedule as swsClassSchedule
@@ -23,36 +24,40 @@ def Person(*args, **kwargs):
     return swsPerson(*args, **kwargs)
 
 def Term(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Person")
+    deprecation("Use restclients.models.sws.Term")
     return swsTerm(*args, **kwargs)
 
+def FinalExam(*args, **kwargs):
+    deprecation("Use restclients.models.sws.FinalExam")
+    return swsFinalExam(*args, **kwargs)
+
 def Section(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.Section")
     return swsSection(*args, **kwargs)
 
 def SectionMeeting(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.SectionMeeting")
     return swsSectionMeeting(*args, **kwargs)
 
 def ClassSchedule(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.ClassSchedule")
     return swsClassSchedule(*args, **kwargs)
 
 def Campus(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.Campus")
     return swsCampus(*args, **kwargs)
 
 def College(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.College")
     return swsCollege(*args, **kwargs)
 
 def Department(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.Department")
     return swsDepartment(*args, **kwargs)
 
 
 def Curriculum(*args, **kwargs):
-    deprecation("Use restclients.models.sws.Term")
+    deprecation("Use restclients.models.sws.Curriculum")
     return swsCurriculum(*args, **kwargs)
 
 

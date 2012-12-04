@@ -77,6 +77,15 @@
         "StartTime" : "14:30"
       }
   ],
+    "FinalExam": {
+        "Building": "KNE",
+        "Date": "2012-06-02",
+        "EndTime": "16:20",
+        "MeetingStatus": "0",
+        "RoomNumber": "130",
+        "StartTime": "13:30"
+    },
+
   "PrimarySection" : { "CourseNumber" : "125",
       "CurriculumAbbreviation" : "MATH",
       "Href" : "\/student\/v4\/course\/2012,summer,MATH,125\/G.json",

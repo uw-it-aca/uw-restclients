@@ -4,6 +4,57 @@ from restclients.sws import SWS
 from restclients.exceptions import DataFailureException, InvalidSectionID
 
 class SWSTestSectionData(TestCase):
+    def test_final_exams(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+            sws = SWS()
+
+            section = sws.get_section_by_label('2012,summer,B BIO,180/A')
+            self.assertEquals(section.final_exam, None, "No final exame for B BIO 180")
+
+            section = sws.get_section_by_label('2012,summer,MATH,125/G')
+            final_exam = section.final_exam
+
+            self.assertEquals(final_exam.is_confirmed, False, "Final exame for Math 125 isn't confirmed")
+            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exame for Math 125 isn't non-traditional")
+
+            section = sws.get_section_by_label('2012,summer,PHYS,121/A')
+            final_exam = section.final_exam
+
+            self.assertEquals(final_exam.is_confirmed, False, "Final exame for Phys 121 isn't confirmed")
+            self.assertEquals(final_exam.no_exam_or_nontraditional, True, "Final exame for Phys 121 is non-traditional")
+
+            section = sws.get_section_by_label('2012,summer,TRAIN,100/A')
+            final_exam = section.final_exam
+
+            self.assertEquals(final_exam.is_confirmed, True, "Final exame for Train 100 is confirmed")
+            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exame for Train 100 isn't non-traditional")
+
+            section = sws.get_section_by_label('2012,summer,TRAIN,101/A')
+            final_exam = section.final_exam
+
+            self.assertEquals(final_exam.is_confirmed, True, "Final exame for Train 101 is confirmed")
+            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exame for Train 101 isn't non-traditional")
+            self.assertEquals(final_exam.building, "KNE", "Has right final building")
+            self.assertEquals(final_exam.room_number, "012", "Has right room #")
+
+            start = final_exam.start_date
+            end = final_exam.end_date
+
+            self.assertEquals(start.year, 2012)
+            self.assertEquals(start.month, 6)
+            self.assertEquals(start.day, 2)
+            self.assertEquals(start.hour, 13)
+            self.assertEquals(start.minute, 30)
+
+            self.assertEquals(end.year, 2012)
+            self.assertEquals(end.month, 6)
+            self.assertEquals(end.day, 2)
+            self.assertEquals(end.hour, 16)
+            self.assertEquals(end.minute, 20)
+
+
+
     def test_section_by_label(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):

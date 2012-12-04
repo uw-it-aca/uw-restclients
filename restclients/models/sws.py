@@ -97,10 +97,25 @@ class Term(models.Model):
         }
         return data
 
+class FinalExam(models.Model):
+    is_confirmed = models.BooleanField()
+    no_exam_or_nontraditional = models.BooleanField()
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
+    building = models.CharField(max_length=20, null=True, blank=True)
+    room_number = models.CharField(max_length=10, null=True, blank=True)
+
+    class Meta:
+        app_label = "restclients"
+
 
 class Section(models.Model):
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
+    final_exam = models.ForeignKey(FinalExam,
+                                    on_delete=models.PROTECT,
+                                    null=True)
+
     curriculum_abbr = models.CharField(max_length=6,
                                        db_index=True)
     course_number = models.PositiveSmallIntegerField(db_index=True)
@@ -115,6 +130,7 @@ class Section(models.Model):
                                         blank=True)
     sln = models.PositiveIntegerField()
     delete_flag = models.CharField(max_length=20)
+
 #    These are for non-standard start/end dates - don't have those yet
 #    start_date = models.DateField()
 #    end_date = models.DateField()
@@ -180,7 +196,6 @@ class Section(models.Model):
             data["meetings"].append(meeting.json_data())
 
         return data
-
 
 class SectionMeeting(models.Model):
     term = models.ForeignKey(Term,

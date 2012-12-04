@@ -4,9 +4,9 @@ This is the interface for interacting with the Student Web Service.
 
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
-from restclients.models import Term, Section, SectionMeeting
-from restclients.models import ClassSchedule
-from restclients.models import Campus, College, Department, Curriculum
+from restclients.models.sws import Term, Section, SectionMeeting
+from restclients.models.sws import ClassSchedule, FinalExam
+from restclients.models.sws import Campus, College, Department, Curriculum
 from restclients.exceptions import DataFailureException, InvalidSectionID
 from urllib import urlencode
 from datetime import datetime
@@ -436,5 +436,38 @@ class SWS(object):
                         meeting.instructors.append(instructor)
 
             section.meetings.append(meeting)
+
+        section.final_exam = None
+        if "FinalExam" in section_data:
+            if "MeetingStatus" in section_data["FinalExam"]:
+                final_exam = FinalExam()
+                final_data = section_data["FinalExam"]
+                status = final_data["MeetingStatus"]
+                final_exam.no_exam_or_nontraditional = False
+                final_exam.is_confirmed = False
+                if (status == "2") or (status == "3"):
+                    final_exam.is_confirmed = True
+                    final_exam.building = final_data["Building"]
+                    final_exam.room_number = final_data["RoomNumber"]
+
+                    final_format = "%Y-%m-%d : %H:%M"
+
+                    start_string = "%s : %s" % (
+                                                final_data["Date"],
+                                                final_data["StartTime"]
+                                                )
+
+                    end_string = "%s : %s" % (
+                                                final_data["Date"],
+                                                final_data["EndTime"]
+                                                )
+                    strptime = datetime.strptime
+                    final_exam.start_date = strptime(start_string, final_format)
+                    final_exam.end_date = strptime(end_string, final_format)
+                elif status == "1":
+                    final_exam.no_exam_or_nontraditional = True
+
+                final_exam.full_clean()
+                section.final_exam = final_exam
 
         return section

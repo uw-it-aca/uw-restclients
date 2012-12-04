@@ -103,6 +103,15 @@
          "StartTime":""
       }
    ],
+    "FinalExam": {
+        "Building": "KNE",
+        "Date": "2012-06-02",
+        "EndTime": "16:20",
+        "MeetingStatus": "2",
+        "RoomNumber": "130",
+        "StartTime": "13:30"
+    },
+
    "PrimarySection":{
       "Href":"\/student\/v4\/course\/2012,summer,TRAIN,100\/A.json",
       "CourseNumber":"100",
