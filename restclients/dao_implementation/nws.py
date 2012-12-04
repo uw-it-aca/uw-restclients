@@ -38,40 +38,35 @@ class Live(object):
 
     def getURL(self, url, headers):
         if Live.pool == None:
-            Live.pool = get_con_pool(settings.RESTCLIENTS_NWS_HOST,
-                                     None,
-                                     None,
-                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_NWS_HOST,
                             url, headers=headers)
 
     def deleteURL(self, url, headers):
         if Live.pool == None:
-            Live.pool = get_con_pool(settings.RESTCLIENTS_NWS_HOST,
-                                     None,
-                                     None,
-                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'DELETE',
                             settings.RESTCLIENTS_NWS_HOST,
                             url, headers=headers)
 
     def postURL(self, url, headers, body):
         if Live.pool == None:
-            Live.pool = get_con_pool(settings.RESTCLIENTS_NWS_HOST,
-                                     None,
-                                     None,
-                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'POST',
                             settings.RESTCLIENTS_NWS_HOST,
                             url, headers=headers, body=body)
 
     def putURL(self, url, headers, body):
         if Live.pool == None:
-            Live.pool = get_con_pool(settings.RESTCLIENTS_NWS_HOST,
-                                     None,
-                                     None,
-                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'PUT',
                             settings.RESTCLIENTS_NWS_HOST,
                             url, headers=headers, body=body)
+
+
+    def _get_pool(self):
+        return get_con_pool(settings.RESTCLIENTS_NWS_HOST,
+                                     settings.RESTCLIENTS_NWS_KEY_FILE,
+                                     settings.RESTCLIENTS_NWS_CERT_FILE,
+                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
