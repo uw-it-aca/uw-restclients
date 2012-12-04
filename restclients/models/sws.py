@@ -108,6 +108,19 @@ class FinalExam(models.Model):
     class Meta:
         app_label = "restclients"
 
+    def json_data(self):
+        data = {
+            "is_confirmed" : self.is_confirmed,
+            "no_exam_or_nontraditional" : self.no_exam_or_nontraditional,
+        }
+
+        if self.start_date:
+            data["start_date"] = self.start_date.isoformat()
+            data["end_date"] = self.end_date.isoformat()
+            data["building"] = self.building
+            data["room_number"] = self.room_number
+
+        return data
 
 class Section(models.Model):
     term = models.ForeignKey(Term,
@@ -191,6 +204,9 @@ class Section(models.Model):
             'end_date': '',
             'meetings': [],
         }
+
+        if self.final_exam is not None:
+            data["final_exam"] = self.final_exam.json_data()
 
         for meeting in self.meetings:
             data["meetings"].append(meeting.json_data())
