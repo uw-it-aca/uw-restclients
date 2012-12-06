@@ -1,0 +1,110 @@
+{ "Auditors" : "0",
+  "ClassWebsiteUrl" : "",
+  "Course" : { "CourseNumber" : "180",
+      "CourseTitle" : "INTRO BIOLOGY I",
+      "CourseTitleLong" : "INTRODUCTORY BIOLOGY I",
+      "CurriculumAbbreviation" : "B BIO",
+      "Href" : "\/student\/v4\/course\/2013,spring,B%20BIO,180.json",
+      "Quarter" : "spring",
+      "Year" : "2013"
+    },
+  "CourseCampus" : "Bothell",
+  "CourseDescription" : "For students intending to take advanced courses in the biological sciences or enroll in pre-professional programs. Mendelian genetics, evolution, biodiversity of life forms, ecology, conservation biology. First course in a three-quarter series (B BIO 180, B BIO 200, B BIO 220). Prerequisite: B CHEM 152.",
+  "CourseTitle" : "INTRO BIOLOGY I",
+  "CourseTitleLong" : "INTRODUCTORY BIOLOGY I",
+  "CurrentEnrollment" : "22",
+  "Curriculum" : { "TimeScheduleLinkAbbreviation" : "B BIO" },
+  "DeleteFlag" : "active",
+  "DuplicateEnrollmentAllowed" : true,
+  "GeneralEducationRequirements" : { "EnglishComposition" : false,
+      "IndividualsAndSocieties" : false,
+      "NaturalWorld" : true,
+      "QuantitativeAndSymbolicReasoning" : false,
+      "VisualLiteraryAndPerformingArts" : false,
+      "Writing" : false
+    },
+  "GradeSubmissionDelegates" : [ { "DelegateLevel" : "department",
+        "Person" : { "Href" : "\/student\/v4\/person\/7D6DE235BC1E470B9525CFEDF4327784.json",
+            "Name" : "MILLER,SUSAN HEE-JUNG",
+            "RegID" : "7D6DE235BC1E470B9525CFEDF4327784"
+          }
+      },
+      { "DelegateLevel" : "curriculum",
+        "Person" : { "Href" : "\/student\/v4\/person\/7D6DE235BC1E470B9525CFEDF4327784.json",
+            "Name" : "MILLER,SUSAN HEE-JUNG",
+            "RegID" : "7D6DE235BC1E470B9525CFEDF4327784"
+          }
+      }
+    ],
+  "GradingSystem" : "standard",
+  "HonorsCourse" : false,
+  "LimitEstimateEnrollment" : "220",
+  "LimitEstimateEnrollmentIndicator" : "limit",
+  "LinkedSectionTypes" : [ { "LinkedSections" : [ { "IsPrimarySection" : false,
+              "Section" : { "CourseNumber" : "180",
+                  "CurriculumAbbreviation" : "B BIO",
+                  "Href" : "\/student\/v4\/course\/2013,spring,B%20BIO,180\/AA.json",
+                  "Quarter" : "spring",
+                  "SectionID" : "AA",
+                  "Year" : "2013"
+                }
+            }
+          ],
+        "Type" : "laboratory"
+      }
+    ],
+  "Meetings" : [ { "Building" : "UW2",
+        "BuildingToBeArranged" : false,
+        "DaysOfWeek" : { "Days" : [ { "Name" : "Monday" },
+                { "Name" : "Wednesday" },
+                { "Name" : "Friday" }
+              ],
+            "Text" : "M W F"
+          },
+        "DaysOfWeekToBeArranged" : false,
+        "EndTime" : "22:00",
+        "Instructors" : [ { "FacultySequenceNumber" : "",
+              "GradeRoster" : { "Href" : "\/student\/v4\/graderoster\/2013,spring,B%20BIO,180,A,260A0DEC95CB11D78BAA000629C31437" },
+              "Person" : { "Href" : "\/student\/v4\/person\/260A0DEC95CB11D78BAA000629C31437.json",
+                  "Name" : "TEACHER, JAMES AVERAGE",
+                  "RegID" : "260A0DEC95CB11D78BAA000629C31437"
+                }
+            } ],
+        "MeetingIndex" : "1",
+        "MeetingType" : "lecture",
+        "RoomNumber" : "005",
+        "RoomToBeArranged" : false,
+        "StartTime" : "19:45"
+      }
+  ],
+  "PrimarySection" : { "CourseNumber" : "180",
+      "CurriculumAbbreviation" : "B BIO",
+      "Href" : "\/student\/v4\/course\/2013,spring,B%20BIO,180\/A.json",
+      "Quarter" : "spring",
+      "SectionID" : "A",
+      "Year" : "2013"
+    },
+  "Registrations" : { "CourseNumber" : "180",
+      "CurriculumAbbreviation" : "B BIO",
+      "Href" : "\/student\/v4\/registration.json?year=2013&quarter=spring&curriculum_abbreviation=B%20BIO&course_number=180§ion_id=A®_id=&is_active=on&instructor_reg_id=",
+      "InstructorRegID" : "260A0DEC95CB11D78BAA000629C31437",
+      "IsActive" : "on",
+      "PageSize" : null,
+      "PageStart" : null,
+      "Quarter" : "spring",
+      "RegID" : null,
+      "SectionID" : "A",
+      "Year" : "2013"
+    },
+  "ResearchCredit" : false,
+  "SLN" : "10675",
+  "SecondaryGradingOption" : true,
+  "SectionID" : "A",
+  "SectionType" : "lecture",
+  "ServiceLearning" : false,
+  "springTerm" : "Full-term",
+  "Term" : { "Href" : "\/student\/v4\/term\/2013,spring.json",
+      "Quarter" : "spring",
+      "Year" : "2013"
+    }
+}

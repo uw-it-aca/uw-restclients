@@ -1,0 +1,132 @@
+{
+   "Auditors":"0",
+   "ClassWebsiteUrl":"",
+   "Course":{
+      "Href":"\/student\/v4\/course\/2013,spring,PHIL,495.json",
+      "CourseNumber":"495",
+      "CourseTitle":"INDEPNDNT STDY\/RSCH",
+      "CourseTitleLong":"INDEPENDENT STUDY OR RESEARCH",
+      "CurriculumAbbreviation":"PHIL",
+      "Quarter":"spring",
+      "Year":"2013"
+   },
+   "CourseCampus":"Seattle",
+   "CourseDescription":"Prerequisite: permission of graduate program coordinator.",
+   "CourseTitle":"INDEPNDNT STDY\/RSCH",
+   "CourseTitleLong":"INDEPENDENT STUDY OR RESEARCH",
+   "CurrentEnrollment":"3",
+   "Curriculum":{
+      "TimeScheduleLinkAbbreviation":"phil"
+   },
+   "DeleteFlag":"active",
+   "DuplicateEnrollmentAllowed":true,
+   "GeneralEducationRequirements":{
+      "EnglishComposition":false,
+      "IndividualsAndSocieties":false,
+      "NaturalWorld":false,
+      "QuantitativeAndSymbolicReasoning":false,
+      "VisualLiteraryAndPerformingArts":false,
+      "Writing":false
+   },
+   "GradeSubmissionDelegates":[
+      {
+         "DelegateLevel":"department",
+         "Person":{
+            "Href":"\/student\/v4\/person\/6EF31AF26A7C11D5A4AE0004AC494FFE.json",
+            "Name":"WESSEL,BEVERLY A",
+            "RegID":"6EF31AF26A7C11D5A4AE0004AC494FFE"
+         }
+      },
+      {
+         "DelegateLevel":"curriculum",
+         "Person":{
+            "Href":"\/student\/v4\/person\/E75ED1166A7C11D5A4AE0004AC494FFE.json",
+            "Name":"GOULD,GINA S",
+            "RegID":"E75ED1166A7C11D5A4AE0004AC494FFE"
+         }
+      }
+   ],
+   "GradingSystem":"credit\/no credit",
+   "HonorsCourse":false,
+   "LimitEstimateEnrollment":"7",
+   "LimitEstimateEnrollmentIndicator":"limit",
+   "LinkedSectionTypes":[
+
+   ],
+   "Meetings":[
+      {
+         "Building":"*",
+         "BuildingToBeArranged":true,
+         "DaysOfWeek":{
+            "Days":[
+
+            ],
+            "Text":"to be arranged"
+         },
+         "DaysOfWeekToBeArranged":true,
+         "EndTime":"",
+         "Instructors":[
+            {
+               "FacultySequenceNumber":"62102",
+               "GradeRoster":{
+                  "Href":"\/student\/v4\/graderoster\/2013,spring,PHIL,495,A,672E7D4C700711D7A047000629C31437"
+               },
+               "Person":{
+                  "Href":"\/student\/v4\/person\/A9D2DDFA6A7D11D5A4AE0004AC494FFE.json",
+                  "Name":"TEACHER, PHIL AVERAGE",
+                  "RegID":"A9D2DDFA6A7D11D5A4AE0004AC494FFE"
+               }
+            },
+            {
+               "FacultySequenceNumber":"66093",
+               "GradeRoster":{
+                  "Href":"\/student\/v4\/graderoster\/2013,spring,PHIL,495,A,FBB38FE46A7C11D5A4AE0004AC494FFE"
+               },
+               "Person":{
+                  "Href":"\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
+                  "Name":"TEACHER, BILL AVERAGE",
+                  "RegID": null
+               }
+            }
+         ],
+         "MeetingIndex":"1",
+         "MeetingType":"independent study",
+         "RoomNumber":"*",
+         "RoomToBeArranged":true,
+         "StartTime":""
+      }
+   ],
+   "PrimarySection":{
+      "Href":"\/student\/v4\/course\/2013,spring,PHIL,495\/A.json",
+      "CourseNumber":"495",
+      "CurriculumAbbreviation":"PHIL",
+      "Quarter":"spring",
+      "SectionID":"A",
+      "Year":"2013"
+   },
+   "Registrations":{
+      "Href":"\/student\/v4\/registration.json?year=2013&quarter=spring&curriculum_abbreviation=PHIL&course_number=495§ion_id=A®_id=&is_active=on&instructor_reg_id=",
+      "CourseNumber":"495",
+      "CurriculumAbbreviation":"PHIL",
+      "InstructorRegID":null,
+      "IsActive":"on",
+      "PageSize":null,
+      "PageStart":null,
+      "Quarter":"spring",
+      "RegID":null,
+      "SectionID":"A",
+      "Year":"2013"
+   },
+   "ResearchCredit":false,
+   "SLN":"18481",
+   "SecondaryGradingOption":false,
+   "SectionID":"A",
+   "SectionType":"independent study",
+   "ServiceLearning":false,
+   "springTerm":"",
+   "Term":{
+      "Href":"\/student\/v4\/term\/2013,spring.json",
+      "Quarter":"spring",
+      "Year":"2013"
+   }
+}
