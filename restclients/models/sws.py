@@ -115,8 +115,8 @@ class FinalExam(models.Model):
         }
 
         if self.start_date:
-            data["start_date"] = self.start_date.isoformat()
-            data["end_date"] = self.end_date.isoformat()
+            data["start_date"] = self.start_date.strftime("%Y-%m-%d %H:%M")
+            data["end_date"] = self.end_date.strftime("%Y-%m-%d %H:%M")
             data["building"] = self.building
             data["room_number"] = self.room_number
 
