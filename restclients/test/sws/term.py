@@ -12,8 +12,8 @@ class SWSTestTerm(TestCase):
             sws = SWS()
             term = sws.get_previous_term()
 
-            expected_quarter = "summer"
-            expected_year = 2012
+            expected_quarter = "winter"
+            expected_year = 2013
 
             self.assertEquals(term.year, expected_year,
                               "Return %s for the previous year" %
@@ -23,29 +23,25 @@ class SWSTestTerm(TestCase):
                               "Return %s for the previous quarter" %
                               expected_quarter)
 
-            self.assertEquals(term.first_day_quarter.year, 2012)
-            self.assertEquals(term.first_day_quarter.month, 6)
-            self.assertEquals(term.first_day_quarter.day, 18)
+            self.assertEquals(term.first_day_quarter.year, 2013)
+            self.assertEquals(term.first_day_quarter.month, 1)
+            self.assertEquals(term.first_day_quarter.day, 7)
 
-            self.assertEquals(term.last_day_instruction.year, 2012)
-            self.assertEquals(term.last_day_instruction.month, 8)
-            self.assertEquals(term.last_day_instruction.day, 17)
+            self.assertEquals(term.last_day_instruction.year, 2013)
+            self.assertEquals(term.last_day_instruction.month, 3)
+            self.assertEquals(term.last_day_instruction.day, 15)
 
-            self.assertEquals(term.aterm_last_date.year, 2012)
-            self.assertEquals(term.aterm_last_date.month, 7)
-            self.assertEquals(term.aterm_last_date.day, 18)
+            self.assertEquals(term.aterm_last_date, None)
 
-            self.assertEquals(term.bterm_first_date.year, 2012)
-            self.assertEquals(term.bterm_first_date.month, 7)
-            self.assertEquals(term.bterm_first_date.day, 19)
+            self.assertEquals(term.bterm_first_date, None)
 
-            self.assertEquals(term.last_final_exam_date.year, 2012)
-            self.assertEquals(term.last_final_exam_date.month, 8)
-            self.assertEquals(term.last_final_exam_date.day, 17)
+            self.assertEquals(term.last_final_exam_date.year, 2013)
+            self.assertEquals(term.last_final_exam_date.month, 3)
+            self.assertEquals(term.last_final_exam_date.day, 22)
 
-            self.assertEquals(term.grade_submission_deadline.date().year, 2012)
-            self.assertEquals(term.grade_submission_deadline.date().month, 8)
-            self.assertEquals(term.grade_submission_deadline.date().day, 21)
+            self.assertEquals(term.grade_submission_deadline.date().year, 2013)
+            self.assertEquals(term.grade_submission_deadline.date().month, 3)
+            self.assertEquals(term.grade_submission_deadline.date().day, 26)
             self.assertEquals(term.grade_submission_deadline.time().hour, 17)
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
 
@@ -55,8 +51,8 @@ class SWSTestTerm(TestCase):
             sws = SWS()
             term = sws.get_current_term()
 
-            expected_quarter = "summer"
-            expected_year = 2012
+            expected_quarter = "spring"
+            expected_year = 2013
 
             self.assertEquals(term.year, expected_year,
                               "Return %s for the current year" %
@@ -66,29 +62,25 @@ class SWSTestTerm(TestCase):
                               "Return %s for the current quarter" %
                               expected_quarter)
 
-            self.assertEquals(term.first_day_quarter.year, 2012)
-            self.assertEquals(term.first_day_quarter.month, 6)
-            self.assertEquals(term.first_day_quarter.day, 18)
+            self.assertEquals(term.first_day_quarter.year, 2013)
+            self.assertEquals(term.first_day_quarter.month, 4)
+            self.assertEquals(term.first_day_quarter.day, 1)
 
-            self.assertEquals(term.last_day_instruction.year, 2012)
-            self.assertEquals(term.last_day_instruction.month, 8)
-            self.assertEquals(term.last_day_instruction.day, 17)
+            self.assertEquals(term.last_day_instruction.year, 2013)
+            self.assertEquals(term.last_day_instruction.month, 6)
+            self.assertEquals(term.last_day_instruction.day, 7)
 
-            self.assertEquals(term.aterm_last_date.year, 2012)
-            self.assertEquals(term.aterm_last_date.month, 7)
-            self.assertEquals(term.aterm_last_date.day, 18)
+            self.assertEquals(term.aterm_last_date, None)
 
-            self.assertEquals(term.bterm_first_date.year, 2012)
-            self.assertEquals(term.bterm_first_date.month, 7)
-            self.assertEquals(term.bterm_first_date.day, 19)
+            self.assertEquals(term.bterm_first_date, None)
 
-            self.assertEquals(term.last_final_exam_date.year, 2012)
-            self.assertEquals(term.last_final_exam_date.month, 8)
-            self.assertEquals(term.last_final_exam_date.day, 17)
+            self.assertEquals(term.last_final_exam_date.year, 2013)
+            self.assertEquals(term.last_final_exam_date.month, 6)
+            self.assertEquals(term.last_final_exam_date.day, 14)
 
-            self.assertEquals(term.grade_submission_deadline.date().year, 2012)
-            self.assertEquals(term.grade_submission_deadline.date().month, 8)
-            self.assertEquals(term.grade_submission_deadline.date().day, 21)
+            self.assertEquals(term.grade_submission_deadline.date().year, 2013)
+            self.assertEquals(term.grade_submission_deadline.date().month, 6)
+            self.assertEquals(term.grade_submission_deadline.date().day, 18)
             self.assertEquals(term.grade_submission_deadline.time().hour, 17)
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
 
@@ -100,9 +92,8 @@ class SWSTestTerm(TestCase):
             term = sws.get_next_term()
 
             expected_quarter = "summer"
-            expected_year = 2012
+            expected_year = 2013
 
-            print term.year
             self.assertEquals(term.year, expected_year,
                               "Return %s for the next year" %
                               expected_year)
@@ -111,29 +102,29 @@ class SWSTestTerm(TestCase):
                               "Return %s for the next quarter" %
                               expected_quarter)
 
-            self.assertEquals(term.first_day_quarter.year, 2012)
+            self.assertEquals(term.first_day_quarter.year, 2013)
             self.assertEquals(term.first_day_quarter.month, 6)
-            self.assertEquals(term.first_day_quarter.day, 18)
+            self.assertEquals(term.first_day_quarter.day, 24)
 
-            self.assertEquals(term.last_day_instruction.year, 2012)
+            self.assertEquals(term.last_day_instruction.year, 2013)
             self.assertEquals(term.last_day_instruction.month, 8)
-            self.assertEquals(term.last_day_instruction.day, 17)
+            self.assertEquals(term.last_day_instruction.day, 23)
 
-            self.assertEquals(term.aterm_last_date.year, 2012)
+            self.assertEquals(term.aterm_last_date.year, 2013)
             self.assertEquals(term.aterm_last_date.month, 7)
-            self.assertEquals(term.aterm_last_date.day, 18)
+            self.assertEquals(term.aterm_last_date.day, 24)
 
-            self.assertEquals(term.bterm_first_date.year, 2012)
+            self.assertEquals(term.bterm_first_date.year, 2013)
             self.assertEquals(term.bterm_first_date.month, 7)
-            self.assertEquals(term.bterm_first_date.day, 19)
+            self.assertEquals(term.bterm_first_date.day, 25)
 
-            self.assertEquals(term.last_final_exam_date.year, 2012)
+            self.assertEquals(term.last_final_exam_date.year, 2013)
             self.assertEquals(term.last_final_exam_date.month, 8)
-            self.assertEquals(term.last_final_exam_date.day, 17)
+            self.assertEquals(term.last_final_exam_date.day, 23)
 
-            self.assertEquals(term.grade_submission_deadline.date().year, 2012)
+            self.assertEquals(term.grade_submission_deadline.date().year, 2013)
             self.assertEquals(term.grade_submission_deadline.date().month, 8)
-            self.assertEquals(term.grade_submission_deadline.date().day, 21)
+            self.assertEquals(term.grade_submission_deadline.date().day, 27)
             self.assertEquals(term.grade_submission_deadline.time().hour, 17)
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
 
