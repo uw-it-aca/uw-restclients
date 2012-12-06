@@ -371,7 +371,11 @@ class SWS(object):
         section.section_type = section_data["SectionType"]
         section.class_website_url = section_data["ClassWebsiteUrl"]
         section.sln = section_data["SLN"]
-        section.summer_term = section_data["SummerTerm"]
+        if "SummerTerm" in section_data:
+            section.summer_term = section_data["SummerTerm"]
+        else:
+            section.summer_term = ""
+
         section.delete_flag = section_data["DeleteFlag"]
 
         primary_section = section_data["PrimarySection"]

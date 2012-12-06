@@ -4,9 +4,9 @@
       "CourseTitle" : "MECHANICS",
       "CourseTitleLong" : "MECHANICS",
       "CurriculumAbbreviation" : "PHYS",
-      "Href" : "/student/v4/course/2012,summer,PHYS,121.json",
-      "Quarter" : "summer",
-      "Year" : "2012"
+      "Href" : "/student/v4/course/2013,spring,PHYS,121.json",
+      "Quarter" : "spring",
+      "Year" : "2013"
     },
   "CourseCampus" : "Seattle",
   "CourseDescription" : "Basic principles of mechanics and experiments in mechanics for physical science and engineering majors. Lecture tutorial and lab components must all be taken to receive credit. Credit is not given for both PHYS 114 and PHYS 121. Prerequisite: either MATH 124 or MATH 134, which may be taken concurrently; recommended: one year high school physics. Offered: AWSpS.",
@@ -45,32 +45,32 @@
       } ],
   "PrimarySection" : { "CourseNumber" : "121",
       "CurriculumAbbreviation" : "PHYS",
-      "Href" : "/student/v4/course/2012,summer,PHYS,121/A.json",
-      "Quarter" : "summer",
+      "Href" : "/student/v4/course/2013,spring,PHYS,121/A.json",
+      "Quarter" : "spring",
       "SectionID" : "A",
-      "Year" : "2012"
+      "Year" : "2013"
     },
   "Registrations" : { "CourseNumber" : "121",
       "CurriculumAbbreviation" : "PHYS",
-      "Href" : "/student/v4/registration.json?year=2012&quarter=summer&curriculum_abbreviation=PHYS&course_number=121§ion_id=AA®_id=&is_active=on&instructor_reg_id=",
+      "Href" : "/student/v4/registration.json?year=2013&quarter=spring&curriculum_abbreviation=PHYS&course_number=121§ion_id=AD®_id=&is_active=on&instructor_reg_id=",
       "InstructorRegID" : null,
       "IsActive" : "on",
       "PageSize" : null,
       "PageStart" : null,
-      "Quarter" : "summer",
+      "Quarter" : "spring",
       "RegID" : null,
-      "SectionID" : "AA",
-      "Year" : "2012"
+      "SectionID" : "AD",
+      "Year" : "2013"
     },
   "ResearchCredit" : false,
   "SLN" : "18532",
   "SecondaryGradingOption" : true,
-  "SectionID" : "AA",
+  "SectionID" : "AD",
   "SectionType" : "quiz",
   "ServiceLearning" : false,
-  "SummerTerm" : "",
-  "Term" : { "Href" : "/student/v4/term/2012,summer.json",
-      "Quarter" : "summer",
-      "Year" : "2012"
+  "springTerm" : "",
+  "Term" : { "Href" : "/student/v4/term/2013,spring.json",
+      "Quarter" : "spring",
+      "Year" : "2013"
     }
 }

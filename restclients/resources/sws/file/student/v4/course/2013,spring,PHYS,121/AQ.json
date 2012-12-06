@@ -2,13 +2,13 @@
    "Auditors":"0",
    "ClassWebsiteUrl":"http://courses.washington.edu/pedigo/phys121sum12/",
    "Course":{
-      "Href":"\/student\/v4\/course\/2012,summer,PHYS,121.json",
+      "Href":"\/student\/v4\/course\/2013,spring,PHYS,121.json",
       "CourseNumber":"121",
       "CourseTitle":"MECHANICS",
       "CourseTitleLong":"MECHANICS",
       "CurriculumAbbreviation":"PHYS",
-      "Quarter":"summer",
-      "Year":"2012"
+      "Quarter":"spring",
+      "Year":"2013"
    },
    "CourseCampus":"Seattle",
    "CourseDescription":"Basic principles of mechanics and experiments in mechanics for physical science and engineering majors. Lecture tutorial and lab components must all be taken to receive credit. Credit is not given for both PHYS 114 and PHYS 121. Prerequisite: either MATH 124 or MATH 134, which may be taken concurrently; recommended: one year high school physics. Offered: AWSpS.",
@@ -19,7 +19,7 @@
       "TimeScheduleLinkAbbreviation":"phys"
    },
    "DeleteFlag":"active",
-   "DuplicateEnrollmentAllowed":true,
+   "DuplicateEnrollmentAllowed":false,
    "GeneralEducationRequirements":{
       "EnglishComposition":false,
       "IndividualsAndSocieties":false,
@@ -45,54 +45,54 @@
          "DaysOfWeek":{
             "Days":[
                {
-                  "Name":"Tuesday"
+                  "Name":"Wednesday"
                }
             ],
-            "Text":" T"
+            "Text":" W"
          },
          "DaysOfWeekToBeArranged":false,
-         "EndTime":"15:20",
+         "EndTime":"12:20",
          "Instructors":[
 
          ],
          "MeetingIndex":"1",
-         "MeetingType":"quiz",
-         "RoomNumber":"B164",
+         "MeetingType":"laboratory",
+         "RoomNumber":"B108",
          "RoomToBeArranged":false,
-         "StartTime":"14:30"
+         "StartTime":"10:30"
       }
    ],
    "PrimarySection":{
-      "Href":"\/student\/v4\/course\/2012,summer,PHYS,121\/A.json",
+      "Href":"\/student\/v4\/course\/2013,spring,PHYS,121\/A.json",
       "CourseNumber":"121",
       "CurriculumAbbreviation":"PHYS",
-      "Quarter":"summer",
+      "Quarter":"spring",
       "SectionID":"A",
-      "Year":"2012"
+      "Year":"2013"
    },
    "Registrations":{
-      "Href":"\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=PHYS&course_number=121§ion_id=AC®_id=&is_active=on&instructor_reg_id=",
+      "Href":"\/student\/v4\/registration.json?year=2013&quarter=spring&curriculum_abbreviation=PHYS&course_number=121§ion_id=AQ®_id=&is_active=on&instructor_reg_id=",
       "CourseNumber":"121",
       "CurriculumAbbreviation":"PHYS",
       "InstructorRegID":null,
       "IsActive":"on",
       "PageSize":null,
       "PageStart":null,
-      "Quarter":"summer",
+      "Quarter":"spring",
       "RegID":null,
-      "SectionID":"AC",
-      "Year":"2012"
+      "SectionID":"AQ",
+      "Year":"2013"
    },
    "ResearchCredit":false,
-   "SLN":"18532",
+   "SLN":"18545",
    "SecondaryGradingOption":true,
-   "SectionID":"AC",
-   "SectionType":"quiz",
+   "SectionID":"AQ",
+   "SectionType":"laboratory",
    "ServiceLearning":false,
-   "SummerTerm":"",
+   "springTerm":"",
    "Term":{
-      "Href":"\/student\/v4\/term\/2012,summer.json",
-      "Quarter":"summer",
-      "Year":"2012"
+      "Href":"\/student\/v4\/term\/2013,spring.json",
+      "Quarter":"spring",
+      "Year":"2013"
    }
 }

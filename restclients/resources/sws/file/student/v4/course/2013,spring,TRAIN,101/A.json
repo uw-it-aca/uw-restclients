@@ -2,13 +2,13 @@
    "Auditors":"0",
    "ClassWebsiteUrl":"",
    "Course":{
-      "Href":"\/student\/v4\/course\/2012,summer,TRAIN,101.json",
+      "Href":"\/student\/v4\/course\/2013,spring,TRAIN,101.json",
       "CourseNumber":"101",
       "CourseTitle":"INTRO TRAIN I",
       "CourseTitleLong":"INTRO TRAIN",
       "CurriculumAbbreviation":"TRAIN",
-      "Quarter":"summer",
-      "Year":"2012"
+      "Quarter":"spring",
+      "Year":"2013"
    },
    "CourseCampus":"Seattle",
    "CourseDescription":null,
@@ -66,7 +66,7 @@
             {
                "FacultySequenceNumber":"",
                "GradeRoster":{
-                  "Href":"\/student\/v4\/graderoster\/2012,summer,TRAIN,101,A,FBB38FE46A7C11D5A4AE0004AC494FFE"
+                  "Href":"\/student\/v4\/graderoster\/2013,spring,TRAIN,101,A,FBB38FE46A7C11D5A4AE0004AC494FFE"
                },
                "Person":{
                   "Href":"\/student\/v4\/person\/FBB38FE46A7C11D5A4AE0004AC494FFE.json",
@@ -84,7 +84,7 @@
    ],
     "FinalExam": {
         "Building": "KNE",
-        "Date": "2012-06-02",
+        "Date": "2013-06-02",
         "EndTime": "16:20",
         "MeetingStatus": "3",
         "RoomNumber": "012",
@@ -93,25 +93,25 @@
 
 
    "PrimarySection":{
-      "Href":"\/student\/v4\/course\/2012,summer,TRAIN,101\/A.json",
+      "Href":"\/student\/v4\/course\/2013,spring,TRAIN,101\/A.json",
       "CourseNumber":"101",
       "CurriculumAbbreviation":"TRAIN",
-      "Quarter":"summer",
+      "Quarter":"spring",
       "SectionID":"A",
-      "Year":"2012"
+      "Year":"2013"
    },
    "Registrations":{
-      "Href":"\/student\/v4\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=TRAIN&course_number=101§ion_id=A®_id=&is_active=on&instructor_reg_id=",
+      "Href":"\/student\/v4\/registration.json?year=2013&quarter=spring&curriculum_abbreviation=TRAIN&course_number=101§ion_id=A®_id=&is_active=on&instructor_reg_id=",
       "CourseNumber":"101",
       "CurriculumAbbreviation":"TRAIN",
       "InstructorRegID":null,
       "IsActive":"on",
       "PageSize":null,
       "PageStart":null,
-      "Quarter":"summer",
+      "Quarter":"spring",
       "RegID":null,
       "SectionID":"A",
-      "Year":"2012"
+      "Year":"2013"
    },
    "ResearchCredit":false,
    "SLN":"13833",
@@ -119,10 +119,10 @@
    "SectionID":"A",
    "SectionType":"lecture",
    "ServiceLearning":false,
-   "SummerTerm":"B-term",
+   "springTerm":"B-term",
    "Term":{
-      "Href":"\/student\/v4\/term\/2012,summer.json",
-      "Quarter":"summer",
-      "Year":"2012"
+      "Href":"\/student\/v4\/term\/2013,spring.json",
+      "Quarter":"spring",
+      "Year":"2013"
    }
 }
