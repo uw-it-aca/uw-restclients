@@ -94,6 +94,7 @@ class Term(models.Model):
         data = {
             'quarter': self.get_quarter_display(),
             'year': self.year,
+            'last_final_exam_date': self.last_final_exam_date.strftime("%Y-%m-%d 23:59:59"),
         }
         return data
 
@@ -281,6 +282,7 @@ class ClassSchedule(models.Model):
         data = {
             'year': self.term.year,
             'quarter': self.term.quarter,
+            'term': self.term.json_data(),
             'sections': [],
         }
 
