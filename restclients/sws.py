@@ -451,25 +451,28 @@ class SWS(object):
                 final_exam.is_confirmed = False
                 if (status == "2") or (status == "3"):
                     final_exam.is_confirmed = True
-                    final_exam.building = final_data["Building"]
-                    final_exam.room_number = final_data["RoomNumber"]
+                elif status == "1":
+                    final_exam.no_exam_or_nontraditional = True
 
-                    final_format = "%Y-%m-%d : %H:%M"
+                final_exam.building = final_data["Building"]
+                final_exam.room_number = final_data["RoomNumber"]
 
+                final_format = "%Y-%m-%d : %H:%M"
+
+                strptime = datetime.strptime
+                if final_data["StartTime"]:
                     start_string = "%s : %s" % (
                                                 final_data["Date"],
                                                 final_data["StartTime"]
                                                 )
+                    final_exam.start_date = strptime(start_string, final_format)
 
+                if final_data["EndTime"]:
                     end_string = "%s : %s" % (
                                                 final_data["Date"],
                                                 final_data["EndTime"]
-                                                )
-                    strptime = datetime.strptime
-                    final_exam.start_date = strptime(start_string, final_format)
+                                             )
                     final_exam.end_date = strptime(end_string, final_format)
-                elif status == "1":
-                    final_exam.no_exam_or_nontraditional = True
 
                 final_exam.full_clean()
                 section.final_exam = final_exam
