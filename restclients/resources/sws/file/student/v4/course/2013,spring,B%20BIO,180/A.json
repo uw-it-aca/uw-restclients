@@ -77,6 +77,15 @@
         "StartTime" : "19:45"
       }
   ],
+    "FinalExam": {
+        "Building": "KNE",
+        "Date": "2013-06-08",
+        "EndTime": "16:20",
+        "MeetingStatus": "0",
+        "RoomNumber": "130",
+        "StartTime": "13:30"
+    },
+
   "PrimarySection" : { "CourseNumber" : "180",
       "CurriculumAbbreviation" : "B BIO",
       "Href" : "\/student\/v4\/course\/2013,spring,B%20BIO,180\/A.json",
