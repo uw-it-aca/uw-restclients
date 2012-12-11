@@ -466,7 +466,6 @@ class SWS(object):
                                                     final_data["Date"],
                                                     final_data["StartTime"]
                                                     )
-                        print "SS: ", start_string
                         final_exam.start_date = strptime(start_string, final_format)
 
                     if final_data["EndTime"]:
