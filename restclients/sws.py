@@ -460,19 +460,21 @@ class SWS(object):
                 final_format = "%Y-%m-%d : %H:%M"
 
                 strptime = datetime.strptime
-                if final_data["StartTime"]:
-                    start_string = "%s : %s" % (
-                                                final_data["Date"],
-                                                final_data["StartTime"]
-                                                )
-                    final_exam.start_date = strptime(start_string, final_format)
+                if final_data["Date"] and final_data["Date"] != "0000-00-00":
+                    if final_data["StartTime"]:
+                        start_string = "%s : %s" % (
+                                                    final_data["Date"],
+                                                    final_data["StartTime"]
+                                                    )
+                        print "SS: ", start_string
+                        final_exam.start_date = strptime(start_string, final_format)
 
-                if final_data["EndTime"]:
-                    end_string = "%s : %s" % (
-                                                final_data["Date"],
-                                                final_data["EndTime"]
-                                             )
-                    final_exam.end_date = strptime(end_string, final_format)
+                    if final_data["EndTime"]:
+                        end_string = "%s : %s" % (
+                                                    final_data["Date"],
+                                                    final_data["EndTime"]
+                                                 )
+                        final_exam.end_date = strptime(end_string, final_format)
 
                 final_exam.full_clean()
                 section.final_exam = final_exam
