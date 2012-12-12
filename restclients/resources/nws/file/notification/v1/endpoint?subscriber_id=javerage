@@ -1,4 +1,26 @@
 {
     "Endpoints": [
+        {
+            "Default": false,
+            "Active": true,
+            "Carrier": "",
+            "Protocol": "email",
+            "EndpointID": "25b0db40-4323-11e2-a25f-0800200c9a66",
+            "EndpointURI": "asdf132",
+            "OwnerID": "javerage",
+            "EndpointAddress": "javerage@uw.edu",
+            "SubscriberID": "javerage"
+        }, 
+        {
+            "Default": false,
+            "Active": true,
+            "Carrier": "",
+            "Protocol": "sms",
+            "EndpointID": "25b0db41-4323-11e2-a25f-0800200c9a66",
+            "EndpointURI": "asdf132",
+            "OwnerID": "javerage",
+            "EndpointAddress": "2065551234",
+            "SubscriberID": "javerage"
+        }
     ]
 }
