@@ -6,7 +6,7 @@ Contains the custom exceptions used by the restclients.
 class PhoneNumberRequired(Exception):
     """Exception for missing phone number."""
     pass
-    
+
 class InvalidPhoneNumber(Exception):
     """Exception for invalid phone numbers."""
     pass
@@ -29,6 +29,10 @@ class InvalidSectionID(Exception):
 
 class InvalidGroupID(Exception):
     """Exception for invalid group id."""
+    pass
+
+class InvalidEndpointProtocol(Exception):
+    """Exception for invalid endpoint protocol."""
     pass
 
 class DataFailureException(Exception):

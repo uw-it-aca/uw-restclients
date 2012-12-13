@@ -4,7 +4,7 @@ This is the interface for interacting with the Notifications Web Service.
 
 from restclients.dao import NWS_DAO
 from restclients.models import Subscription, Channel, Endpoint
-from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID
+from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol
 from urllib import urlencode
 from datetime import datetime
 import json
@@ -50,6 +50,24 @@ class NWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
+        return self._endpoints_from_json(json.loads(response.data))
+
+    def get_endpoint_by_subscriber_id_and_protocol(self, subscriber_id, protocol):
+        """
+        Get an endpoint by subscriber_id and protocol
+        """
+        self._validate_subscriber_id(subscriber_id)
+        self._validate_endpoint_protocol(protocol)
+
+        url = "/notification/v1/endpoint?subscriber_id=%s&protocol=%s" % (subscriber_id, protocol)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        print response.data
         return self._endpoints_from_json(json.loads(response.data))
 
     def delete_endpoint(self, endpoint_id):
@@ -211,53 +229,31 @@ class NWS(object):
         """
         Search for all subscriptions on a given channel
         """
-        #Validate the channel_id
-        self._validate_uuid(channel_id)
-
-        url = "/notification/v1/subscription?channel_id=%s" % (channel_id)
-
-        dao = NWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._subscriptions_from_json(json.loads(response.data))
+        return self._get_subscriptions_from_nws(channel_id=channel_id)
 
     def get_subscriptions_by_subscriber_id(self, subscriber_id):
         """
         Search for all subscriptions by a given subscriber
         """
-        #Validate input
-        self._validate_subscriber_id(subscriber_id)
-
-        url = "/notification/v1/subscription?subscriber_id=%s" % (subscriber_id)
-
-        dao = NWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._subscriptions_from_json(json.loads(response.data))
+        return self._get_subscriptions_from_nws(subscriber_id=subscriber_id)
 
     def get_subscriptions_by_channel_id_and_subscriber_id(self, channel_id, subscriber_id):
         """
         Search for all subscriptions by a given channel and subscriber
         """
-        #Validate input
-        self._validate_uuid(channel_id)
-        self._validate_subscriber_id(subscriber_id)
+        return self._get_subscriptions_from_nws(channel_id=channel_id, subscriber_id=subscriber_id)
 
-        url = "/notification/v1/subscription?channel_id=%s&subscriber_id=%s" % (channel_id, subscriber_id)
+    def get_subscription_by_channel_id_and_endpoint_id(self, channel_id, endpoint_id):
+        """
+        Search for subscription by a given channel and endpoint
+        """
+        subscriptions = []
+        try:
+            subscriptions = self._get_subscriptions_from_nws(channel_id=channel_id, endpoint_id=endpoint_id)
+        except Exception as ex:
+            raise
 
-        dao = NWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._subscriptions_from_json(json.loads(response.data))
+        return subscriptions[0]
 
     #CHANNEL RESOURCE
     def create_new_channel(self, channel):
@@ -400,6 +396,35 @@ class NWS(object):
 
         return self._template_from_json(response.data)
 
+    def _get_subscriptions_from_nws(self, channel_id=None, subscriber_id=None, endpoint_id=None):
+        if (channel_id is None and subscriber_id is None and endpoint_id is None):
+            raise ValueError("_get_subscriptions_from_nws: No arguments provided")
+
+        # validate input
+        for uuid in [channel_id, endpoint_id]:
+            if uuid is not None:
+                self._validate_uuid(uuid)
+        if subscriber_id is not None:
+            self._validate_subscriber_id(subscriber_id)
+
+        params = []
+        if channel_id is not None:
+            params.append('channel_id=' + channel_id)
+        if subscriber_id is not None:
+            params.append('subscriber_id=' + subscriber_id)
+        if endpoint_id is not None:
+            params.append('endpoint_id=' + endpoint_id)
+
+        url = "/notification/v1/subscription?" + '&'.join(params)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._subscriptions_from_json(json.loads(response.data))
+
     def _subscriptions_from_json(self, data):
         """
         Returns a subscription model created from the passed json.
@@ -510,3 +535,7 @@ class NWS(object):
     def _validate_subscriber_id(self, subscriber_id):
         if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', subscriber_id, re.I):
             raise InvalidNetID(subscriber_id)
+
+    def _validate_endpoint_protocol(self, protocol):
+        if not re.match(r'^(Email|SMS)$', protocol, re.I):
+            raise InvalidEndpointProtocol(protocol)
