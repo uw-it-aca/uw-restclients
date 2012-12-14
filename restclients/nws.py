@@ -67,7 +67,6 @@ class NWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
-        print response.data
         return self._endpoints_from_json(json.loads(response.data))
 
     def delete_endpoint(self, endpoint_id):
