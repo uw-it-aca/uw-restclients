@@ -6,7 +6,7 @@ from restclients.models import Message, CourseAvailableEvent
 from unittest import skipIf
 
 class NWSTestMessage(TestCase):
-    def test_create_message(self):
+    def test_create_message_with_model(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             
@@ -16,7 +16,7 @@ class NWSTestMessage(TestCase):
             course_available_event.status = "open"
             course_available_event.space_available = 1
             course_available_event.quarter = "winter"
-            course_available_event.year = 2013
+            course_available_event.year = 2012
             course_available_event.curriculum_abbr = "CSE"
             course_available_event.course_number = "100"
             course_available_event.section_id = "aa"
@@ -24,15 +24,46 @@ class NWSTestMessage(TestCase):
             
             message = Message()
             message.type =  "uw_student_courseavailable"
-            message.content = course_available_event
+            message.event_model = course_available_event
 
             nws = NWS()
             response_status = nws.create_new_message(message)
             self.assertEquals(response_status, 201)
 
+    def test_create_message_with_json(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            
+            json = {
+                "Event": {
+                    "EventID":"blah",
+                    "Href":"",
+                    "LastModified":"2012-12-23T09:00:00",
+                    "Section": {
+                        "Course": {
+                            "CourseNumber":"100",
+                            "CurriculumAbbreviation":"CSE",
+                            "Quarter":"winter",
+                            "Year":2012
+                        },
+                        "Href":"",
+                        "SLN":"12345",
+                        "SectionID":"aa"
+                    },
+                    "SpaceAvailable":1
+                }
+            }   
+            
+            message = Message()
+            message.type =  "uw_student_courseavailable"
+            message.event_json = json
+
+            nws = NWS()
+            response_status = nws.create_new_message(message)
+            self.assertEquals(response_status, 201)
 
     @skipIf(True, "Used only for live testing")
-    def _create_message_live(self):
+    def _create_message_live_with_model(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
             course_available_event = CourseAvailableEvent()
@@ -49,7 +80,40 @@ class NWSTestMessage(TestCase):
             
             message = Message()
             message.type =  "uw_student_courseavailable"
-            message.content = course_available_event
+            message.event_model = course_available_event
+
+            nws = NWS()
+            response_status = nws.create_new_message(message)
+            self.assertEquals(response_status, 201)
+    
+    @skipIf(True, "Used only for live testing")
+    def _create_message_live_with_json(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):
+            
+            json = {
+                "Event": {
+                    "EventID":"blah",
+                    "Href":"",
+                    "LastModified":"2012-12-23T09:00:00",
+                    "Section": {
+                        "Course": {
+                            "CourseNumber":"200",
+                            "CurriculumAbbreviation":"ling",
+                            "Quarter":"autumn",
+                            "Year":2012
+                        },
+                        "Href":"",
+                        "SLN":"16116",
+                        "SectionID":"ac"
+                    },
+                    "SpaceAvailable":1
+                }
+            }   
+            
+            message = Message()
+            message.type =  "uw_student_courseavailable"
+            message.event_json = json
 
             nws = NWS()
             response_status = nws.create_new_message(message)

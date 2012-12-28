@@ -397,14 +397,23 @@ class CourseAvailableEvent(models.Model):
 class Message(models.Model):
     message_id = models.CharField(max_length=36)
     type = models.CharField(max_length=140)
-    content = models.ForeignKey(CourseAvailableEvent,
+    event_model = models.ForeignKey(CourseAvailableEvent,
                              on_delete=models.PROTECT)
-
+    event_json = models.TextField()
+    
     def json_data(self):
+        #Populate the content given Message object properities
+        if hasattr(self, 'event_model') and self.event_model:
+            content = self.event_model.json_data()
+        elif hasattr(self, 'event_json') and self.event_json:
+            content = self.event_json
+        else:
+            content = None
+            
         return {
             "Message": {
                 "MessageType": self.type,
-                "Content": self.content.json_data()
+                "Content": content
              }
         }
 
