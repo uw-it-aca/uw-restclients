@@ -301,6 +301,7 @@ class Subscription(models.Model):
             }
         }
 
+
 class Channel(models.Model):
     channel_id = models.CharField(max_length=36)
     surrogate_id = models.CharField(max_length=140)
@@ -349,6 +350,9 @@ class Notification(models.Model):
 
 
 class CourseAvailableEvent(models.Model):
+    event_id = models.CharField(max_length=40)
+    href = models.CharField(max_length=8192)
+    last_modified = models.DateTimeField(blank=True)
     status = models.CharField(max_length=10)
     space_available = models.PositiveIntegerField()
     #TODO: Need to learn how to use the Section and Term model instead
@@ -357,6 +361,7 @@ class CourseAvailableEvent(models.Model):
     curriculum_abbr = models.CharField(max_length=6)
     course_number = models.CharField(max_length=3)
     section_id = models.CharField(max_length=2)
+    sln = models.PositiveSmallIntegerField()
 
     def get_logging_description(self):
         return "%s,%s,%s,%s/%s - %s" % (
@@ -367,7 +372,41 @@ class CourseAvailableEvent(models.Model):
             self.section_id,
             self.status
         )
+    
+    def json_data(self):
+        return{
+            "Event": {
+                "EventID":self.event_id,
+                "Href":self.href,
+                "LastModified":self.last_modified,
+                "Section": {
+                    "Course": {
+                        "CourseNumber":self.course_number,
+                        "CurriculumAbbreviation":self.curriculum_abbr,
+                        "Quarter":self.quarter,
+                        "Year":self.year
+                    },
+                    "Href":"",
+                    "SLN":self.sln,
+                    "SectionID":self.section_id
+                },
+                "SpaceAvailable":self.space_available
+            }
+        }
 
+class Message(models.Model):
+    message_id = models.CharField(max_length=36)
+    type = models.CharField(max_length=140)
+    content = models.ForeignKey(CourseAvailableEvent,
+                             on_delete=models.PROTECT)
+
+    def json_data(self):
+        return {
+            "Message": {
+                "MessageType": self.type,
+                "Content": self.content.json_data()
+             }
+        }
 
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)

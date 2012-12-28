@@ -1,0 +1,15 @@
+{
+    "Endpoint": {
+        "EndpointID": "53ec7c26-19de-45ab-ba53-01b834c7fa81", 
+        "EndpointURI": "/notification/v1/endpoint/53ec7c26-19de-45ab-ba53-01b834c7fa81", 
+        "EndpointAddress": "206-555-5555", 
+        "Carrier": "ATT", 
+        "Protocol": "SMS", 
+        "SubscriberID": "javerage", 
+        "OwnerID": "javerage", 
+        "Active": true, 
+        "Default": false, 
+        "Created": "2012-11-13 22:51:51+00:00", 
+        "LastModified": "2012-11-13 22:51:51+00:00"
+    }
+}

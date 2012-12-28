@@ -254,6 +254,28 @@ class NWS(object):
 
         return subscriptions[0]
 
+    #MESSAGE RESOURCE
+    def create_new_message(self, message):
+        """
+        Create a new message
+
+        :param message:
+        is the new message that the client wants to create
+        """
+        
+        #Create new channel
+        dao = NWS_DAO()
+        url = "/notification/v1/message"
+
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, json.dumps(message.json_data()))
+
+        #HTTP Status Code 201 Created: The request has been fulfilled and resulted
+        #in a new resource being created
+        if post_response.status != 201:
+            raise DataFailureException(url, post_response.status, post_response.data)
+
+        return post_response.status
+    
     #CHANNEL RESOURCE
     def create_new_channel(self, channel):
         """

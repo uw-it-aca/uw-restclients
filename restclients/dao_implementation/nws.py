@@ -66,7 +66,14 @@ class Live(object):
 
 
     def _get_pool(self):
+        nws_key_file = None
+        nws_cert_file = None
+        
+        if settings.RESTCLIENTS_NWS_KEY_FILE and settings.RESTCLIENTS_NWS_CERT_FILE:
+            nws_key_file = settings.RESTCLIENTS_NWS_KEY_FILE
+            nws_cert_file = settings.RESTCLIENTS_NWS_CERT_FILE
+            
         return get_con_pool(settings.RESTCLIENTS_NWS_HOST,
-                                     settings.RESTCLIENTS_NWS_KEY_FILE,
-                                     settings.RESTCLIENTS_NWS_CERT_FILE,
+                                     nws_key_file,
+                                     nws_cert_file,
                                      max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)

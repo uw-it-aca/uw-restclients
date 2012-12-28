@@ -1,26 +1,34 @@
 {
     "Endpoints": [
         {
-            "Default": false,
-            "Active": true,
-            "Carrier": "",
-            "Protocol": "email",
-            "EndpointID": "25b0db40-4323-11e2-a25f-0800200c9a66",
-            "EndpointURI": "asdf132",
-            "OwnerID": "javerage",
-            "EndpointAddress": "javerage@uw.edu",
-            "SubscriberID": "javerage"
+            "EndpointID": "53ec7c26-19de-45ab-ba53-01b834c7fa81", 
+            "EndpointURI": "/notification/v1/endpoint/53ec7c26-19de-45ab-ba53-01b834c7fa81", 
+            "EndpointAddress": "206-555-5555", 
+            "Carrier": "ATT", 
+            "Protocol": "SMS", 
+            "SubscriberID": "javerage", 
+            "OwnerID": "javerage", 
+            "Active": true, 
+            "Default": false, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
         }, 
         {
-            "Default": false,
-            "Active": true,
-            "Carrier": "",
-            "Protocol": "sms",
-            "EndpointID": "25b0db41-4323-11e2-a25f-0800200c9a66",
-            "EndpointURI": "asdf132",
-            "OwnerID": "javerage",
-            "EndpointAddress": "2065551234",
-            "SubscriberID": "javerage"
+            "EndpointID": "9bad986e-5cab-4918-a86d-42c8786a6e11", 
+            "EndpointURI": "/notification/v1/endpoint/9bad986e-5cab-4918-a86d-42c8786a6e11", 
+            "EndpointAddress": "javerage09@uw.edu", 
+            "Carrier": null, 
+            "Protocol": "Email", 
+            "SubscriberID": "javerage", 
+            "OwnerID": "javerage", 
+            "Active": true, 
+            "Default": false, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
         }
-    ]
+    ], 
+    "TotalCount": 2, 
+    "QueryParams": {
+        "subscriber_id": "javerage"
+    }
 }
