@@ -64,16 +64,16 @@ class SQSQueue(TestCase):
     def test_get_message(self):
         """
         Test for AWS SQS Connectivity and AWS settings
-        RESTCLIENTS_AMAZON_COURSEAVAIL_QUEUE is the name of the SQS
+        RESTCLIENTS_AMAZON_QUEUE is the name of the SQS
         
         The following are necessary for our test environment:
         RESTCLIENTS_AMAZON_AWS_ACCESS_KEY = "AKIAI25R24BMZMYTVPEQ"
         RESTCLIENTS_AMAZON_AWS_SECRET_KEY = "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"
-        RESTCLIENTS_AMAZON_COURSEAVAIL_QUEUE = "uw-student-courseavailable-eval"
+        RESTCLIENTS_AMAZON_QUEUE = "uw-student-courseavailable-eval"
         """
         with self.settings(RESTCLIENTS_AMAZON_SQS_DAO_CLASS='restclients.dao_implementation.amazon_sqs.Live'):
             sqs = AmazonSQS()
-            queue = sqs.get_queue(settings.RESTCLIENTS_AMAZON_COURSEAVAIL_QUEUE)
+            queue = sqs.get_queue(settings.RESTCLIENTS_AMAZON_QUEUE)
             m = queue.read()
             body = m.get_body()
             self.assertTrue(body != None)
