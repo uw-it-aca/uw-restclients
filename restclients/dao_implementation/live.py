@@ -6,6 +6,7 @@ connections for live data from a web service
 import logging
 from urllib3 import connection_from_url
 
+
 def get_con_pool(host,
                  key_file,
                  cert_file,

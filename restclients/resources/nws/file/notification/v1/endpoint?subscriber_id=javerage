@@ -1,34 +1,33 @@
 {
     "Endpoints": [
         {
-            "EndpointID": "53ec7c26-19de-45ab-ba53-01b834c7fa81", 
-            "EndpointURI": "/notification/v1/endpoint/53ec7c26-19de-45ab-ba53-01b834c7fa81", 
-            "EndpointAddress": "206-555-5555", 
-            "Carrier": "ATT", 
-            "Protocol": "SMS", 
-            "SubscriberID": "javerage", 
-            "OwnerID": "javerage", 
-            "Active": true, 
-            "Default": false, 
-            "Created": "2012-11-13 22:51:51+00:00", 
-            "LastModified": "2012-11-13 22:51:51+00:00"
-        }, 
+            "EndpointID": "780f2a49-2118-4969-9bef-bbd38c26970a",
+            "EndpointURI": "/notification/v1/endpoint/780f2a49-2118-4969-9bef-bbd38c26970a",
+            "EndpointAddress": "222-222-3333",
+            "Carrier": "AT&T",
+            "Protocol": "sms",
+            "SubscriberID": "javerage",
+            "OwnerID": "sdf",
+            "Active": false,
+			"Default": false,
+            "Created": "2012-11-27T20:08:08.914Z",
+            "LastModified": "2012-11-27T20:08:08.914Z"
+        },
         {
-            "EndpointID": "9bad986e-5cab-4918-a86d-42c8786a6e11", 
-            "EndpointURI": "/notification/v1/endpoint/9bad986e-5cab-4918-a86d-42c8786a6e11", 
-            "EndpointAddress": "javerage09@uw.edu", 
-            "Carrier": null, 
-            "Protocol": "Email", 
-            "SubscriberID": "javerage", 
-            "OwnerID": "javerage", 
-            "Active": true, 
-            "Default": false, 
-            "Created": "2012-11-13 22:51:51+00:00", 
-            "LastModified": "2012-11-13 22:51:51+00:00"
+            "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+            "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+            "EndpointAddress": "222-222-3333",
+            "Protocol": "sms",
+            "SubscriberID": "javerage",
+            "OwnerID": "javerage",
+            "Active": false,
+			"Default": true,
+            "Created": "2012-11-28T18:49:58.726Z",
+            "LastModified": "2012-12-12T01:24:19.396Z"
         }
-    ], 
-    "TotalCount": 2, 
+    ],
     "QueryParams": {
         "subscriber_id": "javerage"
-    }
+    },
+    "TotalCount": 2
 }

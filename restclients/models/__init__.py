@@ -249,99 +249,98 @@ class SMSResponse(models.Model):
     def get_rid(self):
         return self.id
 
-class Endpoint(models.Model):
-    end_point_id = models.CharField(max_length=36)
-    end_point_uri = models.CharField(max_length=255)
-    end_point = models.CharField(max_length=255)
-    carrier = models.CharField(max_length=80, blank=True)
-    protocol = models.CharField(max_length=40)
-    subscriber_id = models.CharField(max_length=80)
-    owner_id = models.CharField(max_length=80)
-    active = models.BooleanField(default=True)
-    default = models.BooleanField(default=False)
+#class Endpoint(models.Model):
+#    end_point_id = models.CharField(max_length=36)
+#    end_point_uri = models.CharField(max_length=255)
+#    end_point = models.CharField(max_length=255)
+#    carrier = models.CharField(max_length=80, blank=True)
+#    protocol = models.CharField(max_length=40)
+#    subscriber_id = models.CharField(max_length=80)
+#    owner_id = models.CharField(max_length=80)
+#    active = models.BooleanField(default=True)
+#    default = models.BooleanField(default=False)
+#    
+#    def json_data(self):
+#        return {
+#                "Endpoint": {
+#                    "EndpointID": self.end_point_id, 
+#                    "EndpointURI": self.end_point_uri, 
+#                    "EndpointAddress": self.end_point, 
+#                    "Carrier": self.carrier, 
+#                    "Protocol": self.protocol, 
+#                    "SubscriberID": self.subscriber_id, 
+#                    "OwnerID": self.owner_id, 
+#                    "Active": self.active, 
+#                    "Default": self.default
+#                }
+#            }
     
-    def json_data(self):
-        return {
-                "Endpoint": {
-                    "EndpointID": self.end_point_id, 
-                    "EndpointURI": self.end_point_uri, 
-                    "EndpointAddress": self.end_point, 
-                    "Carrier": self.carrier, 
-                    "Protocol": self.protocol, 
-                    "SubscriberID": self.subscriber_id, 
-                    "OwnerID": self.owner_id, 
-                    "Active": self.active, 
-                    "Default": self.default
-                }
-            }
-    
-class Subscription(models.Model):
-    #PrimaryKey
-    subscription_id = models.CharField(max_length=36, db_index=True)
-    channel_id = models.CharField(max_length=36)
-    end_point_id = models.CharField(max_length=36, blank=True)
-    end_point = models.CharField(max_length=255)
-    protocol = models.CharField(max_length=40)
-    subscriber_id = models.CharField(max_length=80)
-    owner_id = models.CharField(max_length=80)
-    active = models.BooleanField(default=True)
-    default = models.BooleanField(default=False)
-    #subscriber_type = models.CharField(max_length=40)
+#class Subscription(models.Model):
+#    #PrimaryKey
+#    subscription_id = models.CharField(max_length=36, db_index=True)
+#    channel_id = models.CharField(max_length=36)
+#    end_point_id = models.CharField(max_length=36, blank=True)
+#    end_point = models.CharField(max_length=255)
+#    protocol = models.CharField(max_length=40)
+#    subscriber_id = models.CharField(max_length=80)
+#    owner_id = models.CharField(max_length=80)
+#    active = models.BooleanField(default=True)
+#    default = models.BooleanField(default=False)
+#    #subscriber_type = models.CharField(max_length=40)
+#
+#    def json_data(self):
+#        return {
+#            "Subscription": {
+#                "SubscriptionID": self.subscription_id,
+#                "Channel": {
+#                    "ChannelID": self.channel_id
+#                },
+#                "Endpoint": {
+#                    "EndpointID": self.end_point_id
+#                }
+#            }
+#        }
 
-    def json_data(self):
-        return {
-            "Subscription": {
-                "SubscriptionID": self.subscription_id,
-                "Channel": {
-                    "ChannelID": self.channel_id
-                },
-                "Endpoint": {
-                    "EndpointID": self.end_point_id
-                }
-            }
-        }
-
-
-class Channel(models.Model):
-    channel_id = models.CharField(max_length=36)
-    surrogate_id = models.CharField(max_length=140)
-    type = models.CharField(max_length=140)
-    name = models.CharField(max_length=255)
-    template_surrogate_id = models.CharField(max_length=140)
-    sln = models.CharField(max_length=5, blank=True)
-    description = models.TextField(blank=True)
-    last_modified = models.DateTimeField(blank=True)
-
-    def json_data(self):
-        #"SurrogateID": "2012,autumn,cse,999,b"
-        surrogate_data = self.surrogate_id.split(",")
-        return{
-            "Channel": {
-                "ChannelID": self.channel_id,
-                "SurrogateID": self.surrogate_id, 
-                "Type": self.type, 
-                "Name": self.name, 
-                "Tags": {
-                    "sln": self.sln, 
-                    "quarter": surrogate_data[1], 
-                    "year": surrogate_data[0]
-                }, 
-                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
-                "Description": None, 
-                "Sources": [
-                    {
-                        "Topic": self.type,
-                        "Filter": {
-                            "year": surrogate_data[0],
-                            "section": surrogate_data[4], 
-                            "dept": surrogate_data[2],
-                            "quarter": surrogate_data[1],
-                            "course": surrogate_data[3]
-                        }
-                    }
-                ] 
-            }
-        }
+#class Channel(models.Model):
+#    channel_id = models.CharField(max_length=36)
+#    surrogate_id = models.CharField(max_length=140)
+#    type = models.CharField(max_length=140)
+#    name = models.CharField(max_length=255)
+#    template_surrogate_id = models.CharField(max_length=140)
+#    sln = models.CharField(max_length=5, blank=True)
+#    description = models.TextField(blank=True)
+#    last_modified = models.DateTimeField(blank=True)
+#
+#    def json_data(self):
+#        #"SurrogateID": "2012,autumn,cse,999,b"
+#        surrogate_data = self.surrogate_id.split(",")
+#        return{
+#            "Channel": {
+#                "ChannelID": self.channel_id,
+#                "SurrogateID": self.surrogate_id, 
+#                "Type": self.type, 
+#                "Name": self.name, 
+#                "Tags": {
+#                    "sln": self.sln, 
+#                    "quarter": surrogate_data[1], 
+#                    "year": surrogate_data[0]
+#                }, 
+#                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+#                "Description": None, 
+#                "Sources": [
+#                    {
+#                        "Topic": self.type,
+#                        "Filter": {
+#                            "year": surrogate_data[0],
+#                            "section": surrogate_data[4], 
+#                            "dept": surrogate_data[2],
+#                            "quarter": surrogate_data[1],
+#                            "course": surrogate_data[3]
+#                        }
+#                    }
+#                ] 
+#            }
+#        }
 
 class Notification(models.Model):
     subject = models.CharField(max_length=8192)
@@ -394,28 +393,28 @@ class CourseAvailableEvent(models.Model):
             }
         }
 
-class Message(models.Model):
-    message_id = models.CharField(max_length=36)
-    type = models.CharField(max_length=140)
-    event_model = models.ForeignKey(CourseAvailableEvent,
-                             on_delete=models.PROTECT)
-    event_json = models.TextField()
-    
-    def json_data(self):
-        #Populate the content given Message object properities
-        if hasattr(self, 'event_model') and self.event_model:
-            content = self.event_model.json_data()
-        elif hasattr(self, 'event_json') and self.event_json:
-            content = self.event_json
-        else:
-            content = None
-            
-        return {
-            "Message": {
-                "MessageType": self.type,
-                "Content": content
-             }
-        }
+#class Message(models.Model):
+#    message_id = models.CharField(max_length=36)
+#    type = models.CharField(max_length=140)
+#    event_model = models.ForeignKey(CourseAvailableEvent,
+#                             on_delete=models.PROTECT)
+#    event_json = models.TextField()
+#    
+#    def json_data(self):
+#        #Populate the content given Message object properities
+#        if hasattr(self, 'event_model') and self.event_model:
+#            content = self.event_model.json_data()
+#        elif hasattr(self, 'event_json') and self.event_json:
+#            content = self.event_json
+#        else:
+#            content = None
+#            
+#        return {
+#            "Message": {
+#                "MessageType": self.type,
+#                "Content": content
+#             }
+#        }
 
 class CanvasEnrollment(models.Model):
     course_url = models.CharField(max_length=2000)

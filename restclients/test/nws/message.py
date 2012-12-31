@@ -2,8 +2,10 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.nws import NWS
 from restclients.exceptions import DataFailureException
-from restclients.models import Message, CourseAvailableEvent
+from restclients.models import CourseAvailableEvent
+from vm.v1.viewmodels import Message, MessageList, Serializer
 from unittest import skipIf
+
 
 class NWSTestMessage(TestCase):
     def test_create_message_with_model(self):
@@ -23,8 +25,8 @@ class NWSTestMessage(TestCase):
             course_available_event.sln = "12345"
             
             message = Message()
-            message.type =  "uw_student_courseavailable"
-            message.event_model = course_available_event
+            message.message_type =  "uw_student_courseavailable"
+            message.content = course_available_event.json_data()
 
             nws = NWS()
             response_status = nws.create_new_message(message)
@@ -55,8 +57,8 @@ class NWSTestMessage(TestCase):
             }   
             
             message = Message()
-            message.type =  "uw_student_courseavailable"
-            message.event_json = json
+            message.message_type =  "uw_student_courseavailable"
+            message.content = json
 
             nws = NWS()
             response_status = nws.create_new_message(message)
@@ -79,8 +81,8 @@ class NWSTestMessage(TestCase):
             course_available_event.sln = "16116"
             
             message = Message()
-            message.type =  "uw_student_courseavailable"
-            message.event_model = course_available_event
+            message.message_type =  "uw_student_courseavailable"
+            message.content = course_available_event.json_data()
 
             nws = NWS()
             response_status = nws.create_new_message(message)
@@ -112,8 +114,8 @@ class NWSTestMessage(TestCase):
             }   
             
             message = Message()
-            message.type =  "uw_student_courseavailable"
-            message.event_json = json
+            message.message_type =  "uw_student_courseavailable"
+            message.content = json
 
             nws = NWS()
             response_status = nws.create_new_message(message)
