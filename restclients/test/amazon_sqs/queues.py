@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.amazon_sqs import AmazonSQS
+from unittest import skipIf
 
 class SQSQueue(TestCase):
 #Local tests
@@ -61,6 +62,7 @@ class SQSQueue(TestCase):
             self.assertEquals(m3.get_body(), "This is message #3", "Last in, last out")
             queue.delete_message(m3)
 #Live tests
+    @skipIf(not hasattr(settings, 'RESTCLIENTS_AMAZON_RUN_LIVE_TESTS'), "Don't run live tests unless they're really wanted")
     def test_get_message(self):
         """
         Test for AWS SQS Connectivity and AWS settings
@@ -71,7 +73,7 @@ class SQSQueue(TestCase):
         RESTCLIENTS_AMAZON_AWS_SECRET_KEY = "99VLqGgxynBryikIP4ZlxTeRbYwVSY3CTGm4jBoY"
         RESTCLIENTS_AMAZON_QUEUE = "uw-student-courseavailable-eval"
         """
-        with self.settings(RESTCLIENTS_AMAZON_SQS_DAO_CLASS='restclients.dao_implementation.amazon_sqs.Live'):
+        with self.settings(RESTCLIENTS_AMAZON_SQS_DAO_CLASS='restclients.dao_implementation.amazon_sqs.Live',):
             sqs = AmazonSQS()
             queue = sqs.get_queue(settings.RESTCLIENTS_AMAZON_QUEUE)
             m = queue.read()
