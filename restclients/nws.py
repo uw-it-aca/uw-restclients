@@ -4,11 +4,12 @@ This is the interface for interacting with the Notifications Web Service.
 
 from restclients.dao import NWS_DAO
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol
+from restclients.models import CourseAvailableEvent
 from urllib import urlencode
 from datetime import datetime
-from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Message, MessageList, Serializer, Subscription, SubscriptionList
-
+from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 import re
+import json
 
 
 class NWS(object):
@@ -422,135 +423,27 @@ class NWS(object):
 
         return channel_list.view_models
 
-#    def _subscriptions_from_json(self, data):
-#        """
-#        Returns a subscription model created from the passed json.
-#        """
-#        subscriptions = []
-#        for subscription_data in data['Subscriptions']:
-#            subscriptions.append(self._get_subscription(subscription_data))
-#
-#        return subscriptions
-
-#    def _get_subscription(self, subscription_data):
-#        """
-#        Returns a subscription
-#        """
-#        subscription = Subscription()
-#
-#        subscription.subscription_id = subscription_data['SubscriptionID']
-#        subscription.channel_id = subscription_data['Channel']['ChannelID']
-#        subscription.end_point_id = subscription_data['Endpoint']['EndpointID']
-#        subscription.end_point = subscription_data['Endpoint']['EndpointAddress']
-#        subscription.protocol = subscription_data['Endpoint']['Protocol']
-#        subscription.subscriber_id = subscription_data['Endpoint']['SubscriberID']
-#        subscription.owner_id = subscription_data['Endpoint']['OwnerID']
-#        #subscription.subscriber_type = subscription_data['Endpoint']['SubscriberType']
-#        subscription.clean_fields()
-#
-#        return subscription
-
-#    def _channels_from_json(self, data):
-#        """
-#        Returns a list of channels created from the passed json.
-#        """
-#        channels = []
-#        for channel_data in data['Channels']:
-#            channels.append(self._get_channel(channel_data))
-#        return channels
-#
-#    def _channel_from_json(self, data):
-#        """
-#        Returns a list of channels created from the passed json.
-#        """
-#
-#        return self._get_channel(data['Channel'])
-
-#    def _get_channel(self, channel_data):
-#        """
-#        Returns a channel model
-#        """
-#        channel = Channel()
-#
-#        channel.channel_id = channel_data['ChannelID']
-#        channel.surrogate_id = channel_data['SurrogateID']
-#        channel.type = channel_data['Type']
-#        channel.name = channel_data['Name']
-#        channel.template_surrogate_id = channel_data['TemplateSurrogateID']
-#        if 'Description' in channel_data:
-#            channel.description = channel_data['Description']
-#        #channel.expires = channel_data['Expires']
-#        #channel.last_modified = channel_data['LastModified']
-#        channel.clean_fields()
-#        return channel
-#
-#    def _endpoints_from_view_model(self, list_view_model):
-#        
-#        endpoints = []
-#        for view_model in list_view_model.view_models:
-#            endpoints.append(self._endpoint_from_view_model(view_model))
-#        return endpoints
-#
-#    def _endpoints_from_json(self, data):
-#        """
-#        Returns a list of endpoints created from the passed json.
-#        """
-#        endpoints = []
-#        for endpoint_data in data['Endpoints']:
-#            endpoints.append(self._get_endpoint(endpoint_data))
-#        return endpoints
-#
-#    def _endpoint_from_view_model(self, view_model):
-#        """
-#        Returns a endpoint created from the passed view model.
-#        """
-#        
-#        endpoint = Endpoint()
-#
-#        endpoint.end_point_id = view_model.endpoint_id
-#        endpoint.end_point_uri = view_model.endpoint_uri
-#        endpoint.end_point = view_model.endpoint_address
-#        endpoint.carrier = view_model.carrier
-#        endpoint.protocol = view_model.protocol
-#        endpoint.subscriber_id = view_model.subscriber_id
-#        endpoint.owner_id = view_model.owner_id
-#        endpoint.active = view_model.active
-#        endpoint.default = view_model.default
-#        endpoint.clean_fields()
-#        return endpoint
-#    
-#
-#    def _endpoint_from_json(self, data):
-#        """
-#        Returns a endpoint created from the passed json.
-#        """
-#
-#        return self._get_endpoint(data['Endpoint'])
-#
-#    def _get_endpoint(self, endpoint_data):
-#        """
-#        Returns a endpoint model
-#        """
-#        endpoint = Endpoint()
-#
-#        endpoint.end_point_id = endpoint_data['EndpointID']
-#        endpoint.end_point_uri = endpoint_data['EndpointURI']
-#        endpoint.end_point = endpoint_data['EndpointAddress']
-#        endpoint.carrier = endpoint_data['Carrier']
-#        endpoint.protocol = endpoint_data['Protocol']
-#        endpoint.subscriber_id = endpoint_data['SubscriberID']
-#        endpoint.owner_id = endpoint_data['OwnerID']
-#        endpoint.active = endpoint_data['Active']
-#        endpoint.default = endpoint_data['Default']
-#        endpoint.clean_fields()
-#        return endpoint
-#
-#    def _template_from_json(self, data):
-#        """
-#        Returns a template model created from the passed json.
-#        """
-#        template_data = json.loads(data)
-#        return template_data['Template']
+    def get_event(self, body):
+        """
+        This is responsible for parsing the message body out of an SQS message
+        """
+        event = CourseAvailableEvent()
+        
+        body = json.loads(body)
+        message = json.loads(body["Message"])
+        message_body = json.loads(message["Body"])
+        event_data = message_body["Event"]
+        
+        event.event_id = event_data["EventID"]
+        event.year = event_data["Section"]["Course"]["Year"]
+        event.quarter = event_data["Section"]["Course"]["Quarter"]
+        event.curriculum_abbr = event_data["Section"]["Course"]["CurriculumAbbreviation"]
+        event.course_number = event_data["Section"]["Course"]["CourseNumber"]
+        event.section_id = event_data["Section"]["SectionID"]
+        event.space_available = event_data["SpaceAvailable"]
+        event.sln = event_data["Section"]["SLN"]
+    
+        return event
 
     def _validate_uuid(self, id):
         if id is None:
