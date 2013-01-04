@@ -73,7 +73,10 @@ class Live(object):
             nws_key_file = settings.RESTCLIENTS_NWS_KEY_FILE
             nws_cert_file = settings.RESTCLIENTS_NWS_CERT_FILE
             
+        max_pool_size = 10
+        if hasattr(settings, "RESTCLIENTS_NWS_MAX_POOL_SIZE"):
+            max_pool_size = settings.RESTCLIENTS_NWS_MAX_POOL_SIZE
         return get_con_pool(settings.RESTCLIENTS_NWS_HOST,
                                      nws_key_file,
                                      nws_cert_file,
-                                     max_pool_size=settings.RESTCLIENTS_NWS_MAX_POOL_SIZE)
+                                     max_pool_size=max_pool_size)
