@@ -18,6 +18,17 @@ class NWSTestEndpoint(TestCase):
         self.assertEquals(False, endpoint.default)
         
     
+    def test_create_endpoint(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            nws = NWS()
+            endpoint = nws.get_endpoint_by_endpoint_id("780f2a49-2118-4969-9bef-bbd38c26970a")
+            endpoint.endpoint_id = None
+            endpoint.endpoint_uri = None
+            
+            response_status = nws.create_new_endpoint(endpoint)
+            self.assertEquals(201, response_status)
+            
     def test_endpoint_endpoint_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):

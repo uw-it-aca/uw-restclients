@@ -116,11 +116,6 @@ class NWS(object):
         is the new endpoint that the client wants to create
         """
         #Validate
-
-        #For creating new endpoints an endpointid is optional however if
-        #its present we should validate it
-        if endpoint.end_point_id:
-            self._validate_uuid(endpoint.endpoint_id)
         self._validate_subscriber_id(endpoint.subscriber_id)
 
         #Create new subscription
@@ -310,12 +305,6 @@ class NWS(object):
         :param channel:
         is the new channel that the client wants to create
         """
-        #Validate
-        #For creating new channels an channel_id is optional however if
-        #its present we should validate it
-        if channel.get_channel_id() is not None:
-            self._validate_uuid(channel.get_channel_id())
-
         #Create new channel
         dao = NWS_DAO()
         url = "/notification/v1/channel"
