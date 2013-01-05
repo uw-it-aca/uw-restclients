@@ -395,11 +395,11 @@ class NWS(object):
 
         return channel_list.view_models
 
-    def get_channels(self):
+    def get_channels(self, first_result = 1, max_results = 10):
         """
         Search for all channels
         """
-        url = "/notification/v1/channel"
+        url = "/notification/v1/channel?first_result=%s,max_results=%s" % (first_result, max_results)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
