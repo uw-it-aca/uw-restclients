@@ -275,6 +275,14 @@ class CourseAvailableEvent(models.Model):
             self.section_id
         )
     
+    def get_surrogate_id(self):
+        """
+        This is responsible for building the surrogate id from the model
+        """
+        surrogate_id = "%s,%s,%s,%s,%s" % (self.year, self.quarter, self.curriculum_abbr.lower(), self.course_number, self.section_id.lower())
+
+        return surrogate_id
+        
     def json_data(self):
         return{
             "Event": {
