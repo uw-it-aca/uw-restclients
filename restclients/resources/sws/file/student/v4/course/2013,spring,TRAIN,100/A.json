@@ -104,11 +104,11 @@
       }
    ],
     "FinalExam": {
-        "Building": "KNE",
+        "Building": "*",
         "Date": "2013-06-10",
         "EndTime": "10:20",
         "MeetingStatus": "2",
-        "RoomNumber": "130",
+        "RoomNumber": "*",
         "StartTime": "08:30"
     },
 
