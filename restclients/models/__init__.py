@@ -310,6 +310,9 @@ class CanvasEnrollment(models.Model):
     def sws_course_id(self):
         parts = self.sis_id.split("-")
 
+        if len(parts) != 5:
+            return None
+
         sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
                                     parts[4])
 
@@ -323,6 +326,8 @@ class CanvasCourse(models.Model):
 
     def sws_course_id(self):
         parts = self.sis_id.split("-")
+        if len(parts) != 5:
+            return None
 
         sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
                                     parts[4])

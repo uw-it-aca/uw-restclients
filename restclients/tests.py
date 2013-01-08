@@ -40,4 +40,5 @@ from restclients.test.nws.endpoint import NWSTestEndpoint
 from restclients.test.nws.message import NWSTestMessage
 
 from restclients.test.canvas.enrollments import CanvasTestEnrollment
+from restclients.test.canvas.bad_sis_ids import CanvasBadSISIDs
 
