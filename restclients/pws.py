@@ -106,23 +106,24 @@ class PWS(object):
 
                 # This is for MUWM-417
                 affiliations = person_data["PersonAffiliations"]
-                employee = affiliations["EmployeePersonAffiliation"]
-                white_pages = employee["EmployeeWhitePages"]
+                if "EmployeePersonAffiliation" in affiliations:
+                    employee = affiliations["EmployeePersonAffiliation"]
+                    white_pages = employee["EmployeeWhitePages"]
 
-                if not white_pages["PublishInDirectory"]:
-                    person.whitepages_publish = False
-                else:
-                    person.email1 = white_pages["Email1"]
-                    person.email2 = white_pages["Email2"]
-                    person.phone1 = white_pages["Phone1"]
-                    person.phone2 = white_pages["Phone2"]
-                    person.voicemail = white_pages["VoiceMail"]
-                    person.fax = white_pages["Fax"]
-                    person.touchdial = white_pages["TouchDial"]
-                    person.address1 = white_pages["Address1"]
-                    person.address2 = white_pages["Address2"]
-                    person.mailstop = employee["MailStop"]
-            if affiliation == "alum":
-                person.is_alum = True
+                    if not white_pages["PublishInDirectory"]:
+                        person.whitepages_publish = False
+                    else:
+                        person.email1 = white_pages["Email1"]
+                        person.email2 = white_pages["Email2"]
+                        person.phone1 = white_pages["Phone1"]
+                        person.phone2 = white_pages["Phone2"]
+                        person.voicemail = white_pages["VoiceMail"]
+                        person.fax = white_pages["Fax"]
+                        person.touchdial = white_pages["TouchDial"]
+                        person.address1 = white_pages["Address1"]
+                        person.address2 = white_pages["Address2"]
+                        person.mailstop = employee["MailStop"]
+                if affiliation == "alum":
+                    person.is_alum = True
 
         return person
