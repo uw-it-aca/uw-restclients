@@ -399,7 +399,7 @@ class NWS(object):
         """
         Search for all channels
         """
-        url = "/notification/v1/channel?first_result=%s,max_results=%s" % (first_result, max_results)
+        url = "/notification/v1/channel?first_result=%s&max_results=%s" % (first_result, max_results)
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
