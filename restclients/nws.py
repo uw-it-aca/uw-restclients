@@ -443,7 +443,7 @@ class NWS(object):
     def _validate_subscriber_id(self, subscriber_id):
         if subscriber_id is None or subscriber_id == '':
             raise InvalidNetID(subscriber_id)
-        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', subscriber_id, re.I):
+        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}(@washington.edu)?$', subscriber_id, re.I):
             raise InvalidNetID(subscriber_id)
 
     def _validate_endpoint_protocol(self, protocol):

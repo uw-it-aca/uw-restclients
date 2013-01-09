@@ -146,6 +146,16 @@ class NWSTestSubscription(TestCase):
             #Invalid UUID - missing the last character
             self.assertRaises(InvalidUUID, nws.delete_subscription, "652236c6-a85a-4845-8dc5-3e518bec044")
 
+    def test_subscriber_id_validation(self):
+        nws = NWS()
+        nws._validate_subscriber_id('javerage')
+        nws._validate_subscriber_id('javerage@washington.edu')
+
+        self.assertRaises(InvalidNetID, nws._validate_subscriber_id, '00ok')
+        self.assertRaises(InvalidNetID, nws._validate_subscriber_id, 'ok123456789')
+        self.assertRaises(InvalidNetID, nws._validate_subscriber_id, 'javerage@gmail.com')
+        self.assertRaises(InvalidNetID, nws._validate_subscriber_id, 'javerage@')
+
     @skipIf(True, "Used only for live testing")
     def test_subscription_live(self):
         with self.settings(
