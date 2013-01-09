@@ -5,7 +5,7 @@ This is the interface for interacting with the Person Web Service.
 from restclients.dao import PWS_DAO
 from restclients.exceptions import InvalidRegID, InvalidNetID
 from restclients.exceptions import DataFailureException
-from restclients.models import Person
+from restclients.models.sws import Person
 import json
 import re
 
