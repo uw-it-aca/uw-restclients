@@ -12,6 +12,8 @@ from restclients.test.sws.section import SWSTestSectionData
 from restclients.test.sws.independent_study import SWSIndependentStudy
 from restclients.test.sws.instructor_no_regid import SWSMissingRegid
 
+from restclients.test.sws.curriculum import SWSTestCurriculum
+
 from restclients.test.pws.person import PWSTestPersonData
 
 from restclients.test.pws.err404.dao import PWSTestDAO404

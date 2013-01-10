@@ -85,6 +85,37 @@ class SWS(object):
 
         return self._term_from_json(response.data)
 
+    def get_sections_by_term_and_curriculum(self, term, curriculum):
+        """
+        Returns a list of restclients.Section objects for the passed term
+        and curriculum.
+        """
+        url = "/student/v4/section?" + urlencode({
+            "year": term.year,
+            "quarter": term.quarter.lower(),
+            "curriculum_abbreviation": curriculum.label})
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+
+        sections = []
+        for section_data in data.get("Sections", []):
+            url = section_data.get('Href')
+            response = dao.getURL(url, {"Accept": "application/json"})
+
+            if response.status != 200:
+                raise DataFailureException(url, response.status, response.data)
+
+            section = self._section_from_json(response.data)
+            sections.append(section)
+
+        return sections
+
     def get_section_by_label(self, label):
         """
         Returns a restclients.Section object for the passed section label.
@@ -246,7 +277,7 @@ class SWS(object):
         Returns a list of restclients.Department models, for the passed
         College model.
         """
-        url = "/student/v4/college.json?" + urlencode({
+        url = "/student/v4/department.json?" + urlencode({
               "college_abbreviation": college.label})
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -263,6 +294,7 @@ class SWS(object):
             department.label = dept_data["DepartmentAbbreviation"]
             department.name = dept_data["DepartmentFullName"]
             department.full_name = dept_data["DepartmentFullName"]
+            department.full_clean()
             departments.append(department)
 
         return departments
@@ -272,7 +304,7 @@ class SWS(object):
         Returns a list of restclients.Curriculum models, for the passed
         Department model.
         """
-        url = "/student/v4/college.json?" + urlencode({
+        url = "/student/v4/curriculum.json?" + urlencode({
               "department_abbreviation": department.label})
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -284,14 +316,42 @@ class SWS(object):
 
         curricula = []
         for curr_data in data.get("Curricula", []):
-            curriculum = Curriculum()
-            curriculum.department_label = department.label
-            curriculum.label = curr_data["CurriculumAbbreviation"]
-            curriculum.name = curr_data["CurriculumName"]
-            curriculum.full_name = curr_data["CurriculumFullName"]
-            curricula.append(curriculum)
+            curricula.append(self._curriculum_from_json(curr_data))
 
         return curricula
+
+    def get_curricula_for_term(self, term):
+        """
+        Returns a list of restclients.Curriculum models, for the passed
+        Term model.
+        """
+        url = "/student/v4/curriculum.json?" + urlencode({
+            "year": term.year,
+            "quarter": term.quarter.lower()})
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+
+        curricula = []
+        for curr_data in data.get("Curricula", []):
+            curricula.append(self._curriculum_from_json(curr_data))
+
+        return curricula
+
+    def _curriculum_from_json(self, data):
+        """
+        Returns a curriculum model created from the passed json.
+        """
+        curriculum = Curriculum()
+        curriculum.label = data["CurriculumAbbreviation"]
+        curriculum.name = data["CurriculumName"]
+        curriculum.full_name = data["CurriculumFullName"]
+        curriculum.full_clean()
+        return curriculum
 
     def _term_from_json(self, data):
         """
