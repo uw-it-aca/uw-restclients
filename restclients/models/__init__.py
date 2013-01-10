@@ -265,6 +265,7 @@ class CourseAvailableEvent(models.Model):
     course_number = models.CharField(max_length=3)
     section_id = models.CharField(max_length=2)
     sln = models.PositiveSmallIntegerField()
+    status = models.CharField(max_length=40)
 
     def get_logging_description(self):
         return "%s,%s,%s,%s/%s - %s" % (
@@ -297,7 +298,8 @@ class CourseAvailableEvent(models.Model):
                     "SLN":self.sln,
                     "SectionID":self.section_id
                 },
-                "SpaceAvailable":self.space_available
+                "SpaceAvailable":self.space_available,
+                "Status":self.status
             }
         }
 

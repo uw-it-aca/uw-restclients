@@ -412,7 +412,7 @@ class NWS(object):
 
         return channel_list.view_models
 
-    def get_event(self, body):
+    def get_course_available_event(self, body):
         """
         This is responsible for parsing the message body out of an SQS message
         """
@@ -431,6 +431,10 @@ class NWS(object):
         event.section_id = event_data["Section"]["SectionID"]
         event.space_available = event_data["SpaceAvailable"]
         event.sln = event_data["Section"]["SLN"]
+        if event.space_available > 0:
+            event.status = "available"
+        else:
+            event.status = "unavailable"
     
         return event
 
