@@ -24,11 +24,11 @@ class GWSGroupBasics(TestCase):
                     has_eight = False
 
                     for member in members:
-                        if member.uwnetid == "pmichaud":
+                        if member.name == "pmichaud":
                             has_pmichaud = True
-                        elif member.uwnetid == "javerage":
+                        elif member.name == "javerage":
                             has_javerage = True
-                        elif member.uwnetid == "eight":
+                        elif member.name == "eight":
                             has_eight = True
 
                     self.assertEquals(has_pmichaud, True)

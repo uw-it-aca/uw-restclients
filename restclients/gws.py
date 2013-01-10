@@ -4,7 +4,7 @@ This is the interface for interacting with the Group Web Service.
 
 from restclients.dao import GWS_DAO
 from restclients.exceptions import InvalidRegID, InvalidNetID
-from restclients.models import Group, CourseGroup, Person
+from restclients.models import Group, CourseGroup, GroupMember, Person
 from lxml import etree
 
 class GWS(object):
@@ -73,14 +73,14 @@ class GWS(object):
 
         root = etree.fromstring(response.data)
 
-        members = []
         member_elements = root.findall('.//*[@class="members"]' +
                                        '//*[@class="effective_member"]')
-        for member in member_elements:
-            person = Person()
-            person.uwnetid = member.text
 
-            members.append(person)
+        members = []
+        for member in member_elements:
+            members.append(GroupMember(name=member.text,
+                                       member_type=member.get("type"),
+                                       href=member.get("href")))
 
         return members
 

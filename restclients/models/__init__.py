@@ -170,6 +170,10 @@ class CourseGroup(Group):
 
     sln = models.PositiveIntegerField()
 
+class GroupMember(models.Model):
+    name = models.CharField(max_length=40)
+    member_type = models.SlugField(max_length=16)  
+    href = models.CharField(max_length=200)
 
 class MockAmazonSQSQueue(models.Model):
     name = models.CharField(max_length=80, unique=True, db_index=True)
