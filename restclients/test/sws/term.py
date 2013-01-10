@@ -159,3 +159,9 @@ class SWSTestTerm(TestCase):
                               sws.get_term_by_year_and_quarter,
                               2012, ' ')
 
+            # Equality tests
+            self.assertEquals(sws.get_term_by_year_and_quarter(2012, 'autumn'),
+                              sws.get_term_by_year_and_quarter(2012, 'autumn'))
+
+            self.assertNotEquals(sws.get_term_by_year_and_quarter(2012, 'autumn'),
+                                 sws.get_term_by_year_and_quarter(2013, 'winter'))

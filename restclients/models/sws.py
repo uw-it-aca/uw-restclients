@@ -90,6 +90,9 @@ class Term(models.Model):
         unique_together = ('year',
                            'quarter')
 
+    def __eq__(self, other):
+        return self.year == other.year and self.quarter == other.quarter
+
     def json_data(self):
         data = {
             'quarter': self.get_quarter_display(),
