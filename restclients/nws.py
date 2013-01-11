@@ -194,8 +194,8 @@ class NWS(object):
             self._validate_uuid(subscription.get_subscription_id())
 
         if subscription.get_endpoint() is not None:
-            if subscription.get_endpoint().subscriber_id:
-                self._validate_subscriber_id(subscription.endpoint.subscriber_id)
+            if subscription.get_endpoint().user:
+                self._validate_subscriber_id(subscription.endpoint.user)
     
             if subscription.get_endpoint().get_endpoint_id() is not None:
                 self._validate_uuid(subscription.endpoint.get_endpoint_id())
