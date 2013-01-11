@@ -262,6 +262,7 @@ class Notification(models.Model):
 
 class CourseAvailableEvent(models.Model):
     event_id = models.CharField(max_length=40)
+    event_create_date = models.CharField(max_length=40)
     space_available = models.PositiveIntegerField()
     quarter = models.CharField(max_length=6)
     year = models.PositiveSmallIntegerField()
@@ -292,6 +293,7 @@ class CourseAvailableEvent(models.Model):
         return{
             "Event": {
                 "EventID":self.event_id,
+                "EventCreateDate":self.event_create_date,
                 "Section": {
                     "Course": {
                         "CourseNumber":self.course_number,

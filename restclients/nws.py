@@ -424,6 +424,7 @@ class NWS(object):
         event_data = message_body["Event"]
         
         event.event_id = event_data["EventID"]
+        event.event_create_date = event_data["EventCreateDate"]
         event.year = event_data["Section"]["Course"]["Year"]
         event.quarter = event_data["Section"]["Course"]["Quarter"]
         event.curriculum_abbr = event_data["Section"]["Course"]["CurriculumAbbreviation"]
