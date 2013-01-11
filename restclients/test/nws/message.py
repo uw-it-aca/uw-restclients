@@ -8,6 +8,7 @@ from unittest import skipIf
 
 
 class NWSTestMessage(TestCase):
+    
     def test_create_message_with_model(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):

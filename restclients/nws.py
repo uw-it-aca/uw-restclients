@@ -116,7 +116,7 @@ class NWS(object):
         is the new endpoint that the client wants to create
         """
         #Validate
-        self._validate_subscriber_id(endpoint.subscriber_id)
+        self._validate_subscriber_id(endpoint.get_user_net_id())
 
         #Create new subscription
         dao = NWS_DAO()
@@ -167,7 +167,7 @@ class NWS(object):
         if subscription.get_endpoint() is not None:
             if subscription.get_endpoint().get_endpoint_id() is not None:
                 self._validate_uuid(subscription.get_endpoint().get_endpoint_id())
-            self._validate_subscriber_id(subscription.get_endpoint().get_subscriber_id())
+            self._validate_subscriber_id(subscription.get_endpoint().get_user_net_id())
 
         #Update the subscription
         dao = NWS_DAO()
@@ -285,7 +285,9 @@ class NWS(object):
         dao = NWS_DAO()
         url = "/notification/v1/message"
 
-        post_response = dao.postURL(url, {"Content-Type": "application/json"}, Serializer().serialize(message))
+        data = Serializer().serialize(message)
+
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, data)
 
         if post_response.status != 201:
             raise DataFailureException(url, post_response.status, post_response.data)

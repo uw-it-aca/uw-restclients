@@ -91,8 +91,8 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint = Endpoint()
             subscription.endpoint.endpoint_address = "javerage0@uw.edu"
             subscription.endpoint.protocol = "Email"
-            subscription.endpoint.subscriber_id = "javerage"
-            subscription.endpoint.owner_id = "javerage"
+            subscription.endpoint.user = "javerage"
+            subscription.endpoint.owner = "javerage"
             subscription.channel = Channel()
             subscription.channel.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
 
@@ -107,8 +107,8 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint = Endpoint()
             subscription.endpoint.endpoint_address = "javerage0@uw.edu"
             subscription.endpoint.protocol = "Email"
-            subscription.endpoint.subscriber_id = "-@#$ksjdsfkli13290243290490"
-            subscription.endpoint.owner_id = "javerage"
+            subscription.endpoint.user = "-@#$ksjdsfkli13290243290490"
+            subscription.endpoint.owner = "javerage"
             subscription.channel = Channel()
             subscription.channel.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
             
@@ -124,8 +124,8 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint = Endpoint()
             subscription.endpoint.endpoint_address = "javerage0@uw.edu"
             subscription.endpoint.protocol = "Email"
-            subscription.endpoint.subscriber_id = ''
-            subscription.endpoint.owner_id = "javerage"
+            subscription.endpoint.user = ''
+            subscription.endpoint.owner = "javerage"
             subscription.channel = Channel()
             subscription.channel.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
 
@@ -179,9 +179,9 @@ class NWSTestSubscription(TestCase):
             subscription.subscription_id = "6445864b-6d1c-47b7-a409-279ba4a4ccf4"
             subscription.end_point = "javerage09@uw.edu"
             subscription.protocol = "Email"
-            subscription.subscriber_id = "javerage"
+            subscription.user = "javerage"
             subscription.channel_id = "ce1d46fe-1cdf-4c5a-a316-20f6c99789b8"
-            subscription.owner_id = "javerage"
+            subscription.owner = "javerage"
             #subscription.subscriber_type = "Individual"
 
             nws = NWS()
