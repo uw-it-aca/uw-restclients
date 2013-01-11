@@ -90,7 +90,7 @@ class SWS(object):
         Returns a list of restclients.Section objects for the passed term
         and curriculum.
         """
-        url = "/student/v4/section?" + urlencode({
+        url = "/student/v4/section.json?" + urlencode({
             "year": term.year,
             "quarter": term.quarter.lower(),
             "curriculum_abbreviation": curriculum.label})
