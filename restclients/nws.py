@@ -93,7 +93,7 @@ class NWS(object):
         """
         #Validate
         self._validate_uuid(endpoint.endpoint_id)
-        self._validate_subscriber_id(endpoint.subscriber_id)
+        self._validate_subscriber_id(endpoint.user)
 
         #Update the subscription
         dao = NWS_DAO()
