@@ -301,7 +301,7 @@ class ClassSchedule(models.Model):
 class Campus(models.Model):
     label = models.SlugField(max_length=15, unique=True)
     name = models.CharField(max_length=20)
-    full_name = models.CharField(max_length=50)
+    full_name = models.CharField(max_length=60)
 
     class Meta:
         app_label = "restclients"
@@ -310,8 +310,8 @@ class Campus(models.Model):
 class College(models.Model):
     campus_label = models.SlugField(max_length=15)
     label = models.SlugField(max_length=15, unique=True)
-    name = models.CharField(max_length=20)
-    full_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=60)
+    full_name = models.CharField(max_length=60)
 
     class Meta:
         app_label = "restclients"
@@ -320,8 +320,8 @@ class College(models.Model):
 class Department(models.Model):
     college_label = models.SlugField(max_length=15)
     label = models.SlugField(max_length=15, unique=True)
-    name = models.CharField(max_length=20)
-    full_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=60)
+    full_name = models.CharField(max_length=60)
 
     class Meta:
         app_label = "restclients"

@@ -243,6 +243,7 @@ class SWS(object):
             campus.label = campus_data["CampusShortName"]
             campus.name = campus_data["CampusName"]
             campus.full_name = campus_data["CampusFullName"]
+            campus.full_clean()
             campuses.append(campus)
 
         return campuses
@@ -268,6 +269,7 @@ class SWS(object):
             college.label = college_data["CollegeAbbreviation"]
             college.name = college_data["CollegeName"]
             college.full_name = college_data["CollegeFullName"]
+            college.full_clean()
             colleges.append(college)
 
         return colleges
