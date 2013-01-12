@@ -14,6 +14,7 @@ from restclients.test.sws.instructor_no_regid import SWSMissingRegid
 
 from restclients.test.sws.campus import SWSTestCampus
 from restclients.test.sws.college import SWSTestCollege
+from restclients.test.sws.department import SWSTestDepartment
 from restclients.test.sws.curriculum import SWSTestCurriculum
 
 from restclients.test.pws.person import PWSTestPersonData
