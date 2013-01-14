@@ -430,7 +430,13 @@ class SWS(object):
         section.course_title_long = section_data["Course"]["CourseTitleLong"]
         section.course_campus = section_data["CourseCampus"]
         section.section_id = section_data["SectionID"]
+
         section.section_type = section_data["SectionType"]
+        if "independent study" == section.section_type:
+            section.is_independent_study = True
+        else:
+            section.is_independent_study = False
+
         section.class_website_url = section_data["ClassWebsiteUrl"]
         section.sln = section_data["SLN"]
         if "SummerTerm" in section_data:
@@ -439,6 +445,10 @@ class SWS(object):
             section.summer_term = ""
 
         section.delete_flag = section_data["DeleteFlag"]
+        if "withdrawn" == section.delete_flag:
+            section.is_withdrawn = True
+        else:
+            section.is_withdrawn = False
 
         primary_section = section_data["PrimarySection"]
         if (primary_section is not None and

@@ -142,11 +142,13 @@ class Section(models.Model):
     course_title_long = models.CharField(max_length=50)
     course_campus = models.CharField(max_length=7)
     section_type = models.CharField(max_length=30)
+    is_independent_study = models.BooleanField()
     class_website_url = models.URLField(max_length=255,
                                         verify_exists=False,
                                         blank=True)
     sln = models.PositiveIntegerField()
     delete_flag = models.CharField(max_length=20)
+    is_withdrawn = models.BooleanField()
 
 #    These are for non-standard start/end dates - don't have those yet
 #    start_date = models.DateField()
@@ -174,7 +176,6 @@ class Section(models.Model):
                                                             blank=True,
                                                             )
     primary_section_id = models.CharField(max_length=2, null=True, blank=True)
-
     is_primary_section = models.BooleanField()
 
     class Meta:
