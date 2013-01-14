@@ -125,8 +125,20 @@ class SWSTestSectionData(TestCase):
                               sws.get_section_by_label, 
                               '2010,autumn,CM,101/A')
 
-            
+    def test_joint_sections(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+            sws = SWS()
+            section = sws.get_section_by_label('2013,winter,ASIAN,203/A')
+            joint_sections = sws.get_joint_sections(section)
  
+            self.assertEquals(len(joint_sections), 1)
+
+            section = sws.get_section_by_label('2013,winter,EMBA,503/A')
+            joint_sections = sws.get_joint_sections(section)
+
+            self.assertEquals(len(joint_sections), 0)
+
     #Failing because linked section json files haven't been made (Train 100 AA/AB)
     def test_linked_sections(self):
         with self.settings(

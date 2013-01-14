@@ -152,13 +152,32 @@ class SWS(object):
             response = dao.getURL(url, {"Accept": "application/json"})
 
             if response.status != 200:
-                raise DataFailureException(url, response.status,
-                                           response.data)
+                raise DataFailureException(url, response.status, response.data)
 
             section = self._section_from_json(response.data)
             linked_sections.append(section)
 
         return linked_sections
+
+    def get_joint_sections(self, section):
+        """
+        Returns a list of restclients.Section objects, representing joint
+        sections for the passed section.
+        """
+        dao = SWS_DAO()
+        joint_sections = []
+
+        urls = section.joint_section_urls
+        for url in urls:
+            response = dao.getURL(url, {"Accept": "application/json"})
+
+            if response.status != 200:
+                raise DataFailureException(url, response.status, response.data)
+
+            section = self._section_from_json(response.data)
+            joint_sections.append(section)
+
+        return joint_sections
 
     def schedule_for_regid_and_term(self, regid, term):
         """
@@ -468,6 +487,11 @@ class SWS(object):
             for linked_section_data in linked_section_type["LinkedSections"]:
                 url = linked_section_data["Section"]["Href"]
                 section.linked_section_urls.append(url)
+
+        section.joint_section_urls = []
+        for joint_section_data in section_data.get("JointSections", []):
+            url = joint_section_data["Href"]
+            section.joint_section_urls.append(url)
 
         section.meetings = []
         for meeting_data in section_data["Meetings"]:
