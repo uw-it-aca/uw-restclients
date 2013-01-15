@@ -5,7 +5,7 @@ This is the interface for interacting with the Student Web Service.
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models.sws import Term, Section, SectionMeeting
-from restclients.models.sws import ClassSchedule, FinalExam
+from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
 from restclients.exceptions import DataFailureException, InvalidSectionID
 from urllib import urlencode
@@ -178,6 +178,72 @@ class SWS(object):
             joint_sections.append(section)
 
         return joint_sections
+
+    def get_active_registrations_for_section(self, section, instructor=None):
+        """
+        Returns a list of restclients.Registration objects, representing
+        active registrations for the passed section. For independent study
+        sections, the passed instructor limits registrations to that
+        instructor.
+        """
+        return self._registrations_for_section(section, instructor, 'on')
+
+    def get_all_registrations_for_section(self, section, instructor=None):
+        """
+        Returns a list of restclients.Registration objects, representing
+        all (active and inactive) registrations for the passed section. For
+        independent study sections, the passed instructor limits registrations
+        to that instructor.
+        """
+        return self._registrations_for_section(section, instructor, '')
+
+    def _registrations_for_section(self, section, instructor, is_active):
+        instructor_reg_id = instructor.uwregid if instructor else ''
+
+        dao = SWS_DAO()
+        url = "/student/v4/registration.json?" + urlencode({
+            "year": section.term.year,
+            "quarter": section.term.quarter,
+            "curriculum_abbreviation": section.curriculum_abbr,
+            "course_number": section.course_number,
+            "section_id": section.section_id,
+            "instructor_reg_id": instructor_reg_id,
+            "is_active": is_active})
+
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+
+        registration_data = []
+        for reg_data in data.get("Registrations", []): 
+            registration_data.append(reg_data)
+
+        registration_data.reverse()
+
+        seen_regids = {}
+        registrations = []
+        for reg_data in registration_data:
+            # Prevent duplicate registrations, the reverse() above ensures we
+            # keep the latest duplicate
+            if reg_data["RegID"] in seen_regids:
+                continue
+            seen_regids[reg_data["RegID"]] = True
+
+            url = reg_data["Href"]
+            response = dao.getURL(url, {"Accept": "application/json"})
+
+            if response.status != 200:
+                raise DataFailureException(url, response.status, response.data)
+
+            registration = self._registration_from_json(response.data)
+            registration.section = section
+
+            registrations.append(registration)
+
+        return registrations
 
     def schedule_for_regid_and_term(self, regid, term):
         """
@@ -575,3 +641,22 @@ class SWS(object):
                 section.final_exam = final_exam
 
         return section
+
+    def _registration_from_json(self, data):                                         
+        """
+        Returns a registration model created from the passed json.
+        """
+        pws = PWS()
+        registration_data = json.loads(data)
+
+        registration = Registration()
+        registration.is_auditor = registration_data["Auditor"]
+        registration.duplicate_code = registration_data["DuplicateCode"]
+        registration.is_active = registration_data["IsActive"]
+        registration.request_status = registration_data["RequestStatus"] 
+
+        person = pws.get_person_by_regid(registration_data["Person"]["RegID"])
+        if person is not None:
+            registration.person = person
+
+        return Registration
