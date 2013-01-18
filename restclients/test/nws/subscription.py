@@ -36,8 +36,9 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint = Endpoint()
             subscription.endpoint.endpoint_address = "javerage0@uw.edu"
             subscription.endpoint.protocol = "Email"
-            subscription.endpoint.subscriber_id = "javerage"
-            subscription.endpoint.owner_id = "javerage"
+            subscription.endpoint.subscriber_id = "javerage@washington.edu"
+            subscription.endpoint.owner_id = "javerage@washington.edu"
+            subscription.endpoint.user = "javerage@washington.edu"
             subscription.channel = Channel()
             subscription.channel.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
 
@@ -70,6 +71,7 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint.protocol = "Email"
             subscription.endpoint.subscriber_id = "javerage"
             subscription.endpoint.owner_id = "javerage"
+            subscription.endpoint.user = "javerage@washington.edu"
             subscription.channel = Channel()
 
             nws = NWS()
@@ -91,8 +93,8 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint = Endpoint()
             subscription.endpoint.endpoint_address = "javerage0@uw.edu"
             subscription.endpoint.protocol = "Email"
-            subscription.endpoint.user = "javerage"
-            subscription.endpoint.owner = "javerage"
+            subscription.endpoint.user = "javerage@washington.edu"
+            subscription.endpoint.owner = "javerage@washington.edu"
             subscription.channel = Channel()
             subscription.channel.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
 

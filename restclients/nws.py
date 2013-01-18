@@ -19,6 +19,23 @@ class NWS(object):
     """
 
     #ENDPOINT RESOURCE
+    def get_endpoints(self, first_result = 1, max_results = 10):
+        """
+        Search for all endpoints
+        """
+        url = "/notification/v1/endpoint?first_result=%s&max_results=%s" % (first_result, max_results)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        endpoint_list = EndpointList()
+        Serializer().deserialize(endpoint_list, response.data)
+
+        return endpoint_list.view_models
+    
     def get_endpoint_by_endpoint_id(self, endpoint_id):
         """
         Get an endpoint by endpoint id
