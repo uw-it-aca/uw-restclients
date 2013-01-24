@@ -5,6 +5,7 @@ connections for live data from a web service
 """
 import logging
 from urllib3 import connection_from_url
+from django.conf import settings
 
 
 def get_con_pool(host,
@@ -45,9 +46,12 @@ def get_live_url(con_pool,
         HTTP request method (such as GET, POST, PUT, etc.)
     :param host:
         the url of the server host.
+    :param headers:
+        headers to include with the request
     :param body:
         the POST, PUT body of the request
     """
+    timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", con_pool.timeout)
     logger = logging.getLogger('restclients.dao_implementation.live')
     logger.info('%s %s%s', method, host, url) 
-    return con_pool.urlopen(method, url, body=body, headers=headers, retries=retries)
+    return con_pool.urlopen(method, url, body=body, headers=headers, retries=retries, timeout=timeout)
