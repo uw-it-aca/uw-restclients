@@ -289,32 +289,28 @@ class NWS(object):
 
         return subscriptions.view_models
 
-    #MESSAGE RESOURCE
-    def create_new_message(self, message):
+    #DISPATCH RESOURCE
+    def create_new_message(self, dispatch):
         """
-        Create a new message
+        Create a new dispatch
 
-        :param message:
-        is the new message that the client wants to create
+        :param dispatch:
+        is the new dispatch that the client wants to create
         """
         
-        #Create new channel
+        #Create new dispatch
         dao = NWS_DAO()
-        url = "/notification/v1/message"
+        url = "/notification/v1/dispatch"
 
-        data = Serializer().serialize(message)
+        data = Serializer().serialize(dispatch)
 
         post_response = dao.postURL(url, {"Content-Type": "application/json"}, data)
 
-        if post_response.status != 201:
+        if post_response.status != 200:
             raise DataFailureException(url, post_response.status, post_response.data)
 
         return post_response.status
 
-#        subscriptions = SubscriptionList()
-#        Serializer().deserialize(subscriptions, response.data)
-#
-#        return subscriptions.view_models
 
     #CHANNEL RESOURCE
     def create_new_channel(self, channel):
