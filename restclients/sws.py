@@ -56,7 +56,6 @@ class SWS(object):
 
         return term
 
-
     def get_next_term(self):
         """
         Returns a restclients.Term object, for the next term.
@@ -105,7 +104,7 @@ class SWS(object):
 
         sections = []
         for section_data in data.get("Sections", []):
-            url = section_data.get('Href')
+            url = section_data["Href"]
             response = dao.getURL(url, {"Accept": "application/json"})
 
             if response.status != 200:
@@ -179,28 +178,22 @@ class SWS(object):
 
         return joint_sections
 
-    def get_active_registrations_for_section(self, section, instructor=None):
-        """
-        Returns a list of restclients.Registration objects, representing
-        active registrations for the passed section. For independent study
-        sections, the passed instructor limits registrations to that
-        instructor.
-        """
-        return self._registrations_for_section(section, instructor, 'on')
-
     def get_all_registrations_for_section(self, section, instructor=None):
         """
         Returns a list of restclients.Registration objects, representing
         all (active and inactive) registrations for the passed section. For
-        independent study sections, the passed instructor limits registrations
-        to that instructor.
+        independent study sections, the passed instructor limits
+        registrations to that instructor.
         """
-        return self._registrations_for_section(section, instructor, '')
+        registrations = self.get_active_registrations_for_section(section,
+                                                                  instructor)
 
-    def _registrations_for_section(self, section, instructor, is_active):
-        instructor_reg_id = instructor.uwregid if instructor else ''
+        seen_registrations = {}
+        for registration in registrations:
+            seen_registrations[registration.person.uwregid] = True
 
-        dao = SWS_DAO()
+        instructor_reg_id = instructor.uwregid if instructor else ""
+
         url = "/student/v4/registration.json?" + urlencode({
             "year": section.term.year,
             "quarter": section.term.quarter,
@@ -208,8 +201,9 @@ class SWS(object):
             "course_number": section.course_number,
             "section_id": section.section_id,
             "instructor_reg_id": instructor_reg_id,
-            "is_active": is_active})
+            "is_active": ""})
 
+        dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -217,31 +211,65 @@ class SWS(object):
 
         data = json.loads(response.data)
 
-        registration_data = []
-        for reg_data in data.get("Registrations", []): 
-            registration_data.append(reg_data)
+        all_registration_data = []
+        for reg_data in data.get("Registrations", []):
+            all_registration_data.append(reg_data)
 
-        registration_data.reverse()
+        all_registration_data.reverse()
 
-        seen_regids = {}
-        registrations = []
-        for reg_data in registration_data:
+        pws = PWS()
+        for reg_data in all_registration_data:
             # Prevent duplicate registrations, the reverse() above ensures we
             # keep the latest duplicate
-            if reg_data["RegID"] in seen_regids:
-                continue
-            seen_regids[reg_data["RegID"]] = True
+            if reg_data["RegID"] not in seen_registrations:
+                registration = Registration()
+                registration.section = section
+                registration.person = pws.get_person_by_regid(reg_data["RegID"])
+                registration.is_active = False
+                registrations.append(registration)
 
-            url = reg_data["Href"]
-            response = dao.getURL(url, {"Accept": "application/json"})
+                seen_registrations[reg_data["RegID"]] = True
 
-            if response.status != 200:
-                raise DataFailureException(url, response.status, response.data)
+        return registrations
 
-            registration = self._registration_from_json(response.data)
-            registration.section = section
+    def get_active_registrations_for_section(self, section, instructor=None):
+        """
+        Returns a list of restclients.Registration objects, representing
+        active registrations for the passed section. For independent study
+        sections, the passed instructor limits registrations to that
+        instructor.
+        """
+        instructor_reg_id = instructor.uwregid if instructor else "" 
 
-            registrations.append(registration)
+        url = "/student/v4/registration.json?" + urlencode({
+            "year": section.term.year,
+            "quarter": section.term.quarter,
+            "curriculum_abbreviation": section.curriculum_abbr,
+            "course_number": section.course_number,
+            "section_id": section.section_id,
+            "instructor_reg_id": instructor_reg_id,
+            "is_active": "on"})
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+
+        pws = PWS()
+        seen_registrations = {}
+        registrations = []
+        for reg_data in data.get("Registrations", []):
+            if reg_data["RegID"] not in seen_registrations:
+                registration = Registration()
+                registration.section = section
+                registration.person = pws.get_person_by_regid(reg_data["RegID"])
+                registration.is_active = True
+                registrations.append(registration)
+
+                seen_registrations[reg_data["RegID"]] = True
 
         return registrations
 
@@ -504,10 +532,12 @@ class SWS(object):
         section_data = json.loads(data)
 
         section = Section()
-        section.term = self.get_term_by_year_and_quarter(
-                                section_data["Course"]["Year"],
-                                section_data["Course"]["Quarter"]
-                                )
+        section.term = Term(year=section_data["Course"]["Year"],
+                            quarter=section_data["Course"]["Quarter"])
+        #self.get_term_by_year_and_quarter(
+                       #         section_data["Course"]["Year"],
+                       #         section_data["Course"]["Quarter"]
+                       #         )
         section.curriculum_abbr = section_data["Course"][
             "CurriculumAbbreviation"]
         section.course_number = section_data["Course"]["CourseNumber"]
@@ -641,22 +671,3 @@ class SWS(object):
                 section.final_exam = final_exam
 
         return section
-
-    def _registration_from_json(self, data):                                         
-        """
-        Returns a registration model created from the passed json.
-        """
-        pws = PWS()
-        registration_data = json.loads(data)
-
-        registration = Registration()
-        registration.is_auditor = registration_data["Auditor"]
-        registration.duplicate_code = registration_data["DuplicateCode"]
-        registration.is_active = registration_data["IsActive"]
-        registration.request_status = registration_data["RequestStatus"] 
-
-        person = pws.get_person_by_regid(registration_data["Person"]["RegID"])
-        if person is not None:
-            registration.person = person
-
-        return Registration

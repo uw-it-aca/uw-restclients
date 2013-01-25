@@ -222,10 +222,10 @@ class Section(models.Model):
 class Registration(models.Model):
     section = models.ForeignKey(Section,
                                 on_delete=models.PROTECT)
-    is_auditor = models.BooleanField()
-    duplicate_code = models.CharField(max_length=2)
+    person = models.ForeignKey(Person,
+                               on_delete=models.PROTECT)
     is_active = models.BooleanField()
-    request_status = models.CharField(max_length=30)
+
 
 class SectionMeeting(models.Model):
     term = models.ForeignKey(Term,
