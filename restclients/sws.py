@@ -532,12 +532,10 @@ class SWS(object):
         section_data = json.loads(data)
 
         section = Section()
-        section.term = Term(year=section_data["Course"]["Year"],
-                            quarter=section_data["Course"]["Quarter"])
-        #self.get_term_by_year_and_quarter(
-                       #         section_data["Course"]["Year"],
-                       #         section_data["Course"]["Quarter"]
-                       #         )
+        section.term = self.get_term_by_year_and_quarter(
+                                section_data["Course"]["Year"],
+                                section_data["Course"]["Quarter"]
+                                )
         section.curriculum_abbr = section_data["Course"][
             "CurriculumAbbreviation"]
         section.course_number = section_data["Course"]["CourseNumber"]
