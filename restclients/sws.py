@@ -84,10 +84,42 @@ class SWS(object):
 
         return self._term_from_json(response.data)
 
-    def get_sections_by_term_and_curriculum(self, term, curriculum):
+    def get_sections_by_instructor_and_term(self, instructor, term):
         """
-        Returns a list of restclients.Section objects for the passed term
-        and curriculum.
+        Returns a list of restclients.Section objects for the passed
+        instructor and term.
+        """
+        url = "/student/v4/section.json?" + urlencode({
+            "year": term.year,
+            "quarter": term.quarter.lower(),
+            "reg_id": instructor.uwregid,
+            "search_by": "Instructor"})
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+
+        sections = []
+        for section_data in data.get("Sections", []):
+            url = section_data["Href"]
+            response = dao.getURL(url, {"Accept": "application/json"})
+
+            if response.status != 200:
+                raise DataFailureException(url, response.status, response.data)
+
+            section = self._section_from_json(response.data, term)
+            sections.append(section)
+
+        return sections
+
+    def get_sections_by_curriculum_and_term(self, curriculum, term):
+        """
+        Returns a list of restclients.Section objects for the passed
+        curriculum and term.
         """
         url = "/student/v4/section.json?" + urlencode({
             "year": term.year,
@@ -110,7 +142,7 @@ class SWS(object):
             if response.status != 200:
                 raise DataFailureException(url, response.status, response.data)
 
-            section = self._section_from_json(response.data)
+            section = self._section_from_json(response.data, term)
             sections.append(section)
 
         return sections
@@ -311,7 +343,7 @@ class SWS(object):
                                             response.data,
                                           )
 
-            section = self._section_from_json(response.data)
+            section = self._section_from_json(response.data, term)
 
             # For independent study courses, only include the one relevant 
             # instructor
@@ -524,7 +556,7 @@ class SWS(object):
         term.full_clean()
         return term
 
-    def _section_from_json(self, data):
+    def _section_from_json(self, data, term=None):
         """
         Returns a section model created from the passed json.
         """
@@ -532,10 +564,15 @@ class SWS(object):
         section_data = json.loads(data)
 
         section = Section()
-        section.term = self.get_term_by_year_and_quarter(
-                                section_data["Course"]["Year"],
-                                section_data["Course"]["Quarter"]
-                                )
+
+        if term is not None and (term.year == int(section_data["Course"]["Year"]) and
+                                 term.quarter == section_data["Course"]["Quarter"]):
+            section.term = term
+        else:
+            section.term = self.get_term_by_year_and_quarter(
+                                    section_data["Course"]["Year"],
+                                    section_data["Course"]["Quarter"])
+
         section.curriculum_abbr = section_data["Course"][
             "CurriculumAbbreviation"]
         section.course_number = section_data["Course"]["CourseNumber"]

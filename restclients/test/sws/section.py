@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sws import SWS
-from restclients.models.sws import Term, Curriculum
+from restclients.models.sws import Term, Curriculum, Person
 from restclients.exceptions import DataFailureException, InvalidSectionID
 
 class SWSTestSectionData(TestCase):
@@ -202,19 +202,30 @@ class SWSTestSectionData(TestCase):
                               sws.get_linked_sections, section)
 
 
-    def test_sections_by_term_and_curriculum(self):
+    def test_sections_by_instructor_and_term(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+            sws = SWS()
+
+            term = Term(quarter="summer", year=2013)
+            instructor = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
+
+            sections = sws.get_sections_by_instructor_and_term(instructor, term)
+            self.assertEquals(len(sections), 1)
+
+    def test_sections_by_curriculum_and_term(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             sws = SWS()
 
             term = Term(quarter="winter", year=2013)
             curriculum = Curriculum(label="ENDO")
-            sections = sws.get_sections_by_term_and_curriculum(term, curriculum)
+            sections = sws.get_sections_by_curriculum_and_term(curriculum, term)
 
             self.assertEquals(len(sections), 2)
 
             # Valid curriculum, with no file
             self.assertRaises(DataFailureException,
-                              sws.get_sections_by_term_and_curriculum,
-                              term,
-                              Curriculum(label="FINN"))
+                              sws.get_sections_by_curriculum_and_term,
+                              Curriculum(label="FINN"),
+                              term)
