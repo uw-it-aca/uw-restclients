@@ -108,6 +108,9 @@ class Canvas_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('canvas', url, headers)
 
+    def postURL(self, url, headers, body):
+        return self._postURL('canvas', url, headers, body)
+
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_CANVAS_DAO_CLASS', CanvasFile)
 
