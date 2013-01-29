@@ -1,0 +1,19 @@
+{
+    "Channels": [
+        {
+            "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b8", 
+            "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b8", 
+            "SurrogateID": "2012,autumn,cse,100,w", 
+            "Type": "uw_student_courseavailable", 
+            "Name": "FLUENCY IN INFORMATION TECHNOLOGY", 
+            "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+            "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
+        }
+    ], 
+    "QueryParams": {
+        "tag_sln": "12345"
+    }, 
+    "TotalCount": 3
+}

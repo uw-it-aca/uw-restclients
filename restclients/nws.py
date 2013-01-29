@@ -410,6 +410,25 @@ class NWS(object):
 
         return channel_list.view_models
 
+    def get_channels_by_sln_and_term(self, channel_type, sln, year, quarter):
+        """
+        Search for all channels by sln, year and quarter
+        """
+        url = "/notification/v1/channel?type=%s&tag_sln=%s&tag_year=%s&tag_quarter=%s" % (channel_type, sln, year, quarter)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        channel_list = ChannelList()
+        Serializer().deserialize(channel_list, response.data)
+
+        return channel_list.view_models
+
+       
+
     def get_channels(self, first_result = 1, max_results = 10):
         """
         Search for all channels
