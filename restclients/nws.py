@@ -410,7 +410,7 @@ class NWS(object):
 
         return channel_list.view_models
 
-    def get_channels_by_sln_and_term(self, channel_type, sln, year, quarter):
+    def get_channels_by_sln_year_quarter(self, channel_type, sln, year, quarter):
         """
         Search for all channels by sln, year and quarter
         """

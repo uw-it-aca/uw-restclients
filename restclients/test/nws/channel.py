@@ -38,7 +38,7 @@ class NWSTestChannel(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            channels = nws.get_channels_by_sln_and_term("uw_student_courseavailable", "12345", 2012, "autumn")
+            channels = nws.get_channels_by_sln_year_quarter("uw_student_courseavailable", "12345", 2012, "autumn")
             self.assertEquals(len(channels), 1)
 
 
