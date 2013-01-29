@@ -129,6 +129,26 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
 
 
+    def test_quarter_after(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+            sws = SWS()
+
+            starting = sws.get_current_term()
+            self.assertEquals(starting.year, 2013)
+            self.assertEquals(starting.quarter, 'spring')
+
+            next1 = sws.get_term_after(starting)
+            self.assertEquals(next1.year, 2013)
+            self.assertEquals(next1.quarter, 'summer')
+
+            next2 = sws.get_term_after(next1)
+            self.assertEquals(next2.year, 2013)
+            self.assertEquals(next2.quarter, 'autumn')
+
+            next3 = sws.get_term_after(next2)
+            self.assertEquals(next3.year, 2014)
+            self.assertEquals(next3.quarter, 'winter')
 
     def test_specific_quarters(self):
         #testing bad data - get_term_by_year_and_quarter

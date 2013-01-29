@@ -84,6 +84,24 @@ class SWS(object):
 
         return self._term_from_json(response.data)
 
+    def get_term_after(self, term):
+        """
+        Returns a restclients.Term object, for the term after the term given.
+        """
+        quarter_map = {
+            "winter": "spring",
+            "spring": "summer",
+            "summer": "autumn",
+            "autumn": "winter",
+        }
+        next_year = term.year
+        next_quarter = quarter_map[term.quarter]
+
+        if next_quarter == "winter":
+            next_year = next_year + 1
+
+        return self.get_term_by_year_and_quarter(next_year, next_quarter)
+
     def get_sections_by_instructor_and_term(self, instructor, term):
         """
         Returns a list of restclients.Section objects for the passed
