@@ -8,6 +8,7 @@ from restclients.models import CourseAvailableEvent
 from urllib import urlencode
 from datetime import datetime
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
+from restclients.sws import SWS
 import re
 import json
 
@@ -427,7 +428,13 @@ class NWS(object):
 
         return channel_list.view_models
 
-       
+    def get_terms_with_active_channels(self, channel_type):
+        sws = SWS()
+        terms = []
+        terms.append(sws.get_term_by_year_and_quarter(2012, "autumn"))
+        terms.append(sws.get_term_by_year_and_quarter(2013, "winter"))
+
+        return terms
 
     def get_channels(self, first_result = 1, max_results = 10):
         """
