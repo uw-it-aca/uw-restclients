@@ -51,13 +51,37 @@ class NWS(object):
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
-        
+
         endpoint = Endpoint()
         Serializer().deserialize(endpoint, response.data)
-        
+
         return endpoint
-    
+
         #return self._endpoint_from_json(json.loads(response.data))
+
+    def get_endpoint_by_subscriber_id_and_protocol(self, subscriber_id, protocol):
+        """
+        Get an endpoint by subscriber_id and protocol
+        """
+        self._validate_subscriber_id(subscriber_id)
+
+        url = "/notification/v1/endpoint?subscriber_id=%s&protocol=%s" % (subscriber_id, protocol)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        endpoint_list = EndpointList()
+        Serializer().deserialize(endpoint_list, response.data)
+
+        endpoint_vms = endpoint_list.view_models
+        if len(endpoint_vms) == 0:
+            raise DataFailureException(url, 404, {"Message": "No SMS endpoint found"})
+
+        endpoint = endpoint_vms[0]
+        return endpoint
 
     def get_endpoints_by_subscriber_id(self, subscriber_id):
         """
