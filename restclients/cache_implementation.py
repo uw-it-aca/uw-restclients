@@ -18,14 +18,14 @@ class NoCache(object):
     def processResponse(self, service, url, response):
         pass
 
-
-class TimeSimpleCache(object):
+class TimedCache(object):
     """
-    This caches all URLs for 60 seconds.  Used for testing.
+    This is a base class for Cache implementations that cache for
+    lengths of time.
     """
-    def getCache(self, service, url, headers):
+    def _response_from_cache(self, service, url, headers, max_age_in_seconds):
         now = make_aware(datetime.now(), get_current_timezone())
-        time_limit = now - timedelta(seconds=60)
+        time_limit = now - timedelta(seconds=max_age_in_seconds)
 
         query = CacheEntryTimed.objects.filter(
                                                 service=service,
@@ -45,66 +45,7 @@ class TimeSimpleCache(object):
             }
         return None
 
-    def processResponse(self, service, url, response):
-        query = CacheEntryTimed.objects.filter(
-                                                service=service,
-                                                url=url,
-                                              )
-
-        cache_entry = CacheEntryTimed()
-        if len(query):
-            cache_entry = query[0]
-
-        now = make_aware(datetime.now(), get_current_timezone())
-        cache_entry.service = service
-        cache_entry.url = url
-        cache_entry.status = response.status
-        cache_entry.content = response.data
-        cache_entry.headers = []
-        cache_entry.time_saved = now
-        cache_entry.save()
-
-        return
-
-class FourHourCache(object):
-    """
-    This caches all URLs for 4 hours.  Provides a basic way to cache
-    cache resources that don't give a useful expires header, but you don't
-    want to make a server round trip to validate an etag for.
-    """
-    def getCache(self, service, url, headers):
-        now = make_aware(datetime.now(), get_current_timezone())
-        time_limit = now - timedelta(hours=4)
-
-        # The 4 hour policy only applies to successful requests.
-        query = CacheEntryTimed.objects.filter(
-                                                service=service,
-                                                url=url,
-                                                time_saved__gte=time_limit,
-                                              )
-
-        if len(query):
-            hit = query[0]
-
-            status = hit.status
-            if status != 200:
-                # Only keep non-200 responses as valid cache entries for
-                # 5 minutes - MUWM-509
-                max_error_delta = timedelta(minutes=5)
-                save_delta = now - hit.time_saved
-                if save_delta > max_error_delta:
-                    return None
-
-            response = MockHTTP()
-            response.status = hit.status
-            response.data = hit.content
-
-            return {
-                "response": response,
-            }
-        return None
-
-    def processResponse(self, service, url, response):
+    def _process_response(self, service, url, response, overwrite_success_with_error_at=60*60*8):
         now = make_aware(datetime.now(), get_current_timezone())
         query = CacheEntryTimed.objects.filter(
                                                 service=service,
@@ -122,7 +63,7 @@ class FourHourCache(object):
             # Successful entry is older than 8 hours - MUWM-509
             if cache_entry.id != None and cache_entry.status == 200:
                 save_delta = now - cache_entry.time_saved
-                extended_cache_delta = timedelta(hours=8)
+                extended_cache_delta = timedelta(seconds=overwrite_success_with_error_at)
 
                 if save_delta < extended_cache_delta:
                     response = MockHTTP()
@@ -145,6 +86,30 @@ class FourHourCache(object):
             return
         return
 
+
+
+class TimeSimpleCache(TimedCache):
+    """
+    This caches all URLs for 60 seconds.  Used for testing.
+    """
+    def getCache(self, service, url, headers):
+        return self._response_from_cache(service, url, headers, 60)
+
+    def processResponse(self, service, url, response):
+        return self._process_response(service, url, response)
+
+
+class FourHourCache(TimedCache):
+    """
+    This caches all URLs for 4 hours.  Provides a basic way to cache
+    cache resources that don't give a useful expires header, but you don't
+    want to make a server round trip to validate an etag for.
+    """
+    def getCache(self, service, url, headers):
+        return self._response_from_cache(service, url, headers, 60*4)
+
+    def processResponse(self, service, url, response):
+        return self._process_response(service, url, response)
 
 
 class ETagCache(object):
