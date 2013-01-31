@@ -23,7 +23,7 @@ class TimedCache(object):
     This is a base class for Cache implementations that cache for
     lengths of time.
     """
-    def _response_from_cache(self, service, url, headers, max_age_in_seconds):
+    def _response_from_cache(self, service, url, headers, max_age_in_seconds, max_error_age=60*5):
         now = make_aware(datetime.now(), get_current_timezone())
         time_limit = now - timedelta(seconds=max_age_in_seconds)
 
@@ -35,6 +35,9 @@ class TimedCache(object):
 
         if len(query):
             hit = query[0]
+
+            if hit.status != 200 and (now - timedelta(seconds=max_error_age) > hit.time_saved):
+                return None
 
             response = MockHTTP()
             response.status = hit.status
