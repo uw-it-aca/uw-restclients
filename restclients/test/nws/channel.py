@@ -43,17 +43,18 @@ class NWSTestChannel(TestCase):
 
     def test_terms_with_active_channels(self):
         with self.settings(
-                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File',
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
             nws = NWS()
 
             terms = nws.get_terms_with_active_channels("uw_student_courseavailable")
             self.assertEquals(len(terms), 2)
 
-            self.assertEquals(terms[0].year, 2012)
+            self.assertEquals(terms[0].year, 2013)
             self.assertEquals(terms[1].year, 2013)
 
-            self.assertEquals(terms[0].quarter, 'autumn')
-            self.assertEquals(terms[1].quarter, 'winter')
+            self.assertEquals(terms[0].quarter, 'spring')
+            self.assertEquals(terms[1].quarter, 'summer')
 
 
 

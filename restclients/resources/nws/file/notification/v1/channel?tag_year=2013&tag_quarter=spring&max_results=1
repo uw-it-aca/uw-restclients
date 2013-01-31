@@ -1,0 +1,1 @@
+{"Channels": [{"ChannelID": "0005bf61-963b-494a-baed-86e4e260da1e", "ChannelURI": "/notification/v1/channel/0005bf61-963b-494a-baed-86e4e260da1e", "SurrogateID": "2013,spring,acctg,500,c", "Type": "uw_student_courseavailable", "Name": "FINANCIAL ACCOUNTING"}], "QueryParams": {"max_results": 1, "first_result": 1, "tag_year": "2013", "tag_quarter": "spring"}, "TotalCount": 4442}

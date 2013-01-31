@@ -428,11 +428,45 @@ class NWS(object):
 
         return channel_list.view_models
 
+    def term_has_active_channel(self, channel_type, term):
+        """
+        Checks to see if there exists a channel for the given sws.Term object's
+        year and quarter.
+        """
+
+        dao = NWS_DAO()
+        url = "/notification/v1/channel?tag_year=%s&tag_quarter=%s&max_results=1" % (term.year, term.quarter)
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            return False
+
+        data = json.loads(response.data)
+        if "TotalCount" in data:
+            if data["TotalCount"] > 0:
+                return True
+
+        return False
+
     def get_terms_with_active_channels(self, channel_type):
+        """
+        Returns a list of all sws.Terms that have active channels.
+        """
+        # Check the current term, and the next 3, to see if they have
+        # a channel for any course in that term.
+        # when the sws term resource provides us with a timeschedule publish
+        # date, use that instead of this.
         sws = SWS()
+        term = sws.get_current_term()
+
         terms = []
-        terms.append(sws.get_term_by_year_and_quarter(2012, "autumn"))
-        terms.append(sws.get_term_by_year_and_quarter(2013, "winter"))
+        if self.term_has_active_channel(channel_type, term):
+            terms.append(term)
+
+        for i in range(3):
+            term = sws.get_term_after(term)
+            if self.term_has_active_channel(channel_type, term):
+                terms.append(term)
 
         return terms
 
