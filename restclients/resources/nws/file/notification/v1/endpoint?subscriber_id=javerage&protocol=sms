@@ -1,0 +1,30 @@
+{
+    "Endpoints": [
+        {
+          "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+          "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+          "EndpointAddress": "222-222-3333", 
+          "Carrier": "AT&T", 
+          "Protocol": "SMS", 
+          "SubscriberID": "javerage", 
+          "OwnerID": "javerage", 
+          "Active": false, 
+          "Default": false, 
+          "Created": "2012-11-13 22:51:51+00:00", 
+          "LastModified": "2012-11-13 22:51:51+00:00"
+        },
+        {
+          "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b671", 
+          "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b671", 
+          "EndpointAddress": "javerage@uw.edu", 
+          "Carrier": "AT&T", 
+          "Protocol": "Email", 
+          "SubscriberID": "javerage", 
+          "OwnerID": "javerage", 
+          "Active": false, 
+          "Default": false, 
+          "Created": "2012-11-13 22:51:51+00:00", 
+          "LastModified": "2012-11-13 22:51:51+00:00"
+        }
+    ]
+}
