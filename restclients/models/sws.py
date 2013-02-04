@@ -219,6 +219,38 @@ class Section(models.Model):
         return data
 
 
+class SectionStatus(models.Model):
+    add_code_required = models.BooleanField()
+    current_enrollment = models.IntegerField()
+    current_registration_period = models.IntegerField()
+    faculty_code_required = models.BooleanField()
+    limit_estimated_enrollment = models.IntegerField()
+    limit_estimate_enrollment_indicator = models.CharField(max_length=8)
+    room_capacity = models.IntegerField()
+    sln = models.PositiveIntegerField()
+    space_available = models.IntegerField()
+    is_open = models.CharField(max_length=6)
+    
+
+    class Meta:
+        app_label = "restclients"
+
+    def json_data(self):
+        data = {
+            'add_code_required' : self.add_code_required,
+            'current_endrollment' : self.current_enrollment,
+            'current_registration_period' : self.current_registration_period,
+            'faculty_code_required' : self.faculty_code_required,
+            'limit_estimated_enrollment' : self.limit_estimated_enrollment,
+            'limit_estimate_enrollment_indicator' : self.limit_estimate_enrollment_indicator,
+            'room_capacity' : self.room_capacity,
+            'sln' : self.sln,
+            'space_available' : self.space_available,
+            'is_open' : self.status,
+        }
+        return data
+
+
 class Registration(models.Model):
     section = models.ForeignKey(Section,
                                 on_delete=models.PROTECT)

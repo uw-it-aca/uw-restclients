@@ -4,7 +4,7 @@ This is the interface for interacting with the Student Web Service.
 
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
-from restclients.models.sws import Term, Section, SectionMeeting
+from restclients.models.sws import Term, Section, SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
 from restclients.exceptions import DataFailureException, InvalidSectionID
@@ -187,6 +187,29 @@ class SWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return self._section_from_json(response.data)
+
+    def get_section_status_by_label(self, label):
+        """
+        Returns a restclients.SectionStatus object for the passed section label.
+        """
+        valid = re.compile('^\d{4},'                           # year
+                           '(?:winter|spring|summer|autumn),'  # quarter
+                           '[\w& ]+,'                          # curriculum
+                           '\d{3}\/'                           # course number
+                           '[A-Z][A-Z0-9]?$',                  # section id
+                           re.VERBOSE)
+        if not valid.match(label):
+            raise InvalidSectionID(label)
+
+        url = "/student/v4/course/%s/status.json" % re.sub(r'\s', '%20', label)
+
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._section_status_from_json(response.data)
 
     def get_linked_sections(self, section):
         """
@@ -724,3 +747,32 @@ class SWS(object):
                 section.final_exam = final_exam
 
         return section
+
+    def _section_status_from_json(self, data):
+        """
+        Returns a section status model created from the passed json.
+        """
+        section_data = json.loads(data)
+
+        section_status = SectionStatus()
+        if section_data["AddCodeRequired"] == 'True':
+            section_status.add_code_required = True
+        else:
+            section_status.add_code_required = False
+        section_status.current_enrollment = int(section_data["CurrentEnrollment"])
+        section_status.current_registration_period = int(section_data["CurrentRegistrationPeriod"])
+        if section_data["FacultyCodeRequired"] == 'True':
+            section_status.faculty_code_required = True
+        else:
+            section_status.faculty_code_required = False
+        section_status.limit_estimated_enrollment = int(section_data["LimitEstimateEnrollment"])
+        section_status.limit_estimate_enrollment_indicator = section_data["LimitEstimateEnrollmentIndicator"]
+        section_status.room_capacity = int(section_data["RoomCapacity"])
+        section_status.sln = int(section_data["SLN"])
+        section_status.space_available = int(section_data["SpaceAvailable"])
+        if section_data["Status"] == "open":
+            section_status.is_open = True
+        else:
+            section_status.is_open = False
+
+        return section_status

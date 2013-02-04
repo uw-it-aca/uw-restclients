@@ -9,6 +9,7 @@ from restclients.test.sws.file_implementation.dao import SWSTestFileDAO
 
 from restclients.test.sws.schedule_data import SWSTestScheduleData
 from restclients.test.sws.section import SWSTestSectionData
+from restclients.test.sws.section_status import SWSTestSectionStatusData
 from restclients.test.sws.independent_study import SWSIndependentStudy
 from restclients.test.sws.instructor_no_regid import SWSMissingRegid
 from restclients.test.sws.registrations import SWSTestRegistrations
