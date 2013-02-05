@@ -6,7 +6,7 @@ from django.template import Context, loader
 from restclients.dao import GWS_DAO
 from restclients.exceptions import InvalidGroupID
 from restclients.exceptions import DataFailureException
-from restclients.models import Group, CourseGroup, GroupMember
+from restclients.models import Group, CourseGroup, GroupUser, GroupMember
 from lxml import etree
 
 
@@ -81,9 +81,45 @@ class GWS(object):
 
         return True
 
+    def get_members(self, group_id):
+        """
+        Returns a list of GroupMember models for the group identified by the
+        passed group ID.
+        """
+        if not self._is_valid_group_id(group_id):
+            raise InvalidGroupID(group_id)
+
+        dao = GWS_DAO()
+        url = "/group_sws/v2/group/%s/member" % group_id
+        response = dao.getURL(url, {"Accept": "text/xhtml"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._members_from_xhtml(response.data)
+
+    def update_members(self, group_id, members):
+        """
+        Updates the membership of the group represented by the passed group id.
+        """
+        if not self._is_valid_group_id(group_id):
+            raise InvalidGroupID(group_id)
+
+        body = self._xhtml_from_members(group_id, members)
+
+        dao = GWS_DAO()
+        url = "/group_sws/v2/group/%s/member" % group_id
+        response = dao.putURL(url, {"Content-Type": "text/xhtml",
+                                    "If-Match": "*"}, body)
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return members
+
     def get_effective_members(self, group_id):
         """
-        Returns a list of effective group member data for the group identified
+        Returns a list of effective GroupMember models for the group identified
         by the passed group ID.
         """
         if not self._is_valid_group_id(group_id):
@@ -93,21 +129,10 @@ class GWS(object):
         url = "/group_sws/v2/group/%s/effective_member" % group_id
         response = dao.getURL(url, {"Accept": "text/xhtml"})
 
-        if response.status == 404:
-            return
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
 
-        root = etree.fromstring(response.data)
-
-        member_elements = root.findall('.//*[@class="members"]' +
-                                       '//*[@class="effective_member"]')
-
-        members = []
-        for member in member_elements:
-            members.append(GroupMember(name=member.text,
-                                       member_type=member.get("type"),
-                                       href=member.get("href")))
-
-        return members
+        return self._effective_members_from_xhtml(response.data)
 
     def is_effective_member(self, group_id, netid):
         """
@@ -142,29 +167,83 @@ class GWS(object):
             group.instructors = []
             instructors = root.findall('.//*[@class="course_instructors"]' +
                                        '/*[@class="course_instructor"]')
-            for instructor_data in instructors:
+            for instructor in instructors:
                 group.instructors.append(instructor.text)
         else:
             group = Group()
 
-        group.regid = root.find('.//*[@class="regid"]').text
+        group.uwregid = root.find('.//*[@class="regid"]').text
         group.name = root.find('.//*[@class="name"]').text
         group.title = root.find('.//*[@class="title"]').text
         group.description = root.find('.//*[@class="description"]').text
         group.contact = root.find('.//*[@class="contact"]').text
+        group.authnfactor = root.find('.//*[@class="authnfactor"]').text
+        group.classification = root.find('.//*[@class="classification"]').text
+        group.emailenabled = root.find('.//*[@class="emailenabled"]').text
+        group.dependson = root.find('.//*[@class="dependson"]').text
+        group.publishemail = root.find('.//*[@class="publishemail"]').text
+        group.reporttoorig = root.find('.//*[@class="reporttoorig"]').text
 
+        group.admins = []
+        for user in root.findall('.//*[@class="admins"]/*[@class="admin"]'):
+            group.admins.append(GroupUser(name=user.text,
+                                          user_type=user.get("type")))
+
+        group.updaters = []
+        for user in root.findall('.//*[@class="updaters"]/*[@class="updater"]'):
+            group.updaters.append(GroupUser(name=user.text,
+                                            user_type=user.get("type")))
+
+        group.creators = []
+        for user in root.findall('.//*[@class="creators"]/*[@class="creator"]'):
+            group.creators.append(GroupUser(name=user.text,
+                                            user_type=user.get("type")))
+
+        group.readers = []
+        for user in root.findall('.//*[@class="readers"]/*[@class="reader"]'):
+            group.readers.append(GroupUser(name=user.text,
+                                           user_type=user.get("type")))
+
+        group.viewers = []
+        for user in root.findall('.//*[@class="viewers"]/*[@class="viewer"]'):
+            group.viewers.append(GroupUser(name=user.text,
+                                           user_type=user.get("type")))
         return group
 
     def _xhtml_from_group(self, group):
         template = loader.get_template("gws/group.xhtml")
+        context = Context({"group": group})
+        return template.render(context)
 
-        context = Context({"name": group.name,
-                           "title": group.title,
-                           "description": group.description,
-                           "contact": group.contact,
-                           "admins": [],
-                           "readers": [{"type": "none", "name": "dc=all"}]})
+    def _effective_members_from_xhtml(self, data):
+        root = etree.fromstring(data)
+        member_elements = root.findall('.//*[@class="members"]' +
+                                       '//*[@class="effective_member"]')
 
+        members = []
+        for member in member_elements:
+            members.append(GroupMember(name=member.text,
+                                       member_type=member.get("type"),
+                                       href=member.get("href")))
+
+        return members
+
+    def _members_from_xhtml(self, data):
+        root = etree.fromstring(data)
+        member_elements = root.findall('.//*[@class="members"]' +
+                                       '//*[@class="member"]')
+
+        members = []
+        for member in member_elements:
+            members.append(GroupMember(name=member.text,
+                                       member_type=member.get("type"),
+                                       href=member.get("href")))
+
+        return members
+
+    def _xhtml_from_members(self, group_id, members):
+        template = loader.get_template("gws/members.xhtml")
+        context = Context({"group_id": group_id, "members": members})
         return template.render(context)
 
     def _is_valid_group_id(self, group_id):

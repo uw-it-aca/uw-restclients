@@ -7,52 +7,52 @@
     </head>
     <body>
         <div class="group">
-            <span class="regid">{{regid}}</span>
-            <span class="title">{{title}}</span>
-            <span class="description">{{description}}</span>
+            <span class="regid">{{group.uwregid}}</span>
+            <span class="title">{{group.title}}</span>
+            <span class="description">{{group.description}}</span>
 
             <ul class="names">
-                <li class="name">{{name}}</li>
+                <li class="name">{{group.name}}</li>
             </ul>
 
-            <span class="authnfactor">1</span>
-            <span class="classification">u</span>
-            <span class="dependson"></span>
-            <span class="emailenabled">disabled</span>
-            <span class="publishemail"></span>
-            <span class="contact">{{contact}}</span>
-            <span class="reporttoorig">0</span>
+            <span class="authnfactor">{{group.authnfactor}}</span>
+            <span class="classification">{{group.classification}}</span>
+            <span class="dependson">{{group.dependson}}</span>
+            <span class="emailenabled">{{group.emailenabled}}</span>
+            <span class="publishemail">{{group.publishemail}}</span>
+            <span class="contact">{{group.contact}}</span>
+            <span class="reporttoorig">{{group.reporttoorig}}</span>
 
-            <ul class="authorigs">{% for authorig in authorigs %}
+            <ul class="authorigs">{% for authorig in group.authorigs %}
                 <li class="authorig">{{authorig.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="admins">{% for admin in admins %}
-                <li class="admin" type="{{admin.type}}">{{admin.name}}</li>{% endfor %}
+            <ul class="admins">{% for admin in group.admins %}
+                <li class="admin" type="{{admin.user_type}}">{{admin.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="updaters">{% for updater in updaters %}
-                <li class="updater" type="{{updater.type}}">{{updater.name}}</li>{% endfor %}
+            <ul class="updaters">{% for updater in group.updaters %}
+                <li class="updater" type="{{updater.user_type}}">{{updater.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="creators">{% for creator in creators %}
-                <li class="creator" type="{{creator.type}}">{{creator.name}}</li>{% endfor %}
+            <ul class="creators">{% for creator in group.creators %}
+                <li class="creator" type="{{creator.user_type}}">{{creator.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="readers">{% for reader in readers %}
-                <li class="reader" type="{{reader.type}}">{{reader.name}}</li>{% endfor %}
+            <ul class="readers">{% for reader in group.readers %}
+                <li class="reader" type="{{reader.user_type}}">{{reader.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="viewers">{% for viewer in viewers %}
-                <li class="viewer" type="{{viewer.type}}">{{viewer.name}}</li>{% endfor %}
+            <ul class="viewers">{% for viewer in group.viewers %}
+                <li class="viewer" type="{{viewer.user_type}}">{{viewer.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="optins">{% for optin in optins %}
-                <li class="optin" type="{{optin.type}}">{{optin.name}}</li>{% endfor %}
+            <ul class="optins">{% for optin in group.optins %}
+                <li class="optin" type="{{optin.user_type}}">{{optin.name}}</li>{% endfor %}
             </ul>
 
-            <ul class="optouts">{% for optout in optouts %}
-                <li class="optout" type="{{optout.type}}">{{optout.name}}</li>{% endfor %}
+            <ul class="optouts">{% for optout in group.optouts %}
+                <li class="optout" type="{{optout.user_type}}">{{optout.name}}</li>{% endfor %}
             </ul>
         </div>
     </body>

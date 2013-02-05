@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.gws import GWS
-from restclients.models import Group
+from restclients.models import Group, GroupUser, GroupMember
 
 class GWSGroupBasics(TestCase):
 
@@ -18,6 +18,8 @@ class GWSGroupBasics(TestCase):
                     gws = GWS()
                     group = Group(name="u_acadev_tester2",
                                   title="New ACA Tester")
+                    group.admins = [GroupUser(user_type="uwnetid", name="acadev")]
+                    group.readers = [GroupUser(user_type="none", name="dc=all")]
                     new_group = gws.create_group(group)
                     self.assertEquals(new_group.title, group.title)
 
@@ -37,6 +39,25 @@ class GWSGroupBasics(TestCase):
                     group = Group(name='u_acadev_tester')
                     result = gws.delete_group(group)
                     self.assertEquals(result, True)
+
+    def test_group_membership(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                    gws = GWS()
+                    members = gws.get_members('u_acadev_unittest')
+                    self.assertEquals(len(members), 2)
+
+    def test_update_members(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                    gws = GWS()
+                    members = gws.get_members('u_acadev_unittest')
+                    
+                    members.remove(GroupMember(member_type="uwnetid", name="eight"))
+                    members.append(GroupMember(member_type="uwnetid", name="seven"))
+
+                    members = gws.update_members('u_acadev_unittest', members)
+                    self.assertEquals(len(members), 2)
 
     def test_effective_group_membership(self):
         with self.settings(

@@ -138,14 +138,32 @@ class BookAuthor(models.Model):
 
 
 class Group(models.Model):
-    regid = models.CharField(max_length=32,
-                               db_index=True,
-                               unique=True)
+    uwregid = models.CharField(max_length=32,
+                             db_index=True,
+                             unique=True)
 
     name = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=2000)
     contact = models.CharField(max_length=120)
+    authnfactor = models.PositiveSmallIntegerField(max_length=1,
+                                                   choices=((1, ""),(2, "")),
+                                                   default=1)
+    classification = models.CharField(max_length=1,
+                                      choices=(('u', 'unclassified'),
+                                               ('p', 'public'),
+                                               ('r', 'restricted'),
+                                               ('c', 'confidential')),
+                                      default='u')
+    emailenabled = models.CharField(max_length=10,
+                                    choices=(('UWExchange', 'UWExchange'),
+                                             ('disabled', 'disabled')),
+                                    default='disabled')
+    dependson = models.CharField(max_length=500)
+    publishemail = models.CharField(max_length=120)
+    reporttoorig = models.SmallIntegerField(max_length=1,
+                                            choices=((1, ""),(0, "")),
+                                            default=0)
 
 
 class CourseGroup(Group):
@@ -171,10 +189,23 @@ class CourseGroup(Group):
 
     sln = models.PositiveIntegerField()
 
+
+class GroupUser(models.Model):
+    name = models.CharField(max_length=40)
+    user_type = models.SlugField(max_length=16)
+
+    def __eq__(self, other):
+        return self.name == other.name and self.user_type == other.user_type
+
+
 class GroupMember(models.Model):
     name = models.CharField(max_length=40)
-    member_type = models.SlugField(max_length=16)  
+    member_type = models.SlugField(max_length=16)
     href = models.CharField(max_length=200)
+
+    def __eq__(self, other):
+        return self.name == other.name and self.member_type == other.member_type
+
 
 class MockAmazonSQSQueue(models.Model):
     name = models.CharField(max_length=80, unique=True, db_index=True)
@@ -281,7 +312,7 @@ class CourseAvailableEvent(models.Model):
             self.course_number,
             self.section_id
         )
-    
+
     def get_surrogate_id(self):
         """
         This is responsible for building the surrogate id from the model
@@ -289,7 +320,7 @@ class CourseAvailableEvent(models.Model):
         surrogate_id = "%s,%s,%s,%s,%s" % (self.year, self.quarter, self.curriculum_abbr.lower(), self.course_number, self.section_id.lower())
 
         return surrogate_id
-        
+
     def json_data(self):
         return{
             "Event": {
