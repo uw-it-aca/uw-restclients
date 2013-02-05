@@ -4,6 +4,7 @@ from restclients.nws import NWS
 from restclients.exceptions import DataFailureException
 from vm.v1.viewmodels import Channel
 from unittest import skipIf
+from datetime import datetime
 
 class NWSTestChannel(TestCase):
     def test_create_channel(self):
@@ -19,6 +20,20 @@ class NWSTestChannel(TestCase):
             response_status = nws.create_new_channel(channel)
             self.assertEquals(response_status, 201)
 
+    def test_update_channel(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            channel = Channel()
+            channel.surrogate_id = "2012,autumn,uwit,100,a"
+            channel.type =  "uw_student_courseavailable"
+            channel.name = "TEST CREATE CHANNEL"
+            channel.description = "TEST CREATE CHANNEL \n"
+            channel.expires = datetime.now()
+
+            nws = NWS()
+            response_status = nws.update_channel(channel)
+            self.assertEquals(204, response_status)
+            
     def test_channel_channel_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):

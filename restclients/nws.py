@@ -364,6 +364,26 @@ class NWS(object):
 
         return post_response.status
 
+    def update_channel(self, channel):
+        """
+        Update an existing channel
+
+        :param channel:
+        is the updated channel that the client wants to update
+        """
+        #Update the channel
+        dao = NWS_DAO()
+        url = "/notification/v1/channel/%s" % (channel.channel_id)
+
+        put_response = dao.putURL(url, {"Content-Type": "application/json"}, Serializer().serialize(channel))
+
+        #Http response code 204 No Content:
+        #The server has fulfilled the request but does not need to return an entity-body
+        if put_response.status != 204:
+            raise DataFailureException(url, put_response.status, put_response.data)
+
+        return put_response.status
+    
     def delete_channel(self, channel_id):
         """
         Deleting an existing channel
