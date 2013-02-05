@@ -92,6 +92,12 @@ class GWS_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('gws', url, headers)
 
+    def putURL(self, url, headers, body):
+        return self._putURL('gws', url, headers, body)
+
+    def deleteURL(self, url, headers):
+        return self._deleteURL('gws', url, headers)
+
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_GWS_DAO_CLASS', GWSFile)
 

@@ -145,6 +145,7 @@ class Group(models.Model):
     name = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=2000)
+    contact = models.CharField(max_length=120)
 
 
 class CourseGroup(Group):

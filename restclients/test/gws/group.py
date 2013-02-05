@@ -1,16 +1,33 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.gws import GWS
+from restclients.models import Group
 
 class GWSGroupBasics(TestCase):
 
-    def test_group_attributes(self):
+    def test_get_group(self):
         with self.settings(
                 RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
                     gws = GWS()
                     group = gws.get_group_by_id('u_acadev_tester')
                     self.assertEquals(group.name, "u_acadev_tester")
 
+    def test_update_group(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                    gws = GWS()
+                    group = gws.get_group_by_id("u_acadev_tester")
+                    group.title = "ACA Tester"
+                    new_group = gws.update_group(group)
+                    self.assertEquals(new_group.title, group.title)
+
+    def test_delete_group(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                    gws = GWS()
+                    group = Group(name='u_acadev_tester')
+                    result = gws.delete_group(group)
+                    self.assertEquals(result, True)
 
     def test_effective_group_membership(self):
         with self.settings(

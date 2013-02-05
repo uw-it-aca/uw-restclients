@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+    </head>
+    <body>
+        <div class="group">
+            <span class="regid">{{regid}}</span>
+            <span class="title">{{title}}</span>
+            <span class="description">{{description}}</span>
+
+            <ul class="names">
+                <li class="name">{{name}}</li>
+            </ul>
+
+            <span class="authnfactor">1</span>
+            <span class="classification">u</span>
+            <span class="dependson"></span>
+            <span class="emailenabled">disabled</span>
+            <span class="publishemail"></span>
+            <span class="contact">{{contact}}</span>
+            <span class="reporttoorig">0</span>
+
+            <ul class="authorigs">{% for authorig in authorigs %}
+                <li class="authorig">{{authorig.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="admins">{% for admin in admins %}
+                <li class="admin" type="{{admin.type}}">{{admin.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="updaters">{% for updater in updaters %}
+                <li class="updater" type="{{updater.type}}">{{updater.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="creators">{% for creator in creators %}
+                <li class="creator" type="{{creator.type}}">{{creator.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="readers">{% for reader in readers %}
+                <li class="reader" type="{{reader.type}}">{{reader.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="viewers">{% for viewer in viewers %}
+                <li class="viewer" type="{{viewer.type}}">{{viewer.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="optins">{% for optin in optins %}
+                <li class="optin" type="{{optin.type}}">{{optin.name}}</li>{% endfor %}
+            </ul>
+
+            <ul class="optouts">{% for optout in optouts %}
+                <li class="optout" type="{{optout.type}}">{{optout.name}}</li>{% endfor %}
+            </ul>
+        </div>
+    </body>
+</html>
