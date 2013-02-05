@@ -35,6 +35,22 @@ class GWS(object):
 
         return self._group_from_xhtml(response.data)
 
+    def create_group(self, group):
+        """
+        Creates the passed group.
+        """
+        body = self._xhtml_from_group(group)
+
+        dao = GWS_DAO()
+        url = "/group_sws/v2/group/%s" % group.name
+        response = dao.putURL(url, {"Accept": "text/xhtml",
+                                    "Content-Type": "text/xhtml"}, body)
+
+        if response.status != 201:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._group_from_xhtml(response.data)
+
     def update_group(self, group):
         """
         Updates the passed group.
@@ -44,7 +60,7 @@ class GWS(object):
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group.name
         response = dao.putURL(url, {"Accept": "text/xhtml",
-                                    "Content-Type": "text/xml",
+                                    "Content-Type": "text/xhtml",
                                     "If-Match": "*"}, body)
 
         if response.status != 200:

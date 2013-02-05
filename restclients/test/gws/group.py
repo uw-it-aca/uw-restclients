@@ -12,6 +12,15 @@ class GWSGroupBasics(TestCase):
                     group = gws.get_group_by_id('u_acadev_tester')
                     self.assertEquals(group.name, "u_acadev_tester")
 
+    def test_create_group(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                    gws = GWS()
+                    group = Group(name="u_acadev_tester2",
+                                  title="New ACA Tester")
+                    new_group = gws.create_group(group)
+                    self.assertEquals(new_group.title, group.title)
+
     def test_update_group(self):
         with self.settings(
                 RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):

@@ -19,12 +19,11 @@ class File(object):
     def putURL(self, url, headers, body):
         response = MockHTTP()
 
-        if "If-Match" not in headers:
-            response.status = 412
-            return response
-
         if body is not None:
-            response.status = 200
+            if "If-Match" in headers:
+                response.status = 200 # update
+            else:
+                response.status = 201 # create
             response.headers = {"X-Data-Source": "GWS file mock data",
                                 "Content-Type": headers["Content-Type"]}
             response.data = body
