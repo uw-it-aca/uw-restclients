@@ -31,7 +31,7 @@ class NWSTestMessage(TestCase):
 
             nws = NWS()
             response_status = nws.create_new_message(message)
-            self.assertEquals(response_status, 201)
+            self.assertEquals(response_status, 200)
 
     def test_create_message_with_json(self):
         with self.settings(
@@ -63,7 +63,7 @@ class NWSTestMessage(TestCase):
 
             nws = NWS()
             response_status = nws.create_new_message(message)
-            self.assertEquals(response_status, 201)
+            self.assertEquals(response_status, 200)
 
     @skipIf(True, "Used only for live testing")
     def _create_message_live_with_model(self):
@@ -87,7 +87,7 @@ class NWSTestMessage(TestCase):
 
             nws = NWS()
             response_status = nws.create_new_message(message)
-            self.assertEquals(response_status, 201)
+            self.assertEquals(response_status, 200)
     
     @skipIf(True, "Used only for live testing")
     def _create_message_live_with_json(self):
@@ -120,5 +120,5 @@ class NWSTestMessage(TestCase):
 
             nws = NWS()
             response_status = nws.create_new_message(message)
-            self.assertEquals(response_status, 201)
+            self.assertEquals(response_status, 200)
 
