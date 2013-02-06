@@ -16,6 +16,10 @@ class GWS(object):
     """
     QTRS = {'win': 'winter', 'spr': 'spring', 'sum': 'summer', 'aut': 'autumn'}
 
+
+    def __init__(self, config={}):
+        self.actas = config['actas'] if 'actas' in config else None
+
     def get_group_by_id(self, group_id):
         """
         Returns group data for the group identified by the passed group ID.
@@ -25,7 +29,7 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group_id
-        response = dao.getURL(url, {"Accept": "text/xhtml"})
+        response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
 
         if response.status == 404:
             return
@@ -43,8 +47,10 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group.name
-        response = dao.putURL(url, {"Accept": "text/xhtml",
-                                    "Content-Type": "text/xhtml"}, body)
+        response = dao.putURL(url,
+                              self._headers({"Accept": "text/xhtml",
+                                             "Content-Type": "text/xhtml"}),
+                              body)
 
         if response.status != 201:
             raise DataFailureException(url, response.status, response.data)
@@ -59,9 +65,11 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group.name
-        response = dao.putURL(url, {"Accept": "text/xhtml",
-                                    "Content-Type": "text/xhtml",
-                                    "If-Match": "*"}, body)
+        response = dao.putURL(url,
+                              self._headers({"Accept": "text/xhtml",
+                                             "Content-Type": "text/xhtml",
+                                             "If-Match": "*"}),
+                              body)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -74,7 +82,7 @@ class GWS(object):
         """
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group.name
-        response = dao.deleteURL(url, None)
+        response = dao.deleteURL(url, self._headers())
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -91,7 +99,7 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s/member" % group_id
-        response = dao.getURL(url, {"Accept": "text/xhtml"})
+        response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -109,8 +117,10 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s/member" % group_id
-        response = dao.putURL(url, {"Content-Type": "text/xhtml",
-                                    "If-Match": "*"}, body)
+        response = dao.putURL(url,
+                              self._headers({"Content-Type": "text/xhtml",
+                                             "If-Match": "*"}),
+                              body)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -127,7 +137,7 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s/effective_member" % group_id
-        response = dao.getURL(url, {"Accept": "text/xhtml"})
+        response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -143,7 +153,7 @@ class GWS(object):
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s/effective_member/%s" % (group_id, netid)
-        response = dao.getURL(url, {"Accept": "text/xhtml"})
+        response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
 
         if response.status == 404:
             return False
@@ -251,3 +261,16 @@ class GWS(object):
             return False
 
         return True
+
+    def _headers(self, headers):
+        if self.actas:
+            headers = self._add_header(headers, "X-UW-Act-as", self.actas)
+
+        return headers
+
+    def _add_header(headers, header, value):
+        if not headers:
+            return { header: value }
+
+        headers[header] = value
+        return headers
