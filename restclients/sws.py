@@ -554,6 +554,10 @@ class SWS(object):
         term = Term()
         term.year = term_data["Year"]
         term.quarter = term_data["Quarter"]
+
+        term.last_day_add = strptime(
+                                    term_data["LastAddDay"], day_format
+                                    )
         term.first_day_quarter = strptime(
                                     term_data["FirstDay"], day_format
                                     )

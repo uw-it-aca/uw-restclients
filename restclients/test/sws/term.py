@@ -62,6 +62,10 @@ class SWSTestTerm(TestCase):
                               "Return %s for the current quarter" %
                               expected_quarter)
 
+            self.assertEquals(term.last_day_add.year, 2013)
+            self.assertEquals(term.last_day_add.month, 4)
+            self.assertEquals(term.last_day_add.day, 21)
+            
             self.assertEquals(term.first_day_quarter.year, 2013)
             self.assertEquals(term.first_day_quarter.month, 4)
             self.assertEquals(term.first_day_quarter.day, 1)
