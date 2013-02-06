@@ -45,6 +45,7 @@ from restclients.test.nws.subscription import NWSTestSubscription
 from restclients.test.nws.channel import NWSTestChannel
 from restclients.test.nws.endpoint import NWSTestEndpoint
 from restclients.test.nws.message import NWSTestMessage
+from restclients.test.nws.person import NWSTestPerson
 
 from restclients.test.canvas.enrollments import CanvasTestEnrollment
 from restclients.test.canvas.bad_sis_ids import CanvasBadSISIDs

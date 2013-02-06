@@ -8,6 +8,7 @@ from restclients.models import CourseAvailableEvent
 from urllib import urlencode
 from datetime import datetime
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
+from vm.v1.viewmodels import Person, PersonList
 from restclients.sws import SWS
 import re
 import json
@@ -36,7 +37,7 @@ class NWS(object):
         Serializer().deserialize(endpoint_list, response.data)
 
         return endpoint_list.view_models
-    
+
     def get_endpoint_by_endpoint_id(self, endpoint_id):
         """
         Get an endpoint by endpoint id
@@ -238,7 +239,7 @@ class NWS(object):
         if subscription.get_endpoint() is not None:
             if subscription.get_endpoint().user:
                 self._validate_subscriber_id(subscription.endpoint.user)
-    
+
             if subscription.get_endpoint().get_endpoint_id() is not None:
                 self._validate_uuid(subscription.endpoint.get_endpoint_id())
 
@@ -328,7 +329,7 @@ class NWS(object):
         :param dispatch:
         is the new dispatch that the client wants to create
         """
-        
+
         #Create new dispatch
         dao = NWS_DAO()
         url = "/notification/v1/dispatch"
@@ -383,7 +384,7 @@ class NWS(object):
             raise DataFailureException(url, put_response.status, put_response.data)
 
         return put_response.status
-    
+
     def delete_channel(self, channel_id):
         """
         Deleting an existing channel
@@ -487,7 +488,6 @@ class NWS(object):
         dao = NWS_DAO()
         url = "/notification/v1/channel?tag_year=%s&tag_quarter=%s&max_results=1" % (term.year, term.quarter)
         response = dao.getURL(url, {"Accept": "application/json"})
-
         if response.status != 200:
             return False
 
@@ -508,7 +508,6 @@ class NWS(object):
         # date, use that instead of this.
         sws = SWS()
         term = sws.get_current_term()
-
         terms = []
         if self.term_has_active_channel(channel_type, term):
             terms.append(term)
@@ -542,12 +541,12 @@ class NWS(object):
         This is responsible for parsing the message body out of an SQS message
         """
         event = CourseAvailableEvent()
-        
+
         body = json.loads(body)
         message = json.loads(body["Message"])
         message_body = json.loads(message["Body"])
         event_data = message_body["Event"]
-        
+
         event.event_id = event_data["EventID"]
         event.event_create_date = event_data["EventCreateDate"]
         event.year = event_data["Section"]["Course"]["Year"]
@@ -561,8 +560,24 @@ class NWS(object):
             event.status = "available"
         else:
             event.status = "unavailable"
-    
+
         return event
+
+    def get_person_by_surrogate_id(self, surrogate_id):
+        #Validate input
+        self._validate_subscriber_id(surrogate_id)
+
+        url = "/notification/v1/person/%s" % (surrogate_id)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        person = Person()
+        Serializer().deserialize(person, response.data)
+        return person
 
     def _validate_uuid(self, id):
         if id is None:
