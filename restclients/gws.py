@@ -268,7 +268,7 @@ class GWS(object):
 
         return headers
 
-    def _add_header(headers, header, value):
+    def _add_header(self, headers, header, value):
         if not headers:
             return { header: value }
 
