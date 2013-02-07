@@ -6,7 +6,9 @@ from django.template import Context, loader
 from restclients.dao import GWS_DAO
 from restclients.exceptions import InvalidGroupID
 from restclients.exceptions import DataFailureException
-from restclients.models import Group, CourseGroup, GroupUser, GroupMember
+from restclients.models import Group, CourseGroup, GroupReference
+from restclients.models import GroupUser, GroupMember
+from urllib import urlencode
 from lxml import etree
 
 
@@ -20,9 +22,60 @@ class GWS(object):
     def __init__(self, config={}):
         self.actas = config['actas'] if 'actas' in config else None
 
+    def search_groups(self, **kwargs): 
+        """
+        Returns a list of restclients.GroupReference objects matching the
+        passed parameters. Valid parameters are:
+            name: parts_of_name
+                name may include the wild-card (*) character.
+            stem: group_stem
+            member: member_id
+            owner: admin_id
+            affiliate: affiliate_name
+            type: search_type 
+                Values are 'direct' to search for direct membership and
+                'effective' to search for effective memberships. Default is
+                direct membership.
+            scope: search_scope
+                Values are 'one' to limit results to one level of stem name
+                and 'all' to return all groups.
+        """
+        kwargs = dict((k.lower(), v.lower()) for k,v in kwargs.iteritems())
+        if 'type' in kwargs and (kwargs['type'] != 'direct' and
+                                 kwargs['type'] != 'effective'):
+            del(kwargs['type'])
+
+        if 'scope' in kwargs and (kwargs['scope'] != 'one' and
+                                  kwargs['scope'] != 'all'):
+            del(kwargs['scope'])
+
+        dao = GWS_DAO()
+        url = "/group_sws/v2/search?" + urlencode(kwargs)
+        response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        root = etree.fromstring(response.data)
+        group_elements = root.findall('.//*[@class="groupreferences"]' +
+                                      '//*[@class="groupreference"]')
+
+        groups = []
+        for element in group_elements:
+            group = GroupReference()
+            group.uwregid = element.find('.//*[@class="regid"]').text
+            group.title = element.find('.//*[@class="title"]').text
+            group.description = element.find('.//*[@class="description"]').text
+            group.name = element.find('.//*[@class="name"]').text
+            group.url = element.find('.//*[@class="name"]').get('href')
+            groups.append(group)
+
+        return groups
+
     def get_group_by_id(self, group_id):
         """
-        Returns group data for the group identified by the passed group ID.
+        Returns a restclients.Group object for the group identified by the
+        passed group ID.
         """
         if not self._is_valid_group_id(group_id):
             raise InvalidGroupID(group_id)
@@ -41,7 +94,7 @@ class GWS(object):
 
     def create_group(self, group):
         """
-        Creates the passed group.
+        Creates a group from the passed restclients.Group object.
         """
         body = self._xhtml_from_group(group)
 
@@ -59,7 +112,7 @@ class GWS(object):
 
     def update_group(self, group):
         """
-        Updates the passed group.
+        Updates a group from the passed restclients.Group object.
         """
         body = self._xhtml_from_group(group)
 
@@ -78,7 +131,7 @@ class GWS(object):
 
     def delete_group(self, group):
         """
-        Deletes the passed group.
+        Deletes a group from the passed restclients.Group object.
         """
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group.name
@@ -91,8 +144,8 @@ class GWS(object):
 
     def get_members(self, group_id):
         """
-        Returns a list of GroupMember models for the group identified by the
-        passed group ID.
+        Returns a list of restclients.GroupMember objects for the group
+        identified by the passed group ID.
         """
         if not self._is_valid_group_id(group_id):
             raise InvalidGroupID(group_id)
@@ -129,8 +182,8 @@ class GWS(object):
 
     def get_effective_members(self, group_id):
         """
-        Returns a list of effective GroupMember models for the group identified
-        by the passed group ID.
+        Returns a list of effective restclients.GroupMember objects for the
+        group identified by the passed group ID.
         """
         if not self._is_valid_group_id(group_id):
             raise InvalidGroupID(group_id)
@@ -233,8 +286,7 @@ class GWS(object):
         members = []
         for member in member_elements:
             members.append(GroupMember(name=member.text,
-                                       member_type=member.get("type"),
-                                       href=member.get("href")))
+                                       member_type=member.get("type")))
 
         return members
 
@@ -246,8 +298,7 @@ class GWS(object):
         members = []
         for member in member_elements:
             members.append(GroupMember(name=member.text,
-                                       member_type=member.get("type"),
-                                       href=member.get("href")))
+                                       member_type=member.get("type")))
 
         return members
 

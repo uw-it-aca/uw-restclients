@@ -137,6 +137,14 @@ class BookAuthor(models.Model):
         return data
 
 
+class GroupReference(models.Model):
+    uwregid = models.CharField(max_length=32)
+    name = models.CharField(max_length=500)
+    title = models.CharField(max_length=500)
+    description = models.CharField(max_length=2000)
+    url = models.CharField(max_length=200) 
+
+
 class Group(models.Model):
     uwregid = models.CharField(max_length=32,
                              db_index=True,
@@ -201,7 +209,6 @@ class GroupUser(models.Model):
 class GroupMember(models.Model):
     name = models.CharField(max_length=40)
     member_type = models.SlugField(max_length=16)
-    href = models.CharField(max_length=200)
 
     def __eq__(self, other):
         return self.name == other.name and self.member_type == other.member_type
