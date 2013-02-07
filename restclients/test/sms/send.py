@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.sms import SMSService
 from restclients.exceptions import DataFailureException
-from unittest import skipIf
+from unittest2 import skipIf
 
 
 class SMS(TestCase):

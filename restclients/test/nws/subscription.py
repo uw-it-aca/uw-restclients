@@ -3,7 +3,7 @@ from django.conf import settings
 from restclients.nws import NWS
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID
 from vm.v1.viewmodels import Channel, Endpoint, Subscription
-from unittest import skipIf
+from unittest2 import skipIf
 
 
 class NWSTestSubscription(TestCase):

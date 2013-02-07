@@ -4,7 +4,7 @@ from restclients.nws import NWS
 from restclients.exceptions import DataFailureException
 from restclients.models import CourseAvailableEvent
 from vm.v1.viewmodels import Message, MessageList, Serializer
-from unittest import skipIf
+from unittest2 import skipIf
 
 
 class NWSTestMessage(TestCase):

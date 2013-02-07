@@ -3,7 +3,7 @@ from django.conf import settings
 from restclients.nws import NWS
 from restclients.exceptions import DataFailureException
 from vm.v1.viewmodels import Channel
-from unittest import skipIf
+from unittest2 import skipIf
 from datetime import datetime
 
 class NWSTestChannel(TestCase):
