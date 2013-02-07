@@ -82,7 +82,7 @@ class GWS(object):
         """
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s" % group.name
-        response = dao.deleteURL(url, self._headers())
+        response = dao.deleteURL(url, self._headers({}))
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
