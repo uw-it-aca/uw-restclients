@@ -18,7 +18,7 @@ class NWSTestSubscription(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            subscriptions = nws.get_subscriptions_by_subscriber_id("javerage")
+            subscriptions = nws.get_subscriptions_by_subscriber_id("javerage", "10")
             self.assertEquals(len(subscriptions), 5)
 
     def test_subscriptions_channel_id_subscriber_id(self):
