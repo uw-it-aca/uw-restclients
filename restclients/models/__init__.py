@@ -202,6 +202,15 @@ class GroupUser(models.Model):
     name = models.CharField(max_length=40)
     user_type = models.SlugField(max_length=16)
 
+    def is_uwnetid(self):
+        return self.user_type == "uwnetid"
+
+    def is_eppn(self):
+        return self.user_type == "eppn"
+
+    def is_group(self):
+        return self.user_type == "group"
+
     def __eq__(self, other):
         return self.name == other.name and self.user_type == other.user_type
 
@@ -209,6 +218,15 @@ class GroupUser(models.Model):
 class GroupMember(models.Model):
     name = models.CharField(max_length=40)
     member_type = models.SlugField(max_length=16)
+
+    def is_uwnetid(self):
+        return self.member_type == "uwnetid"
+
+    def is_eppn(self):
+        return self.member_type == "eppn"
+
+    def is_group(self):
+        return self.member_type == "group"
 
     def __eq__(self, other):
         return self.name == other.name and self.member_type == other.member_type
