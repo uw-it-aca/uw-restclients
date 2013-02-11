@@ -759,13 +759,13 @@ class SWS(object):
         section_data = json.loads(data)
 
         section_status = SectionStatus()
-        if section_data["AddCodeRequired"] == 'True':
+        if section_data["AddCodeRequired"] == 'true':
             section_status.add_code_required = True
         else:
             section_status.add_code_required = False
         section_status.current_enrollment = int(section_data["CurrentEnrollment"])
         section_status.current_registration_period = int(section_data["CurrentRegistrationPeriod"])
-        if section_data["FacultyCodeRequired"] == 'True':
+        if section_data["FacultyCodeRequired"] == 'true':
             section_status.faculty_code_required = True
         else:
             section_status.faculty_code_required = False
