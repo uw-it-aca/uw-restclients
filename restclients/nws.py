@@ -5,7 +5,7 @@ This is the interface for interacting with the Notifications Web Service.
 from restclients.dao import NWS_DAO
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol
 from restclients.models import CourseAvailableEvent
-from urllib import urlencode
+from urllib import quote
 from datetime import datetime, time
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 from vm.v1.viewmodels import Person, PersonList
@@ -432,8 +432,9 @@ class NWS(object):
         """
         Get a channel by surrogate id
         """
-        url = "/notification/v1/channel/%s|%s" % (channel_type, surrogate_id)
-
+        key = "%s|%s" % (channel_type, surrogate_id)
+        url = urlencode("/notification/v1/channel/%s" % (quote(key)))
+        
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
 
