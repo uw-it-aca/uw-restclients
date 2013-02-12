@@ -7,6 +7,7 @@ from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url, post_mockdata_url
 from restclients.dao_implementation.mock import delete_mockdata_url, put_mockdata_url
 from restclients.mock_http import MockHTTP
+import re
 
 
 class File(object):
@@ -17,6 +18,9 @@ class File(object):
     RESTCLIENTS_NWS_DAO_CLASS = 'restclients.dao_implementation.nws.File'
     """
     def getURL(self, url, headers):
+        #Removes expires_after tag in channel search requests
+        if "v1/channel?" in url:
+            url = re.sub('&expires_after=[^&]*', '', url)
         return get_mockdata_url("nws", "file", url, headers)
 
     def postURL(self, url, headers, body):

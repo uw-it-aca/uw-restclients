@@ -6,7 +6,7 @@ from restclients.dao import NWS_DAO
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol
 from restclients.models import CourseAvailableEvent
 from urllib import urlencode
-from datetime import datetime
+from datetime import datetime, time
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 from vm.v1.viewmodels import Person, PersonList
 from restclients.sws import SWS
@@ -484,9 +484,11 @@ class NWS(object):
         Checks to see if there exists a channel for the given sws.Term object's
         year and quarter.
         """
+        #Sets now to midnight of current day to allow for caching
+        now = datetime.combine(datetime.utcnow().date(), time.min).isoformat()
 
         dao = NWS_DAO()
-        url = "/notification/v1/channel?tag_year=%s&tag_quarter=%s&max_results=1" % (term.year, term.quarter)
+        url = "/notification/v1/channel?tag_year=%s&tag_quarter=%s&max_results=1&expires_after=%s" % (term.year, term.quarter, now)
         response = dao.getURL(url, {"Accept": "application/json"})
         if response.status != 200:
             return False
