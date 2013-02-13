@@ -174,6 +174,8 @@ class NWS(object):
 
         return post_response.status
 
+
+    #PERSON RESOURCE
     def create_new_person(self, person):
         """
         Create a new person
@@ -196,6 +198,30 @@ class NWS(object):
             raise DataFailureException(url, post_response.status, post_response.data)
 
         return post_response.status
+
+    def update_person(self, person):
+        """
+        Update an existing person
+
+        :param person:
+        is the updated person that the client wants to update
+        """
+        #Validate
+        self._validate_uuid(person.person_id)
+        self._validate_subscriber_id(person.surrogate_id)
+
+        dao = NWS_DAO()
+        url = "/notification/v1/person/%s" % (person.person_id)
+
+        put_response = dao.putURL(url, {"Content-Type": "application/json"}, Serializer().serialize(person))
+
+        #Http response code 204 No Content:
+        #The server has fulfilled the request but does not need to return an entity-body
+        if put_response.status != 204:
+            raise DataFailureException(url, put_response.status, put_response.data)
+
+        return put_response.status
+
 
     #SUBSCRIPTION RESOURCE
     def delete_subscription(self, subscription_id):
