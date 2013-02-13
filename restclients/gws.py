@@ -10,6 +10,7 @@ from restclients.models import Group, CourseGroup, GroupReference
 from restclients.models import GroupUser, GroupMember
 from urllib import urlencode
 from lxml import etree
+import re
 
 
 class GWS(object):
@@ -203,6 +204,9 @@ class GWS(object):
         """
         if not self._is_valid_group_id(group_id):
             raise InvalidGroupID(group_id)
+
+        # GWS doesn't accept EPPNs on effective member checks, for UW users
+        netid = re.sub('@washington.edu', '', netid)
 
         dao = GWS_DAO()
         url = "/group_sws/v2/group/%s/effective_member/%s" % (group_id, netid)

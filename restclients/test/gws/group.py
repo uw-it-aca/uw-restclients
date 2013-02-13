@@ -88,6 +88,7 @@ class GWSGroupBasics(TestCase):
                     gws = GWS()
 
                     self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'pmichaud'), True)
+                    self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'pmichaud@washington.edu'), True)
                     self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'javerage'), True)
                     self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'eight'), True)
                     self.assertEquals(gws.is_effective_member('u_acadev_unittest', 'not_member'), False)
