@@ -251,21 +251,18 @@ class SWS(object):
 
         return joint_sections
 
-    def get_all_registrations_for_section(self, section, instructor=None):
+    def get_all_registrations_for_section(self, section):
         """
         Returns a list of restclients.Registration objects, representing
         all (active and inactive) registrations for the passed section. For
-        independent study sections, the passed instructor limits
-        registrations to that instructor.
+        independent study sections, section.independent_study_instructor_regid
+        limits registrations to that instructor.
         """
-        registrations = self.get_active_registrations_for_section(section,
-                                                                  instructor)
+        registrations = self.get_active_registrations_for_section(section)
 
         seen_registrations = {}
         for registration in registrations:
             seen_registrations[registration.person.uwregid] = True
-
-        instructor_reg_id = instructor.uwregid if instructor else ""
 
         url = "/student/v4/registration.json?" + urlencode({
             "year": section.term.year,
@@ -273,7 +270,7 @@ class SWS(object):
             "curriculum_abbreviation": section.curriculum_abbr,
             "course_number": section.course_number,
             "section_id": section.section_id,
-            "instructor_reg_id": instructor_reg_id,
+            "instructor_reg_id": section.independent_study_instructor_regid, 
             "is_active": ""})
 
         dao = SWS_DAO()
@@ -305,22 +302,20 @@ class SWS(object):
 
         return registrations
 
-    def get_active_registrations_for_section(self, section, instructor=None):
+    def get_active_registrations_for_section(self, section):
         """
         Returns a list of restclients.Registration objects, representing
         active registrations for the passed section. For independent study
-        sections, the passed instructor limits registrations to that
-        instructor.
+        sections, section.independent_study_instructor_regid limits
+        registrations to that instructor.
         """
-        instructor_reg_id = instructor.uwregid if instructor else "" 
-
         url = "/student/v4/registration.json?" + urlencode({
             "year": section.term.year,
             "quarter": section.term.quarter,
             "curriculum_abbreviation": section.curriculum_abbr,
             "course_number": section.course_number,
             "section_id": section.section_id,
-            "instructor_reg_id": instructor_reg_id,
+            "instructor_reg_id": section.independent_study_instructor_regid, 
             "is_active": "on"})
 
         dao = SWS_DAO()

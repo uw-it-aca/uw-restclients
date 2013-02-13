@@ -143,6 +143,8 @@ class Section(models.Model):
     course_campus = models.CharField(max_length=7)
     section_type = models.CharField(max_length=30)
     is_independent_study = models.BooleanField()
+    independent_study_instructor_regid = models.CharField(max_length=32,
+                                                          null=True) 
     class_website_url = models.URLField(max_length=255,
                                         verify_exists=False,
                                         blank=True)
