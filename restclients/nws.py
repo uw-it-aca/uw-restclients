@@ -174,6 +174,29 @@ class NWS(object):
 
         return post_response.status
 
+    def create_new_person(self, person):
+        """
+        Create a new person
+
+        :param person:
+        is the new person that the client wants to crete
+        """
+        #Validate input
+        self._validate_subscriber_id(person.surrogate_id)
+
+        #Create new person
+        dao = NWS_DAO()
+        url = "/notification/v1/person"
+
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, Serializer().serialize(person))
+
+        #HTTP Status Code 201 Created: The request has been fulfilled and resulted
+        #in a new resource being created
+        if post_response.status != 201:
+            raise DataFailureException(url, post_response.status, post_response.data)
+
+        return post_response.status
+
     #SUBSCRIPTION RESOURCE
     def delete_subscription(self, subscription_id):
         """
@@ -434,7 +457,7 @@ class NWS(object):
         """
         key = "%s|%s" % (channel_type, surrogate_id)
         url = urlencode("/notification/v1/channel/%s" % (quote(key)))
-        
+
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
 
