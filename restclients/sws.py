@@ -264,13 +264,18 @@ class SWS(object):
         for registration in registrations:
             seen_registrations[registration.person.uwregid] = True
 
+        instructor_reg_id = ''
+        if (section.is_independent_study and
+                section.independent_study_instructor_regid is not None:
+            instructor_reg_id = section.independent_study_instructor_regid
+
         url = "/student/v4/registration.json?" + urlencode({
             "year": section.term.year,
             "quarter": section.term.quarter,
             "curriculum_abbreviation": section.curriculum_abbr,
             "course_number": section.course_number,
             "section_id": section.section_id,
-            "instructor_reg_id": section.independent_study_instructor_regid, 
+            "instructor_reg_id": instructor_reg_id,
             "is_active": ""})
 
         dao = SWS_DAO()
@@ -309,13 +314,18 @@ class SWS(object):
         sections, section.independent_study_instructor_regid limits
         registrations to that instructor.
         """
+        instructor_reg_id = ''
+        if (section.is_independent_study and
+                section.independent_study_instructor_regid is not None:
+            instructor_reg_id = section.independent_study_instructor_regid
+
         url = "/student/v4/registration.json?" + urlencode({
             "year": section.term.year,
             "quarter": section.term.quarter,
             "curriculum_abbreviation": section.curriculum_abbr,
             "course_number": section.course_number,
             "section_id": section.section_id,
-            "instructor_reg_id": section.independent_study_instructor_regid, 
+            "instructor_reg_id": instructor_reg_id,
             "is_active": "on"})
 
         dao = SWS_DAO()
@@ -381,7 +391,7 @@ class SWS(object):
 
             section = self._section_from_json(response.data, term)
 
-            # For independent study courses, only include the one relevant 
+            # For independent study courses, only include the one relevant
             # instructor
             if registration["Instructor"]:
                 actual_instructor = None
