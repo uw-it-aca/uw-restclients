@@ -266,7 +266,7 @@ class SWS(object):
 
         instructor_reg_id = ''
         if (section.is_independent_study and
-                section.independent_study_instructor_regid is not None:
+                section.independent_study_instructor_regid is not None):
             instructor_reg_id = section.independent_study_instructor_regid
 
         url = "/student/v4/registration.json?" + urlencode({
@@ -316,7 +316,7 @@ class SWS(object):
         """
         instructor_reg_id = ''
         if (section.is_independent_study and
-                section.independent_study_instructor_regid is not None:
+                section.independent_study_instructor_regid is not None):
             instructor_reg_id = section.independent_study_instructor_regid
 
         url = "/student/v4/registration.json?" + urlencode({
