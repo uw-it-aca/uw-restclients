@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO
+from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO
 from authz_group import Group
 from django.conf import settings
 from userservice.user import UserService
@@ -30,6 +30,8 @@ def proxy(request, service, url):
         dao = PWS_DAO()
     elif service == "gws":
         dao = GWS_DAO()
+    elif service == "nws":
+        dao = NWS_DAO()
     else:
         raise Exception("Unknown service: %s" % service)
 
