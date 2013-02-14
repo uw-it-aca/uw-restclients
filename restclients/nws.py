@@ -482,7 +482,7 @@ class NWS(object):
         Get a channel by surrogate id
         """
         key = "%s|%s" % (channel_type, surrogate_id)
-        url = urlencode("/notification/v1/channel/%s" % (quote(key)))
+        url = "/notification/v1/channel/%s" % (quote(key))
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
