@@ -3,10 +3,12 @@ from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO
 from authz_group import Group
 from django.conf import settings
 from userservice.user import UserService
+from django.contrib.auth.decorators import login_required
 import urllib
 import json
 import re
 
+@login_required
 def proxy(request, service, url):
 
     if not hasattr(settings, "RESTCLIENTS_ADMIN_GROUP"):
