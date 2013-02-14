@@ -1,7 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO
-from restclients.gws import GWS
+from authz_group import Group
 from django.conf import settings
+from userservice.user import UserService
 import urllib
 import json
 import re
@@ -9,19 +10,14 @@ import re
 def proxy(request, service, url):
 
     if not hasattr(settings, "RESTCLIENTS_ADMIN_GROUP"):
-        print "You must have a group in GWS defined as your admin group."
+        print "You must have a group defined as your admin group."
         print 'Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"'
         raise Exception("Missing RESTCLIENTS_ADMIN_GROUP in settings")
 
 
-    if settings.DEBUG:
-        actual_user = 'javerage'
-    else:
-        actual_user = request.user.username
-
-
-    gws = GWS()
-    is_admin = gws.is_effective_member(settings.MYUW_ADMIN_GROUP, actual_user)
+    actual_user = UserService().get_original_user()
+    g = Group()
+    is_admin = g.is_member_of_group(actual_user, settings.RESTCLIENTS_ADMIN_GROUP)
 
     if is_admin == False:
         return HttpResponseRedirect("/")
