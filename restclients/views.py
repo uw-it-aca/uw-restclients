@@ -4,11 +4,13 @@ from authz_group import Group
 from django.conf import settings
 from userservice.user import UserService
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 import urllib
 import json
 import re
 
 @login_required
+@csrf_protect
 def proxy(request, service, url):
 
     if not hasattr(settings, "RESTCLIENTS_ADMIN_GROUP"):
