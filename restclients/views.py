@@ -5,6 +5,7 @@ from django.conf import settings
 from userservice.user import UserService
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+from time import time
 import urllib
 import json
 import re
@@ -42,7 +43,10 @@ def proxy(request, service, url):
     if request.GET:
         url = "%s?%s" % (url, urllib.urlencode(request.GET))
 
+    start = time()
     response = dao.getURL(url, {})
+    end = time()
+
     content = response.data
 
     # Assume json, and try to format it.
@@ -51,13 +55,14 @@ def proxy(request, service, url):
     except Exception as e:
         content = format_html(service, content)
 
-    content = add_response_info(response, content)
+    content = add_response_info(response, content, end-start)
 
     return HttpResponse(content)
 
-def add_response_info(response, content):
+def add_response_info(response, content, time_taken):
     meta = []
     meta.append("<b>Code</b>: %s" % response.status)
+    meta.append("<b>Time Taken</b>: %f seconds" % time_taken)
 
     for header in response.headers:
         meta.append("<b>%s</b>: %s" % (header, response.headers[header]))
