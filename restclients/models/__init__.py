@@ -187,7 +187,7 @@ class CourseGroup(Group):
         (WINTER, 'Winter'),
     )
 
-    curriculum_abbreviation = models.CharField(max_length=8)
+    curriculum_abbr = models.CharField(max_length=8)
     course_number = models.CharField(max_length=3)
     year = models.PositiveSmallIntegerField()
     quarter = models.CharField(max_length=6,

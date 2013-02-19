@@ -130,12 +130,15 @@ class GWS(object):
 
         return self._group_from_xhtml(response.data)
 
-    def delete_group(self, group):
+    def delete_group(self, group_id):
         """
-        Deletes a group from the passed restclients.Group object.
+        Deletes the group identified by the passed group ID.
         """
+        if not self._is_valid_group_id(group_id):
+            raise InvalidGroupID(group_id)
+
         dao = GWS_DAO()
-        url = "/group_sws/v2/group/%s" % group.name
+        url = "/group_sws/v2/group/%s" % group_id
         response = dao.deleteURL(url, self._headers({}))
 
         if response.status != 200:
@@ -221,10 +224,10 @@ class GWS(object):
 
     def _group_from_xhtml(self, data):
         root = etree.fromstring(data)
-        course_curr = root.find('.//*[@class="course_curr"]')
-        if course_curr is not None:
+        group_id = root.find('.//*[@class="name"]').text
+        if re.match(r'^course_', group_id):
             group = CourseGroup()
-            group.curriculum_abbreviation = course_curr.text.upper()
+            group.curriculum_abbr = root.find('.//*[@class="course_curr"]').text.upper()
             group.course_number = root.find('.//*[@class="course_no"]').text
             group.year = root.find('.//*[@class="course_year"]').text
             group.quarter = self.QTRS[root.find('.//*[@class="course_qtr"]').text]
@@ -239,8 +242,8 @@ class GWS(object):
         else:
             group = Group()
 
+        group.name = group_id
         group.uwregid = root.find('.//*[@class="regid"]').text
-        group.name = root.find('.//*[@class="name"]').text
         group.title = root.find('.//*[@class="title"]').text
         group.description = root.find('.//*[@class="description"]').text
         group.contact = root.find('.//*[@class="contact"]').text
@@ -249,7 +252,12 @@ class GWS(object):
         group.emailenabled = root.find('.//*[@class="emailenabled"]').text
         group.dependson = root.find('.//*[@class="dependson"]').text
         group.publishemail = root.find('.//*[@class="publishemail"]').text
-        group.reporttoorig = root.find('.//*[@class="reporttoorig"]').text
+        
+        try:
+            group.reporttoorig = root.find('.//*[@class="reporttoorig"]').text
+        except AttributeError:
+            # Legacy class name for this attribute
+            group.reporttoorig = root.find('.//*[@class="reporttoowner"]').text
 
         group.admins = []
         for user in root.findall('.//*[@class="admins"]/*[@class="admin"]'):
@@ -312,7 +320,7 @@ class GWS(object):
         return template.render(context)
 
     def _is_valid_group_id(self, group_id):
-        if not group_id:
+        if not re.match(r'^[a-z0-9][\w\.-]+$', group_id, re.I):
             return False
 
         return True

@@ -37,7 +37,7 @@ class GWSGroupBasics(TestCase):
                 RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
                     gws = GWS()
                     group = Group(name='u_acadev_tester')
-                    result = gws.delete_group(group)
+                    result = gws.delete_group(group.name)
                     self.assertEquals(result, True)
 
     def test_group_membership(self):
