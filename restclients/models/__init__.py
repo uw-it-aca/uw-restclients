@@ -354,15 +354,15 @@ class CourseAvailableEvent(models.Model):
                 "Section": {
                     "Course": {
                         "CourseNumber":self.course_number,
-                        "CurriculumAbbreviation":self.curriculum_abbr,
+                        "CurriculumAbbreviation":self.curriculum_abbr.upper(),
                         "Quarter":self.quarter,
                         "Year":self.year
                     },
                     "SLN":self.sln,
-                    "SectionID":self.section_id
+                    "SectionID":self.section_id.upper()
                 },
                 "SpaceAvailable":self.space_available,
-                "Status":self.status
+                "Status":self.status.upper()
             }
         }
 

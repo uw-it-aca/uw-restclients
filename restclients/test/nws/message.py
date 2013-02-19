@@ -20,7 +20,7 @@ class NWSTestMessage(TestCase):
             course_available_event.space_available = 1
             course_available_event.quarter = "winter"
             course_available_event.year = 2012
-            course_available_event.curriculum_abbr = "CSE"
+            course_available_event.curriculum_abbr = "cse"
             course_available_event.course_number = "100"
             course_available_event.section_id = "aa"
             course_available_event.sln = "12345"
@@ -28,6 +28,8 @@ class NWSTestMessage(TestCase):
             message = Message()
             message.message_type =  "uw_student_courseavailable"
             message.content = course_available_event.json_data()
+            self.assertEquals(message.content['Event']['Section']['SectionID'], 'AA')
+            self.assertEquals(message.content['Event']['Section']['Course']['CurriculumAbbreviation'], 'CSE')
 
             nws = NWS()
             response_status = nws.create_new_message(message)
@@ -45,7 +47,7 @@ class NWSTestMessage(TestCase):
                     "Section": {
                         "Course": {
                             "CourseNumber":"100",
-                            "CurriculumAbbreviation":"CSE",
+                            "CurriculumAbbreviation":"cse",
                             "Quarter":"winter",
                             "Year":2012
                         },
