@@ -23,7 +23,7 @@ class GWS(object):
     def __init__(self, config={}):
         self.actas = config['actas'] if 'actas' in config else None
 
-    def search_groups(self, **kwargs): 
+    def search_groups(self, **kwargs):
         """
         Returns a list of restclients.GroupReference objects matching the
         passed parameters. Valid parameters are:
@@ -33,7 +33,7 @@ class GWS(object):
             member: member_id
             owner: admin_id
             affiliate: affiliate_name
-            type: search_type 
+            type: search_type
                 Values are 'direct' to search for direct membership and
                 'effective' to search for effective memberships. Default is
                 direct membership.
@@ -166,6 +166,7 @@ class GWS(object):
     def update_members(self, group_id, members):
         """
         Updates the membership of the group represented by the passed group id.
+        Returns a list of members not found.
         """
         if not self._is_valid_group_id(group_id):
             raise InvalidGroupID(group_id)
@@ -182,7 +183,7 @@ class GWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
-        return members
+        return self._notfoundmembers_from_xhtml(response.data)
 
     def get_effective_members(self, group_id):
         """
@@ -238,7 +239,8 @@ class GWS(object):
             instructors = root.findall('.//*[@class="course_instructors"]' +
                                        '/*[@class="course_instructor"]')
             for instructor in instructors:
-                group.instructors.append(instructor.text)
+                group.instructors.append(GroupMember(name=instructor.text,
+                                                     member_type="uwnetid"))
         else:
             group = Group()
 
@@ -252,7 +254,7 @@ class GWS(object):
         group.emailenabled = root.find('.//*[@class="emailenabled"]').text
         group.dependson = root.find('.//*[@class="dependson"]').text
         group.publishemail = root.find('.//*[@class="publishemail"]').text
-        
+
         try:
             group.reporttoorig = root.find('.//*[@class="reporttoorig"]').text
         except AttributeError:
@@ -311,6 +313,17 @@ class GWS(object):
         for member in member_elements:
             members.append(GroupMember(name=member.text,
                                        member_type=member.get("type")))
+
+        return members
+
+    def _notfoundmembers_from_xhtml(self, data):
+        root = etree.fromstring(data)
+        member_elements = root.findall('.//*[@class="notfoundmembers"]' +
+                                       '//*[@class="notfoundmember"]')
+
+        members = []
+        for member in member_elements:
+            members.append(member.text)
 
         return members
 

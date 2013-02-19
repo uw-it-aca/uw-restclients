@@ -56,8 +56,9 @@ class GWSGroupBasics(TestCase):
                     members.remove(GroupMember(member_type="uwnetid", name="eight"))
                     members.append(GroupMember(member_type="uwnetid", name="seven"))
 
-                    members = gws.update_members('u_acadev_unittest', members)
-                    self.assertEquals(len(members), 2)
+                    not_found_members = gws.update_members('u_acadev_unittest', 
+                                                           members)
+                    self.assertEquals(len(not_found_members), 0)
 
     def test_effective_group_membership(self):
         with self.settings(
