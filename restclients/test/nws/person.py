@@ -28,7 +28,6 @@ class NWSTestPerson(TestCase):
             nws = NWS()
             self.assertRaises(DataFailureException, nws.get_person_by_surrogate_id, "asdfgh")
 
-
     def test_create_person(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
@@ -39,3 +38,10 @@ class NWSTestPerson(TestCase):
 
             response_status = nws.create_new_person(person)
             self.assertEquals(201, response_status)
+
+    def test_person_by_uwregid(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            nws = NWS()
+            person = nws.get_person_by_uwregid("9136CCB8F66711D5BE060004AC494FFE")
+            self._assert_person_matches(person)

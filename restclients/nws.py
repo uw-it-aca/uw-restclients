@@ -629,6 +629,19 @@ class NWS(object):
         Serializer().deserialize(person, response.data)
         return person
 
+    def get_person_by_uwregid(self, uwregid):
+        url = "/notification/v1/person/%s" % (uwregid)
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        person = Person()
+        Serializer().deserialize(person, response.data)
+        return person
+
     def _validate_uuid(self, id):
         if id is None:
             raise InvalidUUID(id)
