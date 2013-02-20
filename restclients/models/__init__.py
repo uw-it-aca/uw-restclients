@@ -327,7 +327,7 @@ class CourseAvailableEvent(models.Model):
     course_number = models.CharField(max_length=3)
     section_id = models.CharField(max_length=2)
     sln = models.PositiveSmallIntegerField()
-    status = models.CharField(max_length=40)
+    notification_msg_0 = models.CharField(max_length=40)
 
     def get_logging_description(self):
         return "%s,%s,%s,%s/%s - %s" % (
@@ -362,7 +362,7 @@ class CourseAvailableEvent(models.Model):
                     "SectionID":self.section_id.upper()
                 },
                 "SpaceAvailable":self.space_available,
-                "Status":self.status.upper()
+                "NotificationMsg0":self.notification_msg_0
             }
         }
 

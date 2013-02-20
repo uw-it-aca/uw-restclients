@@ -608,10 +608,8 @@ class NWS(object):
         event.section_id = event_data["Section"]["SectionID"]
         event.space_available = event_data["SpaceAvailable"]
         event.sln = event_data["Section"]["SLN"]
-        if event.space_available > 0:
-            event.status = "available"
-        else:
-            event.status = "unavailable"
+        if event.space_available <= 0:
+            event.notification_msg_0 = " NO"
 
         return event
 
