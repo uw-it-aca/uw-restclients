@@ -6,6 +6,7 @@ from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 
+
 class File(object):
     """
     The File DAO implementation returns generally static content.  Use this
@@ -21,14 +22,14 @@ class File(object):
 
         if body is not None:
             if "If-Match" in headers:
-                response.status = 200 # update
+                response.status = 200  # update
             else:
-                response.status = 201 # create
+                response.status = 201  # create
             response.headers = {"X-Data-Source": "GWS file mock data",
                                 "Content-Type": headers["Content-Type"]}
             response.data = body
         else:
-            response.status = 400                                                   
+            response.status = 400
             response.data = "Bad Request: no POST body"
 
         return response
@@ -37,6 +38,7 @@ class File(object):
         response = MockHTTP()
         response.status = 200
         return response
+
 
 class Live(object):
     """
@@ -49,15 +51,15 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool == None:
-            Live.pool = self._get_pool() 
+        if Live.pool is None:
+            Live.pool = self._get_pool()
 
-        return get_live_url(Live.pool, 'GET', 
+        return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_GWS_HOST,
                             url, headers=headers)
 
     def putURL(self, url, headers, body):
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = self._get_pool()
 
         return get_live_url(Live.pool, 'PUT',
@@ -65,7 +67,7 @@ class Live(object):
                             url, headers=headers, body=body)
 
     def deleteURL(self, url, headers):
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = self._get_pool()
 
         return get_live_url(Live.pool, 'DELETE',
