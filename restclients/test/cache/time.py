@@ -41,7 +41,7 @@ class TimeCacheTest(TestCase):
                             RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.FourHourCache'):
 
             # Check initial state
-            cache = TimeSimpleCache()
+            cache = FourHourCache()
             response = cache.getCache('pws', '/student', {})
             self.assertEquals(response, None)
             response = cache.getCache('sws', '/student', {})
@@ -51,7 +51,7 @@ class TimeCacheTest(TestCase):
 
             html = response.data
             if not re.search('student/v4', html):
-                self.fail("Doesn't contains a link to v4")
+                self.fail("Doesn't contain a link to v4")
 
             # Make sure there's a response there after the get
             hit = cache.getCache('sws', '/student', {})
@@ -63,10 +63,27 @@ class TimeCacheTest(TestCase):
             if not re.search('student/v4', html):
                 self.fail("Doesn't contains a link to v4")
 
-
             # Make sure there's nothing for pws there after the get
             response = cache.getCache('pws', '/student', {})
             self.assertEquals(response, None)
+
+            cache_entry = CacheEntryTimed.objects.get(service="sws",
+                                                      url="/student")
+
+            # Cached response is returned after 3 hours and 58 minutes 
+            orig_time_saved = cache_entry.time_saved
+            cache_entry.time_saved = orig_time_saved - timedelta(minutes=238)
+            cache_entry.save()
+
+            hit = cache.getCache('sws', '/student', {})
+            self.assertNotEquals(hit, None)
+
+            # Cached response is not returned after 4 hours
+            cache_entry.time_saved = orig_time_saved - timedelta(hours=4)
+            cache_entry.save()
+
+            hit = cache.getCache('sws', '/student', {})
+            self.assertEquals(hit, None)
 
     def test_errors(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.errors.Always500',
