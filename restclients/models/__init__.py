@@ -13,6 +13,11 @@ from restclients.models.sws import Campus as swsCampus
 from restclients.models.sws import College as swsCollege
 from restclients.models.sws import Department as swsDepartment
 from restclients.models.sws import Curriculum as swsCurriculum
+from restclients.models.gws import GroupReference as gwsGroupReference
+from restclients.models.gws import Group as gwsGroup
+from restclients.models.gws import CourseGroup as gwsCourseGroup
+from restclients.models.gws import GroupUser as gwsGroupUser
+from restclients.models.gws import GroupMember as gwsGroupMember
 
 
 # These aliases are here for backwards compatibility
@@ -55,10 +60,29 @@ def Department(*args, **kwargs):
     deprecation("Use restclients.models.sws.Department")
     return swsDepartment(*args, **kwargs)
 
-
 def Curriculum(*args, **kwargs):
     deprecation("Use restclients.models.sws.Curriculum")
     return swsCurriculum(*args, **kwargs)
+
+def GroupReference(*args, **kwargs):
+    deprecation("Use restclients.models.gws.GroupReference")
+    return gwsGroupReference(*args, **kwargs)
+
+def Group(*args, **kwargs):
+    deprecation("Use restclients.models.gws.Group")
+    return gwsGroup(*args, **kwargs)
+
+def CourseGroup(*args, **kwargs):
+    deprecation("Use restclients.models.gws.CourseGroup")
+    return gwsCourseGroup(*args, **kwargs)
+
+def GroupUser(*args, **kwargs):
+    deprecation("Use restclients.models.gws.GroupUser")
+    return gwsGroupUser(*args, **kwargs)
+
+def GroupMember(*args, **kwargs):
+    deprecation("Use restclients.models.gws.GroupMember")
+    return gwsGroupMember(*args, **kwargs)
 
 
 class CacheEntry(models.Model):
@@ -135,101 +159,6 @@ class BookAuthor(models.Model):
         data = {'name': self.name}
 
         return data
-
-
-class GroupReference(models.Model):
-    uwregid = models.CharField(max_length=32)
-    name = models.CharField(max_length=500)
-    title = models.CharField(max_length=500)
-    description = models.CharField(max_length=2000)
-    url = models.CharField(max_length=200) 
-
-
-class Group(models.Model):
-    uwregid = models.CharField(max_length=32,
-                             db_index=True,
-                             unique=True)
-
-    name = models.CharField(max_length=500)
-    title = models.CharField(max_length=500)
-    description = models.CharField(max_length=2000)
-    contact = models.CharField(max_length=120)
-    authnfactor = models.PositiveSmallIntegerField(max_length=1,
-                                                   choices=((1, ""),(2, "")),
-                                                   default=1)
-    classification = models.CharField(max_length=1,
-                                      choices=(('u', 'unclassified'),
-                                               ('p', 'public'),
-                                               ('r', 'restricted'),
-                                               ('c', 'confidential')),
-                                      default='u')
-    emailenabled = models.CharField(max_length=10,
-                                    choices=(('UWExchange', 'UWExchange'),
-                                             ('disabled', 'disabled')),
-                                    default='disabled')
-    dependson = models.CharField(max_length=500)
-    publishemail = models.CharField(max_length=120)
-    reporttoorig = models.SmallIntegerField(max_length=1,
-                                            choices=((1, ""),(0, "")),
-                                            default=0)
-
-
-class CourseGroup(Group):
-    SPRING = 'spring'
-    SUMMER = 'summer'
-    AUTUMN = 'autumn'
-    WINTER = 'winter'
-
-    QUARTERNAME_CHOICES = (
-        (SPRING, 'Spring'),
-        (SUMMER, 'Summer'),
-        (AUTUMN, 'Autumn'),
-        (WINTER, 'Winter'),
-    )
-
-    curriculum_abbr = models.CharField(max_length=8)
-    course_number = models.CharField(max_length=3)
-    year = models.PositiveSmallIntegerField()
-    quarter = models.CharField(max_length=6,
-                               choices=QUARTERNAME_CHOICES)
-    section_id = models.CharField(max_length=2,
-                                  db_index=True)
-
-    sln = models.PositiveIntegerField()
-
-
-class GroupUser(models.Model):
-    name = models.CharField(max_length=40)
-    user_type = models.SlugField(max_length=16)
-
-    def is_uwnetid(self):
-        return self.user_type == "uwnetid"
-
-    def is_eppn(self):
-        return self.user_type == "eppn"
-
-    def is_group(self):
-        return self.user_type == "group"
-
-    def __eq__(self, other):
-        return self.name == other.name and self.user_type == other.user_type
-
-
-class GroupMember(models.Model):
-    name = models.CharField(max_length=40)
-    member_type = models.SlugField(max_length=16)
-
-    def is_uwnetid(self):
-        return self.member_type == "uwnetid"
-
-    def is_eppn(self):
-        return self.member_type == "eppn"
-
-    def is_group(self):
-        return self.member_type == "group"
-
-    def __eq__(self, other):
-        return self.name == other.name and self.member_type == other.member_type
 
 
 class MockAmazonSQSQueue(models.Model):

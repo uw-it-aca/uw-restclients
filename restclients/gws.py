@@ -6,8 +6,8 @@ from django.template import Context, loader
 from restclients.dao import GWS_DAO
 from restclients.exceptions import InvalidGroupID
 from restclients.exceptions import DataFailureException
-from restclients.models import Group, CourseGroup, GroupReference
-from restclients.models import GroupUser, GroupMember
+from restclients.models.gws import Group, CourseGroup, GroupReference
+from restclients.models.gws import GroupUser, GroupMember
 from urllib import urlencode
 from lxml import etree
 import re

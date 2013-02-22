@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.gws import GWS
-from restclients.models import CourseGroup, GroupUser, GroupMember
+from restclients.models.gws import CourseGroup, GroupUser, GroupMember
 
 class GWSCourseGroupBasics(TestCase):
 
