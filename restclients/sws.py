@@ -4,7 +4,8 @@ This is the interface for interacting with the Student Web Service.
 
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
-from restclients.models.sws import Term, Section, SectionMeeting, SectionStatus
+from restclients.models.sws import Term, Section, SectionReference
+from restclients.models.sws import SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
 from restclients.exceptions import DataFailureException, InvalidSectionID
@@ -104,7 +105,7 @@ class SWS(object):
 
     def get_sections_by_instructor_and_term(self, instructor, term):
         """
-        Returns a list of restclients.Section objects for the passed
+        Returns a list of restclients.SectionReference objects for the passed
         instructor and term.
         """
         url = "/student/v4/section.json?" + urlencode({
@@ -123,20 +124,18 @@ class SWS(object):
 
         sections = []
         for section_data in data.get("Sections", []):
-            url = section_data["Href"]
-            response = dao.getURL(url, {"Accept": "application/json"})
-
-            if response.status != 200:
-                raise DataFailureException(url, response.status, response.data)
-
-            section = self._section_from_json(response.data, term)
+            section = SectionReference(term=term,
+                curriculum_abbr=section_data["CurriculumAbbreviation"],
+                course_number=section_data["CourseNumber"],
+                section_id=section_data["SectionID"],
+                url=section_data["Href"])
             sections.append(section)
 
         return sections
 
     def get_sections_by_curriculum_and_term(self, curriculum, term):
         """
-        Returns a list of restclients.Section objects for the passed
+        Returns a list of restclients.SectionReference objects for the passed
         curriculum and term.
         """
         url = "/student/v4/section.json?" + urlencode({
@@ -154,13 +153,11 @@ class SWS(object):
 
         sections = []
         for section_data in data.get("Sections", []):
-            url = section_data["Href"]
-            response = dao.getURL(url, {"Accept": "application/json"})
-
-            if response.status != 200:
-                raise DataFailureException(url, response.status, response.data)
-
-            section = self._section_from_json(response.data, term)
+            section = SectionReference(term=term,
+                curriculum_abbr=section_data["CurriculumAbbreviation"],
+                course_number=section_data["CourseNumber"],
+                section_id=section_data["SectionID"],
+                url=section_data["Href"])
             sections.append(section)
 
         return sections

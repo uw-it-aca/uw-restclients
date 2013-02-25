@@ -126,6 +126,7 @@ class FinalExam(models.Model):
 
         return data
 
+
 class Section(models.Model):
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
@@ -144,7 +145,7 @@ class Section(models.Model):
     section_type = models.CharField(max_length=30)
     is_independent_study = models.BooleanField()
     independent_study_instructor_regid = models.CharField(max_length=32,
-                                                          null=True) 
+                                                          null=True)
     class_website_url = models.URLField(max_length=255,
                                         verify_exists=False,
                                         blank=True)
@@ -221,6 +222,22 @@ class Section(models.Model):
         return data
 
 
+class SectionReference(models.Model):
+    term = models.ForeignKey(Term,
+                             on_delete=models.PROTECT)
+    curriculum_abbr = models.CharField(max_length=6)
+    course_number = models.PositiveSmallIntegerField()
+    section_id = models.CharField(max_length=2)
+    url = models.URLField(max_length=255,
+                          verify_exists=False,
+                          blank=True)
+
+    def section_label(self):
+        return "%s,%s,%s,%s/%s" % (self.term.year,
+               self.term.quarter, self.curriculum_abbr,
+               self.course_number, self.section_id)
+
+
 class SectionStatus(models.Model):
     add_code_required = models.BooleanField()
     current_enrollment = models.IntegerField()
@@ -232,7 +249,7 @@ class SectionStatus(models.Model):
     sln = models.PositiveIntegerField()
     space_available = models.IntegerField()
     is_open = models.CharField(max_length=6)
-    
+
 
     class Meta:
         app_label = "restclients"
