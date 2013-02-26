@@ -30,8 +30,12 @@ class GWS(object):
             name: parts_of_name
                 name may include the wild-card (*) character.
             stem: group_stem
-            member: member_id
-            owner: admin_id
+            member: member netid
+            owner: admin netid
+            instructor: instructor netid
+                stem="course" will be set when this parameter is passed.
+            student: student netid
+                stem="course" will be set when this parameter is passed.
             affiliate: affiliate_name
             type: search_type
                 Values are 'direct' to search for direct membership and
@@ -49,6 +53,9 @@ class GWS(object):
         if 'scope' in kwargs and (kwargs['scope'] != 'one' and
                                   kwargs['scope'] != 'all'):
             del(kwargs['scope'])
+
+        if "instructor" in kwargs or "student" in kwargs:
+            kwargs["stem"] = "course"
 
         dao = GWS_DAO()
         url = "/group_sws/v2/search?" + urlencode(kwargs)
@@ -201,6 +208,26 @@ class GWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return self._effective_members_from_xhtml(response.data)
+
+    def get_effective_member_count(self, group_id):
+        """
+        Returns a count of effective members for the group identified by the
+        passed group ID.
+        """
+        if not self._is_valid_group_id(group_id):
+            raise InvalidGroupID(group_id)
+
+        dao = GWS_DAO()
+        url = "/group_sws/v2/group/%s/effective_member?view=count" % group_id
+        response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        root = etree.fromstring(response.data)
+        count = root.find('.//*[@class="member_count"]').get("count")
+
+        return int(count)
 
     def is_effective_member(self, group_id, netid):
         """

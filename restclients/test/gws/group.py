@@ -83,6 +83,9 @@ class GWSGroupBasics(TestCase):
                     self.assertEquals(has_javerage, True)
                     self.assertEquals(has_eight, True)
 
+                    count = gws.get_effective_member_count('u_acadev_unittest')
+                    self.assertEquals(count, 3)
+
     def test_is_effective_member(self):
         with self.settings(
                 RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
