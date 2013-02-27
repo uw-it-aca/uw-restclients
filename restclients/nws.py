@@ -104,6 +104,23 @@ class NWS(object):
 
         return endpoint_list.view_models
 
+    def resend_sms_endpoint_verification(self, endpoint_id):
+        """
+        Calls NWS function to resend verification message to endpoint's phone number
+        """
+        #Validate input
+        self._validate_uuid(endpoint_id)
+
+        url = "/notification/v1/endpoint/%s/verification" % (endpoint_id)
+
+        dao = NWS_DAO()
+        post_response = dao.postURL(url, None, None)
+
+        if post_response.status != 202:
+            raise DataFailureException(url, post_response.status, post_response.data)
+
+        return post_response.status
+
     def delete_endpoint(self, endpoint_id):
         """
         Deleting an existing endpoint
