@@ -3,7 +3,7 @@
         "PersonID": "9136CCB8F66711D5BE060004AC494FFE",
         "SurrogateID": "javerage",
         "Attributes": {
-            "HasAcceptedTermsOfUse": false,
+            "AcceptedTermsOfUse": true,
             "NumberOfSubscriptions": 0,
             "NumberOfNotifications": 0
         },
