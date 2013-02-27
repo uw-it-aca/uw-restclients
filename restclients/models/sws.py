@@ -60,6 +60,24 @@ class Person(models.Model):
         app_label = "restclients"
 
 
+class Entity(models.Model):
+    uwregid = models.CharField(max_length=32,
+                               db_index=True,
+                               unique=True)
+    uwnetid = models.CharField(max_length=128,
+                               db_index=True,
+                               unique=True)
+    display_name = models.CharField(max_length=250)
+
+    def json_data(self):
+        data = {
+            'uwnetid': self.uwnetid,
+            'uwregid': self.uwregid,
+            'display_name': self.display_name,
+        }
+        return data
+
+
 class Term(models.Model):
     SPRING = 'spring'
     SUMMER = 'summer'

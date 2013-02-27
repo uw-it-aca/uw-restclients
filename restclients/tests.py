@@ -20,6 +20,7 @@ from restclients.test.sws.department import SWSTestDepartment
 from restclients.test.sws.curriculum import SWSTestCurriculum
 
 from restclients.test.pws.person import PWSTestPersonData
+from restclients.test.pws.entity import PWSTestEntityData
 
 from restclients.test.pws.err404.dao import PWSTestDAO404
 from restclients.test.pws.err404.pws import PWSTest404

@@ -2,8 +2,16 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.gws import GWS
 from restclients.models.gws import Group, GroupUser, GroupMember
+from restclients.exceptions import DataFailureException
 
 class GWSGroupBasics(TestCase):
+    def test_get_nonexistant_group(self):
+        with self.settings(
+                RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
+                gws = GWS()
+                self.assertRaises(DataFailureException,
+                                  gws.get_group_by_id,
+                                  "u_acadev_nonexistant_tester")
 
     def test_get_group(self):
         with self.settings(

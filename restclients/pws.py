@@ -5,7 +5,7 @@ This is the interface for interacting with the Person Web Service.
 from restclients.dao import PWS_DAO
 from restclients.exceptions import InvalidRegID, InvalidNetID
 from restclients.exceptions import DataFailureException
-from restclients.models.sws import Person
+from restclients.models.sws import Person, Entity
 import json
 import re
 
@@ -28,9 +28,6 @@ class PWS(object):
         url = "/identity/v1/person/%s/full.json" % regid.upper()
         response = dao.getURL(url, {"Accept": "application/json"})
 
-        if response.status == 404:
-            return
-
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
@@ -50,19 +47,51 @@ class PWS(object):
         url = "/identity/v1/person/%s/full.json" % netid.lower()
         response = dao.getURL(url, {"Accept": "application/json"})
 
-        if response.status == 404:
-            return
-
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
         return self._person_from_json(response.data)
 
-    def get_contact(self, regid):
-        """ 
-        Returns a restclients.Person object for the given regid.  If the
+    def get_entity_by_regid(self, regid):
+        """
+        Returns a restclients.Entity object for the given regid.  If the
         regid isn't found, nothing will be returned.  If there is an error
         communicating with the PWS, a DataFailureException will be thrown.
+        """
+        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
+            raise InvalidRegID(regid)
+
+        dao = PWS_DAO()
+        url = "/identity/v1/entity/%s.json" % regid.upper()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._entity_from_json(response.data)
+
+    def get_entity_by_netid(self, netid):
+        """
+        Returns a restclients.Entity object for the given netid.  If the
+        netid isn't found, nothing will be returned.  If there is an error
+        communicating with the PWS, a DataFailureException will be thrown.
+        """
+
+        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', netid, re.I):
+            raise InvalidNetID(netid)
+
+        dao = PWS_DAO()
+        url = "/identity/v1/entity/%s.json" % netid.lower()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._entity_from_json(response.data)
+
+    def get_contact(self, regid):
+        """
+        Returns data for the given regid.
         """
         if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
             raise InvalidRegID(regid)
@@ -78,7 +107,6 @@ class PWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return json.loads(response.data)
-
 
     def _person_from_json(self, data):
         """
@@ -127,3 +155,12 @@ class PWS(object):
                     person.is_alum = True
 
         return person
+
+    def _entity_from_json(self, data):
+        entity_data = json.loads(data)
+        entity = Entity()
+        entity.uwnetid = entity_data["UWNetID"]
+        entity.uwregid = entity_data["UWRegID"]
+        entity.display_name = entity_data["DisplayName"]
+
+        return entity

@@ -92,9 +92,6 @@ class GWS(object):
         url = "/group_sws/v2/group/%s" % group_id
         response = dao.getURL(url, self._headers({"Accept": "text/xhtml"}))
 
-        if response.status == 404:
-            return
-
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
