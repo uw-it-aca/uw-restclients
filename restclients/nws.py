@@ -613,11 +613,13 @@ class NWS(object):
 
         body = json.loads(body)
         message = json.loads(body["Message"])
+        message_timestamp = body["Timestamp"]
         message_body = json.loads(message["Body"])
         event_data = message_body["Event"]
 
         event.event_id = event_data["EventID"]
         event.event_create_date = event_data["EventCreateDate"]
+        event.message_timestamp = message_timestamp
         event.year = event_data["Section"]["Course"]["Year"]
         event.quarter = event_data["Section"]["Course"]["Quarter"]
         event.curriculum_abbr = event_data["Section"]["Course"]["CurriculumAbbreviation"]

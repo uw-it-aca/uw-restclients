@@ -249,6 +249,7 @@ class Notification(models.Model):
 class CourseAvailableEvent(models.Model):
     event_id = models.CharField(max_length=40)
     event_create_date = models.CharField(max_length=40)
+    message_timestamp = models.CharField(max_length=40)
     space_available = models.PositiveIntegerField()
     quarter = models.CharField(max_length=6)
     year = models.PositiveSmallIntegerField()
