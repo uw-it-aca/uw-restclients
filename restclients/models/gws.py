@@ -89,13 +89,13 @@ class GroupUser(models.Model):
                                  choices=TYPE_CHOICES)
 
     def is_uwnetid(self):
-        return self.user_type == UWNETID_TYPE
+        return self.user_type == self.WNETID_TYPE
 
     def is_eppn(self):
-        return self.user_type == EPPN_TYPE
+        return self.user_type == self.EPPN_TYPE
 
     def is_group(self):
-        return self.user_type == GROUP_TYPE
+        return self.user_type == self.GROUP_TYPE
 
     def __eq__(self, other):
         return self.name == other.name and self.user_type == other.user_type
@@ -119,13 +119,13 @@ class GroupMember(models.Model):
                                    choices=TYPE_CHOICES)
 
     def is_uwnetid(self):
-        return self.member_type == UWNETID_TYPE
+        return self.member_type == self.UWNETID_TYPE
 
     def is_eppn(self):
-        return self.member_type == EPPN_TYPE
+        return self.member_type == self.EPPN_TYPE
 
     def is_group(self):
-        return self.member_type == GROUP_TYPE
+        return self.member_type == self.GROUP_TYPE
 
     def __eq__(self, other):
         return self.name == other.name and self.member_type == other.member_type
