@@ -1,0 +1,20 @@
+{
+    "AddCodeRequired": "false",
+    "CurrentEnrollment": "12",
+    "CurrentRegistrationPeriod": "3",
+    "FacultyCodeRequired": "false",
+    "LimitEstimateEnrollment": "212",
+    "LimitEstimateEnrollmentIndicator": "limit",
+    "RoomCapacity": "345",
+    "SLN": "12588",
+    "Section": {
+        "Href": "/student/v4/course/2013,summer,CSS,161/A.json",
+        "CourseNumber": "161",
+        "CurriculumAbbreviation": "CSS",
+        "Quarter": "summer",
+        "SectionID": "A",
+        "Year": "2013"
+    },
+    "SpaceAvailable": "40",
+    "Status": "open"
+}

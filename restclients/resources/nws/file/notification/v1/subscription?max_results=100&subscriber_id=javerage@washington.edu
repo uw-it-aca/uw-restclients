@@ -149,6 +149,156 @@
             }, 
             "Created": "2012-11-13 22:51:51+00:00", 
             "LastModified": "2012-11-13 22:51:51+00:00"
+        },
+        {
+            "SubscriptionID": "7a0a343a-6854-4ebe-adc6-c6807e922495", 
+            "SubscriptionURI": "/notification/v1/subscription/7a0a343a-6854-4ebe-adc6-c6807e922495", 
+            "Channel": {
+                "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b9", 
+                "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b9", 
+                "SurrogateID": "2013,summer,cse,101,a", 
+                "Type": "uw_student_courseavailable", 
+                "Name": "FLUENCY IN  TECHNOLOGY2.0", 
+                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+                "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Endpoint": {
+                "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointAddress": "222-222-3333", 
+                "Carrier": "AT&T", 
+                "Protocol": "SMS", 
+                "SubscriberID": "javerage@washington.edu", 
+                "OwnerID": "javerage@washington.edu", 
+                "Active": false, 
+                "Default": false, 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
+        },
+        {
+            "SubscriptionID": "7a0a343a-6854-4ebe-adc6-c6807e922495", 
+            "SubscriptionURI": "/notification/v1/subscription/7a0a343a-6854-4ebe-adc6-c6807e922495", 
+            "Channel": {
+                "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b0", 
+                "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b0", 
+                "SurrogateID": "2013,summer,css,161,a", 
+                "Type": "uw_student_courseavailable", 
+                "Name": "CSE", 
+                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+                "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Endpoint": {
+                "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointAddress": "222-222-3333", 
+                "Carrier": "AT&T", 
+                "Protocol": "SMS", 
+                "SubscriberID": "javerage@washington.edu", 
+                "OwnerID": "javerage@washington.edu", 
+                "Active": false, 
+                "Default": false, 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
+        },
+        {
+            "SubscriptionID": "7a0a343a-6854-4ebe-adc6-c6807e922487", 
+            "SubscriptionURI": "/notification/v1/subscription/7a0a343a-6854-4ebe-adc6-c6807e922487", 
+            "Channel": {
+                "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b1", 
+                "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b1", 
+                "SurrogateID": "2013,summer,math,125,g", 
+                "Type": "uw_student_courseavailable", 
+                "Name": "CSE", 
+                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+                "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Endpoint": {
+                "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointAddress": "222-222-3333", 
+                "Carrier": "AT&T", 
+                "Protocol": "SMS", 
+                "SubscriberID": "javerage@washington.edu", 
+                "OwnerID": "javerage@washington.edu", 
+                "Active": false, 
+                "Default": false, 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
+        },
+        {
+            "SubscriptionID": "7a0a343a-6854-4ebe-adc6-c6807e922487", 
+            "SubscriptionURI": "/notification/v1/subscription/7a0a343a-6854-4ebe-adc6-c6807e922487", 
+            "Channel": {
+                "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b2", 
+                "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b2", 
+                "SurrogateID": "2012,autumn,dent,548,A", 
+                "Type": "uw_student_courseavailable", 
+                "Name": "CSE", 
+                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+                "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Endpoint": {
+                "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointAddress": "222-222-3333", 
+                "Carrier": "AT&T", 
+                "Protocol": "SMS", 
+                "SubscriberID": "javerage@washington.edu", 
+                "OwnerID": "javerage@washington.edu", 
+                "Active": false, 
+                "Default": false, 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
+        },
+        {
+            "SubscriptionID": "7a0a343a-6854-4ebe-adc6-c6807e922487", 
+            "SubscriptionURI": "/notification/v1/subscription/7a0a343a-6854-4ebe-adc6-c6807e922487", 
+            "Channel": {
+                "ChannelID": "ce1d46fe-1cdf-4c5a-a316-20f6c99789b3", 
+                "ChannelURI": "/notification/v1/channel/ce1d46fe-1cdf-4c5a-a316-20f6c99789b3", 
+                "SurrogateID": "2013,spring,PHIL,600,A", 
+                "Type": "uw_student_courseavailable", 
+                "Name": "CSE", 
+                "TemplateSurrogateID": "CourseAvailableNotificationTemplate", 
+                "Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n", 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Endpoint": {
+                "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670", 
+                "EndpointAddress": "222-222-3333", 
+                "Carrier": "AT&T", 
+                "Protocol": "SMS", 
+                "SubscriberID": "javerage@washington.edu", 
+                "OwnerID": "javerage@washington.edu", 
+                "Active": false, 
+                "Default": false, 
+                "Created": "2012-11-13 22:51:51+00:00", 
+                "LastModified": "2012-11-13 22:51:51+00:00"
+            }, 
+            "Created": "2012-11-13 22:51:51+00:00", 
+            "LastModified": "2012-11-13 22:51:51+00:00"
         }
     ], 
     "TotalCount": 5, 

@@ -1,0 +1,20 @@
+{
+    "AddCodeRequired": "false",
+    "CurrentEnrollment": "305",
+    "CurrentRegistrationPeriod": "3",
+    "FacultyCodeRequired": "false",
+    "LimitEstimateEnrollment": "345",
+    "LimitEstimateEnrollmentIndicator": "limit",
+    "RoomCapacity": "345",
+    "SLN": "12588",
+    "Section": {
+        "Href": "/student/v4/course/2013,spring,PHIL,600/A.json",
+        "CourseNumber": "600",
+        "CurriculumAbbreviation": "PHIL",
+        "Quarter": "spring",
+        "SectionID": "A",
+        "Year": "2013"
+    },
+    "SpaceAvailable": "40",
+    "Status": "open"
+}

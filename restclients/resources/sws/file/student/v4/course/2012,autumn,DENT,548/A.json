@@ -1,1 +1,147 @@
-{"Auditors":"0","ClassWebsiteUrl":"","Course":{"Href":"\/student\/v4\/course\/2012,autumn,DENT,548.json","CourseNumber":"548","CourseTitle":"DENT PRACTICE","CourseTitleLong":"DENTAL PRACTICE ADMINISTRATION","CurriculumAbbreviation":"DENT","Quarter":"autumn","Year":"2012"},"CourseCampus":"Seattle","CourseDescription":"Material essential to persons entering dentistry in a time of rapid change in health care systems, including practice management, career opportunities, and starting out in a private practice. Offered: A.","CourseTitle":"DENT PRACTICE","CourseTitleLong":"DENTAL PRACTICE ADMINISTRATION","CurrentEnrollment":"62","Curriculum":{"TimeScheduleLinkAbbreviation":"dent"},"DeleteFlag":"active","DuplicateEnrollmentAllowed":false,"EndDate":"","FinalExam":{"Building":"*","Date":"0000-00-00","EndTime":"00:00","MeetingStatus":"1","RoomNumber":"*","StartTime":"00:00"},"GeneralEducationRequirements":{"EnglishComposition":false,"IndividualsAndSocieties":false,"NaturalWorld":false,"QuantitativeAndSymbolicReasoning":false,"VisualLiteraryAndPerformingArts":false,"Writing":false},"GradeSubmissionDelegates":[{"DelegateLevel":"college","Person":{"Href":"\/student\/v4\/person\/DB1A2F366A7C11D5A4AE0004AC494FFE.json","Name":"WIESENBACH,CAROL L","RegID":"DB1A2F366A7C11D5A4AE0004AC494FFE"}},{"DelegateLevel":"department","Person":{"Href":"\/student\/v4\/person\/91E188286A7C11D5A4AE0004AC494FFE.json","Name":"BROWN,CAROL","RegID":"91E188286A7C11D5A4AE0004AC494FFE"}},{"DelegateLevel":"curriculum","Person":{"Href":"\/student\/v4\/person\/6A65DB0E6A7D11D5A4AE0004AC494FFE.json","Name":"TEFERA,ZENEBEWORK","RegID":"6A65DB0E6A7D11D5A4AE0004AC494FFE"}},{"DelegateLevel":"section","Person":{"Href":"\/student\/v4\/person\/656ABB026A7C11D5A4AE0004AC494FFE.json","Name":"VALENTINE,HELEN A.","RegID":"656ABB026A7C11D5A4AE0004AC494FFE"}}],"GradingSystem":"standard","HonorsCourse":false,"InstituteName":"","JointSections":[{"Href":"\/student\/v4\/course\/2012,autumn,DENT,548\/B.json","CourseNumber":"548","CurriculumAbbreviation":"DENT","Quarter":"autumn","SectionID":"B","Year":"2012"}],"LimitEstimateEnrollment":"68","LimitEstimateEnrollmentIndicator":"estimate","LinkedSectionTypes":[],"Meetings":[{"Building":"HSD","BuildingToBeArranged":false,"DaysOfWeek":{"Days":[{"Name":"Monday"}],"Text":"M"},"DaysOfWeekToBeArranged":false,"EndTime":"09:20","Instructors":[{"FacultySequenceNumber":"","GradeRoster":{"Href":"\/student\/v4\/graderoster\/2012,autumn,DENT,548,A,E41B05B6699A4A118D79ADBC5B672538"},"Person":{"Href":"\/student\/v4\/person\/E41B05B6699A4A118D79ADBC5B672538.json","Name":"CHAN,DANIEL C. N.","RegID":"E41B05B6699A4A118D79ADBC5B672538"}},{"FacultySequenceNumber":"","GradeRoster":{"Href":"\/student\/v4\/graderoster\/2012,autumn,DENT,548,A,94BCBDB06A7C11D5A4AE0004AC494FFE"},"Person":{"Href":"\/student\/v4\/person\/94BCBDB06A7C11D5A4AE0004AC494FFE.json","Name":"PHILLIPS,SANDRA L.","RegID":"94BCBDB06A7C11D5A4AE0004AC494FFE"}}],"MeetingIndex":"1","MeetingType":"lecture","RoomNumber":"D209","RoomToBeArranged":false,"StartTime":"08:00"}],"PrimarySection":{"Href":"\/student\/v4\/course\/2012,autumn,DENT,548\/A.json","CourseNumber":"548","CurriculumAbbreviation":"DENT","Quarter":"autumn","SectionID":"A","Year":"2012"},"Registrations":{"Href":"\/student\/v4\/registration.json?year=2012&quarter=autumn&curriculum_abbreviation=DENT&course_number=548&section_id=A&reg_id=&is_active=on&instructor_reg_id=","CourseNumber":"548","CurriculumAbbreviation":"DENT","InstructorRegID":null,"IsActive":"on","PageSize":null,"PageStart":null,"Quarter":"autumn","RegID":null,"SectionID":"A","Year":"2012"},"ResearchCredit":false,"SLN":"12736","SecondaryGradingOption":false,"SectionID":"A","SectionType":"lecture","ServiceLearning":false,"StartDate":"","StudentCreditHours":" 124.0","SummerTerm":"","Term":{"Href":"\/student\/v4\/term\/2012,autumn.json","Quarter":"autumn","Year":"2012"}}
+{
+    "Auditors": "0",
+    "ClassWebsiteUrl": "",
+    "Course": {
+        "Href": "/student/v4/course/2012,autumn,DENT,548.json",
+        "CourseNumber": "548",
+        "CourseTitle": "DENT PRACTICE",
+        "CourseTitleLong": "DENTAL PRACTICE ADMINISTRATION",
+        "CurriculumAbbreviation": "DENT",
+        "Quarter": "autumn",
+        "Year": "2012"
+    },
+    "CourseCampus": "Seattle",
+    "CourseDescription": "Material essential to persons entering dentistry in a time of rapid change in health care systems, including practice management, career opportunities, and starting out in a private practice. Offered: A.",
+    "CourseTitle": "DENT PRACTICE",
+    "CourseTitleLong": "DENTAL PRACTICE ADMINISTRATION",
+    "CurrentEnrollment": "62",
+    "Curriculum": {
+        "TimeScheduleLinkAbbreviation": "dent"
+    },
+    "DeleteFlag": "active",
+    "DuplicateEnrollmentAllowed": false,
+    "EndDate": "",
+    "FinalExam": {
+        "Building": "*",
+        "Date": "0000-00-00",
+        "EndTime": "00:00",
+        "MeetingStatus": "1",
+        "RoomNumber": "*",
+        "StartTime": "00:00"
+    },
+    "GeneralEducationRequirements": {
+        "EnglishComposition": false,
+        "IndividualsAndSocieties": false,
+        "NaturalWorld": false,
+        "QuantitativeAndSymbolicReasoning": false,
+        "VisualLiteraryAndPerformingArts": false,
+        "Writing": false
+    },
+    "GradeSubmissionDelegates": [
+        {
+            "DelegateLevel": "college",
+            "Person": {
+                "Href": "/student/v4/person/DB1A2F366A7C11D5A4AE0004AC494FFE.json",
+                "Name": "WIESENBACH,CAROL L",
+                "RegID": "DB1A2F366A7C11D5A4AE0004AC494FFE"
+            }
+        },
+        {
+            "DelegateLevel": "department",
+            "Person": {
+                "Href": "/student/v4/person/91E188286A7C11D5A4AE0004AC494FFE.json",
+                "Name": "BROWN,CAROL",
+                "RegID": "91E188286A7C11D5A4AE0004AC494FFE"
+            }
+        },
+        {
+            "DelegateLevel": "curriculum",
+            "Person": {
+                "Href": "/student/v4/person/6A65DB0E6A7D11D5A4AE0004AC494FFE.json",
+                "Name": "TEFERA,ZENEBEWORK",
+                "RegID": "6A65DB0E6A7D11D5A4AE0004AC494FFE"
+            }
+        },
+        {
+            "DelegateLevel": "section",
+            "Person": {
+                "Href": "/student/v4/person/656ABB026A7C11D5A4AE0004AC494FFE.json",
+                "Name": "VALENTINE,HELEN A.",
+                "RegID": "656ABB026A7C11D5A4AE0004AC494FFE"
+            }
+        }
+    ],
+    "GradingSystem": "standard",
+    "HonorsCourse": false,
+    "InstituteName": "",
+    "JointSections": [
+        {
+            "Href": "/student/v4/course/2012,autumn,DENT,548/B.json",
+            "CourseNumber": "548",
+            "CurriculumAbbreviation": "DENT",
+            "Quarter": "autumn",
+            "SectionID": "B",
+            "Year": "2012"
+        }
+    ],
+    "LimitEstimateEnrollment": "68",
+    "LimitEstimateEnrollmentIndicator": "estimate",
+    "LinkedSectionTypes": [],
+    "Meetings": [
+        {
+            "Building": "HSD",
+            "BuildingToBeArranged": false,
+            "DaysOfWeek": {
+                "Days": [
+                    {
+                        "Name": "Monday"
+                    }
+                ],
+                "Text": "M"
+            },
+            "DaysOfWeekToBeArranged": false,
+            "EndTime": "09:20",
+            "Instructors": [],
+            "MeetingIndex": "1",
+            "MeetingType": "lecture",
+            "RoomNumber": "D209",
+            "RoomToBeArranged": false,
+            "StartTime": "08:00"
+        }
+    ],
+    "PrimarySection": {
+        "Href": "/student/v4/course/2012,autumn,DENT,548/A.json",
+        "CourseNumber": "548",
+        "CurriculumAbbreviation": "DENT",
+        "Quarter": "autumn",
+        "SectionID": "A",
+        "Year": "2012"
+    },
+    "Registrations": {
+        "Href": "/student/v4/registration.json?year=2012&quarter=autumn&curriculum_abbreviation=DENT&course_number=548&section_id=A&reg_id=&is_active=on&instructor_reg_id=",
+        "CourseNumber": "548",
+        "CurriculumAbbreviation": "DENT",
+        "InstructorRegID": null,
+        "IsActive": "on",
+        "PageSize": null,
+        "PageStart": null,
+        "Quarter": "autumn",
+        "RegID": null,
+        "SectionID": "A",
+        "Year": "2012"
+    },
+    "ResearchCredit": false,
+    "SLN": "12736",
+    "SecondaryGradingOption": false,
+    "SectionID": "A",
+    "SectionType": "lecture",
+    "ServiceLearning": false,
+    "StartDate": "",
+    "StudentCreditHours": " 124.0",
+    "SummerTerm": "",
+    "Term": {
+        "Href": "/student/v4/term/2012,autumn.json",
+        "Quarter": "autumn",
+        "Year": "2012"
+    }
+}

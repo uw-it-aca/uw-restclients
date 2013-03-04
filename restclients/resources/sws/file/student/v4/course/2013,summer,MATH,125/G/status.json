@@ -1,0 +1,20 @@
+{
+    "AddCodeRequired": "false",
+    "CurrentEnrollment": "205",
+    "CurrentRegistrationPeriod": "3",
+    "FacultyCodeRequired": "false",
+    "LimitEstimateEnrollment": "222",
+    "LimitEstimateEnrollmentIndicator": "limit",
+    "RoomCapacity": "345",
+    "SLN": "12588",
+    "Section": {
+        "Href": "/student/v4/course/2013,summer,MATH,125/G.json",
+        "CourseNumber": "600",
+        "CurriculumAbbreviation": "MATH",
+        "Quarter": "summer",
+        "SectionID": "G",
+        "Year": "2013"
+    },
+    "SpaceAvailable": "40",
+    "Status": "open"
+}

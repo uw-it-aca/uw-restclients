@@ -1,0 +1,20 @@
+{
+    "AddCodeRequired": "false",
+    "CurrentEnrollment": "2",
+    "CurrentRegistrationPeriod": "3",
+    "FacultyCodeRequired": "false",
+    "LimitEstimateEnrollment": "12",
+    "LimitEstimateEnrollmentIndicator": "limit",
+    "RoomCapacity": "345",
+    "SLN": "12588",
+    "Section": {
+        "Href": "/student/v4/course/2012,autumn,DENT,548/A.json",
+        "CourseNumber": "548",
+        "CurriculumAbbreviation": "DENT",
+        "Quarter": "autumn",
+        "SectionID": "A",
+        "Year": "2012"
+    },
+    "SpaceAvailable": "40",
+    "Status": "open"
+}
