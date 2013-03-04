@@ -409,6 +409,15 @@ class NWS(object):
 
         return post_response.status
 
+    def retry_dispatch_queue(self):
+        url = "/notification/v1/dispatch"
+        dao = NWS_DAO()
+        delete_response = dao.deleteURL(url, None)
+
+        if delete_response.status != 202:
+            raise DataFailureException(url, delete_response.status, delete_response.data)
+
+        return delete_response
 
     #CHANNEL RESOURCE
     def create_new_channel(self, channel):
