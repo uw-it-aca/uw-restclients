@@ -331,11 +331,11 @@ class NWS(object):
         """
         return self._get_subscriptions_from_nws(channel_id=channel_id)
 
-    def get_subscriptions_by_subscriber_id(self, subscriber_id, max_retults):
+    def get_subscriptions_by_subscriber_id(self, subscriber_id, max_results):
         """
         Search for all subscriptions by a given subscriber
         """
-        return self._get_subscriptions_from_nws(subscriber_id=subscriber_id, max_results=max_retults)
+        return self._get_subscriptions_from_nws(subscriber_id=subscriber_id, max_results=max_results)
 
     def get_subscriptions_by_channel_id_and_subscriber_id(self, channel_id, subscriber_id):
         """
