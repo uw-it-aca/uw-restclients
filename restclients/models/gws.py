@@ -89,7 +89,7 @@ class GroupUser(models.Model):
                                  choices=TYPE_CHOICES)
 
     def is_uwnetid(self):
-        return self.user_type == self.WNETID_TYPE
+        return self.user_type == self.UWNETID_TYPE
 
     def is_eppn(self):
         return self.user_type == self.EPPN_TYPE
