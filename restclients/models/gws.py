@@ -28,8 +28,8 @@ class Group(models.Model):
 
     name = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
-    description = models.CharField(max_length=2000)
-    contact = models.CharField(max_length=120)
+    description = models.CharField(max_length=2000, null=True)
+    contact = models.CharField(max_length=120, null=True)
     authnfactor = models.PositiveSmallIntegerField(max_length=1,
                                                    choices=((1, ""), (2, "")),
                                                    default=1)
@@ -40,9 +40,9 @@ class Group(models.Model):
                                     choices=(("UWExchange", "UWExchange"),
                                              ("disabled", "disabled")),
                                     default="disabled")
-    dependson = models.CharField(max_length=500)
-    publishemail = models.CharField(max_length=120)
-    reporttoorig = models.SmallIntegerField(max_length=1,
+    dependson = models.CharField(max_length=500, null=True)
+    publishemail = models.CharField(max_length=120, null=True)
+    reporttoorig = models.SmallIntegerField(max_length=1, null=True,
                                             choices=((1, "Yes"), (0, "No")),
                                             default=0)
 

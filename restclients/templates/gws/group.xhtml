@@ -9,7 +9,7 @@
         <div class="group">
             <span class="regid">{{group.uwregid}}</span>
             <span class="title">{{group.title}}</span>
-            <span class="description">{{group.description}}</span>
+            <span class="description">{{group.description|default_if_none:""}}</span>
 
             <ul class="names">
                 <li class="name">{{group.name}}</li>
@@ -17,10 +17,10 @@
 
             <span class="authnfactor">{{group.authnfactor}}</span>
             <span class="classification">{{group.classification}}</span>
-            <span class="dependson">{{group.dependson}}</span>
+            <span class="dependson">{{group.dependson|default_if_none:""}}</span>
             <span class="emailenabled">{{group.emailenabled}}</span>
-            <span class="publishemail">{{group.publishemail}}</span>
-            <span class="contact">{{group.contact}}</span>
+            <span class="publishemail">{{group.publishemail|default_if_none:""}}</span>
+            <span class="contact">{{group.contact|default_if_none:""}}</span>
             <span class="reporttoorig">{{group.reporttoorig}}</span>
 
             <ul class="authorigs">{% for authorig in group.authorigs %}
