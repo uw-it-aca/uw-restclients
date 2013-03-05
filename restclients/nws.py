@@ -371,10 +371,11 @@ class NWS(object):
         if number_of_args > 0:
             url += '?'
             for k,v in kwargs.iteritems():
-                url += k + '=' + v
-                if number_of_args > 1:
-                    url += '&'
-                number_of_args -= 1
+                if k is not None and v is not None:
+                    url += k + '=' + v
+                    if number_of_args > 1:
+                        url += '&'
+                    number_of_args -= 1
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
