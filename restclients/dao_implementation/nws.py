@@ -72,15 +72,20 @@ class Live(object):
     def _get_pool(self):
         nws_key_file = None
         nws_cert_file = None
-        
+        max_pool_size = 10 #default values
+        socket_timeout = 15 #default values
+
         if settings.RESTCLIENTS_NWS_KEY_FILE and settings.RESTCLIENTS_NWS_CERT_FILE:
             nws_key_file = settings.RESTCLIENTS_NWS_KEY_FILE
             nws_cert_file = settings.RESTCLIENTS_NWS_CERT_FILE
-            
-        max_pool_size = 10
+
         if hasattr(settings, "RESTCLIENTS_NWS_MAX_POOL_SIZE"):
             max_pool_size = settings.RESTCLIENTS_NWS_MAX_POOL_SIZE
+        if hasattr(settings, "RESTCLIENTS_NWS_SOCKET_TIMEOUT"):
+            socket_timeout = settings.RESTCLIENTS_NWS_SOCKET_TIMEOUT
+
         return get_con_pool(settings.RESTCLIENTS_NWS_HOST,
                                      nws_key_file,
                                      nws_cert_file,
-                                     max_pool_size=max_pool_size)
+                                     max_pool_size=max_pool_size,
+                                     socket_timeout=socket_timeout)

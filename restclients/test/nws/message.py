@@ -49,7 +49,7 @@ class NWSTestMessage(TestCase):
             course_available_event.course_number = "100"
             course_available_event.section_id = "aa"
             course_available_event.sln = "12345"
-            #course_available_event.notification_msg_0 = " NO"
+            course_available_event.notification_msg_0 = " NO"
             
             message = Message()
             message.message_type =  "uw_student_courseavailable"
