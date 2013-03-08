@@ -419,6 +419,19 @@ class NWS(object):
             raise DataFailureException(url, delete_response.status, delete_response.data)
 
         return delete_response
+    
+    def execute_job(self, job):
+        url = "/notification/v1/job"
+        
+        data = Serializer().serialize(job)
+        
+        dao = NWS_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "application/json"}, data)
+
+        if post_response.status != 201:
+            raise DataFailureException(url, post_response.status, post_response.data)
+
+        return post_response.status
 
     #CHANNEL RESOURCE
     def create_new_channel(self, channel):
