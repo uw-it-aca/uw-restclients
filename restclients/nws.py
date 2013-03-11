@@ -186,7 +186,7 @@ class NWS(object):
 
         #HTTP Status Code 201 Created: The request has been fulfilled and resulted
         #in a new resource being created
-        if post_response.status != 200 and post_response.status != 201:
+        if post_response.status != 201:
             raise DataFailureException(url, post_response.status, post_response.data)
 
         return post_response.status
