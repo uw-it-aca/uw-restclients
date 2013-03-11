@@ -1,11 +1,11 @@
-{   
+{
     "Person": {
         "PersonID": "9136CCB8F66711D5BE060004AC494FFE",
-        "SurrogateID": "javerage",
+        "PersonURI": "/notification/v1/person/9136CCB8F66711D5BE060004AC494FFE",
+        "SurrogateID": "javerage@washington.edu",
         "Attributes": {
             "AcceptedTermsOfUse": true,
-            "NumberOfSubscriptions": 0,
-            "NumberOfNotifications": 0
+            "DispatchedEmailCount": 3
         },
         "Endpoints": [
             {
@@ -20,19 +20,10 @@
                 "Default": false,
                 "Created": "2012-11-27T20:08:08.914Z",
                 "LastModified": "2012-11-27T20:08:08.914Z"
-            },
-            {
-                "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670",
-                "EndpointURI": "/notification/v1/endpoint/ff53f5b8-f7f9-4eae-9d8b-b92717d4b670",
-                "EndpointAddress": "222-222-3333",
-                "Protocol": "sms",
-                "SubscriberID": "javerage",
-                "OwnerID": "javerage",
-                "Active": false,
-                "Default": true,
-                "Created": "2012-11-28T18:49:58.726Z",
-                "LastModified": "2012-12-12T01:24:19.396Z"
             }
-        ]
+        ],
+        "Created": "2013-01-11T16:25:18+00:00",
+        "LastModified": "2013-03-06T19:40:26+00:00",
+        "ModifiedBy": null
     }
 }

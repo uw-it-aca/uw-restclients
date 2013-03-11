@@ -3,7 +3,7 @@ This is the interface for interacting with the Notifications Web Service.
 """
 
 from restclients.dao import NWS_DAO
-from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol
+from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol, InvalidRegID
 from restclients.models import CourseAvailableEvent
 from urllib import quote
 from datetime import datetime, time
@@ -224,7 +224,7 @@ class NWS(object):
         is the updated person that the client wants to update
         """
         #Validate
-        self._validate_uuid(person.person_id)
+        self._validate_regid(person.person_id)
         self._validate_subscriber_id(person.surrogate_id)
 
         dao = NWS_DAO()
@@ -689,6 +689,12 @@ class NWS(object):
             raise InvalidUUID(id)
         if not re.match(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', id):
             raise InvalidUUID(id)
+
+    def _validate_regid(self, id):
+        if id is None:
+            raise InvalidRegID(id)
+        if not re.match(r'^[0-9A-F]{32}$', id):
+            raise InvalidRegID(id)
 
     def _validate_subscriber_id(self, subscriber_id):
         if subscriber_id is None or subscriber_id == '':
