@@ -17,6 +17,9 @@ class File(object):
     def getURL(self, url, headers):
         return get_mockdata_url("canvas", "file", url, headers)
 
+    def putURL(self, url, headers, body):
+        return put_mockdata_url("canvas", "file", url, headers, body)
+
     def postURL(self, url, headers, body):
         return post_mockdata_url("canvas", "file", url, headers, body)
 
@@ -40,6 +43,17 @@ class Live(object):
             Live.pool = get_con_pool(host, None, None)
         return get_live_url(Live.pool, 'GET',
                             host, url, headers=headers)
+
+    def putURL(self, url, headers, body):
+        host = settings.RESTCLIENTS_CANVAS_HOST
+        bearer_key = settings.RESTCLIENTS_CANVAS_OAUTH_BEARER
+
+        headers["Authorization"] = "Bearer %s" % bearer_key
+
+        if Live.pool == None:
+            Live.pool = get_con_pool(host, None, None)
+        return get_live_url(Live.pool, 'PUT',
+                            host, url, headers=headers, body=body)
 
     def postURL(self, url, headers, body):
         host = settings.RESTCLIENTS_CANVAS_HOST

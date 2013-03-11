@@ -114,6 +114,9 @@ class Canvas_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('canvas', url, headers)
 
+    def putURL(self, url, headers, body):
+        return self._putURL('canvas', url, headers, body)
+
     def postURL(self, url, headers, body):
         return self._postURL('canvas', url, headers, body)
 
