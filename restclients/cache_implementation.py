@@ -26,6 +26,10 @@ class TimedCache(object):
     """
     def _response_from_cache(self, service, url, headers, max_age_in_seconds,
                              max_error_age=60 * 5):
+
+        # If max_age_in_seconds is 0, make sure we don't get a hit from this same second.
+        if not max_age_in_seconds:
+            return None
         now = make_aware(datetime.now(), get_current_timezone())
         time_limit = now - timedelta(seconds=max_age_in_seconds)
 
