@@ -24,15 +24,15 @@
       "Writing" : false
     },
   "GradeSubmissionDelegates" : [ { "DelegateLevel" : "department",
-        "Person" : { "Href" : "\/student\/v4\/person\/7D6DE235BC1E470B9525CFEDF4327784.json",
+        "Person" : { "Href" : "\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
             "Name" : "MILLER,SUSAN HEE-JUNG",
-            "RegID" : "7D6DE235BC1E470B9525CFEDF4327784"
+            "RegID" : "6DF0A9206A7D11D5A4AE0004AC494FFE"
           }
       },
       { "DelegateLevel" : "curriculum",
-        "Person" : { "Href" : "\/student\/v4\/person\/7D6DE235BC1E470B9525CFEDF4327784.json",
+        "Person" : { "Href" : "\/student\/v4\/person\/6DF0A9206A7D11D5A4AE0004AC494FFE.json",
             "Name" : "MILLER,SUSAN HEE-JUNG",
-            "RegID" : "7D6DE235BC1E470B9525CFEDF4327784"
+            "RegID" : "6DF0A9206A7D11D5A4AE0004AC494FFE"
           }
       }
     ],

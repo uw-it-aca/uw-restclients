@@ -7,7 +7,7 @@ from vm.v1.viewmodels import Person
 
 class NWSTestPerson(TestCase):
     def _assert_person_matches(self, person):
-        self.assertEquals('javerage', person.surrogate_id)
+        self.assertEquals('javerage@washington.edu', person.surrogate_id)
         self.assertEquals('9136CCB8F66711D5BE060004AC494FFE', person.person_id)
         endpoints = person.endpoints
         self.assertTrue(endpoints is not None)
@@ -19,7 +19,7 @@ class NWSTestPerson(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            person = nws.get_person_by_surrogate_id("javerage")
+            person = nws.get_person_by_surrogate_id("javerage@washington.edu")
             self._assert_person_matches(person)
 
     def test_person_by_surrogate_id_nonexistent(self):
@@ -32,7 +32,7 @@ class NWSTestPerson(TestCase):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
             nws = NWS()
-            person = nws.get_person_by_surrogate_id("javerage")
+            person = nws.get_person_by_surrogate_id("javerage@washington.edu")
             person.person_id = None
             person.endpoints = None
 
