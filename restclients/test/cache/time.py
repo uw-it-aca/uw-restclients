@@ -78,8 +78,8 @@ class TimeCacheTest(TestCase):
             hit = cache.getCache('sws', '/student', {})
             self.assertNotEquals(hit, None)
 
-            # Cached response is not returned after 4 hours
-            cache_entry.time_saved = orig_time_saved - timedelta(hours=4)
+            # Cached response is not returned after 4 hours and 1 minute
+            cache_entry.time_saved = orig_time_saved - timedelta(hours=241)
             cache_entry.save()
 
             hit = cache.getCache('sws', '/student', {})
