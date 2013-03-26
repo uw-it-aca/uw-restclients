@@ -40,7 +40,7 @@ def get_mockdata_url(service_name, implementation_name,
         response.headers = {"X-Data-Source": service_name + " file mock data", }
 
         try:
-            headers = open(RESOURCE_ROOT + url + '.http-headers')
+            headers = open(handle.name + '.http-headers')
             response.headers = dict(response.headers.items() + json.loads(headers.read()).items())
         except IOError:
             pass
