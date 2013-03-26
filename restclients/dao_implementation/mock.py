@@ -1,5 +1,6 @@
 from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
+import json
 
 """
 A centralized the mock data access
@@ -37,6 +38,13 @@ def get_mockdata_url(service_name, implementation_name,
         response.status = 200
         response.data = handle.read()
         response.headers = {"X-Data-Source": service_name + " file mock data", }
+
+        try:
+            headers = open(RESOURCE_ROOT + url + '.http-headers')
+            response.headers = dict(response.headers.items() + json.loads(headers.read()).items())
+        except IOError:
+            pass
+
         return response
 
 

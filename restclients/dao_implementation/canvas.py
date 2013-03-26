@@ -23,6 +23,9 @@ class File(object):
     def postURL(self, url, headers, body):
         return post_mockdata_url("canvas", "file", url, headers, body)
 
+    def deleteURL(self, url, headers):
+        return delete_mockdata_url("canvas", "file", url, headers)
+
 
 class Live(object):
     """
@@ -65,3 +68,14 @@ class Live(object):
             Live.pool = get_con_pool(host, None, None)
         return get_live_url(Live.pool, 'POST',
                             host, url, headers=headers, body=body)
+
+    def deleteURL(self, url, headers):
+        host = settings.RESTCLIENTS_CANVAS_HOST
+        bearer_key = settings.RESTCLIENTS_CANVAS_OAUTH_BEARER
+
+        headers["Authorization"] = "Bearer %s" % bearer_key
+
+        if Live.pool == None:
+            Live.pool = get_con_pool(host, None, None)
+        return get_live_url(Live.pool, 'DELETE',
+                            host, url, headers=headers)

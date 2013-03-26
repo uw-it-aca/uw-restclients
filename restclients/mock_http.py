@@ -18,3 +18,14 @@ class MockHTTP(object):
         Returns the document body of the request.
         """
         return self.data
+
+    def getheader(self, field, default=''):
+        """
+        Returns the HTTP response header field, case insensitively
+        """
+        if self.headers:
+            for header in self.headers:
+                if field.lower() == header.lower():
+                    return self.headers[header]
+
+        return default
