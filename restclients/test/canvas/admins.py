@@ -20,3 +20,13 @@ class CanvasTestAdmins(TestCase):
             self.assertEquals(admin.get('role'), 'AccountAdmin', "Has proper role")
             self.assertEquals(admin.get('user').get('id'), 1111, "Has proper id")
 
+    def test_admin_delete(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+
+            canvas = Canvas()
+
+            status = canvas.delete_admin_by_sis_id('uwcourse:seattle:nursing:nurs', 'javerage', 'AccountAdmin')
+
+            self.assertEquals(status, 204, "Failed to delete admin")
+
