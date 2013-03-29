@@ -14,6 +14,8 @@ import re
 import json
 
 
+MANAGED_ATTRIBUTES = ('DispatchedEmailCount', 'DispatchedTextMessageCount', 'SentTextMessageCount', 'SubscriptionCount')
+
 class NWS(object):
     """
     The NWS object has methods for getting, updating, deleting information
@@ -226,6 +228,19 @@ class NWS(object):
         #Validate
         self._validate_regid(person.person_id)
         self._validate_subscriber_id(person.surrogate_id)
+
+        attributes = person.get_attributes()
+        person.attributes = None
+
+        for attribute in attributes:
+            if attribute.name in MANAGED_ATTRIBUTES:
+                continue
+
+            person.add_attribute(attribute.name, attribute.value, None, None)
+        #    ATTRIBUTE_TYPE_EMAIL_DISPATCHED_COUNT = 'DispatchedEmailCount'
+        #    ATTRIBUTE_TYPE_SMS_DISPATCHED_COUNT = 'DispatchedTextMessageCount'
+        #        ATTRIBUTE_TYPE_SMS_SENT_COUNT = 'SentTextMessageCount'
+        #            ATTRIBUTE_TYPE_SUBSCRIPTION_COUNT = 'SubscriptionCount'
 
         dao = NWS_DAO()
         url = "/notification/v1/person/%s" % (person.person_id)
