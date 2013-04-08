@@ -275,7 +275,7 @@ class SectionStatus(models.Model):
     def json_data(self):
         data = {
             'add_code_required' : self.add_code_required,
-            'current_endrollment' : self.current_enrollment,
+            'current_enrollment' : self.current_enrollment,
             'current_registration_period' : self.current_registration_period,
             'faculty_code_required' : self.faculty_code_required,
             'limit_estimated_enrollment' : self.limit_estimated_enrollment,
