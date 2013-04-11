@@ -170,6 +170,8 @@ class Section(models.Model):
     sln = models.PositiveIntegerField()
     delete_flag = models.CharField(max_length=20)
     is_withdrawn = models.BooleanField()
+    current_enrollment = models.IntegerField()
+    auditors = models.IntegerField()
 
 #    These are for non-standard start/end dates - don't have those yet
 #    start_date = models.DateField()
@@ -228,6 +230,8 @@ class Section(models.Model):
             'summer_term': self.summer_term,
             'start_date': '',
             'end_date': '',
+            'current_enrollment' : self.current_enrollment,
+            'auditors' : self.auditors,
             'meetings': [],
         }
 
