@@ -10,17 +10,21 @@ import json
 import re
 
 
+DEFAULT_PAGINATION = 0
+
+
 class Canvas(object):
     """
     The Canvas object has methods for getting information
     about accounts, courses, enrollments and users within
     Canvas
     """
-    def __init__(self):
+
+    def __init__(self, per_page=DEFAULT_PAGINATION):
         """
         Prepares for paginated responses
         """
-        self._per_page = 100
+        self._per_page = per_page
         self._re_next_link = re.compile(r"""<http[s]?://[^/]+([^>]*)>;\s*
                                             rel=([\"\']?)next\2 # next doc
                                          """,
@@ -78,47 +82,23 @@ class Canvas(object):
     def _get_course(self, id):
         return self._get_resource("/api/v1/courses/%s" % id)
 
-    def get_sections_by_canvas_id(self, canvas_id):
-        return self._get_sections(canvas_id)
+    def get_sections_by_canvas_id(self, canvas_id, params={}):
+        return self._get_sections(canvas_id, params)
 
-    def get_sections_by_sis_id(self, sis_id, params):
+    def get_sections_by_sis_id(self, sis_id, params={}):
         return self._get_sections(self._sis_id(sis_id, sis_field='course'),
                                   params)
 
+    def get_sections_with_students_by_canvas_id(self, canvas_id):
+        return self._get_sections(canvas_id, {'include': 'students'})
+
+    def get_sections_with_students_by_sis_id(self, sis_id):
+        return self._get_sections(self._sis_id(sis_id, sis_field='course'),
+                                  {'include': 'students'})
+
     def _get_sections(self, id, params):
-        params['per_page'] = self._per_page
+        params = self._pagination(params)
         return self._get_resource("/api/v1/courses/%s/sections%s"
-                                  % (id, self._params(params)))
-
-    def get_students_by_canvas_id(self, canvas_id):
-        return self._get_course_users(canvas_id,
-                                      {'enrollment_type': 'student'})
-
-    def get_students_by_sis_id(self, sis_id):
-        return self._get_course_users(self._sis_id(sis_id, sis_field='course'),
-                                      {'enrollment_type': 'student'})
-
-    def get_course_users_by_canvas_id(self, canvas_id, params={}):
-        return self._get_course_users(canvas_id, params)
-
-    def get_course_users_by_sis_id(self, sis_id, params={}):
-        return self._get_course_users(self._sis_id(sis_id, sis_field='course'),
-                                      params)
-
-    def _get_course_users(self, id, params):
-        params['per_page'] = self._per_page
-        return self._get_resource("/api/v1/courses/%s/users%s"
-                                  % (id, self._params(params)))
-
-    def get_section_students_by_sis_id(self, sis_id):
-        return self._get_section_enrollments(self._sis_id(sis_id,
-                                                          sis_field='section'),
-                                             {'per_page': self._per_page,
-                                              'type': ['StudentEnrollment']})
-
-    def _get_section_enrollments(self, id, params):
-        params['per_page'] = self._per_page
-        return self._get_resource("/api/v1/sections/%s/enrollments%s"
                                   % (id, self._params(params)))
 
     def get_account_by_canvas_id(self, canvas_id):
@@ -155,26 +135,41 @@ class Canvas(object):
 
         return put_response.status
 
-    def get_sub_accounts_by_canvas_id(self, canvas_id):
-        return self._get_sub_accounts(canvas_id, {})
+    def get_sub_accounts_by_canvas_id(self, canvas_id, params={}):
+        return self._get_sub_accounts(canvas_id, params)
+
+    def get_sub_accounts_by_sis_id(self, sis_id, params={}):
+        return self._get_sub_accounts(self._sis_id(sis_id), params)
 
     def get_all_sub_accounts_by_canvas_id(self, canvas_id):
-        return self._get_sub_accounts(canvas_id, {'rescursive': True})
-
-    def get_sub_accounts_by_sis_id(self, sis_id):
-        return self._get_sub_accounts(self._sis_id(sis_id), {})
+        #uncomment when instructure fixes pagination in recursion
+        #params = self._pagination({'recursive': 'true'})
+        #return self._get_sub_accounts(canvas_id, params)
+        subs = self.get_sub_accounts_by_canvas_id(canvas_id)
+        return self._recurse_sub_accounts(subs, [])
 
     def get_all_sub_accounts_by_sis_id(self, sis_id):
-        return self._get_sub_accounts(self._sis_id(sis_id),
-                                      {'rescursive': True})
+        #uncomment when instructure fixes pagination in recursion
+        #params = self._pagination({'recursive': 'true'})
+        #return self._get_sub_accounts(self._sis_id(sis_id), params)
+        subs = self.get_sub_accounts_by_sis_id(sis_id)
+        return self._recurse_sub_accounts(subs, [])
 
     def _get_sub_accounts(self, id, params):
         """
         return list of sub accounts within the given account
         """
-        params['per_page'] = self._per_page
+        params = self._pagination(params)
         return self._get_resource("/api/v1/accounts/%s/sub_accounts%s"
                                   % (id, self._params(params)))
+
+    def _recurse_sub_accounts(self, sub_accounts, account_list):
+        account_list.extend(sub_accounts)
+        for account in sub_accounts:
+            subs = self.get_sub_accounts_by_canvas_id(account['id'])
+            self._recurse_sub_accounts(subs, account_list)
+
+        return account_list
 
     def get_courses_in_account_by_canvas_id(self, canvas_id, params={}):
         return self._get_courses_in_account(canvas_id, params)
@@ -182,11 +177,18 @@ class Canvas(object):
     def get_courses_in_account_by_sis_id(self, sis_id, params={}):
         return self._get_courses_in_account(self._sis_id(sis_id), params)
 
+    def get_published_courses_in_account_by_canvas_id(self, canvas_id):
+        return self._get_courses_in_account(canvas_id, {'published': True})
+
+    def get_published_courses_in_account_by_sis_id(self, sis_id):
+        return self._get_courses_in_account(self._sis_id(sis_id),
+                                            {'published': True})
+
     def _get_courses_in_account(self, id, params):
         """
         return list of admins in given account
         """
-        params['per_page'] = self._per_page
+        params = self._pagination(params)
         url = "/api/v1/accounts/%s/courses%s" % (id, self._params(params))
 
         return self._get_resource(url)
@@ -201,7 +203,9 @@ class Canvas(object):
         """
         return list of admins in given account
         """
-        return self._get_resource("/api/v1/accounts/%s/admins" % id)
+        params = self._pagination({})
+        return self._get_resource("/api/v1/accounts/%s/admins%s"
+                                  % (id, self._params(params)))
 
     def delete_admin_by_canvas_id(self, canvas_id, user_id, role):
         return self._delete_admin(canvas_id, user_id, role)
@@ -261,6 +265,12 @@ class Canvas(object):
                                       for key, val in params.iteritems()]))
 
         return ""
+
+    def _pagination(self, params):
+        if self._per_page != DEFAULT_PAGINATION:
+            params['per_page'] = self._per_page
+
+        return params
 
     def _next_page(self, response):
         """
