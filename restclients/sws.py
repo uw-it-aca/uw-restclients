@@ -8,7 +8,8 @@ from restclients.models.sws import Term, Section, SectionReference
 from restclients.models.sws import SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
-from restclients.exceptions import DataFailureException, InvalidSectionID
+from restclients.exceptions import DataFailureException
+from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from urllib import urlencode
 from datetime import datetime
 import json
@@ -177,6 +178,15 @@ class SWS(object):
 
         url = "/student/v4/course/%s.json" % re.sub(r'\s', '%20', label)
 
+        return self.get_section_by_url(url)
+
+    def get_section_by_url(self, url):
+        """
+        Returns a restclients.Section object for the passed section url.
+        """
+        if not re.match(r"^\/student\/v4\/course\/", url):
+            raise InvalidSectionURL(url)
+
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
 
@@ -213,17 +223,10 @@ class SWS(object):
         Returns a list of restclients.Section objects, representing linked
         sections for the passed section.
         """
-        dao = SWS_DAO()
         linked_sections = []
 
-        urls = section.linked_section_urls
-        for url in urls:
-            response = dao.getURL(url, {"Accept": "application/json"})
-
-            if response.status != 200:
-                raise DataFailureException(url, response.status, response.data)
-
-            section = self._section_from_json(response.data)
+        for url in section.linked_section_urls:
+            section = self.get_section_by_url(url)
             linked_sections.append(section)
 
         return linked_sections
@@ -233,17 +236,10 @@ class SWS(object):
         Returns a list of restclients.Section objects, representing joint
         sections for the passed section.
         """
-        dao = SWS_DAO()
         joint_sections = []
 
-        urls = section.joint_section_urls
-        for url in urls:
-            response = dao.getURL(url, {"Accept": "application/json"})
-
-            if response.status != 200:
-                raise DataFailureException(url, response.status, response.data)
-
-            section = self._section_from_json(response.data)
+        for url in section.joint_section_urls:
+            section = self.get_section_by_url(url)
             joint_sections.append(section)
 
         return joint_sections
