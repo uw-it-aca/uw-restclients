@@ -86,6 +86,30 @@ class NWS(object):
         endpoint = endpoint_vms[0]
         return endpoint
 
+    def get_endpoint_by_address(self, endpoint_address):
+        """
+        Get an endpoint by address
+        """
+
+        url = "/notification/v1/endpoint?endpoint_address=%s" % endpoint_address
+
+        dao = NWS_DAO()
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            
+            raise DataFailureException(url, response.status, response.data)
+
+        endpoint_list = EndpointList()
+        Serializer().deserialize(endpoint_list, response.data)
+
+        endpoint_vms = endpoint_list.view_models
+        if len(endpoint_vms) == 0:
+            raise DataFailureException(url, 404, {"Message": "No endpoint found"})
+
+        endpoint = endpoint_vms[0]
+        return endpoint
+
     def get_endpoints_by_subscriber_id(self, subscriber_id):
         """
         Search for all endpoints by a given subscriber

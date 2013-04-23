@@ -45,6 +45,12 @@ class NWSTestEndpoint(TestCase):
             endpoint = endpoints[0]
             self._assert_endpoint_matches(endpoint)
 
+    def test_endpoint_search_by_endpoint_address(self):
+        with self.settings(
+                RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
+            nws = NWS()
+            endpoint = nws.get_endpoint_by_address("222-222-3333")
+            self._assert_endpoint_matches(endpoint)
 
     def test_endpoint_by_subscriber_id_protocol(self):
         with self.settings(

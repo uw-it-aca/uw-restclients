@@ -1,0 +1,21 @@
+{
+    "Endpoints": [
+        {
+            "EndpointID": "780f2a49-2118-4969-9bef-bbd38c26970a",
+            "EndpointURI": "/notification/v1/endpoint/780f2a49-2118-4969-9bef-bbd38c26970a",
+            "EndpointAddress": "222-222-3333",
+            "Carrier": "AT&T",
+            "Protocol": "sms",
+            "SubscriberID": "javerage",
+            "OwnerID": "sdf",
+            "Active": false,
+        "Default": false,
+            "Created": "2012-11-27T20:08:08.914Z",
+            "LastModified": "2012-11-27T20:08:08.914Z"
+        }
+    ],
+    "QueryParams": {
+        "subscriber_id": "javerage"
+    },
+    "TotalCount": 2
+}
