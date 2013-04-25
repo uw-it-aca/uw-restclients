@@ -22,6 +22,9 @@ class NWS(object):
     about channels, subscriptions, endpoints, and templates.
     """
 
+    def __init__(self, override_user = None):
+        self.override_user = override_user
+
     #ENDPOINT RESOURCE
     def get_endpoints(self, first_result = 1, max_results = 10):
         """
@@ -160,8 +163,11 @@ class NWS(object):
 
         #Delete the subscription
         url = "/notification/v1/endpoint/%s" % (endpoint_id)
+        headers = {}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
         dao = NWS_DAO()
-        delete_response = dao.deleteURL(url, None)
+        delete_response = dao.deleteURL(url, headers)
 
         #Http response code 204 No Content:
         #The server has fulfilled the request but does not need to return an entity-body
@@ -184,8 +190,11 @@ class NWS(object):
         #Update the subscription
         dao = NWS_DAO()
         url = "/notification/v1/endpoint/%s" % (endpoint.endpoint_id)
+        headers = {"Content-Type": "application/json"}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
 
-        put_response = dao.putURL(url, {"Content-Type": "application/json"}, Serializer().serialize(endpoint))
+        put_response = dao.putURL(url, headers, Serializer().serialize(endpoint))
 
         #Http response code 204 No Content:
         #The server has fulfilled the request but does not need to return an entity-body
@@ -207,8 +216,11 @@ class NWS(object):
         #Create new subscription
         dao = NWS_DAO()
         url = "/notification/v1/endpoint"
+        headers = {"Content-Type": "application/json"}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
 
-        post_response = dao.postURL(url, {"Content-Type": "application/json"}, Serializer().serialize(endpoint))
+        post_response = dao.postURL(url, headers, Serializer().serialize(endpoint))
 
         #HTTP Status Code 201 Created: The request has been fulfilled and resulted
         #in a new resource being created
@@ -232,8 +244,11 @@ class NWS(object):
         #Create new person
         dao = NWS_DAO()
         url = "/notification/v1/person"
+        headers = {"Content-Type": "application/json"}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
 
-        post_response = dao.postURL(url, {"Content-Type": "application/json"}, Serializer().serialize(person))
+        post_response = dao.postURL(url, headers, Serializer().serialize(person))
 
         #HTTP Status Code 201 Created: The request has been fulfilled and resulted
         #in a new resource being created
@@ -268,8 +283,11 @@ class NWS(object):
 
         dao = NWS_DAO()
         url = "/notification/v1/person/%s" % (person.person_id)
+        headers = {"Content-Type": "application/json"}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
 
-        put_response = dao.putURL(url, {"Content-Type": "application/json"}, Serializer().serialize(person))
+        put_response = dao.putURL(url, headers, Serializer().serialize(person))
 
         #Http response code 204 No Content:
         #The server has fulfilled the request but does not need to return an entity-body
@@ -292,8 +310,12 @@ class NWS(object):
 
         #Delete the subscription
         url = "/notification/v1/subscription/%s" % (subscription_id)
+        headers = {}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+
         dao = NWS_DAO()
-        delete_response = dao.deleteURL(url, None)
+        delete_response = dao.deleteURL(url, headers)
 
         #Http response code 204 No Content:
         #The server has fulfilled the request but does not need to return an entity-body
@@ -320,8 +342,11 @@ class NWS(object):
         #Update the subscription
         dao = NWS_DAO()
         url = "/notification/v1/subscription/%s" % (subscription.subscription_id)
+        headers = {"Content-Type": "application/json"}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
 
-        put_response = dao.putURL(url, {"Content-Type": "application/json"}, Serializer().serialize(subscription))
+        put_response = dao.putURL(url, headers, Serializer().serialize(subscription))
 
         #Http response code 204 No Content:
         #The server has fulfilled the request but does not need to return an entity-body
@@ -354,8 +379,11 @@ class NWS(object):
         #Create new subscription
         dao = NWS_DAO()
         url = "/notification/v1/subscription"
+        headers = {"Content-Type": "application/json"}
+        if self.override_user is not None:
+            headers['HTTP_X_UW_ACT_AS'] = self.override_user
 
-        post_response = dao.postURL(url, {"Content-Type": "application/json"}, Serializer().serialize(subscription))
+        post_response = dao.postURL(url, headers, Serializer().serialize(subscription))
 
         #HTTP Status Code 201 Created: The request has been fulfilled and resulted
         #in a new resource being created
