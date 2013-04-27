@@ -165,7 +165,7 @@ class NWS(object):
         url = "/notification/v1/endpoint/%s" % (endpoint_id)
         headers = {}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
         dao = NWS_DAO()
         delete_response = dao.deleteURL(url, headers)
 
@@ -192,7 +192,7 @@ class NWS(object):
         url = "/notification/v1/endpoint/%s" % (endpoint.endpoint_id)
         headers = {"Content-Type": "application/json"}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         put_response = dao.putURL(url, headers, Serializer().serialize(endpoint))
 
@@ -218,7 +218,7 @@ class NWS(object):
         url = "/notification/v1/endpoint"
         headers = {"Content-Type": "application/json"}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         post_response = dao.postURL(url, headers, Serializer().serialize(endpoint))
 
@@ -246,7 +246,7 @@ class NWS(object):
         url = "/notification/v1/person"
         headers = {"Content-Type": "application/json"}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         post_response = dao.postURL(url, headers, Serializer().serialize(person))
 
@@ -285,7 +285,7 @@ class NWS(object):
         url = "/notification/v1/person/%s" % (person.person_id)
         headers = {"Content-Type": "application/json"}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         put_response = dao.putURL(url, headers, Serializer().serialize(person))
 
@@ -312,7 +312,7 @@ class NWS(object):
         url = "/notification/v1/subscription/%s" % (subscription_id)
         headers = {}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         dao = NWS_DAO()
         delete_response = dao.deleteURL(url, headers)
@@ -344,7 +344,7 @@ class NWS(object):
         url = "/notification/v1/subscription/%s" % (subscription.subscription_id)
         headers = {"Content-Type": "application/json"}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         put_response = dao.putURL(url, headers, Serializer().serialize(subscription))
 
@@ -381,7 +381,7 @@ class NWS(object):
         url = "/notification/v1/subscription"
         headers = {"Content-Type": "application/json"}
         if self.override_user is not None:
-            headers['HTTP_X_UW_ACT_AS'] = self.override_user
+            headers['X_UW_ACT_AS'] = self.override_user
 
         post_response = dao.postURL(url, headers, Serializer().serialize(subscription))
 
