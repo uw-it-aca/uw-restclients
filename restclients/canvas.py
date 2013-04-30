@@ -261,8 +261,14 @@ class Canvas(object):
 
     def _params(self, params):
         if params and len(params):
-            return "?%s" % ('&'.join(['='.join([key, str(val)])
-                                      for key, val in params.iteritems()]))
+            p = []
+            for key, val in params.iteritems():
+                if isinstance(val, list):
+                    p.extend([key + '=' + str(v) for v in val])
+                else:
+                    p.append(key + '=' + str(val))
+
+            return "?%s" % ('&'.join(p))
 
         return ""
 
