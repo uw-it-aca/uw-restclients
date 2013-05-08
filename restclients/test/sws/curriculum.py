@@ -25,6 +25,34 @@ class SWSTestCurriculum(TestCase):
                               sws.get_curricula_for_department,
                               Department(label="CSE"))
 
+            # Test future_terms
+            # Valid value but no file
+            self.assertRaises(DataFailureException,
+                              sws.get_curricula_for_department,
+                              department,
+                              future_terms=1)
+
+            # Valid future_terms value
+            curricula = sws.get_curricula_for_department(department,
+                                                         future_terms=0)
+            self.assertEquals(len(curricula), 7)
+
+            # Invalid future_terms values
+            self.assertRaises(ValueError,
+                              sws.get_curricula_for_department,
+                              department,
+                              future_terms=3)
+
+            self.assertRaises(ValueError,
+                              sws.get_curricula_for_department,
+                              department,
+                              future_terms=-1)
+
+            self.assertRaises(ValueError,
+                              sws.get_curricula_for_department,
+                              department,
+                              future_terms='x')
+
     def test_curricula_for_term(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):

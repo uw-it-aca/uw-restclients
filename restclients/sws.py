@@ -485,13 +485,17 @@ class SWS(object):
 
         return departments
 
-    def get_curricula_for_department(self, department):
+    def get_curricula_for_department(self, department, future_terms=0):
         """
         Returns a list of restclients.Curriculum models, for the passed
         Department model.
         """
+        if future_terms < 0 or future_terms > 2:
+            raise ValueError(future_terms)
+
         url = "/student/v4/curriculum.json?" + urlencode({
-              "department_abbreviation": department.label})
+              "department_abbreviation": department.label,
+              "future_terms": future_terms})
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
 
