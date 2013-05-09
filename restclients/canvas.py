@@ -303,3 +303,49 @@ class Canvas(object):
                 data.extend(self._get_resource(next_page))
 
         return data
+
+    def create_course(self, subaccount_id, course_name):
+        """
+        Create a canvas course with the given subaccount id and course name
+        """
+        url = "/api/v1/accounts/%s/courses" % subaccount_id
+        dao = Canvas_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "application/json"},
+                                  json.dumps({"course": {"name": course_name}}))
+
+        if not (post_response.status == 200 or post_response.status == 204):
+            raise DataFailureException(url, post_response.status,
+                                       post_response.data)
+
+        return json.loads(post_response.data)
+
+    def get_user(self, user_regid):
+        """
+        Fetches a user profile
+        """
+        url = "/api/v1/users/sis_user_id:%s/profile" % user_regid
+        dao = Canvas_DAO()
+        get_response = dao.getURL(url, {"Content-Type": "application/json"})
+
+        if not (get_response.status == 200 or get_response.status == 204):
+            raise DataFailureException(url, get_response.status,
+                                       get_response.data)
+
+        return json.loads(get_response.data)
+
+    def enroll_user(self, course_id, user_id):
+        """
+        Enroll a user into a course
+        """
+        url = "/api/v1/courses/%s/enrollments" % course_id
+        dao = Canvas_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "application/json"},
+                                  json.dumps({"enrollment": {"user_id": user_id,
+                                                             "type": "TeacherEnrollment"},
+                                                             "enrollment_state": "active"}))
+
+        if not (post_response.status == 200 or post_response.status == 204):
+            raise DataFailureException(url, post_response.status,
+                                       post_response.data)
+
+        return post_response.status
