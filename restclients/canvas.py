@@ -82,6 +82,23 @@ class Canvas(object):
     def _get_course(self, id):
         return self._get_resource("/api/v1/courses/%s" % id)
 
+    def sis_course_id(self, sis_id):
+        return self._sis_id(sis_id, sis_field='course')
+
+    def sis_section_id(self, sis_id):
+        return self._sis_id(sis_id, sis_field='section')
+
+    def sis_user_id(self, sis_id):
+        return self._sis_id(sis_id, sis_field='user')
+
+    def get_course_section(self, course_id, section_id):
+        return self._get_resource("/api/v1/courses/%s/sections/%s"
+                                  % (course_id, section_id))
+
+    def get_course_section(self, course_id, section_id):
+        return self._get_resource("/api/v1/courses/%s/sections/%s"
+                                  % (course_id, section_id))
+
     def get_sections_by_canvas_id(self, canvas_id, params={}):
         return self._get_sections(canvas_id, params)
 
@@ -312,6 +329,22 @@ class Canvas(object):
         dao = Canvas_DAO()
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
                                   json.dumps({"course": {"name": course_name}}))
+
+        if not (post_response.status == 200 or post_response.status == 204):
+            raise DataFailureException(url, post_response.status,
+                                       post_response.data)
+
+        return json.loads(post_response.data)
+
+    def create_course_section(self, course_id, sis_section_id, section_name):
+        """
+        Create a canvas course section with the given section name and id
+        """
+        url = "/api/v1/courses/%s/sections" % course_id
+        dao = Canvas_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "application/json"},
+                                  json.dumps({"course_section": {"name": section_name,
+                                                                 "sis_section_id": sis_section_id}}))
 
         if not (post_response.status == 200 or post_response.status == 204):
             raise DataFailureException(url, post_response.status,
