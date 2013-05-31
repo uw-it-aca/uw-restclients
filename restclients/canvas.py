@@ -382,3 +382,29 @@ class Canvas(object):
                                        post_response.data)
 
         return post_response.status
+
+    def sis_import(self, root_account, csv_data):
+        """
+        Submits raw CSV SIS data 
+        """
+        url = "/api/v1/accounts/%s/sis_imports.json?import_type=instructure_csv" % root_account
+        dao = Canvas_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "text/csv"},
+                                    csv_data)
+        if not (post_response.status == 200 or post_response.status == 204):
+            raise DataFailureException(url, post_response.status,
+                                       post_response.data)
+        return json.loads(post_response.data)
+
+    def get_import_status(self, root_account, import_id):
+        """
+        Submits raw CSV SIS data 
+        """
+        url = "/api/v1/accounts/%s/sis_imports/%s" % (root_account, import_id)
+        dao = Canvas_DAO()
+        get_response = dao.getURL(url, {"Content-Type": "application/json"})
+        if not (get_response.status == 200 or get_response.status == 204):
+            raise DataFailureException(url, get_response.status,
+                                       get_response.data)
+            
+        return json.loads(get_response.data)
