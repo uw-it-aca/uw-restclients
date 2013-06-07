@@ -5,7 +5,7 @@ This is the interface for interacting with Instructure's Canvas web services.
 from restclients.dao import Canvas_DAO
 from restclients.models import CanvasEnrollment, CanvasCourse
 from restclients.exceptions import DataFailureException
-from urllib import quote
+from urllib import quote, unquote
 import json
 import re
 
@@ -74,13 +74,16 @@ class Canvas(object):
         return enrollments
 
     def get_course_info_by_canvas_id(self, canvas_id):
-        return self._get_course(canvas_id)
+        return self.get_course(canvas_id)
 
     def get_course_info_by_sis_id(self, sis_id):
-        return self._get_course(self._sis_id(sis_id, sis_field='course'))
+        return self.get_course(self._sis_id(sis_id, sis_field='course'))
 
-    def _get_course(self, id):
+    def get_course(self, id):
         return self._get_resource("/api/v1/courses/%s" % id)
+
+    def sis_account_id(self, sis_id):
+        return self._sis_id(sis_id, sis_field='account')
 
     def sis_course_id(self, sis_id):
         return self._sis_id(sis_id, sis_field='course')
@@ -119,12 +122,12 @@ class Canvas(object):
                                   % (id, self._params(params)))
 
     def get_account_by_canvas_id(self, canvas_id):
-        return self._get_account(canvas_id)
+        return self.get_account(canvas_id)
 
     def get_account_by_sis_id(self, sis_id):
-        return self._get_account(self._sis_id(sis_id))
+        return self.get_account(self._sis_id(sis_id))
 
-    def _get_account(self, id):
+    def get_account(self, id):
         """
         return account resource for given account id
         """
@@ -225,12 +228,29 @@ class Canvas(object):
                                   % (id, self._params(params)))
 
     def delete_admin_by_canvas_id(self, canvas_id, user_id, role):
-        return self._delete_admin(canvas_id, user_id, role)
+        return self.delete_admin(canvas_id, user_id, role)
 
     def delete_admin_by_sis_id(self, sis_id, user_id, role):
-        return self._delete_admin(self._sis_id(sis_id), user_id, role)
+        return self.delete_admin(self._sis_id(sis_id), user_id, role)
 
-    def _delete_admin(self, account_id, user_id, role):
+    def add_admin(self, account_id, user_id, role):
+        """
+        add given user with assigned role to given account
+        """
+        url = "/api/v1/accounts/%s/admins" % (account_id)
+        dao = Canvas_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "application/json"},
+                                  json.dumps({'user_id': unquote(user_id),
+                                              'role': role,
+                                              'send_confirmation': '0'}))
+
+        if not (post_response.status == 200 or post_response.status == 204):
+            raise DataFailureException(url, post_response.status,
+                                       post_response.data)
+
+        return json.loads(post_response.data)
+
+    def delete_admin(self, account_id, user_id, role):
         """
         delete given user with assigned role in given account_id
         """
@@ -239,7 +259,7 @@ class Canvas(object):
         dao = Canvas_DAO()
         delete_response = dao.deleteURL(url, {})
 
-        if delete_response.status != 204:
+        if not (delete_response.status == 200 or delete_response.status == 204):
             raise DataFailureException(url, delete_response.status,
                                        delete_response.data)
 
