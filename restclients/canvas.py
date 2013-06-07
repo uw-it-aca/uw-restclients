@@ -386,6 +386,24 @@ class Canvas(object):
 
         return json.loads(get_response.data)
 
+    def add_user(self, **kwargs):
+        """
+        Creates a new user
+        """
+        url = "/api/v1/accounts/%s/users" % kwargs['account_id']
+        dao = Canvas_DAO()
+        post_response = dao.postURL(url, {"Content-Type": "application/json"},
+                                    json.dumps({"pseudonym": { "unique_id" : kwargs["net_id"],
+                                                               "sis_user_id": kwargs["reg_id"],
+                                                               "send_confirmation": "0"},
+                                                "user": {"name": kwargs["name"]}}))
+
+        if not (post_response.status == 200 or post_response.status == 204):
+            raise DataFailureException(url, post_response.status,
+                                       post_response.data)
+
+        return json.loads(post_response.data)
+
     def enroll_user(self, course_id, user_id):
         """
         Enroll a user into a course
