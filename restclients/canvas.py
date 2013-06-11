@@ -98,10 +98,6 @@ class Canvas(object):
         return self._get_resource("/api/v1/courses/%s/sections/%s"
                                   % (course_id, section_id))
 
-    def get_course_section(self, course_id, section_id):
-        return self._get_resource("/api/v1/courses/%s/sections/%s"
-                                  % (course_id, section_id))
-
     def get_sections_by_canvas_id(self, canvas_id, params={}):
         return self._get_sections(canvas_id, params)
 
@@ -214,12 +210,12 @@ class Canvas(object):
         return self._get_resource(url)
 
     def get_admins_by_canvas_id(self, canvas_id):
-        return self._get_admins(canvas_id)
+        return self.get_admins(canvas_id)
 
     def get_admins_by_sis_id(self, sis_id):
-        return self._get_admins(self._sis_id(sis_id))
+        return self.get_admins(self._sis_id(sis_id))
 
-    def _get_admins(self, id):
+    def get_admins(self, id):
         """
         return list of admins in given account
         """
