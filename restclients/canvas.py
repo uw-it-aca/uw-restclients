@@ -388,11 +388,18 @@ class Canvas(object):
         """
         url = "/api/v1/accounts/%s/users" % kwargs['account_id']
         dao = Canvas_DAO()
+        params = {"pseudonym" : {"unique_id" : kwargs["login_id"],
+                                  "send_confirmation": "0"}}
+
+        if "sis_id" in kwargs and kwargs["sis_id"]:
+            params["pseudonym"]["sis_user_id"] = kwargs["sis_id"]
+
+        for prop in ['name', 'short_name', 'sortable_name', 'locale', 'birthdate']:
+            if prop in kwargs and kwargs[prop]:
+                params[prop] = {prop: kwargs[prop]}
+
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                    json.dumps({"pseudonym": { "unique_id" : kwargs["net_id"],
-                                                               "sis_user_id": kwargs["reg_id"],
-                                                               "send_confirmation": "0"},
-                                                "user": {"name": kwargs["name"]}}))
+                                    json.dumps(params))
 
         if not (post_response.status == 200 or post_response.status == 204):
             raise DataFailureException(url, post_response.status,
