@@ -125,7 +125,8 @@ class SWS(object):
 
         sections = []
         for section_data in data.get("Sections", []):
-            section = SectionReference(term=term,
+            section = SectionReference(
+                term=term,
                 curriculum_abbr=section_data["CurriculumAbbreviation"],
                 course_number=section_data["CourseNumber"],
                 section_id=section_data["SectionID"],
@@ -154,7 +155,8 @@ class SWS(object):
 
         sections = []
         for section_data in data.get("Sections", []):
-            section = SectionReference(term=term,
+            section = SectionReference(
+                term=term,
                 curriculum_abbr=section_data["CurriculumAbbreviation"],
                 course_number=section_data["CourseNumber"],
                 section_id=section_data["SectionID"],
@@ -376,11 +378,9 @@ class SWS(object):
             response = dao.getURL(reg_url, {"Accept": "application/json"})
 
             if response.status != 200:
-                raise DataFailureException(
-                                            reg_url,
-                                            response.status,
-                                            response.data,
-                                          )
+                raise DataFailureException(reg_url,
+                                           response.status,
+                                           response.data)
 
             section = self._section_from_json(response.data, term)
 
@@ -395,9 +395,9 @@ class SWS(object):
                         actual_instructor = instructor
 
                 if actual_instructor:
-                    section.meetings[0].instructors = [ actual_instructor ]
+                    section.meetings[0].instructors = [actual_instructor]
                 else:
-                    section.meetings[0].instructors = [ ]
+                    section.meetings[0].instructors = []
                 section.independent_study_instructor_regid = registration["Instructor"]
             sections.append(section)
 
@@ -558,47 +558,36 @@ class SWS(object):
         term.quarter = term_data["Quarter"]
 
         term.last_day_add = strptime(
-                                    term_data["LastAddDay"], day_format
-                                    )
+            term_data["LastAddDay"], day_format)
+
         term.first_day_quarter = strptime(
-                                    term_data["FirstDay"], day_format
-                                    )
+            term_data["FirstDay"], day_format)
 
         term.last_day_instruction = strptime(
-                                    term_data["LastDayOfClasses"],
-                                    day_format
-                                    )
+            term_data["LastDayOfClasses"], day_format)
+
+        term.last_day_drop = strptime(
+            term_data["LastDropDay"], day_format)
 
         if term_data["ATermLastDay"] is not None:
             term.aterm_last_date = strptime(
-                                    term_data["ATermLastDay"],
-                                    day_format
-                                    )
+                term_data["ATermLastDay"], day_format)
 
         if term_data["BTermFirstDay"] is not None:
             term.bterm_first_date = strptime(
-                                    term_data["BTermFirstDay"],
-                                    day_format
-                                    )
+                term_data["BTermFirstDay"], day_format)
 
         term.last_final_exam_date = strptime(
-                                    term_data["LastFinalExamDay"],
-                                    day_format
-                                    )
+            term_data["LastFinalExamDay"], day_format)
 
         term.grading_period_open = strptime(
-                                    term_data["GradingPeriodOpen"],
-                                    datetime_format
-                                    )
+            term_data["GradingPeriodOpen"], datetime_format)
 
         term.grading_period_close = strptime(
-                                    term_data["GradingPeriodClose"],
-                                    datetime_format
-                                    )
+            term_data["GradingPeriodClose"], datetime_format)
 
         term.grade_submission_deadline = strptime(
-                                    term_data["GradeSubmissionDeadline"],
-                                    datetime_format)
+            term_data["GradeSubmissionDeadline"], datetime_format)
 
         term.full_clean()
         return term
@@ -617,8 +606,8 @@ class SWS(object):
             section.term = term
         else:
             section.term = self.get_term_by_year_and_quarter(
-                                    section_data["Course"]["Year"],
-                                    section_data["Course"]["Quarter"])
+                section_data["Course"]["Year"],
+                section_data["Course"]["Quarter"])
 
         section.curriculum_abbr = section_data["Course"][
             "CurriculumAbbreviation"]
@@ -739,17 +728,13 @@ class SWS(object):
                 strptime = datetime.strptime
                 if final_data["Date"] and final_data["Date"] != "0000-00-00":
                     if final_data["StartTime"]:
-                        start_string = "%s : %s" % (
-                                                    final_data["Date"],
-                                                    final_data["StartTime"]
-                                                    )
+                        start_string = "%s : %s" % (final_data["Date"],
+                                                    final_data["StartTime"])
                         final_exam.start_date = strptime(start_string, final_format)
 
                     if final_data["EndTime"]:
-                        end_string = "%s : %s" % (
-                                                    final_data["Date"],
-                                                    final_data["EndTime"]
-                                                 )
+                        end_string = "%s : %s" % (final_data["Date"],
+                                                  final_data["EndTime"])
                         final_exam.end_date = strptime(end_string, final_format)
 
                 final_exam.full_clean()

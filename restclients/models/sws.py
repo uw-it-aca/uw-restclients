@@ -94,6 +94,8 @@ class Term(models.Model):
     quarter = models.CharField(max_length=6,
                                choices=QUARTERNAME_CHOICES)
     year = models.PositiveSmallIntegerField()
+    last_day_add = models.DateField()
+    last_day_drop = models.DateField()
     first_day_quarter = models.DateField(db_index=True)
     last_day_instruction = models.DateField(db_index=True)
     aterm_last_date = models.DateField(blank=True)
