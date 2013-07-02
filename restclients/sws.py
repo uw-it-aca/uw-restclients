@@ -577,6 +577,14 @@ class SWS(object):
             term.bterm_first_date = strptime(
                 term_data["BTermFirstDay"], day_format)
 
+        if term_data["LastAddDayATerm"] is not None:
+            term.aterm_last_day_add = strptime(
+                term_data["LastAddDayATerm"], day_format)
+
+        if term_data["LastAddDayBTerm"] is not None:
+            term.bterm_last_day_add = strptime(
+                term_data["LastAddDayBTerm"], day_format)
+
         term.last_final_exam_date = strptime(
             term_data["LastFinalExamDay"], day_format)
 

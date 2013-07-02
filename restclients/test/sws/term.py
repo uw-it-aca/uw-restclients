@@ -87,6 +87,14 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.bterm_first_date.month, 7)
             self.assertEquals(term.bterm_first_date.day, 25)
 
+            self.assertEquals(term.aterm_last_day_add.year, 2013)                  
+            self.assertEquals(term.aterm_last_day_add.month, 7)                    
+            self.assertEquals(term.aterm_last_day_add.day, 14)                     
+                                                                                
+            self.assertEquals(term.bterm_last_day_add.year, 2013)                 
+            self.assertEquals(term.bterm_last_day_add.month, 7)                   
+            self.assertEquals(term.bterm_last_day_add.day, 31)
+
             self.assertEquals(term.last_final_exam_date.year, 2013)
             self.assertEquals(term.last_final_exam_date.month, 8)
             self.assertEquals(term.last_final_exam_date.day, 23)

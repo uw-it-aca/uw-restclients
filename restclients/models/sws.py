@@ -100,6 +100,8 @@ class Term(models.Model):
     last_day_instruction = models.DateField(db_index=True)
     aterm_last_date = models.DateField(blank=True)
     bterm_first_date = models.DateField(blank=True)
+    aterm_last_day_add = models.DateField(blank=True)
+    bterm_last_day_add = models.DateField(blank=True)
     last_final_exam_date = models.DateField()
     grading_period_open = models.DateTimeField()
     grading_period_close = models.DateTimeField()
