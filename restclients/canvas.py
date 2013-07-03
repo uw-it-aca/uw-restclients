@@ -398,9 +398,12 @@ class Canvas(object):
         if "sis_id" in kwargs and kwargs["sis_id"]:
             params["pseudonym"]["sis_user_id"] = kwargs["sis_id"]
 
-        for prop in ['name', 'short_name', 'sortable_name', 'locale', 'birthdate']:
-            if prop in kwargs and kwargs[prop]:
-                params[prop] = {prop: kwargs[prop]}
+        for user_key in ['name', 'short_name', 'sortable_name', 'locale', 'birthdate']:
+            if user_key in kwargs and kwargs[user_key]:
+                if "user" not in params:
+                    params["user"] = {}
+
+                params["user"][user_key] = kwargs[user_key]
 
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
                                     json.dumps(params))
