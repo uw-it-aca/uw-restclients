@@ -25,6 +25,7 @@ class Canvas(object):
         Prepares for paginated responses
         """
         self._per_page = per_page
+        self._re_canvas_id = re.compile(r'^\d+$')
         self._re_next_link = re.compile(r"""<http[s]?://[^/]+([^>]*)>;\s*
                                             rel=([\"\']?)next\2 # next doc
                                          """,
@@ -81,6 +82,9 @@ class Canvas(object):
 
     def get_course(self, id):
         return self._get_resource("/api/v1/courses/%s" % id)
+
+    def valid_canvas_id(self, id):
+        return self._re_canvas_id.match(id) != None
 
     def sis_account_id(self, sis_id):
         return self._sis_id(sis_id, sis_field='account')
