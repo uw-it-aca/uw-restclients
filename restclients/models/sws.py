@@ -169,7 +169,6 @@ class Section(models.Model):
     independent_study_instructor_regid = models.CharField(max_length=32,
                                                           null=True)
     class_website_url = models.URLField(max_length=255,
-                                        verify_exists=False,
                                         blank=True)
     sln = models.PositiveIntegerField()
     delete_flag = models.CharField(max_length=20)
@@ -255,7 +254,6 @@ class SectionReference(models.Model):
     course_number = models.PositiveSmallIntegerField()
     section_id = models.CharField(max_length=2)
     url = models.URLField(max_length=255,
-                          verify_exists=False,
                           blank=True)
 
     def section_label(self):
