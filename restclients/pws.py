@@ -164,3 +164,16 @@ class PWS(object):
         entity.display_name = entity_data["DisplayName"]
 
         return entity
+    
+    def get_idcard_photo(self, regid, size):
+        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
+            raise InvalidRegID(regid)
+
+        dao = PWS_DAO()
+        url = "/idcard/v1/photo/%s-%s.jpg" % (regid.upper(), size)
+        response = dao.getURL(url, {})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return response.data
