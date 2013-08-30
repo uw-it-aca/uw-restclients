@@ -76,6 +76,9 @@ class SWS_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('sws', url, headers)
 
+    def putURL(self, url, headers, body):
+        return self._putURL('sws', url, headers, body)
+
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_SWS_DAO_CLASS', SWSFile)
 
