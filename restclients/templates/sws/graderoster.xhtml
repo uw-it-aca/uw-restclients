@@ -1,0 +1,96 @@
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Grade Roster {{graderoster.section.term.year}} {{graderoster.section.term.quarter}} {{graderoster.section.curriculum_abbr}} {{graderoster.section.course_number}} {{graderoster.section.section_id}}</title>
+    </head>
+    <body>
+        <div class="graderoster">
+            <div>
+                Section:
+                <a class="section" rel="section" href="/student/v4/course/{{section_id}}"><span class="year">{{graderoster.section.term.year}}</span> <span class="quarter">{{graderoster.section.term.quarter}}</span> <span class="curriculum_abbreviation">{{graderoster.section.curriculum_abbr}}</span> <span class="course_number">{{graderoster.section.course_number}}</span> <span class="section_id">{{graderoster.section.section_id}}</span></a></div>
+            <div>
+                Instructor:
+                <a class="person" rel="instructor" href="/student/v4/person/{{graderoster.instructor.uwregid}}"><span class="name">{{graderoster.instructor.surname}},{{graderoster.instructor.first_name}}</span> - <span class="reg_id">{{graderoster.instructor.uwregid}}</span></a></div>
+            <div>
+                SLN:
+                <span class="sln">{{graderoster.section.sln}}</span></div>
+            <div>
+                Summer Term Code:
+                <span class="summer_term_code">{{graderoster.section.summer_term|default_if_none:""}}</span></div>
+            <div>
+                Section Credits:
+                <span class="section_credits">{{graderoster.section_credits|default_if_none:""}}</span></div>
+            <div>
+                <label for="">Writing Credit Display:</label>
+                <input type="checkbox" class="writing_credit_display" id="" name=""{%if graderoster.allows_writing_credit %} checked="checked"{% endif %} disabled="disabled"/>
+            </div>
+            <div>
+                Authorized Grade Submitters:
+                <ul class="authorized_grade_submitters">{% for person in graderoster.authorized_grade_submitters %}
+                    <li><a class="person" rel="authorized_grade_submitter" href="/student/v4/person/{{person.uwregid}}"><span class="name">{{person.surname}},{{person.first_name}}</span> - <span class="reg_id">{{person.uwregid}}</span></a></li>{% endfor %}
+                </ul>
+                <ul class="grade_submission_delegates">{% for gsd in graderoster.grade_submission_delegates %}
+                    <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v4/person/{{gsd.person.uwregid}}"><span class="name">{{gsd.person.surname}},{{gsd.person.first_name}}</span> - <span class="reg_id">{{gsd.person.uwregid}}</span></a> <span class="delegate_level">{{gsd.delegate_level}}</span></li>{% endfor %}
+                </ul>
+            </div>
+            <ul class="graderoster_items">{% for item in graderoster.items %}
+                <li class="graderoster_item">
+                    <h1>{{item.student.surname|default_if_none:""}},{{item.student.first_name|default_if_none:""}}</h1>
+                    <div>
+                        <a class="person" rel="student" href="/student/v4/person/{{item.student.uwregid}}"><span class="name">{{item.student.surname|default_if_none:""}},{{item.student.first_name|default_if_none:""}}</span> - <span class="reg_id">{{item.student.uwregid}}</span></a>
+                    </div>
+                    <div>
+                        Duplicate code:
+                        <span class="duplicate_code">{{item.duplicate_code|default_if_none:" "}}</span></div>
+                    <div>
+                        Student Former Name:
+                        <span class="student_former_name">{{item.student_former_name|default_if_none:""}}</span></div>
+                    <div>
+                        Student Number:
+                        <span class="student_number">{{item.student_number}}</span></div>
+                    <div>
+                        Student Type:
+                        <span class="student_type">{{item.student_type|default_if_none:""}}</span></div>
+                    <div>
+                        Student Credits:
+                        <span class="student_credits">{{item.student_credits|default_if_none:""}}</span></div>
+                    <div>
+                        Date Withdrawn:
+                        <span class="date_withdrawn date">{{item.date_withdrawn|default_if_none:""}}</span></div>
+                    <div>
+                        <label for="incomplete_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Incomplete:
+                        </label>
+                        <input type="checkbox" class="incomplete" id="incomplete_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="incomplete_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.has_incomplete %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
+                    </div>
+                    <div>
+                        <label for="writing_course_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Writing course:
+                        </label>
+                        <input type="checkbox" class="writing_course" id="writing_course_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="writing_course_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.has_writing_credit %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
+                    </div>
+                    <div>
+                        <label for="auditor_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Auditor:
+                        </label>
+                        <input type="checkbox" class="auditor" id="auditor_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="auditor_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.is_auditor %} checked="checked"{% endif %} disabled="disabled"/>
+                    </div>
+                    <div>
+                        <label for="no_grade_now_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">No grade now:
+                        </label>
+                        <input type="checkbox" class="no_grade_now" id="no_grade_now_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="no_grade_now_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.no_grade_now %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
+                    </div>
+                    <div>
+                        Grade:
+                        <select class="grades"{%if item.date_graded %} disabled="disabled"{% endif %}>{% for grade in item.grades %}<option class="grade" value="{{grade}}"{%if grade and grade == item.current_grade %} selected="selected"{% endif %}>{{grade}}</option>{% endfor %}</select></div>
+                    <div>
+                        Grade document ID: <span class="grade_document_id">{{item.grade_document_id|default_if_none:""}}</span></div>
+                    <div>
+                        Date Graded: <span class="date_graded date">{{item.date_graded|default_if_none:""}}</span></div>
+                    <div>
+                        Grade submitter person:
+                        {%if item.grade_submitter_person %}<a class="person" rel="grade_submitter_person" href="/student/v4/person/{{item.grade_submitter_person.uwregid}}"><span class="name">{{item.grade_submitter_person.surname}},{{item.grade_submitter_person.first_name}}</span> - <span class="reg_id">{{item.grade_submitter_person.uwregid}}</span></a>{% endif %}</div>
+                    <div>
+                        Grade submitter source:
+                        <span class="grade_submitter_source">{{item.grade_submitter_source|default_if_none:""}}</span></div>
+                </li>{% endfor %}
+            </ul>
+        </div>
+    </body>
+</html>

@@ -171,6 +171,7 @@ class Section(models.Model):
     class_website_url = models.URLField(max_length=255,
                                         blank=True)
     sln = models.PositiveIntegerField()
+    summer_term = models.CharField(max_length=12, null=True)
     delete_flag = models.CharField(max_length=20)
     is_withdrawn = models.BooleanField()
     current_enrollment = models.IntegerField()
@@ -416,6 +417,53 @@ class Curriculum(models.Model):
     label = models.SlugField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
+
+    class Meta:
+        app_label = "restclients"
+
+
+class GradeRoster(models.Model):
+    section = models.ForeignKey(Section,
+                                on_delete=models.PROTECT)
+    instructor = models.ForeignKey(Person,
+                                   on_delete=models.PROTECT)
+    section_credits = models.FloatField()
+    allows_writing_credit = models.BooleanField()
+
+    class Meta:
+        app_label = "restclients"
+
+
+class GradeRosterItem(models.Model):
+    student = models.ForeignKey(Person,
+                                on_delete=models.PROTECT)
+    duplicate_code = models.CharField(max_length=8, null=True)
+    student_former_name = models.CharField(max_length=120, null=True)
+    student_number = models.PositiveIntegerField()
+    student_type = models.CharField(max_length=20, null=True)
+    student_credits = models.FloatField()
+    section_id = models.CharField(max_length=2)
+    is_auditor = models.BooleanField()
+    allows_incomplete = models.BooleanField()
+    has_incomplete = models.BooleanField()
+    allows_writing_credit = models.BooleanField()
+    has_writing_credit = models.BooleanField()
+    no_grade_now = models.BooleanField()
+    date_withdrawn = models.DateField(blank=True)
+    current_grade = models.CharField(max_length=20)
+    date_graded = models.DateField(blank=True)
+    grade_submitter_person = models.ForeignKey(Person,
+                                               related_name="grade_submitter")
+    grade_submitter_source = models.CharField(max_length=8)
+
+    class Meta:
+        app_label = "restclients"
+
+
+class GradeSubmissionDelegate(models.Model):
+    person = models.ForeignKey(Person,
+                               on_delete=models.PROTECT)
+    delegate_level = models.CharField(max_length=20)
 
     class Meta:
         app_label = "restclients"

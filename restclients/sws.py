@@ -2,16 +2,20 @@
 This is the interface for interacting with the Student Web Service.
 """
 
+from django.template import Context, loader
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models.sws import Term, Section, SectionReference
 from restclients.models.sws import SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
+from restclients.models.sws import GradeRoster, GradeRosterItem
+from restclients.models.sws import GradeSubmissionDelegate
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from urllib import urlencode
 from datetime import datetime
+from lxml import etree
 import json
 import re
 
@@ -532,6 +536,46 @@ class SWS(object):
 
         return curricula
 
+    def get_graderoster(self, section, instructor):
+        """
+        Returns a restclients.GradeRoster model for the passed Section model
+        and instructor Person.
+        """
+        section_id = section.section_label().replace('/', ',')
+        url = "/student/v4/graderoster/%s,%s" % (section_id,
+                                                 instructor.uwregid)
+        dao = SWS_DAO()
+        response = dao.getURL(url, {"Accept": "text/xhtml",
+                                    "X-UW-Act-as": instructor.uwnetid})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._graderoster_from_xhtml(response.data, section, instructor)
+
+    def update_graderoster(self, graderoster):
+        """
+        Updates the graderoster for the passed Section model, using the passed
+        restclients.GradeRoster model. A new restclients.GradeRoster is
+        returned.
+        """
+        section_id = graderoster.section.section_label().replace('/', ',')
+        reg_id = graderoster.instructor.uwregid
+        url = "/student/v4/graderoster/%s,%s" % (section_id, reg_id)
+        body = self._xhtml_from_graderoster(graderoster)
+
+        dao = SWS_DAO()
+        response = dao.putURL(url, {"Content-Type": "application/xhtml+xml",
+                                    "X-UW-Act-as": graderoster.instructor.uwnetid},
+                              body)
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._graderoster_from_xhtml(response.data,
+                                            graderoster.section,
+                                            graderoster.instructor)
+
     def _curriculum_from_json(self, data):
         """
         Returns a curriculum model created from the passed json.
@@ -778,3 +822,115 @@ class SWS(object):
             section_status.is_open = False
 
         return section_status
+
+    def _graderoster_from_xhtml(self, data, section, instructor):
+        pws = PWS()
+        people = {instructor.uwregid: instructor}
+        root = etree.fromstring(data)
+
+        graderoster = GradeRoster()
+        graderoster.section = section
+        graderoster.instructor = instructor
+        graderoster.section_credits = root.find('.//*[@class="section_credits"]').text.strip()
+
+        writing_credit = root.find('.//*[@class="writing_credit_display"]').get("checked")
+        graderoster.allows_writing_credit = True if writing_credit == "checked" else False
+
+        default_section_id = root.find('.//*[@rel="section"]//*[@class="section_id"]').text.upper()
+
+        graderoster.authorized_grade_submitters = []
+        graderoster.grade_submission_delegates = []
+        graderoster.items = []
+
+        auth_grade_submitters = root.findall('.//*[@rel="authorized_grade_submitter"]')
+        for ags in auth_grade_submitters:
+            reg_id = ags.find('.//*[@class="reg_id"]').text.strip()
+            if reg_id not in people:
+                people[reg_id] = pws.get_person_by_regid(reg_id)
+
+            graderoster.authorized_grade_submitters.append(people[reg_id])
+
+        grade_submission_delegates = root.findall('.//*[@class="grade_submission_delegate"]')
+        for gsd in grade_submission_delegates:
+            reg_id = gsd.find('.//*[@class="reg_id"]').text.strip()
+            delegate_level = gsd.find('.//*[@class="delegate_level"]').text.strip()
+            if reg_id not in people:
+                people[reg_id] = pws.get_person_by_regid(reg_id)
+            delegate = GradeSubmissionDelegate(person=people[reg_id],
+                                               delegate_level=delegate_level)
+            graderoster.grade_submission_delegates.append(delegate)
+
+        strptime = datetime.strptime
+        day_format = "%Y-%m-%d"
+        item_elements = root.findall('.//*[@class="graderoster_item"]')
+        for item in item_elements:
+            gr_item = GradeRosterItem()
+            reg_id = item.find('.//*[@class="reg_id"]').text.strip()
+            gr_item.student = pws.get_person_by_regid(reg_id)
+
+            duplicate_code = item.find('.//*[@class="duplicate_code"]').text
+            if duplicate_code is not None:
+                gr_item.duplicate_code = duplicate_code.strip()
+
+            gr_item.student_number = item.find('.//*[@class="student_number"]').text.strip()
+
+            student_former_name = item.find('.//*[@class="student_former_name"]').text
+            if student_former_name is not None:
+                gr_item.student_former_name = student_former_name.strip()
+
+            gr_item.student_credits = item.find('.//*[@class="student_credits"]').text.strip()
+
+            section_element = item.find('.//*[@class="section_id"]')
+            gr_item.section_id = section_element.text if section_element is not None else default_section_id
+
+            auditor = item.find('.//*[@class="auditor"]').get("checked")
+            gr_item.is_auditor = True if auditor == "checked" else False
+
+            incomplete_node = item.find('.//*[@class="incomplete"]')
+            gr_item.allows_incomplete = False if incomplete_node.get("disabled") == "disabled" else True
+            gr_item.has_incomplete = True if incomplete_node.get("checked") == "checked" else False
+
+            writing_credit = item.find('.//*[@class="writing_course"]').get("checked")
+            gr_item.has_writing_credit = True if writing_credit == "checked" else False
+
+            no_grade_now = item.find('.//*[@class="no_grade_now"]').get("checked")
+            gr_item.no_grade_now = True if no_grade_now == "checked" else False
+
+            date_withdrawn = item.find('.//*[@class="date_withdrawn date"]').text
+            if date_withdrawn is not None:
+                gr_item.date_withdrawn = date_withdrawn.strip()
+
+            gr_item.grades = []
+            grades = item.findall('.//*[@class="grade"]')
+            for grade in grades:
+                grade_value = grade.get("value").strip()
+                gr_item.grades.append(grade_value)
+                if grade.get("selected") == "selected":
+                    gr_item.current_grade = grade_value
+
+            gr_item.grade_document_id = item.find('.//*[@class="grade_document_id"]').text
+
+            date_graded = item.find('.//*[@class="date_graded date"]').text
+            if date_graded is not None:
+                gr_item.date_graded = date_graded.strip()
+
+            gsp = item.find('.//*[@rel="grade_submitter_person"]')
+            if gsp is not None:
+                reg_id = gsp.find('.//*[@class="reg_id"]').text.strip()
+                if reg_id not in people:
+                    people[reg_id] = pws.get_person_by_regid(reg_id)
+                gr_item.grade_submitter_person = people[reg_id]
+
+            gr_item.grade_submitter_source = item.find('.//*[@class="grade_submitter_source"]').text
+
+            graderoster.items.append(gr_item)
+
+        return graderoster
+
+    def _xhtml_from_graderoster(self, graderoster):
+        template = loader.get_template("sws/graderoster.xhtml")
+        context = Context({
+            "graderoster": graderoster,
+            "section_id": graderoster.section.section_label()
+        })
+        return template.render(context)
