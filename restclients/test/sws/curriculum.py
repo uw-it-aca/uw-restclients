@@ -8,7 +8,8 @@ class SWSTestCurriculum(TestCase):
 
     def test_curricula_for_department(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
             department = Department(label="EDUC")
@@ -55,7 +56,8 @@ class SWSTestCurriculum(TestCase):
 
     def test_curricula_for_term(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
             term = Term(quarter='winter', year=2013)

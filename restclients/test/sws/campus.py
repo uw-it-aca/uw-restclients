@@ -7,7 +7,8 @@ class SWSTestCampus(TestCase):
 
     def test_all_campuses(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
             campuses = sws.get_all_campuses()

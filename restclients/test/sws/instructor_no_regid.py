@@ -5,7 +5,8 @@ from restclients.sws import SWS
 class SWSMissingRegid(TestCase):
     def test_instructor_list(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
             term = sws.get_current_term()

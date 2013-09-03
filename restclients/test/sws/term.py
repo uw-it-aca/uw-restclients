@@ -8,7 +8,8 @@ class SWSTestTerm(TestCase):
     #Expected values will have to change when the json files are updated
     def test_previous_quarter(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
             term = sws.get_previous_term()
 
@@ -48,7 +49,8 @@ class SWSTestTerm(TestCase):
     #Expected values will have to change when the json files are updated
     def test_next_quarter(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
             term = sws.get_next_term()
 
@@ -108,7 +110,8 @@ class SWSTestTerm(TestCase):
 
     def test_quarter_after(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
             starting = sws.get_next_term()
@@ -126,7 +129,8 @@ class SWSTestTerm(TestCase):
     def test_specific_quarters(self):
         #testing bad data - get_term_by_year_and_quarter
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
             self.assertRaises(DataFailureException,
                               sws.get_term_by_year_and_quarter,

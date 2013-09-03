@@ -7,7 +7,8 @@ from restclients.exceptions import DataFailureException, InvalidSectionID
 class SWSTestSectionStatusData(TestCase):
     def test_section_by_label(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
             #Valid data, shouldn't throw any exceptions

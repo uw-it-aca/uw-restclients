@@ -870,13 +870,17 @@ class SWS(object):
 
             duplicate_code = item.find('.//*[@class="duplicate_code"]').text
             if duplicate_code is not None:
-                gr_item.duplicate_code = duplicate_code.strip()
+                duplicate_code = duplicate_code.strip()
+                duplicate_code = duplicate_code if len(duplicate_code) else None
+            gr_item.duplicate_code = duplicate_code
 
             gr_item.student_number = item.find('.//*[@class="student_number"]').text.strip()
 
             student_former_name = item.find('.//*[@class="student_former_name"]').text
             if student_former_name is not None:
-                gr_item.student_former_name = student_former_name.strip()
+                student_former_name = student_former_name.strip()
+                student_former_name = student_former_name if len(student_former_name) else None
+            gr_item.student_former_name = student_former_name
 
             gr_item.student_credits = item.find('.//*[@class="student_credits"]').text.strip()
 

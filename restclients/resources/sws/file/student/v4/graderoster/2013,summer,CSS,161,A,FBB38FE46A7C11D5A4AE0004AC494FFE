@@ -1,7 +1,6 @@
 <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>
-          Grade Roster 2013 summer CSS 161 A</title>
+    <title>Grade Roster 2013 summer CSS 161 A</title>
   </head>
   <body>
     <div class="graderoster">
@@ -10,7 +9,7 @@
             <a class="section" rel="section" href="/student/v4/course/2013,summer,CSS,161/A"><span class="year">2013</span> <span class="quarter">summer</span> <span class="curriculum_abbreviation">CSS</span> <span class="course_number">161</span> <span class="section_id">A</span></a></div>
       <div>
             Instructor:
-            <a class="person" rel="instructor" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+            <a class="person" rel="instructor" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
       <div>
             SLN:
             <span class="sln">12637</span></div>
@@ -21,19 +20,24 @@
             Section Credits:
             <span class="section_credits"> 5.0</span></div>
       <div>
-        <label for="">Writing Credit Display:
-    </label>
+        <label for="">Writing Credit Display:</label>
         <input type="checkbox" class="writing_credit_display" id="" name="" checked="checked" disabled="disabled"/>
       </div>
       <div>
-            Authorized Grade Submitters:
-            <ul class="authorized_grade_submitters"><li><a class="person" rel="authorized_grade_submitter" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></li></ul><ul class="grade_submission_delegates"><li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v4/person/6DF0A9206A7D11D5A4AE0004AC494FFE"><span class="name">WINSLOW,MATTHEW S.</span> - <span class="reg_id">6DF0A9206A7D11D5A4AE0004AC494FFE</span></a> <span class="delegate_level">department</span></li><li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v4/person/260A0DEC95CB11D78BAA000629C31437"><span class="name">MANES,LAUREN MEREDITH</span> - <span class="reg_id">260A0DEC95CB11D78BAA000629C31437</span></a> <span class="delegate_level">curriculum</span></li></ul></div>
+          Authorized Grade Submitters:
+          <ul class="authorized_grade_submitters">
+                <li><a class="person" rel="authorized_grade_submitter" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></li>
+          </ul>
+          <ul class="grade_submission_delegates">
+                <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v4/person/6DF0A9206A7D11D5A4AE0004AC494FFE"><span class="name">TEACHER,FRED AVERAGE</span> - <span class="reg_id">6DF0A9206A7D11D5A4AE0004AC494FFE</span></a> <span class="delegate_level">department</span></li>
+                <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v4/person/260A0DEC95CB11D78BAA000629C31437"><span class="name">TEACHER,JAMES AVERAGE</span> - <span class="reg_id">260A0DEC95CB11D78BAA000629C31437</span></a> <span class="delegate_level">curriculum</span></li>
+          </ul>
+      </div>
       <ul class="graderoster_items">
           <li class="graderoster_item">
-          <h1>PALACAY,CHARLON</h1>
+          <h1>AVERAGE,CHARLIE</h1>
           <div>
-            <a class="person" rel="student" href="/student/v4/person/1914B1B26A7D11D5A4AE0004AC494FFE">
-              <span class="name">PALACAY,CHARLON</span> - <span class="reg_id">1914B1B26A7D11D5A4AE0004AC494FFE</span></a>
+            <a class="person" rel="student" href="/student/v4/person/1914B1B26A7D11D5A4AE0004AC494FFE"><span class="name">AVERAGE,CHARLIE</span> - <span class="reg_id">1914B1B26A7D11D5A4AE0004AC494FFE</span></a>
           </div>
           <div>
           Duplicate code:
@@ -82,16 +86,15 @@
           Date Graded: <span class="date_graded date">2013-08-26</span></div>
           <div>
           Grade submitter person:
-          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
         </li>
         <li class="graderoster_item">
-          <h1>CIVJAN,JASON A</h1>
+          <h1>AVERAGE,JASON A</h1>
           <div>
-            <a class="person" rel="student" href="/student/v4/person/511FC8241DC611DB9943F9D03AACCE31">
-              <span class="name">CIVJAN,JASON A</span> - <span class="reg_id">511FC8241DC611DB9943F9D03AACCE31</span></a>
+            <a class="person" rel="student" href="/student/v4/person/511FC8241DC611DB9943F9D03AACCE31"><span class="name">AVERAGE,JASON A</span> - <span class="reg_id">511FC8241DC611DB9943F9D03AACCE31</span></a>
           </div>
           <div>
           Duplicate code:
@@ -140,16 +143,15 @@
           Date Graded: <span class="date_graded date">2013-08-26</span></div>
           <div>
           Grade submitter person:
-          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
         </li>
         <li class="graderoster_item">
-          <h1>DE VIGHT,STEPHEN J</h1>
+          <h1>AVERAGE,STEPHEN J</h1>
           <div>
-            <a class="person" rel="student" href="/student/v4/person/F00E253C634211DA9755000629C31437">
-              <span class="name">DE VIGHT,STEPHEN J</span> - <span class="reg_id">F00E253C634211DA9755000629C31437</span></a>
+            <a class="person" rel="student" href="/student/v4/person/F00E253C634211DA9755000629C31437"><span class="name">AVERAGE,STEPHEN J</span> - <span class="reg_id">F00E253C634211DA9755000629C31437</span></a>
           </div>
           <div>
           Duplicate code:
@@ -198,16 +200,15 @@
           Date Graded: <span class="date_graded date">2013-08-26</span></div>
           <div>
           Grade submitter person:
-          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
         </li>
         <li class="graderoster_item">
-          <h1>SEIBEL,MICHAEL S.</h1>
+          <h1>AVERAGE,MICHAEL S.</h1>
           <div>
-            <a class="person" rel="student" href="/student/v4/person/C7EED7406A7C11D5A4AE0004AC494FFE">
-              <span class="name">SEIBEL,MICHAEL S.</span> - <span class="reg_id">C7EED7406A7C11D5A4AE0004AC494FFE</span></a>
+            <a class="person" rel="student" href="/student/v4/person/C7EED7406A7C11D5A4AE0004AC494FFE"><span class="name">AVERAGE,MICHAEL S.</span> - <span class="reg_id">C7EED7406A7C11D5A4AE0004AC494FFE</span></a>
           </div>
           <div>
           Duplicate code:
@@ -256,23 +257,22 @@
           Date Graded: <span class="date_graded date">2013-08-26</span></div>
           <div>
           Grade submitter person:
-          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
         </li>
         <li class="graderoster_item">
-          <h1>MICHAUD,PATRICK</h1>
+          <h1>TEACHER,PHIL AVERAGE</h1>
           <div>
-            <a class="person" rel="student" href="/student/v4/person/A9D2DDFA6A7D11D5A4AE0004AC494FFE">
-              <span class="name">MICHAUD,PATRICK</span> - <span class="reg_id">A9D2DDFA6A7D11D5A4AE0004AC494FFE</span></a>
+            <a class="person" rel="student" href="/student/v4/person/A9D2DDFA6A7D11D5A4AE0004AC494FFE"><span class="name">TEACHER,PHIL AVERAGE</span> - <span class="reg_id">A9D2DDFA6A7D11D5A4AE0004AC494FFE</span></a>
           </div>
           <div>
           Duplicate code:
           <span class="duplicate_code">A</span></div>
           <div>
           Student Former Name:
-          <span class="student_former_name"></span></div>
+          <span class="student_former_name">HELLO KITTY</span></div>
           <div>
           Student Number:
           <span class="student_number">1311701</span></div>
@@ -314,7 +314,7 @@
           Date Graded: <span class="date_graded date">2013-08-26</span></div>
           <div>
           Grade submitter person:
-          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">JANSSON,ROBERT E</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <a class="person" rel="grade_submitter_person" href="/student/v4/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
