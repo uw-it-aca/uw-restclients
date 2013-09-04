@@ -228,3 +228,17 @@ class SWSTestSectionData(TestCase):
                               sws.get_sections_by_curriculum_and_term,
                               Curriculum(label="FINN"),
                               term)
+
+    def test_instructor_published(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+
+            # Published Instructors
+            pi_section = sws.get_section_by_label('2013,summer,B BIO,180/A')
+            self.assertEquals(pi_section.meetings[0].instructors[0].TSPrint, True)
+
+            # Unpublished Instructors
+            upi_section = sws.get_section_by_label('2013,summer,MATH,125/G')
+            self.assertEquals(upi_section.meetings[0].instructors[0].TSPrint, False)

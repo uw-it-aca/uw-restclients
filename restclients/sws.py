@@ -754,6 +754,7 @@ class SWS(object):
                 if "RegID" in pdata and pdata["RegID"] is not None:
                     instructor = pws.get_person_by_regid(pdata["RegID"])
 
+                    instructor.TSPrint = instructor_data["TSPrint"]
                     if instructor is not None:
                         meeting.instructors.append(instructor)
 
