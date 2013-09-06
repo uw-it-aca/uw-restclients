@@ -451,6 +451,7 @@ class GradeRosterItem(models.Model):
     no_grade_now = models.BooleanField()
     date_withdrawn = models.DateField(blank=True)
     current_grade = models.CharField(max_length=20)
+    allows_grade_change = models.BooleanField()
     date_graded = models.DateField(blank=True)
     grade_submitter_person = models.ForeignKey(Person,
                                                related_name="grade_submitter")

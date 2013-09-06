@@ -905,7 +905,11 @@ class SWS(object):
             if date_withdrawn is not None:
                 gr_item.date_withdrawn = date_withdrawn.strip()
 
+            grade_select = item.find('.//*[@class="grades"]')
+            gr_item.allows_grade_change = False if grade_select.get("disabled") == "disabled" else True
+
             gr_item.grades = []
+            gr_item.current_grade = None
             grades = item.findall('.//*[@class="grade"]')
             for grade in grades:
                 grade_value = grade.get("value").strip()
