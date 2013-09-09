@@ -25,8 +25,9 @@ class SWSTestGradeRoster(TestCase):
 
             grades = ['0.7', None, '3.1', '1.5', '4.0']
             for idx, item in enumerate(graderoster.items):
-                self.assertEquals(len(item.grades), 36, "Correct grade count")
-                self.assertEquals(item.current_grade, grades[idx], "Correct grade")
+                grade = item._meta.get_field("grade")
+                self.assertEquals(len(grade.choices), 36, "Correct grade choices count")
+                self.assertEquals(item.grade, grades[idx], "Correct default grade")
 
     def test_put_graderoster(self):
         with self.settings(
@@ -41,7 +42,7 @@ class SWSTestGradeRoster(TestCase):
 
             for item in graderoster.items:
                 new_grade = str(round(random.uniform(1, 4), 1))
-                item.current_grade = new_grade
+                item.grade = new_grade
 
             orig_xhtml = split_xhtml(sws._xhtml_from_graderoster(graderoster))
 

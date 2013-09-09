@@ -865,7 +865,18 @@ class SWS(object):
         day_format = "%Y-%m-%d"
         item_elements = root.findall('.//*[@class="graderoster_item"]')
         for item in item_elements:
-            gr_item = GradeRosterItem()
+            grade_choices = []
+            grade_default = None
+            grades = item.findall('.//*[@class="grade"]')
+            for grade in grades:
+                grade_value = grade.get("value").strip()
+                grade_choices.append((grade_value, grade.text))
+                if grade.get("selected") == "selected":
+                    grade_default = grade_value
+
+            gr_item = GradeRosterItem(grade=grade_default,
+                                      grade_choices=grade_choices)
+
             reg_id = item.find('.//*[@class="reg_id"]').text.strip()
             gr_item.student = pws.get_person_by_regid(reg_id)
 
@@ -907,15 +918,6 @@ class SWS(object):
 
             grade_select = item.find('.//*[@class="grades"]')
             gr_item.allows_grade_change = False if grade_select.get("disabled") == "disabled" else True
-
-            gr_item.grades = []
-            gr_item.current_grade = None
-            grades = item.findall('.//*[@class="grade"]')
-            for grade in grades:
-                grade_value = grade.get("value").strip()
-                gr_item.grades.append(grade_value)
-                if grade.get("selected") == "selected":
-                    gr_item.current_grade = grade_value
 
             gr_item.grade_document_id = item.find('.//*[@class="grade_document_id"]').text
 
