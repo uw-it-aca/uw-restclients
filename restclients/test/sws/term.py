@@ -33,8 +33,8 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.last_day_instruction.day, 15)
 
             self.assertEquals(term.aterm_last_date, None)
-
             self.assertEquals(term.bterm_first_date, None)
+            self.assertEquals(term.aterm_grading_period_open, None)
 
             self.assertEquals(term.last_final_exam_date.year, 2013)
             self.assertEquals(term.last_final_exam_date.month, 3)
@@ -107,6 +107,11 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.grade_submission_deadline.time().hour, 17)
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
 
+            self.assertEquals(term.aterm_grading_period_open.date().year, 2013)
+            self.assertEquals(term.aterm_grading_period_open.date().month, 7)
+            self.assertEquals(term.aterm_grading_period_open.date().day, 18)
+            self.assertEquals(term.aterm_grading_period_open.time().hour, 8)
+            self.assertEquals(term.aterm_grading_period_open.time().minute, 0)
 
     def test_quarter_after(self):
         with self.settings(

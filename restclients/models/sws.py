@@ -104,6 +104,7 @@ class Term(models.Model):
     bterm_last_day_add = models.DateField(blank=True)
     last_final_exam_date = models.DateField()
     grading_period_open = models.DateTimeField()
+    aterm_grading_period_open = models.DateTimeField(blank=True)
     grading_period_close = models.DateTimeField()
     grade_submission_deadline = models.DateTimeField()
 

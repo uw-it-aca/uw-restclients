@@ -635,6 +635,10 @@ class SWS(object):
         term.grading_period_open = strptime(
             term_data["GradingPeriodOpen"], datetime_format)
 
+        if term_data["GradingPeriodOpenATerm"] is not None:
+            term.aterm_grading_period_open = strptime(
+                term_data["GradingPeriodOpenATerm"], datetime_format)
+
         term.grading_period_close = strptime(
             term_data["GradingPeriodClose"], datetime_format)
 
