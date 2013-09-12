@@ -694,6 +694,7 @@ class SWS(object):
 
         section.current_enrollment = int(section_data['CurrentEnrollment'])
         section.auditors = int(section_data['Auditors'])
+        section.allows_secondary_grading = section_data["SecondaryGradingOption"]
 
         primary_section = section_data["PrimarySection"]
         if (primary_section is not None and

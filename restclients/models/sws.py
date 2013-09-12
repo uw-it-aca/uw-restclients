@@ -205,6 +205,7 @@ class Section(models.Model):
                                                             )
     primary_section_id = models.CharField(max_length=2, null=True, blank=True)
     is_primary_section = models.BooleanField()
+    allows_secondary_grading = models.BooleanField()
 
     class Meta:
         app_label = "restclients"

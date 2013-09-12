@@ -242,3 +242,21 @@ class SWSTestSectionData(TestCase):
             # Unpublished Instructors
             upi_section = sws.get_section_by_label('2013,summer,MATH,125/G')
             self.assertEquals(upi_section.meetings[0].instructors[0].TSPrint, False)
+
+    def test_secondary_grading(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+
+            section1 = sws.get_section_by_label('2012,summer,PHYS,121/A')
+            self.assertEquals(section1.allows_secondary_grading, True,
+                              "Allows secondary grading")
+
+            for linked in sws.get_linked_sections(section1):
+                self.assertEquals(linked.allows_secondary_grading, True,
+                                  "Allows secondary grading")
+
+            section2 = sws.get_section_by_label('2013,winter,EMBA,503/A')
+            self.assertEquals(section2.allows_secondary_grading, False,
+                              "Does not allow secondary grading")
