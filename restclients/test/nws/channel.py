@@ -63,13 +63,11 @@ class NWSTestChannel(TestCase):
             nws = NWS()
 
             terms = nws.get_terms_with_active_channels("uw_student_courseavailable")
-            self.assertEquals(len(terms), 2)
+            self.assertEquals(len(terms), 1)
 
             self.assertEquals(terms[0].year, 2013)
-            self.assertEquals(terms[1].year, 2013)
 
-            self.assertEquals(terms[0].quarter, 'spring')
-            self.assertEquals(terms[1].quarter, 'summer')
+            self.assertEquals(terms[0].quarter, 'summer')
 
 
 
