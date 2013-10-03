@@ -34,6 +34,18 @@ class SWSThread(threading.Thread):
         dao = SWS_DAO()
         self.response = dao.getURL(self.url, args)
 
+class SWSPersonByRegIDThread(threading.Thread):
+    regid = None
+    person = None
+
+    def run(self):
+        if self.regid is None:
+            raise Exception("SWSPersonByRegIDThread must have a regid")
+
+        pws = PWS()
+        self.person = pws.get_person_by_regid(self.regid)
+
+
 class SWS(object):
     """
     The SWS object has methods for getting information
@@ -335,15 +347,27 @@ class SWS(object):
         if is_active:
             is_active_flag = True
 
+        person_threads = []
         for reg_data in data.get("Registrations", []):
             if reg_data["RegID"] not in seen_registrations:
                 registration = Registration()
                 registration.section = section
-                registration.person = pws.get_person_by_regid(reg_data["RegID"])
+
+                thread = SWSPersonByRegIDThread()
+                thread.regid = reg_data["RegID"]
+                thread.start()
+                person_threads.append(thread)
                 registration.is_active = is_active_flag
                 registrations.append(registration)
 
                 seen_registrations[reg_data["RegID"]] = True
+
+        for i in range(len(person_threads)):
+            thread = person_threads[i]
+            thread.join()
+            registration = registrations[i]
+
+            registration.person = thread.person
 
         return registrations
 
