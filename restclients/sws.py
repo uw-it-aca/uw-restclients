@@ -16,9 +16,23 @@ from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from urllib import urlencode
 from datetime import datetime
 from lxml import etree
+import threading
 import json
 import re
 
+class SWSThread(threading.Thread):
+    url = None
+    headers = None
+    response = None
+
+    def run(self):
+        if self.url is None:
+            raise Exception("SWSThread must have a url")
+
+        args = self.headers or {}
+
+        dao = SWS_DAO()
+        self.response = dao.getURL(self.url, args)
 
 class SWS(object):
     """
@@ -372,6 +386,7 @@ class SWS(object):
 
         sections = []
 
+        sws_threads = []
         for registration in term_data["Registrations"]:
             reg_url = registration["Href"]
 
@@ -379,7 +394,18 @@ class SWS(object):
             reg_url = re.sub('registration', 'course', reg_url)
             reg_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', reg_url)
             reg_url = re.sub(',([^,]*).json', '/\\1.json', reg_url)
-            response = dao.getURL(reg_url, {"Accept": "application/json"})
+
+            thread = SWSThread()
+            thread.url = reg_url
+            thread.headers = { "Accept": "application/json" }
+            thread.start()
+            sws_threads.append(thread)
+
+        for thread in sws_threads:
+            thread.join()
+
+        for thread in sws_threads:
+            response = thread.response
 
             if response.status != 200:
                 raise DataFailureException(reg_url,
