@@ -18,71 +18,98 @@ from restclients.models.gws import Group as gwsGroup
 from restclients.models.gws import CourseGroup as gwsCourseGroup
 from restclients.models.gws import GroupUser as gwsGroupUser
 from restclients.models.gws import GroupMember as gwsGroupMember
+from restclients.models.canvas import Course as canvasCourse
+from restclients.models.canvas import Enrollment as canvasEnrollment
 
 
 # These aliases are here for backwards compatibility
 def deprecation(message):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
+
 def Person(*args, **kwargs):
     deprecation("Use restclients.models.sws.Person")
     return swsPerson(*args, **kwargs)
+
 
 def Term(*args, **kwargs):
     deprecation("Use restclients.models.sws.Term")
     return swsTerm(*args, **kwargs)
 
+
 def FinalExam(*args, **kwargs):
     deprecation("Use restclients.models.sws.FinalExam")
     return swsFinalExam(*args, **kwargs)
+
 
 def Section(*args, **kwargs):
     deprecation("Use restclients.models.sws.Section")
     return swsSection(*args, **kwargs)
 
+
 def SectionMeeting(*args, **kwargs):
     deprecation("Use restclients.models.sws.SectionMeeting")
     return swsSectionMeeting(*args, **kwargs)
+
 
 def ClassSchedule(*args, **kwargs):
     deprecation("Use restclients.models.sws.ClassSchedule")
     return swsClassSchedule(*args, **kwargs)
 
+
 def Campus(*args, **kwargs):
     deprecation("Use restclients.models.sws.Campus")
     return swsCampus(*args, **kwargs)
+
 
 def College(*args, **kwargs):
     deprecation("Use restclients.models.sws.College")
     return swsCollege(*args, **kwargs)
 
+
 def Department(*args, **kwargs):
     deprecation("Use restclients.models.sws.Department")
     return swsDepartment(*args, **kwargs)
+
 
 def Curriculum(*args, **kwargs):
     deprecation("Use restclients.models.sws.Curriculum")
     return swsCurriculum(*args, **kwargs)
 
+
 def GroupReference(*args, **kwargs):
     deprecation("Use restclients.models.gws.GroupReference")
     return gwsGroupReference(*args, **kwargs)
+
 
 def Group(*args, **kwargs):
     deprecation("Use restclients.models.gws.Group")
     return gwsGroup(*args, **kwargs)
 
+
 def CourseGroup(*args, **kwargs):
     deprecation("Use restclients.models.gws.CourseGroup")
     return gwsCourseGroup(*args, **kwargs)
+
 
 def GroupUser(*args, **kwargs):
     deprecation("Use restclients.models.gws.GroupUser")
     return gwsGroupUser(*args, **kwargs)
 
+
 def GroupMember(*args, **kwargs):
     deprecation("Use restclients.models.gws.GroupMember")
     return gwsGroupMember(*args, **kwargs)
+
+
+def CanvasCourse(*args, **kwargs):
+    deprecation("Use restclients.models.canvas.Course")
+    return canvasCourse(*args, **kwargs)
+
+
+def CanvasEnrollment(*args, **kwargs):
+    deprecation("Use restclients.models.canvas.Enrollment")
+    return canvasEnrollment(*args, **kwargs)
 
 
 class CacheEntry(models.Model):
@@ -199,7 +226,7 @@ class MockAmazonSQSQueue(models.Model):
 class MockAmazonSQSMessage(models.Model):
     body = models.CharField(max_length=8192)
     queue = models.ForeignKey(MockAmazonSQSQueue,
-                             on_delete=models.PROTECT)
+                              on_delete=models.PROTECT)
 
     def get_body(self):
         return self.body
@@ -272,59 +299,30 @@ class CourseAvailableEvent(models.Model):
         """
         This is responsible for building the surrogate id from the model
         """
-        surrogate_id = "%s,%s,%s,%s,%s" % (self.year, self.quarter, self.curriculum_abbr.lower(), self.course_number, self.section_id.lower())
+        surrogate_id = "%s,%s,%s,%s,%s" % (self.year,
+                                           self.quarter,
+                                           self.curriculum_abbr.lower(),
+                                           self.course_number,
+                                           self.section_id.lower())
 
         return surrogate_id
 
     def json_data(self):
         return{
             "Event": {
-                "EventID":self.event_id,
-                "EventCreateDate":self.event_create_date,
+                "EventID": self.event_id,
+                "EventCreateDate": self.event_create_date,
                 "Section": {
                     "Course": {
-                        "CourseNumber":self.course_number,
-                        "CurriculumAbbreviation":self.curriculum_abbr.upper(),
-                        "Quarter":self.quarter,
-                        "Year":self.year
+                        "CourseNumber": self.course_number,
+                        "CurriculumAbbreviation": self.curriculum_abbr.upper(),
+                        "Quarter": self.quarter,
+                        "Year": self.year
                     },
-                    "SLN":self.sln,
-                    "SectionID":self.section_id.upper()
+                    "SLN": self.sln,
+                    "SectionID": self.section_id.upper()
                 },
-                "SpaceAvailable":self.space_available,
-                "NotificationMsg0":self.notification_msg_0
+                "SpaceAvailable": self.space_available,
+                "NotificationMsg0": self.notification_msg_0
             }
         }
-
-
-class CanvasEnrollment(models.Model):
-    course_url = models.CharField(max_length=2000)
-    sis_id = models.CharField(max_length=100)
-    course_name = models.CharField(max_length=100)
-
-    def sws_course_id(self):
-        parts = self.sis_id.split("-")
-
-        if len(parts) != 5:
-            return None
-
-        sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
-                                    parts[4])
-
-        return sws_id
-
-
-class CanvasCourse(models.Model):
-    course_url = models.CharField(max_length=2000)
-    sis_id = models.CharField(max_length=100)
-    course_name = models.CharField(max_length=100)
-
-    def sws_course_id(self):
-        parts = self.sis_id.split("-")
-        if len(parts) != 5:
-            return None
-
-        sws_id = "%s,%s,%s,%s/%s" % (parts[0], parts[1], parts[2], parts[3],
-                                    parts[4])
-
-        return sws_id

@@ -3,7 +3,7 @@ This is the interface for interacting with Instructure's Canvas web services.
 """
 
 from restclients.dao import Canvas_DAO
-from restclients.models import CanvasEnrollment, CanvasCourse
+from restclients.models.canvas import Enrollment, Course
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
 import json
@@ -45,7 +45,7 @@ class Canvas(object):
                 course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
                 course_url = "%scourses/%s" % (course_url, course_id)
 
-                course = CanvasCourse()
+                course = Course()
                 course.course_url = course_url
                 course.course_name = course_info["name"]
                 course.sis_id = course_info["sis_course_id"]
@@ -66,7 +66,7 @@ class Canvas(object):
             if course_info["sis_course_id"] is not None:
                 user_url = section["html_url"]
                 course_url = re.sub("/users/.*", "", user_url)
-                enrollment = CanvasEnrollment()
+                enrollment = Enrollment()
                 enrollment.course_url = course_url
                 enrollment.course_name = course_info["name"]
                 enrollment.sis_id = course_info["sis_course_id"]
@@ -84,7 +84,7 @@ class Canvas(object):
         return self._get_resource("/api/v1/courses/%s" % id)
 
     def valid_canvas_id(self, id):
-        return self._re_canvas_id.match(id) != None
+        return self._re_canvas_id.match(id) is not None
 
     def sis_account_id(self, sis_id):
         return self._sis_id(sis_id, sis_field='account')
@@ -240,9 +240,9 @@ class Canvas(object):
         url = "/api/v1/accounts/%s/admins" % (account_id)
         dao = Canvas_DAO()
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                  json.dumps({'user_id': unquote(user_id),
-                                              'role': role,
-                                              'send_confirmation': '0'}))
+                                    json.dumps({'user_id': unquote(user_id),
+                                                'role': role,
+                                                'send_confirmation': '0'}))
 
         if not (post_response.status == 200 or post_response.status == 204):
             raise DataFailureException(url, post_response.status,
@@ -348,7 +348,7 @@ class Canvas(object):
         url = "/api/v1/accounts/%s/courses" % subaccount_id
         dao = Canvas_DAO()
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                  json.dumps({"course": {"name": course_name}}))
+                                    json.dumps({"course": {"name": course_name}}))
 
         if not (post_response.status == 200 or post_response.status == 204):
             raise DataFailureException(url, post_response.status,
@@ -363,8 +363,8 @@ class Canvas(object):
         url = "/api/v1/courses/%s/sections" % course_id
         dao = Canvas_DAO()
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                  json.dumps({"course_section": {"name": section_name,
-                                                                 "sis_section_id": sis_section_id}}))
+                                    json.dumps({"course_section": {"name": section_name,
+                                                                   "sis_section_id": sis_section_id}}))
 
         if not (post_response.status == 200 or post_response.status == 204):
             raise DataFailureException(url, post_response.status,
@@ -392,8 +392,8 @@ class Canvas(object):
         """
         url = "/api/v1/accounts/%s/users" % kwargs['account_id']
         dao = Canvas_DAO()
-        params = {"pseudonym" : {"unique_id" : kwargs["login_id"],
-                                  "send_confirmation": "0"}}
+        params = {"pseudonym": {"unique_id": kwargs["login_id"],
+                                "send_confirmation": "0"}}
 
         if "sis_id" in kwargs and kwargs["sis_id"]:
             params["pseudonym"]["sis_user_id"] = kwargs["sis_id"]
@@ -421,9 +421,9 @@ class Canvas(object):
         url = "/api/v1/courses/%s/enrollments" % course_id
         dao = Canvas_DAO()
         post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                  json.dumps({"enrollment": {"user_id": user_id,
-                                                             "type": "TeacherEnrollment"},
-                                                             "enrollment_state": "active"}))
+                                    json.dumps({"enrollment": {"user_id": user_id,
+                                                               "type": "TeacherEnrollment"},
+                                                "enrollment_state": "active"}))
 
         if not (post_response.status == 200 or post_response.status == 204):
             raise DataFailureException(url, post_response.status,
@@ -433,7 +433,7 @@ class Canvas(object):
 
     def sis_import(self, root_account, csv_data):
         """
-        Submits raw CSV SIS data 
+        Submits raw CSV SIS data
         """
         url = "/api/v1/accounts/%s/sis_imports.json?import_type=instructure_csv" % root_account
         dao = Canvas_DAO()
@@ -446,7 +446,7 @@ class Canvas(object):
 
     def get_import_status(self, root_account, import_id):
         """
-        Submits raw CSV SIS data 
+        Submits raw CSV SIS data
         """
         url = "/api/v1/accounts/%s/sis_imports/%s" % (root_account, import_id)
         dao = Canvas_DAO()
@@ -454,5 +454,5 @@ class Canvas(object):
         if not (get_response.status == 200 or get_response.status == 204):
             raise DataFailureException(url, get_response.status,
                                        get_response.data)
-            
+
         return json.loads(get_response.data)
