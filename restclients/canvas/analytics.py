@@ -60,7 +60,7 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_student_summaries
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/student_summaries" % course_id
+        url = "/api/v1/courses/sis_course_id:%s/analytics/student_summaries.json" % course_id
         return self._get_resource(url)
 
     def get_student_activity_for_course(self, user_id, course_id):
@@ -79,15 +79,16 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_assignments
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/assignments" % (
+        url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/assignments.json" % (
             course_id, user_id)
         return self._get_resource(url)
 
     def get_student_messaging_for_course(self, user_id, course_id):
         """
         Returns student messaging data for the given user_id and course_id.
+
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_messaging
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/communication" % (
+        url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/communication.json" % (
             course_id, user_id)
         return self._get_resource(url)
