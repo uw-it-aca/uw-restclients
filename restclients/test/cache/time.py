@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
+from restclients.sws import SWS
 from restclients.dao import SWS_DAO
 from restclients.cache_implementation import TimeSimpleCache, FourHourCache
 from restclients.models import CacheEntryTimed
@@ -8,6 +9,14 @@ from datetime import timedelta
 import re
 
 class TimeCacheTest(TestCase):
+    def test_threaded_caching(self):
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
+
+            sws = SWS()
+            term = sws.get_current_term()
+            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+
     def test_simple_time(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                             RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
