@@ -6,6 +6,9 @@ from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 
+# XXX - from production settings files
+GWS_MAX_POOL_SIZE = 5
+
 
 class File(object):
     """
@@ -78,4 +81,4 @@ class Live(object):
         return get_con_pool(settings.RESTCLIENTS_GWS_HOST,
                             settings.RESTCLIENTS_GWS_KEY_FILE,
                             settings.RESTCLIENTS_GWS_CERT_FILE,
-                            max_pool_size=settings.RESTCLIENTS_GWS_MAX_POOL_SIZE)
+                            max_pool_size = GWS_MAX_POOL_SIZE)
