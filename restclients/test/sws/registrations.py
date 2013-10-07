@@ -30,34 +30,3 @@ class SWSTestRegistrations(TestCase):
             self.assertRaises(DataFailureException,
                               sws.get_all_registrations_for_section,
                               section)
-
-    def test_active_registration_status_after_drop(self):
-        with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
-                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
-
-            section = sws.get_section_by_label('2013,winter,DROP_T,100/A')
-
-            registrations = sws.get_all_registrations_for_section(section)
-
-            self.assertEquals(len(registrations), 1)
-            javerage_reg = registrations[0]
-            self.assertEquals(javerage_reg.person.uwnetid, 'javerage')
-            self.assertEquals(javerage_reg.is_active, False)
-
-    def test_active_registration_status_after_drop_and_add(self):
-        with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
-                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
-
-            section = sws.get_section_by_label('2013,winter,DROP_T,100/B')
-
-            registrations = sws.get_all_registrations_for_section(section)
-
-            self.assertEquals(len(registrations), 1)
-            javerage_reg = registrations[0]
-            self.assertEquals(javerage_reg.person.uwnetid, 'javerage')
-            self.assertEquals(javerage_reg.is_active, True)
-

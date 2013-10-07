@@ -7,10 +7,6 @@ from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 
-# XXX - this is arbitrary.  I didn't have a handy multi-threaded sws test
-# case that went over 4 concurrent connections.  Just took the PWS number
-SWS_MAX_POOL_SIZE = 10
-
 class File(object):
     """
     The File DAO implementation returns generally static content.  Use this
@@ -63,4 +59,4 @@ class Live(object):
         return get_con_pool(settings.RESTCLIENTS_SWS_HOST,
                             settings.RESTCLIENTS_SWS_KEY_FILE,
                             settings.RESTCLIENTS_SWS_CERT_FILE,
-                            max_pool_size=SWS_MAX_POOL_SIZE)
+                            max_pool_size=settings.RESTCLIENTS_SWS_MAX_POOL_SIZE)
