@@ -1,1 +1,1 @@
-{ "Link": "<https://localhost/api/v1/accounts/12345/admins?page=2&per_page=10>; rel=\"next\",\n  https://localhost/api/v1/accounts/12345/admins?page=1&per_page=10>; rel=\"first\",\n  <https://localhost/api/v1/accounts/12345/admins?page=3&per_page=10>; rel=\"last\""}
+{ "Link": "</api/v1/accounts/12345/admins?page=2&per_page=10>; rel=\"next\",\n  </api/v1/accounts/12345/admins?page=1&per_page=10>; rel=\"first\",\n  </api/v1/accounts/12345/admins?page=3&per_page=10>; rel=\"last\""}

@@ -316,9 +316,12 @@ class Canvas(object):
         return url path to next page of paginated data
         """
         for link in response.getheader("link", "").split(","):
-            (url, rel) = link.split(";")
-            if "next" in rel:
-                return url.lstrip("<").rstrip(">")
+            try:
+                (url, rel) = link.split(";")
+                if "next" in rel:
+                    return url.lstrip("<").rstrip(">")
+            except:
+                return
 
     def _get_resource(self, url):
         """
