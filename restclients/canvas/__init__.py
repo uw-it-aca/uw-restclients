@@ -26,10 +26,6 @@ class Canvas(object):
         """
         self._per_page = per_page
         self._re_canvas_id = re.compile(r'^\d+$')
-        self._re_next_link = re.compile(r"""<http[s]?://[^/]+([^>]*)>;\s*
-                                            rel=([\"\']?)next\2 # next doc
-                                         """,
-                                        re.I | re.X)
 
     def get_courses_for_regid(self, regid):
         data = self._get_resource("/api/v1/courses.json?as_user_id=%s"
@@ -319,8 +315,10 @@ class Canvas(object):
         """
         return url path to next page of paginated data
         """
-        link = self._re_next_link.match(response.getheader('link', ''))
-        return link.group(1).replace(':', '%3A') if link else None
+        for link in response.getheader("link", "").split(","):
+            (url, rel) = link.split(";")
+            if "next" in rel:
+                return url.lstrip("<").rstrip(">")
 
     def _get_resource(self, url):
         """
