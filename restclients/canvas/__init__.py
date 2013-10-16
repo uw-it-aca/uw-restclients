@@ -158,18 +158,12 @@ class Canvas(object):
         return self._get_sub_accounts(self._sis_id(sis_id), params)
 
     def get_all_sub_accounts_by_canvas_id(self, canvas_id):
-        #uncomment when instructure fixes pagination in recursion
-        #params = self._pagination({'recursive': 'true'})
-        #return self._get_sub_accounts(canvas_id, params)
-        subs = self.get_sub_accounts_by_canvas_id(canvas_id)
-        return self._recurse_sub_accounts(subs, [])
+        return self._get_sub_accounts(canvas_id,
+                                      params={"recursive": "true"})
 
     def get_all_sub_accounts_by_sis_id(self, sis_id):
-        #uncomment when instructure fixes pagination in recursion
-        #params = self._pagination({'recursive': 'true'})
-        #return self._get_sub_accounts(self._sis_id(sis_id), params)
-        subs = self.get_sub_accounts_by_sis_id(sis_id)
-        return self._recurse_sub_accounts(subs, [])
+        return self._get_sub_accounts(self._sis_id(sis_id),
+                                      params={"recursive": "true"})
 
     def _get_sub_accounts(self, id, params):
         """
