@@ -1,8 +1,6 @@
-from django.conf import settings
 from restclients.canvas import Canvas
 from restclients.dao import Canvas_DAO
 from restclients.exceptions import DataFailureException
-import json
 
 
 class Analytics(Canvas):
