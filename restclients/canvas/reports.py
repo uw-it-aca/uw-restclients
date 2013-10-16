@@ -10,6 +10,8 @@ class Reports(Canvas):
     def get_available_reports(self):
         """
         Returns the list of reports for the current context.
+        
+        https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.available_reports
         """
         data = self._get_resource("/api/v1/accounts/%s/reports.json" % (
                                   settings.RESTCLIENTS_CANVAS_ACCOUNT_ID))
@@ -32,6 +34,8 @@ class Reports(Canvas):
         """
         Shows all reports of the passed report_type that have been run
         for the account.
+
+        https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.index
         """
         data = self._get_resource("/api/v1/accounts/%s/reports/%s.json" % (
                                   settings.RESTCLIENTS_CANVAS_ACCOUNT_ID,
@@ -46,6 +50,8 @@ class Reports(Canvas):
     def create_report(self, report_type, parameters={}):
         """
         Generates a report instance for the account.
+
+        https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.create
         """
         dao = Canvas_DAO()
 
@@ -67,6 +73,8 @@ class Reports(Canvas):
     def get_report_status(self, report):
         """
         Returns the status of a report.
+
+        https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.show
         """
         dao = Canvas_DAO()
 
@@ -86,6 +94,8 @@ class Reports(Canvas):
     def delete_report(self, report):
         """
         Deletes a generated report instance.
+
+        https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.destroy
         """
         dao = Canvas_DAO()
 
