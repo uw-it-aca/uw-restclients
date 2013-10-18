@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.canvas import Canvas
+from restclients.canvas.accounts import Accounts as Canvas 
 from restclients.exceptions import DataFailureException
 
 class CanvasTestAccounts(TestCase):
@@ -11,10 +11,10 @@ class CanvasTestAccounts(TestCase):
             canvas = Canvas()
 
             account = canvas.get_account_by_sis_id('uwcourse:seattle:cse:cse')
-
-            self.assertEquals(account.get('name'), "Computer Science & Engineering", "Has proper name")
-            self.assertEquals(account.get('sis_account_id'), 'uwcourse:seattle:cse:cse')
-            self.assertEquals(account.get('parent_account_id'), 987654)
+            self.assertEquals(account.account_id, 696969)
+            self.assertEquals(account.name, "Computer Science & Engineering", "Has proper name")
+            self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:cse')
+            self.assertEquals(account.parent_account_id, 987654)
 
     def test_sub_account(self):
         with self.settings(
@@ -26,9 +26,9 @@ class CanvasTestAccounts(TestCase):
             account = accounts[1]
 
             self.assertEquals(len(accounts), 3, "Too few accounts")
-            self.assertEquals(account.get('name'), "Comp Sci & Engr Accelerated Masters Prg", "Has proper name")
-            self.assertEquals(account.get('sis_account_id'), 'uwcourse:seattle:cse:csem')
-            self.assertEquals(account.get('parent_account_id'), 54321)
+            self.assertEquals(account.name, "Comp Sci & Engr Accelerated Masters Prg", "Has proper name")
+            self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:csem')
+            self.assertEquals(account.parent_account_id, 54321)
 
     def test_all_sub_accounts(self):
         with self.settings(
@@ -39,7 +39,7 @@ class CanvasTestAccounts(TestCase):
 
             account = accounts[1]
 
-            self.assertEquals(len(accounts), 4, "Too few accounts")
-            self.assertEquals(account.get('name'), "Comp Sci & Engr Accelerated Masters Prg", "Has proper name")
-            self.assertEquals(account.get('sis_account_id'), 'uwcourse:seattle:cse:csem')
-            self.assertEquals(account.get('parent_account_id'), 54321)
+            self.assertEquals(len(accounts), 3, "Too few accounts")
+            self.assertEquals(account.name, "Comp Sci & Engr Accelerated Masters Prg", "Has proper name")
+            self.assertEquals(account.sis_account_id, 'uwcourse:seattle:cse:csem')
+            self.assertEquals(account.parent_account_id, 54321)

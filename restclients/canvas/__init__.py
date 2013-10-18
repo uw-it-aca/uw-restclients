@@ -3,14 +3,19 @@ This is the interface for interacting with Instructure's Canvas web services.
 """
 
 from restclients.dao import Canvas_DAO
-from restclients.models.canvas import Enrollment, Course
+from restclients.models.canvas import Course
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
+import warnings
 import json
 import re
 
 
 DEFAULT_PAGINATION = 0
+
+
+def deprecation(message):
+    warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 
 class Canvas(object):
@@ -28,47 +33,14 @@ class Canvas(object):
         self._re_canvas_id = re.compile(r'^\d+$')
 
     def get_courses_for_regid(self, regid):
-        data = self._get_resource("/api/v1/courses.json?as_user_id=%s"
-                                  % self._sis_id(regid, sis_field='user'))
-        courses = []
-
-        for section in data:
-            course_id = section["id"]
-            course_info = self.get_course_info_by_canvas_id(course_id)
-
-            if course_info["sis_course_id"] is not None:
-                course_url = section["calendar"]["ics"]
-                course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
-                course_url = "%scourses/%s" % (course_url, course_id)
-
-                course = Course()
-                course.course_url = course_url
-                course.course_name = course_info["name"]
-                course.sis_id = course_info["sis_course_id"]
-
-                courses.append(course)
-
-        return courses
+        deprecation("Use restclients.canvas.courses.get_courses_for_regid")
+        from restclients.canvas.courses import Courses                  
+        return Courses().get_courses_for_regid(regid)        
 
     def get_enrollments_for_regid(self, regid):
-        data = self._get_resource("/api/v1/users/%s/enrollments"
-                                  % self._sis_id(regid, sis_field='user'))
-        enrollments = []
-
-        for section in data:
-            course_id = section["course_id"]
-            course_info = self.get_course_info_by_canvas_id(course_id)
-
-            if course_info["sis_course_id"] is not None:
-                user_url = section["html_url"]
-                course_url = re.sub("/users/.*", "", user_url)
-                enrollment = Enrollment()
-                enrollment.course_url = course_url
-                enrollment.course_name = course_info["name"]
-                enrollment.sis_id = course_info["sis_course_id"]
-
-                enrollments.append(enrollment)
-        return enrollments
+        deprecation("Use restclients.canvas.enrollments.get_enrollments_for_regid")
+        from restclients.canvas.enrollments import Enrollments
+        return Enrollments().get_enrollments_for_regid(regid)
 
     def get_course_info_by_canvas_id(self, canvas_id):
         return self.get_course(canvas_id)
@@ -116,70 +88,6 @@ class Canvas(object):
         params = self._pagination(params)
         return self._get_resource("/api/v1/courses/%s/sections%s"
                                   % (id, self._params(params)))
-
-    def get_account_by_canvas_id(self, canvas_id):
-        return self.get_account(canvas_id)
-
-    def get_account_by_sis_id(self, sis_id):
-        return self.get_account(self._sis_id(sis_id))
-
-    def get_account(self, id):
-        """
-        return account resource for given account id
-        """
-        return self._get_resource("/api/v1/accounts/%s" % id)
-
-    def update_account_by_canvas_id(self, canvas_id, resource):
-        return self._update_account(canvas_id, resource)
-
-    def update_account_by_sis_id(self, sis_id, resource):
-        return self._update_account(self._sis_id(sis_id), resource)
-
-    def _update_account(self, id, resource):
-        """
-        update given account with given account resource
-        """
-        url = "/api/v1/accounts/%s" % id
-
-        dao = Canvas_DAO()
-        put_response = dao.putURL(url, {"Content-Type": "application/json"},
-                                  json.dumps(resource))
-
-        if not (put_response.status == 200 or put_response.status == 204):
-            raise DataFailureException(url, put_response.status,
-                                       put_response.data)
-
-        return put_response.status
-
-    def get_sub_accounts_by_canvas_id(self, canvas_id, params={}):
-        return self._get_sub_accounts(canvas_id, params)
-
-    def get_sub_accounts_by_sis_id(self, sis_id, params={}):
-        return self._get_sub_accounts(self._sis_id(sis_id), params)
-
-    def get_all_sub_accounts_by_canvas_id(self, canvas_id):
-        return self._get_sub_accounts(canvas_id,
-                                      params={"recursive": "true"})
-
-    def get_all_sub_accounts_by_sis_id(self, sis_id):
-        return self._get_sub_accounts(self._sis_id(sis_id),
-                                      params={"recursive": "true"})
-
-    def _get_sub_accounts(self, id, params):
-        """
-        return list of sub accounts within the given account
-        """
-        params = self._pagination(params)
-        return self._get_resource("/api/v1/accounts/%s/sub_accounts%s"
-                                  % (id, self._params(params)))
-
-    def _recurse_sub_accounts(self, sub_accounts, account_list):
-        account_list.extend(sub_accounts)
-        for account in sub_accounts:
-            subs = self.get_sub_accounts_by_canvas_id(account['id'])
-            self._recurse_sub_accounts(subs, account_list)
-
-        return account_list
 
     def get_courses_in_account_by_canvas_id(self, canvas_id, params={}):
         return self._get_courses_in_account(canvas_id, params)

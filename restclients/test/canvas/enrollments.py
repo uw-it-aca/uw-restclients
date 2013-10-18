@@ -1,15 +1,42 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.canvas import Canvas
+from restclients.canvas.enrollments import Enrollments
 from restclients.exceptions import DataFailureException
 
 class CanvasTestEnrollment(TestCase):
-
-    #Expected values will have to change when the json files are updated
-    def test_enrollment(self):
+    def test_enrollments_for_course_id(self):
         with self.settings(
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
-            canvas = Canvas()
+            canvas = Enrollments()
+
+            enrollments = canvas.get_enrollments_for_course("2013-autumn-PHYS-248-A")
+
+            self.assertEquals(len(enrollments), 3, "Has 3 canvas enrollments")
+
+            students = canvas.get_enrollments_for_course("2013-autumn-PHYS-248-A",
+                    {"role": "student"})
+
+            self.assertEquals(len(students), 2, "Has 2 student enrollments")
+
+    def test_enrollments_for_section_id(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+
+            canvas = Enrollments()
+
+            enrollments = canvas.get_enrollments_for_section("2013-autumn-PHYS-248-A--")
+            self.assertEquals(len(enrollments), 3, "Has 3 canvas enrollments")
+
+            students = canvas.get_enrollments_for_section("2013-autumn-PHYS-248-A--",
+                {"role": "student"})
+
+            self.assertEquals(len(students), 2, "Has 2 student enrollments")
+
+    #Expected values will have to change when the json files are updated
+    def test_enrollments_by_regid(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Enrollments()
 
             # Javerage's regid
             enrollments = canvas.get_enrollments_for_regid("9136CCB8F66711D5BE060004AC494FFE")
@@ -19,23 +46,5 @@ class CanvasTestEnrollment(TestCase):
             enrollment = enrollments[0]
 
             self.assertEquals(enrollment.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
-            self.assertEquals(enrollment.sis_id, "2012-summer-PHYS-121-A")
+            self.assertEquals(enrollment.sis_course_id, "2012-summer-PHYS-121-A")
             self.assertEquals(enrollment.sws_course_id(), "2012,summer,PHYS,121/A")
-
-    def test_courses(self):
-        with self.settings(
-                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
-            canvas = Canvas()
-
-            # Javerage's regid
-            courses = canvas.get_courses_for_regid("9136CCB8F66711D5BE060004AC494FFE")
-
-            self.assertEquals(len(courses), 1, "Has 1 canvas enrollment")
-
-            course = courses[0]
-
-            self.assertEquals(course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
-            self.assertEquals(course.sis_id, "2012-summer-PHYS-121-A")
-            self.assertEquals(course.sws_course_id(), "2012,summer,PHYS,121/A")
-
-
