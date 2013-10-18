@@ -3,7 +3,7 @@ from django.db import models
 
 class Account(models.Model):
     account_id = models.IntegerField(max_length=20)
-    sis_account_id = models.CharField(max_length=30)
+    sis_account_id = models.CharField(max_length=30, null=True)
     name = models.CharField(max_length=500)
     parent_account_id = models.CharField(max_length=30)
     root_account_id = models.CharField(max_length=30)

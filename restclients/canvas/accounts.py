@@ -101,7 +101,7 @@ class Accounts(Canvas):
     def _account_from_json(self, data):
         account = Account()
         account.account_id = data["id"]
-        account.sis_account_id = data["sis_account_id"]
+        account.sis_account_id = data["sis_account_id"] if "sis_account_id" in data else None
         account.name = data["name"]
         account.parent_account_id = data["parent_account_id"]
         account.root_account_id = data["root_account_id"]
