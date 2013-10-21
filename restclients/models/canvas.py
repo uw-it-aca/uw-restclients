@@ -16,6 +16,9 @@ class Course(models.Model):
     course_name = models.CharField(max_length=100)
 
     def sws_course_id(self):
+        if self.sis_course_id is None:
+            return None
+
         parts = self.sis_course_id.split("-")
         if len(parts) != 5:
             return None
