@@ -42,6 +42,17 @@ class Canvas(object):
         from restclients.canvas.enrollments import Enrollments
         return Enrollments().get_enrollments_for_regid(regid)
 
+    def get_term_by_sis_id(self, sis_term_id):
+        """
+        Return a term resource for the passed SIS ID.
+        """
+        # There is not an actual term resource in the Canvas API, so we have
+        # to fake it
+        from restclients.canvas.courses import Courses
+        sis_course_id = "-".join([sis_term_id, "TRAIN-102-A"])
+        course = Courses().get_course_by_sis_id(sis_course_id)
+        return course.term
+
     def valid_canvas_id(self, id):
         return self._re_canvas_id.match(id) is not None
 

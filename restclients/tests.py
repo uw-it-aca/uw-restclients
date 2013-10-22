@@ -59,4 +59,4 @@ from restclients.test.canvas.roles import CanvasTestRoles
 from restclients.test.canvas.courses import CanvasTestCourses
 from restclients.test.canvas.sections import CanvasTestSections
 from restclients.test.canvas.bad_sis_ids import CanvasBadSISIDs
-
+from restclients.test.canvas.terms import CanvasTestTerms
