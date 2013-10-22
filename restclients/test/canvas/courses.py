@@ -3,6 +3,20 @@ from restclients.canvas.courses import Courses
 
 
 class CanvasTestCourses(TestCase):
+    def test_course(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Courses()
+
+            course = canvas.get_course(149650)
+
+            self.assertEquals(course.course_id, 149650, "Has proper course id")
+            self.assertEquals(course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
+            self.assertEquals(course.sis_course_id, "2012-summer-PHYS-121-A")
+            self.assertEquals(course.sws_course_id(), "2012,summer,PHYS,121/A")
+            self.assertEquals(course.account_id, 84378, "Has proper account id")
+            self.assertEquals(course.term.sis_term_id, "2012-summer", "SIS term id")
+            self.assertEquals(course.term.term_id, 810, "Term id")
 
     def test_courses(self):
         with self.settings(

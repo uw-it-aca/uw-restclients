@@ -3,16 +3,23 @@ from django.db import models
 
 class Account(models.Model):
     account_id = models.IntegerField(max_length=20)
-    sis_account_id = models.CharField(max_length=30, null=True)
+    sis_account_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=500)
     parent_account_id = models.CharField(max_length=30)
     root_account_id = models.CharField(max_length=30)
+
+
+class Term(models.Model):
+    term_id = models.IntegerField(max_length=20)
+    sis_term_id = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100)
 
 
 class Course(models.Model):
     course_id = models.IntegerField(max_length=20)
     sis_course_id = models.CharField(max_length=100, null=True)
     account_id = models.IntegerField(max_length=20)
+    term = models.ForeignKey(Term, null=True)
     course_name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
 
