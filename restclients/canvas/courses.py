@@ -16,17 +16,64 @@ class Courses(Canvas):
         url = "/api/v1/courses/%s" % course_id
         return self._course_from_json(self._get_resource(url))
 
-    def get_course_by_canvas_id(self, canvas_id):
+    def get_course_by_canvas_id(self, course_id):
         """
         Alias method for get_course().
         """
-        return self.get_course(canvas_id)
+        return self.get_course(course_id)
 
-    def get_course_by_sis_id(self, sis_id):
+    def get_course_by_sis_id(self, sis_course_id):
         """
         Return course resource for given sis id.
         """
-        return self.get_course(self._sis_id(sis_id, sis_field="course"))
+        return self.get_course(self._sis_id(sis_course_id, sis_field="course"))
+
+    def get_courses_in_account(self, account_id, params={}):
+        """
+        Returns a list of courses for the passed account ID.
+
+        https://canvas.instructure.com/doc/api/accounts.html#method.accounts.courses_api
+        """
+        if "published" in params:
+            params["published"] = "true" if params["published"] else ""
+
+        params = self._pagination(params)
+        url = "/api/v1/accounts/%s/courses%s" % (account_id,
+                                                 self._params(params))
+        courses = []
+        for data in self._get_resource(url):
+            courses.append(self._course_from_json(data))
+        return courses
+
+    def get_courses_in_account_by_canvas_id(self, account_id, params={}):
+        """
+        Alias method for get_courses_in_account().
+        """
+        return self.get_courses_in_account(account_id, params)
+
+    def get_courses_in_account_by_sis_id(self, sis_account_id, params={}):
+        """
+        Return a list of courses for the passed account SIS ID.
+        """
+        return self.get_courses_in_account(self._sis_id(sis_account_id,
+                                                        sis_field="account"),
+                                           params)
+
+    def get_published_courses_in_account_by_canvas_id(self, account_id, params={}):
+        """
+        Return a list of published courses for the passed account ID.
+        """
+        params["published"] = True
+        return self.get_courses_in_account(account_id, params)
+
+    def get_published_courses_in_account_by_sis_id(self, sis_account_id, params={}):
+        """
+        Return a list of published courses for the passed account SIS ID.
+        """
+        params["published"] = True
+        return self.get_courses_in_account(self._sis_id(sis_account_id,
+                                                        sis_field="account"),
+                                           params)
 
     def get_courses_for_regid(self, regid):
         """
@@ -47,7 +94,8 @@ class Courses(Canvas):
     def _course_from_json(self, data):
         course = Course()
         course.course_id = data["id"]
-        course.sis_course_id = data["sis_course_id"]
+        course.sis_course_id = data["sis_course_id"] if "sis_course_id" in data else None
+        course.account_id = data["account_id"]
         course.name = data["name"]
 
         course_url = data["calendar"]["ics"]

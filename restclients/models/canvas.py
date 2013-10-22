@@ -11,9 +11,10 @@ class Account(models.Model):
 
 class Course(models.Model):
     course_id = models.IntegerField(max_length=20)
+    sis_course_id = models.CharField(max_length=100, null=True)
+    account_id = models.IntegerField(max_length=20)
+    course_name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
-    sis_course_id = models.CharField(max_length=100)
-    course_name = models.CharField(max_length=100)
 
     def sws_course_id(self):
         if self.sis_course_id is None:

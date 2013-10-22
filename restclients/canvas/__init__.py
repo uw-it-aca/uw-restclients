@@ -42,15 +42,6 @@ class Canvas(object):
         from restclients.canvas.enrollments import Enrollments
         return Enrollments().get_enrollments_for_regid(regid)
 
-    def get_course_info_by_canvas_id(self, canvas_id):
-        return self.get_course(canvas_id)
-
-    def get_course_info_by_sis_id(self, sis_id):
-        return self.get_course(self._sis_id(sis_id, sis_field='course'))
-
-    def get_course(self, id):
-        return self._get_resource("/api/v1/courses/%s" % id)
-
     def valid_canvas_id(self, id):
         return self._re_canvas_id.match(id) is not None
 
@@ -88,28 +79,6 @@ class Canvas(object):
         params = self._pagination(params)
         return self._get_resource("/api/v1/courses/%s/sections%s"
                                   % (id, self._params(params)))
-
-    def get_courses_in_account_by_canvas_id(self, canvas_id, params={}):
-        return self._get_courses_in_account(canvas_id, params)
-
-    def get_courses_in_account_by_sis_id(self, sis_id, params={}):
-        return self._get_courses_in_account(self._sis_id(sis_id), params)
-
-    def get_published_courses_in_account_by_canvas_id(self, canvas_id):
-        return self._get_courses_in_account(canvas_id, {'published': True})
-
-    def get_published_courses_in_account_by_sis_id(self, sis_id):
-        return self._get_courses_in_account(self._sis_id(sis_id),
-                                            {'published': True})
-
-    def _get_courses_in_account(self, id, params):
-        """
-        return list of admins in given account
-        """
-        params = self._pagination(params)
-        url = "/api/v1/accounts/%s/courses%s" % (id, self._params(params))
-
-        return self._get_resource(url)
 
     def get_admins_by_canvas_id(self, canvas_id):
         return self.get_admins(canvas_id)
@@ -209,7 +178,7 @@ class Canvas(object):
 
     def _pagination(self, params):
         if self._per_page != DEFAULT_PAGINATION:
-            params['per_page'] = self._per_page
+            params["per_page"] = self._per_page
 
         return params
 
