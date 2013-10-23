@@ -71,6 +71,14 @@ class Reports(Canvas):
 
         return self._report_from_json(json.loads(response.data))
 
+    def create_course_provisioning_report(self, term_id=None, params={})
+        """
+        Convenience method for create_report, for creating a course-based
+        provisioning report.
+        """
+        params["courses"] = True
+        return self.create_report(ReportType.PROVISIONING, term_id, params)
+
     def get_report_data(self, report):
         """
         Returns a completed report as a list of csv strings.
