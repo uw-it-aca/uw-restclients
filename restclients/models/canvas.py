@@ -78,14 +78,34 @@ class Enrollment(models.Model):
         return sws_id
 
 
+class Attachment(models.Model):
+    attachment_id = models.IntegerField(max_length=20)
+    filename = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=200)
+    content_type = models.CharField(max_length=50)
+    size = models.IntegerField(max_length=20)
+    url = models.CharField(max_length=500)
+
+
 class Report(models.Model):
     report_id = models.CharField(max_length=30)
     type = models.CharField(max_length=500)
     url = models.CharField(max_length=500)
     status = models.CharField(max_length=50)
     progress = models.SmallIntegerField(max_length=3, default=0)
+    attachment = models.ForeignKey(Attachment, null=True)
 
 
 class ReportType(models.Model):
-    name = models.CharField(max_length=500)
+    PROVISIONING = "provisioning_csv"
+    SIS_EXPORT = "sis_export_csv"
+    UNUSED_COURSES = "unused_courses_csv"
+
+    NAME_CHOICES = (
+        (PROVISIONING, "Provisioning"),
+        (SIS_EXPORT, "SIS Export"),
+        (UNUSED_COURSES, "Unused Courses")
+    )
+
+    name = models.CharField(max_length=500, choices=NAME_CHOICES)
     title = models.CharField(max_length=500)
