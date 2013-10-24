@@ -6,6 +6,7 @@ from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url, post_mockdata_url
 from restclients.dao_implementation.mock import delete_mockdata_url, put_mockdata_url
 from django.conf import settings
+from os.path import abspath, dirname
 
 
 class File(object):
@@ -22,7 +23,20 @@ class File(object):
         return put_mockdata_url("canvas", "file", url, headers, body)
 
     def postURL(self, url, headers, body):
-        return post_mockdata_url("canvas", "file", url, headers, body)
+        response = post_mockdata_url("canvas", "file", url, headers, body)
+        if response.status == 400:
+            return response
+
+        path = abspath(dirname(__file__) + "/../resources/canvas/file" +
+                       url + ".POST")
+        try:
+            handle = open(path)
+            response.data = handle.read()
+            response.status = 200
+        except IOError:
+            response.status = 404
+
+        return response
 
     def deleteURL(self, url, headers):
         return delete_mockdata_url("canvas", "file", url, headers)

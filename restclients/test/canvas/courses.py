@@ -73,3 +73,17 @@ class CanvasTestCourses(TestCase):
             self.assertEquals(course.sis_course_id, "2012-summer-PHYS-121-A")
             self.assertEquals(course.sws_course_id(), "2012,summer,PHYS,121/A")
             self.assertEquals(course.account_id, 84378, "Has proper account id")
+
+    def test_create_course(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Courses()
+
+            account_id = 88888 
+            name = "Created Course"
+
+            course = canvas.create_course(account_id, name)
+
+            self.assertEquals(course.course_id, 18881, "Correct course ID")
+            self.assertEquals(course.name, name, "Correct course name")
+            self.assertEquals(course.account_id, account_id, "Correct account ID")

@@ -224,21 +224,6 @@ class Canvas(object):
 
         return data
 
-    def create_course(self, subaccount_id, course_name):
-        """
-        Create a canvas course with the given subaccount id and course name
-        """
-        url = "/api/v1/accounts/%s/courses" % subaccount_id
-        dao = Canvas_DAO()
-        post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                    json.dumps({"course": {"name": course_name}}))
-
-        if not (post_response.status == 200 or post_response.status == 204):
-            raise DataFailureException(url, post_response.status,
-                                       post_response.data)
-
-        return json.loads(post_response.data)
-
     def create_course_section(self, course_id, sis_section_id, section_name):
         """
         Create a canvas course section with the given section name and id

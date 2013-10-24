@@ -100,6 +100,23 @@ class Courses(Canvas):
 
         return courses
 
+    def create_course(self, account_id, course_name):
+        """
+        Create a canvas course with the given subaccount id and course name.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.create
+        """
+        url = "/api/v1/accounts/%s/courses" % account_id
+        body = json.dumps({"course": {"name": course_name}})
+
+        dao = Canvas_DAO()
+        response = dao.postURL(url, {"Content-Type": "application/json"}, body)
+
+        if not (response.status == 200 or response.status == 204):
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._course_from_json(json.loads(response.data))
+
     def _course_from_json(self, data):
         course = Course()
         course.course_id = data["id"]
