@@ -37,6 +37,14 @@ class Course(models.Model):
         return sws_id
 
 
+class Section(models.Model):
+    section_id = models.IntegerField(max_length=20)
+    sis_section_id = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=200)
+    course_id = models.IntegerField(max_length=20)
+    nonxlist_course_id = models.IntegerField(max_length=20)
+
+
 class Enrollment(models.Model):
     STUDENT = "StudentEnrollment"
     TEACHER = "TeacherEnrollment"
@@ -88,7 +96,8 @@ class Attachment(models.Model):
 
 
 class Report(models.Model):
-    report_id = models.CharField(max_length=30)
+    report_id = models.IntegerField(max_length=20)
+    account_id = models.IntegerField(max_length=20)
     type = models.CharField(max_length=500)
     url = models.CharField(max_length=500)
     status = models.CharField(max_length=50)

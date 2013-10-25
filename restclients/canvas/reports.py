@@ -4,61 +4,69 @@ from restclients.dao import Canvas_DAO
 from restclients.exceptions import DataFailureException
 from restclients.models.canvas import Report, ReportType, Attachment
 from urllib3 import PoolManager
+from time import sleep
 import json
 
 
+class ReportFailureException(Exception):
+    """
+    This exception means there was an error fetching reprt data.
+    """
+    def __init__(self, report):
+        self.report = report
+
+    def __str__(self):
+        return ("Error fetching report %s" % self.report.report_id)
+
+
 class Reports(Canvas):
-    def get_available_reports(self):
+    def get_available_reports(self, account_id):
         """
-        Returns the list of reports for the current context.
+        Returns the list of reports for the canvas account id.
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.available_reports
         """
-        data = self._get_resource("/api/v1/accounts/%s/reports.json" % (
-                                  settings.RESTCLIENTS_CANVAS_ACCOUNT_ID))
+        url = "/api/v1/accounts/%s/reports" % account_id
 
         report_types = []
-        for datum in data:
+        for datum in self._get_resource(url):
             report_type = ReportType()
             report_type.name = datum["report"]
             report_type.title = datum["title"]
             report_type.parameters = datum["parameters"]
             if datum["last_run"] is not None:
-                report = self._report_from_json(datum["last_run"])
+                report = self._report_from_json(account_id, datum["last_run"])
                 report_type.last_run = report
 
             report_types.append(report_type)
 
         return report_types
 
-    def get_reports_by_type(self, report_type):
+    def get_reports_by_type(self, account_id, report_type):
         """
         Shows all reports of the passed report_type that have been run
-        for the account.
+        for the canvas account id.
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.index
         """
-        data = self._get_resource("/api/v1/accounts/%s/reports/%s.json" % (
-                                  settings.RESTCLIENTS_CANVAS_ACCOUNT_ID,
-                                  report_type))
+        url = "/api/v1/accounts/%s/reports/%s" % (account_id, report_type)
 
         reports = []
-        for datum in data:
-            reports.append(self._report_from_json(datum))
+        for datum in self._get_resource(url):
+            reports.append(self._report_from_json(account_id, datum))
 
         return reports
 
-    def create_report(self, report_type, term_id=None, params={}):
+    def create_report(self, report_type, account_id, term_id=None, params={}):
         """
-        Generates a report instance for the account.
+        Generates a report instance for the canvas account id.
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.create
         """
         if term_id is not None:
             params["enrollment_term_id"] = term_id
 
-        url = "/api/v1/accounts/%s/reports/%s" % (
-            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, report_type)
+        url = "/api/v1/accounts/%s/reports/%s" % (account_id, report_type)
         headers = {"Accept": "application/json",
                    "Content-Type": "application/json"}
         body = json.dumps({"parameters": params})
@@ -69,20 +77,41 @@ class Reports(Canvas):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
-        return self._report_from_json(json.loads(response.data))
+        return self._report_from_json(account_id, json.loads(response.data))
 
-    def create_course_provisioning_report(self, term_id=None, params={}):
+    def create_course_provisioning_report(self, account_id, term_id=None,
+                                          params={}):
         """
-        Convenience method for create_report, for creating a course-based
+        Convenience method for create_report, for creating a course
         provisioning report.
         """
         params["courses"] = True
-        return self.create_report(ReportType.PROVISIONING, term_id, params)
+        return self.create_report(ReportType.PROVISIONING, account_id, term_id,
+                                  params)
+
+    def create_enrollments_provisioning_report(self, account_id, term_id=None,
+                                               params={}):
+        """
+        Convenience method for create_report, for creating an enrollment
+        provisioning report.
+        """
+        params["enrollments"] = True
+        return self.create_report(ReportType.PROVISIONING, account_id, term_id,
+                                  params)
 
     def get_report_data(self, report):
         """
         Returns a completed report as a list of csv strings.
         """
+        if report.report_id is None or report.status is None:
+            raise ReportFailureException(report)
+
+        while report.status != "complete":
+            if report.status == "error":
+                raise ReportFailureException(report)
+            sleep(5)
+            report = self.get_report_status(report)
+
         if report.attachment is None or report.attachment.url is None:
             return
 
@@ -101,12 +130,15 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.show
         """
+        if (report.account_id is None or report.type is None or
+            report.report_id is None):
+            raise ReportFailureException(report)
+
         url = "/api/v1/accounts/%s/reports/%s/%s" % (
-            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, report.type,
-            report.report_id)
+            report.account_id, report.type, report.report_id)
 
         data = self._get_resource(url)
-        return self._report_from_json(data)
+        return self._report_from_json(report.account_id, data)
 
     def delete_report(self, report):
         """
@@ -116,19 +148,20 @@ class Reports(Canvas):
         """
         dao = Canvas_DAO()
 
-        url = "/api/v1/accounts/%s/reports/%s/%s.json" % (
-            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, report.type,
-            report.report_id)
+        url = "/api/v1/accounts/%s/reports/%s/%s" % (
+            report.account_id, report.type, report.report_id)
 
         response = dao.deleteURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
-        return self._report_from_json(json.loads(response.data))
+        return self._report_from_json(report.account_id,
+                                      json.loads(response.data))
 
-    def _report_from_json(self, data):
+    def _report_from_json(self, account_id, data):
         report = Report()
+        report.account_id = account_id
         report.report_id = data["id"]
         report.type = data["report"]
         report.url = data["file_url"]
