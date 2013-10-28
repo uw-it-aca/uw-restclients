@@ -53,43 +53,20 @@ class Canvas(object):
         course = Courses().get_course_by_sis_id(sis_course_id)
         return course.term
 
-    def valid_canvas_id(self, id):
-        return self._re_canvas_id.match(id) is not None
+    def valid_canvas_id(self, canvas_id):
+        return self._re_canvas_id.match(str(canvas_id)) is not None
 
     def sis_account_id(self, sis_id):
-        return self._sis_id(sis_id, sis_field='account')
+        return self._sis_id(sis_id, sis_field="account")
 
     def sis_course_id(self, sis_id):
-        return self._sis_id(sis_id, sis_field='course')
+        return self._sis_id(sis_id, sis_field="course")
 
     def sis_section_id(self, sis_id):
-        return self._sis_id(sis_id, sis_field='section')
+        return self._sis_id(sis_id, sis_field="section")
 
     def sis_user_id(self, sis_id):
-        return self._sis_id(sis_id, sis_field='user')
-
-    def get_course_section(self, course_id, section_id):
-        return self._get_resource("/api/v1/courses/%s/sections/%s"
-                                  % (course_id, section_id))
-
-    def get_sections_by_canvas_id(self, canvas_id, params={}):
-        return self._get_sections(canvas_id, params)
-
-    def get_sections_by_sis_id(self, sis_id, params={}):
-        return self._get_sections(self._sis_id(sis_id, sis_field='course'),
-                                  params)
-
-    def get_sections_with_students_by_canvas_id(self, canvas_id):
-        return self._get_sections(canvas_id, {'include': 'students'})
-
-    def get_sections_with_students_by_sis_id(self, sis_id):
-        return self._get_sections(self._sis_id(sis_id, sis_field='course'),
-                                  {'include': 'students'})
-
-    def _get_sections(self, id, params):
-        params = self._pagination(params)
-        return self._get_resource("/api/v1/courses/%s/sections%s"
-                                  % (id, self._params(params)))
+        return self._sis_id(sis_id, sis_field="user")
 
     def get_admins_by_canvas_id(self, canvas_id):
         return self.get_admins(canvas_id)
@@ -223,81 +200,6 @@ class Canvas(object):
                 data.extend(self._get_resource(next_page))
 
         return data
-
-    def create_course_section(self, course_id, sis_section_id, section_name):
-        """
-        Create a canvas course section with the given section name and id
-        """
-        url = "/api/v1/courses/%s/sections" % course_id
-        dao = Canvas_DAO()
-        post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                    json.dumps({"course_section": {"name": section_name,
-                                                                   "sis_section_id": sis_section_id}}))
-
-        if not (post_response.status == 200 or post_response.status == 204):
-            raise DataFailureException(url, post_response.status,
-                                       post_response.data)
-
-        return json.loads(post_response.data)
-
-    def get_user(self, user_regid):
-        """
-        Fetches a user profile
-        """
-        url = "/api/v1/users/sis_user_id:%s/profile" % user_regid
-        dao = Canvas_DAO()
-        get_response = dao.getURL(url, {"Content-Type": "application/json"})
-
-        if not (get_response.status == 200 or get_response.status == 204):
-            raise DataFailureException(url, get_response.status,
-                                       get_response.data)
-
-        return json.loads(get_response.data)
-
-    def add_user(self, **kwargs):
-        """
-        Creates a new user
-        """
-        url = "/api/v1/accounts/%s/users" % kwargs['account_id']
-        dao = Canvas_DAO()
-        params = {"pseudonym": {"unique_id": kwargs["login_id"],
-                                "send_confirmation": "0"}}
-
-        if "sis_id" in kwargs and kwargs["sis_id"]:
-            params["pseudonym"]["sis_user_id"] = kwargs["sis_id"]
-
-        for user_key in ['name', 'short_name', 'sortable_name', 'locale', 'birthdate']:
-            if user_key in kwargs and kwargs[user_key]:
-                if "user" not in params:
-                    params["user"] = {}
-
-                params["user"][user_key] = kwargs[user_key]
-
-        post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                    json.dumps(params))
-
-        if not (post_response.status == 200 or post_response.status == 204):
-            raise DataFailureException(url, post_response.status,
-                                       post_response.data)
-
-        return json.loads(post_response.data)
-
-    def enroll_user(self, course_id, user_id):
-        """
-        Enroll a user into a course
-        """
-        url = "/api/v1/courses/%s/enrollments" % course_id
-        dao = Canvas_DAO()
-        post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                    json.dumps({"enrollment": {"user_id": user_id,
-                                                               "type": "TeacherEnrollment"},
-                                                "enrollment_state": "active"}))
-
-        if not (post_response.status == 200 or post_response.status == 204):
-            raise DataFailureException(url, post_response.status,
-                                       post_response.data)
-
-        return post_response.status
 
     def sis_import(self, root_account, csv_data):
         """

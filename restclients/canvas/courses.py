@@ -24,12 +24,6 @@ class Courses(Canvas):
         url = "/api/v1/courses/%s%s" % (course_id, self._params(params))
         return self._course_from_json(self._get_resource(url))
 
-    def get_course_by_canvas_id(self, course_id, params={}):
-        """
-        Alias method for get_course().
-        """
-        return self.get_course(course_id, params)
-
     def get_course_by_sis_id(self, sis_course_id, params={}):
         """
         Return course resource for given sis id.
@@ -54,12 +48,6 @@ class Courses(Canvas):
             courses.append(self._course_from_json(data))
         return courses
 
-    def get_courses_in_account_by_canvas_id(self, account_id, params={}):
-        """
-        Alias method for get_courses_in_account().
-        """
-        return self.get_courses_in_account(account_id, params)
-
     def get_courses_in_account_by_sis_id(self, sis_account_id, params={}):
         """
         Return a list of courses for the passed account SIS ID.
@@ -68,7 +56,7 @@ class Courses(Canvas):
                                                         sis_field="account"),
                                            params)
 
-    def get_published_courses_in_account_by_canvas_id(self, account_id, params={}):
+    def get_published_courses_in_account(self, account_id, params={}):
         """
         Return a list of published courses for the passed account ID.
         """
@@ -79,10 +67,9 @@ class Courses(Canvas):
         """
         Return a list of published courses for the passed account SIS ID.
         """
-        params["published"] = True
-        return self.get_courses_in_account(self._sis_id(sis_account_id,
-                                                        sis_field="account"),
-                                           params)
+
+        return self.get_published_courses_in_account(
+            self._sis_id(sis_account_id, sis_field="account"), params)
 
     def get_courses_for_regid(self, regid):
         """

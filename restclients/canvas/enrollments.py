@@ -8,33 +8,37 @@ import re
 
 
 class Enrollments(Canvas):
-    def get_enrollments_for_course(self, sis_course_id, params={}):
+    def get_enrollments_for_course(self, course_id, params={}):
         """
         Return a list of all enrollments for the passed course_id.
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/courses/%s/enrollments%s" % (
-            self._sis_id(sis_course_id, sis_field="course"),
-            self._params(params))
+        url = "/api/v1/courses/%s/enrollments%s" % (course_id,
+                                                    self._params(params))
 
         enrollments = []
         for datum in self._get_resource(url):
             enrollment = self._enrollment_from_json(datum)
-            enrollment.sis_course_id = sis_course_id
             enrollments.append(enrollment)
 
         return enrollments
 
-    def get_enrollments_for_section(self, sis_section_id, params={}):
+    def get_enrollments_for_course_by_sis_id(self, sis_course_id, params={}):
+        """
+        Return a list of all enrollments for the passed course sis id.
+        """
+        return self.get_enrollments_for_course(
+            self._sis_id(sis_course_id, sis_field="course"), params)
+
+    def get_enrollments_for_section(self, section_id, params={}):
         """
         Return a list of all enrollments for the passed section_id.
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/sections/%s/enrollments%s" % (
-            self._sis_id(sis_section_id, sis_field="section"),
-            self._params(params))
+        url = "/api/v1/sections/%s/enrollments%s" % (section_id,
+                                                     self._params(params))
 
         enrollments = []
         for datum in self._get_resource(url):
@@ -42,6 +46,13 @@ class Enrollments(Canvas):
             enrollments.append(enrollment)
 
         return enrollments
+
+    def get_enrollments_for_section_by_sis_id(self, sis_section_id, params={}):
+        """
+        Return a list of all enrollments for the passed section sis id.
+        """
+        return self.get_enrollments_for_section(
+            self._sis_id(sis_section_id, sis_field="section"), params)
 
     def get_enrollments_for_regid(self, regid, params={}):
         """

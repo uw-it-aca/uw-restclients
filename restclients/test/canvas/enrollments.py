@@ -9,11 +9,11 @@ class CanvasTestEnrollment(TestCase):
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
             canvas = Enrollments()
 
-            enrollments = canvas.get_enrollments_for_course("2013-autumn-PHYS-248-A")
+            enrollments = canvas.get_enrollments_for_course_by_sis_id("2013-autumn-PHYS-248-A")
 
             self.assertEquals(len(enrollments), 3, "Has 3 canvas enrollments")
 
-            students = canvas.get_enrollments_for_course("2013-autumn-PHYS-248-A",
+            students = canvas.get_enrollments_for_course_by_sis_id("2013-autumn-PHYS-248-A",
                     {"role": "student"})
 
             self.assertEquals(len(students), 2, "Has 2 student enrollments")
@@ -24,10 +24,10 @@ class CanvasTestEnrollment(TestCase):
 
             canvas = Enrollments()
 
-            enrollments = canvas.get_enrollments_for_section("2013-autumn-PHYS-248-A--")
+            enrollments = canvas.get_enrollments_for_section_by_sis_id("2013-autumn-PHYS-248-A--")
             self.assertEquals(len(enrollments), 3, "Has 3 canvas enrollments")
 
-            students = canvas.get_enrollments_for_section("2013-autumn-PHYS-248-A--",
+            students = canvas.get_enrollments_for_section_by_sis_id("2013-autumn-PHYS-248-A--",
                 {"role": "student"})
 
             self.assertEquals(len(students), 2, "Has 2 student enrollments")

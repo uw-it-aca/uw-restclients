@@ -15,12 +15,6 @@ class Accounts(Canvas):
         url = "/api/v1/accounts/%s" % account_id
         return self._account_from_json(self._get_resource(url))
 
-    def get_account_by_canvas_id(self, canvas_id):
-        """
-        Alias method for get_account().
-        """
-        return self.get_account(canvas_id)
-
     def get_account_by_sis_id(self, sis_id):
         """
         Return account resource for given sis id.
@@ -43,40 +37,36 @@ class Accounts(Canvas):
 
         return accounts
 
-    def get_sub_accounts_by_canvas_id(self, canvas_id):
-        """
-        Alias method for get_sub_accounts().
-        """
-        return self.get_sub_accounts(canvas_id, params={})
-
     def get_sub_accounts_by_sis_id(self, sis_id):
         """
         Return list of subaccounts within the account with the passed sis id.
         """
         return self.get_sub_accounts(self._sis_id(sis_id), params={})
 
-    def get_all_sub_accounts_by_canvas_id(self, canvas_id):
+    def get_all_sub_accounts(self, account_id):
         """
-        Return a recursive list of subaccounts within the account with the passed canvas id.
+        Return a recursive list of subaccounts within the account with
+        the passed canvas id.
         """
-        return self.get_sub_accounts(canvas_id,
+        return self.get_sub_accounts(account_id,
                                      params={"recursive": "true"})
 
     def get_all_sub_accounts_by_sis_id(self, sis_id):
         """
-        Return a recursive list of subaccounts within the account with the passed sis id.
+        Return a recursive list of subaccounts within the account with
+        the passed sis id.
         """
         return self.get_sub_accounts(self._sis_id(sis_id),
                                      params={"recursive": "true"})
 
-    def update_account(self, account_id, resource):
+    def update_account(self, account):
         """
-        Update account with the passed canvas id, with given account resource.
+        Update the passed account. Returns the updated account.
 
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.update
         """
-        url = "/api/v1/accounts/%s" % account_id
-        body = json.dumps(resource)
+        url = "/api/v1/accounts/%s" % account.account_id
+        body = json.dumps({"account": {"name": account.name}})
 
         dao = Canvas_DAO()
         response = dao.putURL(url, {"Content-Type": "application/json"}, body)
@@ -85,18 +75,6 @@ class Accounts(Canvas):
             raise DataFailureException(url, response.status, response.data)
 
         return self._account_from_json(response.data)
-
-    def update_account_by_canvas_id(self, canvas_id, resource):
-        """
-        Alias method for update_account()
-        """
-        return self.update_account(canvas_id, resource)
-
-    def update_account_by_sis_id(self, sis_id, resource):
-        """
-        Update account with the passed sis id.
-        """
-        return self.update_account(self._sis_id(sis_id), resource)
 
     def _account_from_json(self, data):
         account = Account()

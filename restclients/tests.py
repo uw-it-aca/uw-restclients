@@ -60,3 +60,4 @@ from restclients.test.canvas.courses import CanvasTestCourses
 from restclients.test.canvas.sections import CanvasTestSections
 from restclients.test.canvas.bad_sis_ids import CanvasBadSISIDs
 from restclients.test.canvas.terms import CanvasTestTerms
+from restclients.test.canvas.users import CanvasTestUsers
