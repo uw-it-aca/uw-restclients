@@ -118,3 +118,25 @@ class ReportType(models.Model):
 
     name = models.CharField(max_length=500, choices=NAME_CHOICES)
     title = models.CharField(max_length=500)
+
+
+class User(models.Model):
+    user_id = models.IntegerField(max_length=20)
+    name = models.CharField(max_length=100, null=True)
+    short_name = models.CharField(max_length=100, null=True)
+    sortable_name = models.CharField(max_length=100, null=True)
+    sis_user_id = models.CharField(max_length=100, null=True)
+    login_id = models.CharField(max_length=100, null=True)
+    time_zone = models.CharField(max_length=100, null=True)
+    locale = models.CharField(max_length=2, null=True)
+    email = models.CharField(max_length=100, null=True)
+
+    def post_data(self):
+        return {"user": {"name": self.name,
+                         "short_name": self.short_name,
+                         "sortable_name": self.sortable_name,
+                         "time_zone": self.time_zone,
+                         "locale": self.locale},
+                "pseudonym": {"unique_id": self.login_id,
+                              "sis_user_id": self.sis_user_id,
+                              "send_confirmation": False}}
