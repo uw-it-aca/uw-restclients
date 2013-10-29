@@ -43,7 +43,6 @@ class LiveSea(object):
     logger = logging.getLogger
     ('restclients.dao_implementation.trumba.LiveSea')
 
-    host = settings.RESTCLIENTS_TRUMBA_HOST
     pool = None
 
     def get_basic_auth(self):
@@ -58,16 +57,19 @@ class LiveSea(object):
     @staticmethod
     def set_pool():
         if LiveSea.pool == None:
-            LiveSea.pool = get_con_pool(LiveSea.host, None, None)
+            LiveSea.pool = get_con_pool(settings.RESTCLIENTS_TRUMBA_HOST,
+                                        None, None)
 
     def getURL(self, url, headers):
         self.set_pool()
-        return get_live_url(LiveSea.pool, 'GET', LiveSea.host, url, 
+        return get_live_url(LiveSea.pool, 'GET',
+                            settings.RESTCLIENTS_TRUMBA_HOST, url, 
                             headers=self.add_basicauth_header(headers))
 
     def postURL(self, url, headers, body):
         self.set_pool()
-        return get_live_url(LiveSea.pool, 'POST', LiveSea.host, url,
+        return get_live_url(LiveSea.pool, 'POST',
+                            settings.RESTCLIENTS_TRUMBA_HOST, url,
                             headers=self.add_basicauth_header(headers),
                             body=body)
 
