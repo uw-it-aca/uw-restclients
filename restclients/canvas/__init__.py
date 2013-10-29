@@ -68,58 +68,6 @@ class Canvas(object):
     def sis_user_id(self, sis_id):
         return self._sis_id(sis_id, sis_field="user")
 
-    def get_admins_by_canvas_id(self, canvas_id):
-        return self.get_admins(canvas_id)
-
-    def get_admins_by_sis_id(self, sis_id):
-        return self.get_admins(self._sis_id(sis_id))
-
-    def get_admins(self, id):
-        """
-        return list of admins in given account
-        """
-        params = self._pagination({})
-        return self._get_resource("/api/v1/accounts/%s/admins%s"
-                                  % (id, self._params(params)))
-
-    def delete_admin_by_canvas_id(self, canvas_id, user_id, role):
-        return self.delete_admin(canvas_id, user_id, role)
-
-    def delete_admin_by_sis_id(self, sis_id, user_id, role):
-        return self.delete_admin(self._sis_id(sis_id), user_id, role)
-
-    def add_admin(self, account_id, user_id, role):
-        """
-        add given user with assigned role to given account
-        """
-        url = "/api/v1/accounts/%s/admins" % (account_id)
-        dao = Canvas_DAO()
-        post_response = dao.postURL(url, {"Content-Type": "application/json"},
-                                    json.dumps({'user_id': unquote(user_id),
-                                                'role': role,
-                                                'send_confirmation': '0'}))
-
-        if not (post_response.status == 200 or post_response.status == 204):
-            raise DataFailureException(url, post_response.status,
-                                       post_response.data)
-
-        return json.loads(post_response.data)
-
-    def delete_admin(self, account_id, user_id, role):
-        """
-        delete given user with assigned role in given account_id
-        """
-        url = "/api/v1/accounts/%s/admins/%s?role=%s" \
-            % (account_id, user_id, quote(role))
-        dao = Canvas_DAO()
-        delete_response = dao.deleteURL(url, {})
-
-        if not (delete_response.status == 200 or delete_response.status == 204):
-            raise DataFailureException(url, delete_response.status,
-                                       delete_response.data)
-
-        return delete_response.status
-
     def get_roles_by_canvas_id(self, canvas_id):
         return self._get_roles(canvas_id)
 
