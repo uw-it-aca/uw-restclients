@@ -108,16 +108,12 @@ class SWS(object):
 
         return self.get_term_by_year_and_quarter(next_year, next_quarter)
 
-    def get_sections_by_instructor_and_term(self, instructor, term):
-        """
-        Returns a list of restclients.SectionReference objects for the passed
-        instructor and term.
-        """
+    def _get_sections_by_person_and_term(self, person, term, course_role):
         url = "/student/v4/section.json?" + urlencode({
             "year": term.year,
             "quarter": term.quarter.lower(),
-            "reg_id": instructor.uwregid,
-            "search_by": "Instructor"})
+            "reg_id": person.uwregid,
+            "search_by": course_role})
 
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -138,6 +134,22 @@ class SWS(object):
             sections.append(section)
 
         return sections
+
+    def get_sections_by_instructor_and_term(self, person, term):
+        """
+        Returns a list of restclients.SectionReference objects for the passed
+        instructor and term.
+        """
+        return self._get_sections_by_person_and_term(person, term,
+            course_role="Instructor")
+
+    def get_sections_by_delegate_and_term(self, person, term):
+        """
+        Returns a list of restclients.SectionReference objects for the passed
+        grade submission delegate and term.
+        """
+        return self._get_sections_by_person_and_term(person, term,
+            course_role="GradeSubmissionDelegate")
 
     def get_sections_by_curriculum_and_term(self, curriculum, term):
         """

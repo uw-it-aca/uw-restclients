@@ -211,6 +211,18 @@ class SWSTestSectionData(TestCase):
             sections = sws.get_sections_by_instructor_and_term(instructor, term)
             self.assertEquals(len(sections), 1)
 
+    def test_sections_by_delegate_and_term(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+
+            term = Term(quarter="summer", year=2013)
+            delegate = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
+
+            sections = sws.get_sections_by_delegate_and_term(delegate, term)
+            self.assertEquals(len(sections), 2)
+
     def test_sections_by_curriculum_and_term(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
