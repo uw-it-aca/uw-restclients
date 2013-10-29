@@ -9,6 +9,9 @@ from restclients.dao_implementation.canvas import File as CanvasFile
 from restclients.dao_implementation.nws import File as NWSFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
+from restclients.dao_implementation.trumba import FileSea
+from restclients.dao_implementation.trumba import FileBot
+from restclients.dao_implementation.trumba import FileTac
 from restclients.cache_implementation import NoCache
 
 
@@ -172,3 +175,43 @@ class NWS_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_NWS_DAO_CLASS', NWSFile)
+
+class TrumbaBot_DAO(MY_DAO):
+    service_id = FileBot().get_path_prefix()
+
+    def getURL(self, url, headers):
+        return self._getURL(TrumbaBot_DAO.service_id, url, headers)
+
+    def postURL(self, url, headers, body):
+        return self._postURL(TrumbaBot_DAO.service_id, url, headers, body)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_TRUMBA_BOT_DAO_CLASS',
+                               FileBot)
+
+class TrumbaSea_DAO(MY_DAO):
+    service_id = FileSea().get_path_prefix()
+
+    def getURL(self, url, headers):
+        return self._getURL(TrumbaSea_DAO.service_id, url, headers)
+
+    def postURL(self, url, headers, body):
+        return self._postURL(TrumbaSea_DAO.service_id, url, headers, body)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_TRUMBA_SEA_DAO_CLASS', 
+                               FileSea)
+
+class TrumbaTac_DAO(MY_DAO):
+    service_id = FileTac().get_path_prefix()
+
+    def getURL(self, url, headers):
+        return self._getURL(TrumbaTac_DAO.service_id, url, headers)
+
+    def postURL(self, url, headers, body):
+        return self._postURL(TrumbaTac_DAO.service_id, url, headers, body)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_TRUMBA_TAC_DAO_CLASS',
+                               FileTac)
+

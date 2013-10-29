@@ -1,0 +1,177 @@
+from urllib import quote, unquote
+from restclients.trumba import Trumba
+from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnknownError
+from restclients.exceptions import DataFailureException
+import logging
+import re
+from lxml import etree, objectify
+from functools import partial
+
+class Account:
+    """
+    Access editors of the calendar, viewer and showon permission 
+    holders of the calendar
+    """
+
+    logger = logging.getLogger('restclients.trumba.Account')
+
+    @staticmethod
+    def _make_add_editor_url(name, userid):
+        """
+        :return: the URL string for the GET request call to Trumba CreateEditor method
+        """
+        return "/service/accounts.asmx/CreateEditor?Name=%s&Email=%s@washington.edu&Password=" % (re.sub(' ', '%20', name), userid) 
+
+    @staticmethod
+    def add_editor(name, userid):
+        """
+        raise a corresponding TrumbaException if an error code has been returned
+        :return: Ture if successful, False otherwise.
+        """
+        url = Account._make_add_editor_url(name, userid)
+        return Account._process_resp(
+            url,
+            Trumba.get_sea_resource(url),
+            Account._is_editor_added)
+
+    @staticmethod
+    def _make_del_editor_url(userid):
+        """
+        :return: the URL string for GET request call to Trumba CloseEditor method
+        """
+        return "/service/accounts.asmx/CloseEditor?Email=%s@washington.edu" % userid
+
+    @staticmethod
+    def delete_editor(userid):
+        """
+        raise a corresponding TrumbaException if an error code has been returned
+        :return: Ture if successful, False otherwise.
+        """
+        url = Account._make_del_editor_url(userid)
+        return Account._process_resp(
+            url,
+            Trumba.get_sea_resource(url),
+            Account._is_editor_deleted)
+
+    @staticmethod    
+    def _make_set_permissions_url(calendar_id, userid, level):
+        """
+        :return: the URL string for GET request call to Trumba SetPermissions method
+        """
+        return "/service/Calendars.asmx/SetPermissions?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (calendar_id, userid, level) 
+
+    @staticmethod
+    def set_bot_permissions(calendar_id, userid, level):
+        """
+        raise a corresponding TrumbaException if an error code has been returned
+        :return: Ture if successful, False otherwise.
+        """
+        url = Account._make_set_permissions_url(
+            calendar_id, userid, level)
+        return Account._process_resp(
+            url,
+            Trumba.get_bot_resource(url),
+            Account._is_permission_set)
+
+    @staticmethod
+    def set_sea_permissions(calendar_id, userid, level):
+        """
+        raise a corresponding TrumbaException if an error code has been returned
+        :return: Ture if successful, False otherwise.
+        """
+        url = Account._make_set_permissions_url(
+            calendar_id, userid, level)
+        return Account._process_resp(
+            url,
+            Trumba.get_sea_resource(url),
+            Account._is_permission_set)
+
+    @staticmethod
+    def set_tac_permissions(calendar_id, userid, level):
+        """
+        raise a corresponding TrumbaException if an error code has been returned
+        :return: Ture if successful, False otherwise.
+        """
+        url = Account._make_set_permissions_url(
+            calendar_id, userid, level)
+        return Account._process_resp(
+            url,
+            Trumba.get_tac_resource(url),
+            Account._is_permission_set)
+
+    @staticmethod
+    def _process_resp(request_id, response, is_success_func):
+        """
+        raise DataFailureException or a corresponding TrumbaException 
+        if an error code has been returned.
+        :return: Ture if successful, False otherwise.
+        """
+        if response.status != 200 or response.data is None:
+            raise DataFailureException(request_id,
+                                       response.status,
+                                       response.reason)
+
+        root = objectify.fromstring(response.data)
+        if root.ResponseMessage is None or root.ResponseMessage.attrib['Code'] is None:
+            raise NoDataReturned()
+
+        resp_code = int(root.ResponseMessage.attrib['Code'])
+        func = partial(is_success_func)
+        successed = func(resp_code)
+        if not successed:
+            Account._check_err(resp_code)
+        return successed
+
+    @staticmethod
+    def _is_permission_set(code):
+        """
+        :param code an integer value  
+        :return: Ture if successful, False otherwise.
+        """
+        return code == 1003
+
+    @staticmethod
+    def _is_editor_added(code):
+        """
+        :param code an integer value  
+        :return: Ture if successful, False otherwise.
+        """
+        return (code == 1001 or code == 3012)
+
+    @staticmethod
+    def _is_editor_deleted(code):
+        """
+        :param code an integer value  
+        :return: Ture if successful, False otherwise.
+        """
+        return code == 1002
+
+    @staticmethod
+    def _check_err(code):
+        """
+        :param code an integer value  
+        Check possible error code returned in the response body
+        raise the coresponding TrumbaException
+        """
+        if code == 3006:
+            raise CalendarNotExist()
+        elif code == 3007:
+            raise CalendarOwnByDiffAccount()
+        elif code == 3008:
+            raise AccountNotExist()
+        elif code == 3009 or code == 3013:
+            raise AccountUsedByDiffUser()
+        elif code == 3010:
+            raise InvalidPermissionLevel()
+        elif code == 3011:
+            raise FailedToClosePublisher()
+        elif code == 3014:
+            raise InvalidEmail()
+        elif code == 3015:
+            raise NoAllowedPermission()
+        elif code == 3016:
+            raise AccountNameEmpty()
+        elif code == 3017 or code == 3018:
+            raise ErrorCreatingEditor()
+        else:
+            raise UnknownError()
