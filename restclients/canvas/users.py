@@ -19,13 +19,15 @@ class Users(Canvas):
         """
         return self.get_user(self._sis_id(sis_user_id, sis_field="user"))
 
-    def create_user(self, user,
-                    account_id=settings.RESTCLIENTS_CANVAS_ACCOUNT_ID):
+    def create_user(self, user, account_id=None):
         """
         Create and return a new user and pseudonym for an account.
 
         https://canvas.instructure.com/doc/api/users.html#method.users.create
         """
+        if account_id is None:
+            account_id = settings.RESTCLIENTS_CANVAS_ACCOUNT_ID
+
         url = "/api/v1/accounts/%s/users" % account_id
 
         data = self._post_resource(url, user.post_data())
