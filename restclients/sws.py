@@ -113,7 +113,8 @@ class SWS(object):
             "year": term.year,
             "quarter": term.quarter.lower(),
             "reg_id": person.uwregid,
-            "search_by": course_role})
+            "search_by": course_role,
+            "include_secondaries": "on"})
 
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
