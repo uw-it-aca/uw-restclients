@@ -1,9 +1,6 @@
 from restclients.canvas import Canvas
 from restclients.canvas.courses import Courses
-from restclients.dao import Canvas_DAO
 from restclients.models.canvas import Enrollment
-from restclients.exceptions import DataFailureException
-import json
 import re
 
 
@@ -87,18 +84,12 @@ class Enrollments(Canvas):
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.create
         """
         url = "/api/v1/courses/%s/enrollments" % course_id
-        body = json.dumps({"enrollment": {"user_id": user_id,
-                                          "type": role,
-                                          "enrollment_state": status}})
+        body = {"enrollment": {"user_id": user_id,
+                               "type": role,
+                               "enrollment_state": status}}
 
-        dao = Canvas_DAO()
-        response = dao.postURL(url, {"Content-Type": "application/json"},
-                               body)
-
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._enrollment_from_json(response.data)
+        data = self._post_resource(url, body)
+        return self._enrollment_from_json(data)
 
     def _enrollment_from_json(self, data):
         enrollment = Enrollment()

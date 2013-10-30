@@ -67,17 +67,10 @@ class Reports(Canvas):
             params["enrollment_term_id"] = term_id
 
         url = "/api/v1/accounts/%s/reports/%s" % (account_id, report_type)
-        headers = {"Accept": "application/json",
-                   "Content-Type": "application/json"}
-        body = json.dumps({"parameters": params})
+        body = {"parameters": params}
 
-        dao = Canvas_DAO()
-        response = dao.postURL(url, headers, body)
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._report_from_json(account_id, json.loads(response.data))
+        data = self._post_resource(url, body)
+        return self._report_from_json(account_id, data)
 
     def create_course_provisioning_report(self, account_id, term_id=None,
                                           params={}):
@@ -146,12 +139,10 @@ class Reports(Canvas):
 
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.destroy
         """
-        dao = Canvas_DAO()
-
         url = "/api/v1/accounts/%s/reports/%s/%s" % (
             report.account_id, report.type, report.report_id)
 
-        response = dao.deleteURL(url, {"Accept": "application/json"})
+        response = Canvas_DAO().deleteURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)

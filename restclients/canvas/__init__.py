@@ -34,8 +34,8 @@ class Canvas(object):
 
     def get_courses_for_regid(self, regid):
         deprecation("Use restclients.canvas.courses.get_courses_for_regid")
-        from restclients.canvas.courses import Courses                  
-        return Courses().get_courses_for_regid(regid)        
+        from restclients.canvas.courses import Courses
+        return Courses().get_courses_for_regid(regid)
 
     def get_enrollments_for_regid(self, regid):
         deprecation("Use restclients.canvas.enrollments.get_enrollments_for_regid")
@@ -132,8 +132,8 @@ class Canvas(object):
 
     def _get_resource(self, url):
         """
-        return representation of the requested resource,
-        chasing pagination links to coalesce resources
+        Canvas GET method. Return representation of the requested resource,
+        chasing pagination links to coalesce resources.
         """
         response = Canvas_DAO().getURL(url, {"Accept": "application/json"})
 
@@ -148,6 +148,32 @@ class Canvas(object):
                 data.extend(self._get_resource(next_page))
 
         return data
+
+    def _put_resource(self, url, body):
+        """
+        Canvas PUT method.
+        """
+        headers = {"Content-Type": "application/json",
+                   "Accept": "application/json"}
+        response = Canvas_DAO().putURL(url, headers, json.dumps(body))
+
+        if not (response.status == 200 or response.status == 204):
+            raise DataFailureException(url, response.status, response.data)
+
+        return json.loads(response.data)
+
+    def _post_resource(self, url, body):
+        """
+        Canvas POST method.
+        """
+        headers = {"Content-Type": "application/json",
+                   "Accept": "application/json"}
+        response = Canvas_DAO().postURL(url, headers, json.dumps(body))
+
+        if not (response.status == 200 or response.status == 204):
+            raise DataFailureException(url, response.status, response.data)
+
+        return json.loads(response.data)
 
     def sis_import(self, root_account, csv_data):
         """

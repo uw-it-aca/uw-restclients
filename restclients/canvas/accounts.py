@@ -1,8 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.dao import Canvas_DAO
 from restclients.models.canvas import Account
-from restclients.exceptions import DataFailureException
-import json
 
 
 class Accounts(Canvas):
@@ -66,15 +63,10 @@ class Accounts(Canvas):
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.update
         """
         url = "/api/v1/accounts/%s" % account.account_id
-        body = json.dumps({"account": {"name": account.name}})
+        body = {"account": {"name": account.name}}
 
-        dao = Canvas_DAO()
-        response = dao.putURL(url, {"Content-Type": "application/json"}, body)
-
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._account_from_json(response.data)
+        data = self._put_resource(url, body)
+        return self._account_from_json(data)
 
     def _account_from_json(self, data):
         account = Account()

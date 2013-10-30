@@ -1,9 +1,6 @@
 from restclients.canvas import Canvas
-from restclients.dao import Canvas_DAO
 from restclients.canvas.users import Users
 from restclients.models.canvas import Section
-from restclients.exceptions import DataFailureException
-import json
 
 
 class Sections(Canvas):
@@ -73,16 +70,11 @@ class Sections(Canvas):
         https://canvas.instructure.com/doc/api/sections.html#method.sections.create
         """
         url = "/api/v1/courses/%s/sections" % course_id
-        body = json.dumps({"course_section": {"name": name,
-                                              "sis_section_id": sis_section_id}})
+        body = {"course_section": {"name": name,
+                                   "sis_section_id": sis_section_id}}
 
-        dao = Canvas_DAO()
-        response = dao.postURL(url, {"Content-Type": "application/json"}, body)
-
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._section_from_json(json.loads(response.data))
+        data = self._post_resource(url, body)
+        return self._section_from_json(data)
 
     def _section_from_json(self, data):
         section = Section()

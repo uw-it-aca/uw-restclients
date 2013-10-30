@@ -1,9 +1,6 @@
 from django.conf import settings
 from restclients.canvas import Canvas
-from restclients.dao import Canvas_DAO
 from restclients.models.canvas import User
-from restclients.exceptions import DataFailureException
-import json
 
 
 class Users(Canvas):
@@ -30,15 +27,9 @@ class Users(Canvas):
         https://canvas.instructure.com/doc/api/users.html#method.users.create
         """
         url = "/api/v1/accounts/%s/users" % account_id
-        body = json.dumps(user.post_data())
 
-        dao = Canvas_DAO()
-        response = dao.postURL(url, {"Content-Type": "application/json"}, body)
-
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._user_from_json(json.loads(response.data))
+        data = self._post_resource(url, user.post_data())
+        return self._user_from_json(data)
 
     def _user_from_json(self, data):
         user  = User()

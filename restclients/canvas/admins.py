@@ -4,7 +4,6 @@ from restclients.models.canvas import Admin
 from restclients.exceptions import DataFailureException
 from restclients.dao import Canvas_DAO
 from urllib import quote
-import json
 
 
 class Admins(Canvas):
@@ -36,19 +35,13 @@ class Admins(Canvas):
         https://canvas.instructure.com/doc/api/admins.html#method.admins.create
         """
         url = "/api/v1/accounts/%s/admins" % account_id
-        headers = {"Content-Type": "application/json",
-                   "Accept": "application/json"}
-        body = json.dumps({"user_id": user_id,
-                           "role": role,
-                           "send_confirmation": False})
+        body = {"user_id": user_id,
+                "role": role,
+                "send_confirmation": False}
 
-        dao = Canvas_DAO()
-        response = dao.postURL(url, headers, body)
+        data = self._post_resource(url, body)
 
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._admin_from_json(json.loads(response.data))
+        return self._admin_from_json(data)
 
     def create_admin_by_sis_id(self, sis_account_id, user_id, role):
         """
@@ -65,13 +58,12 @@ class Admins(Canvas):
         url = "/api/v1/accounts/%s/admins/%s?role=%s" % (account_id, user_id,
                                                          quote(role))
 
-        dao = Canvas_DAO()
-        response = dao.deleteURL(url, {"Accept": "application/json"})
+        response = Canvas_DAO().deleteURL(url, {"Accept": "application/json"})
 
         if not (response.status == 200 or response.status == 204):
             raise DataFailureException(url, response.status, response.data)
 
-        return True 
+        return True
 
     def delete_admin_by_sis_id(self, sis_account_id, user_id, role):
         """
