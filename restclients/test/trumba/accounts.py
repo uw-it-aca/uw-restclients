@@ -29,4 +29,24 @@ class TrumbaTestAccounts(TestCase):
             self.assertTrue(Account.add_editor('010','test10'))
 
 
+    def test_delete_editor_error_cases(self):
+        with self.settings(
+            RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
+            ):
+            self.assertRaises(AccountNotExist, 
+                              Account.delete_editor,'')
+            
+            self.assertRaises(AccountNotExist,
+                              Account.delete_editor,'test')
+
+
+    def test_delete_editor_normal_cases(self):
+        with self.settings(
+            RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
+            ):
+            self.assertTrue(Account.delete_editor('test10'))
+
+
+
+
 
