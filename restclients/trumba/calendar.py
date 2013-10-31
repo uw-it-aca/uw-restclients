@@ -26,9 +26,10 @@ class Calendar:
     @staticmethod
     def get_bot_calendars():
         """
-        Return a list of Calendar objects representing Bothell calendars. 
-        If request failed, return None.
-        :return: CalendarGroup[]
+        :return: CalendarGroup[] or None if not exists
+        Return a list of CalendarGroup objects corresponding to
+        Bothell calendars. 
+        raise DataFailureException if the request failed.
         """
         return Calendar._process_get_cal_resp(
             Calendar.get_calendarlist_url,
@@ -38,9 +39,10 @@ class Calendar:
     @staticmethod
     def get_sea_calendars():
         """
-        Return a list of Calendar objects representing Seattle calendars. 
-        If request failed, return None.
-        :return: CalendarGroup[]
+        :return: CalendarGroup[] or None if not exists
+        Return a list of CalendarGroup objects corresponding to
+        Seattle calendars. 
+        raise DataFailureException if the request failed.
         """
         return Calendar._process_get_cal_resp(
             Calendar.get_calendarlist_url,
@@ -50,9 +52,10 @@ class Calendar:
     @staticmethod
     def get_tac_calendars():
         """
-        Return a list of Calendar objects representing Tacoma calendars. 
-        If request failed, return None.
-        :return: CalendarGroup[]
+        :return: CalendarGroup[] or None if not exists
+        Return a list of CalendarGroup objects corresponding to
+        Tacoma calendars. 
+        raise DataFailureException if the request failed.
         """
         return Calendar._process_get_cal_resp(
             Calendar.get_calendarlist_url,
@@ -67,10 +70,12 @@ class Calendar:
     @staticmethod
     def get_bot_permissions(calendar_id):
         """
+        :param calendar_id: an integer representing calendar ID
+        :return: Permission[] or None if not exists
         Return a list of Permission objects representing
         the user permissions of a given Bothell calendar. 
-        If request failed, return None.
-        :return: Permission[]
+        raise DataFailureException or a corresponding TrumbaException
+        if the request failed or an error code has been returned.
         """
         url = Calendar._make_get_permissions_url(calendar_id)
         body = json.dumps({'CalendarID': calendar_id})

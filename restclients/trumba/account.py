@@ -18,15 +18,19 @@ class Account:
     @staticmethod
     def _make_add_editor_url(name, userid):
         """
-        :return: the URL string for the GET request call to Trumba CreateEditor method
+        :return: the URL string for the GET request call to 
+        Trumba CreateEditor method
         """
         return "/service/accounts.asmx/CreateEditor?Name=%s&Email=%s@washington.edu&Password=" % (re.sub(' ', '%20', name), userid) 
 
     @staticmethod
     def add_editor(name, userid):
         """
-        raise a corresponding TrumbaException if an error code has been returned
-        :return: Ture if successful, False otherwise.
+        :param name: a string representing the user's name
+        :param userid: a string representing the user's UW NetID
+        :return: Ture if request is successful, False otherwise.
+        raise DataFailureException or a corresponding TrumbaException 
+        if the request failed or an error code has been returned.
         """
         url = Account._make_add_editor_url(name, userid)
         return Account._process_resp(
@@ -37,15 +41,18 @@ class Account:
     @staticmethod
     def _make_del_editor_url(userid):
         """
-        :return: the URL string for GET request call to Trumba CloseEditor method
+        :return: the URL string for GET request call to 
+        Trumba CloseEditor method
         """
         return "/service/accounts.asmx/CloseEditor?Email=%s@washington.edu" % userid
 
     @staticmethod
     def delete_editor(userid):
         """
-        raise a corresponding TrumbaException if an error code has been returned
-        :return: Ture if successful, False otherwise.
+        :param userid: a string representing the user's UW NetID
+        :return: Ture if request is successful, False otherwise.
+        raise DataFailureException or a corresponding TrumbaException 
+        if the request failed or an error code has been returned.
         """
         url = Account._make_del_editor_url(userid)
         return Account._process_resp(
@@ -56,15 +63,20 @@ class Account:
     @staticmethod    
     def _make_set_permissions_url(calendar_id, userid, level):
         """
-        :return: the URL string for GET request call to Trumba SetPermissions method
+        :return: the URL string for GET request call 
+        to Trumba SetPermissions method
         """
         return "/service/Calendars.asmx/SetPermissions?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (calendar_id, userid, level) 
 
     @staticmethod
     def set_bot_permissions(calendar_id, userid, level):
         """
-        raise a corresponding TrumbaException if an error code has been returned
-        :return: Ture if successful, False otherwise.
+        :param calendar_id: an integer representing calendar ID
+        :param userid: a string representing the user's UW NetID
+        :param level: a string representing the permission level
+        :return: Ture if request is successful, False otherwise.
+        raise DataFailureException or a corresponding TrumbaException 
+        if the request failed or an error code has been returned.
         """
         url = Account._make_set_permissions_url(
             calendar_id, userid, level)
@@ -76,8 +88,12 @@ class Account:
     @staticmethod
     def set_sea_permissions(calendar_id, userid, level):
         """
-        raise a corresponding TrumbaException if an error code has been returned
-        :return: Ture if successful, False otherwise.
+        :param calendar_id: an integer representing calendar ID
+        :param userid: a string representing the user's UW NetID
+        :param level: a string representing the permission level
+        :return: Ture if request is successful, False otherwise.
+        raise DataFailureException or a corresponding TrumbaException 
+        if the request failed or an error code has been returned.
         """
         url = Account._make_set_permissions_url(
             calendar_id, userid, level)
@@ -89,8 +105,12 @@ class Account:
     @staticmethod
     def set_tac_permissions(calendar_id, userid, level):
         """
-        raise a corresponding TrumbaException if an error code has been returned
-        :return: Ture if successful, False otherwise.
+        :param calendar_id: an integer representing calendar ID
+        :param userid: a string representing the user's UW NetID
+        :param level: a string representing the permission level
+        :return: Ture if request is successful, False otherwise.
+        raise DataFailureException or a corresponding TrumbaException 
+        if the request failed or an error code has been returned.
         """
         url = Account._make_set_permissions_url(
             calendar_id, userid, level)
@@ -102,9 +122,9 @@ class Account:
     @staticmethod
     def _process_resp(request_id, response, is_success_func):
         """
-        raise DataFailureException or a corresponding TrumbaException 
-        if an error code has been returned.
         :return: Ture if successful, False otherwise.
+        raise DataFailureException or a corresponding TrumbaException 
+        if the request failed or an error code has been returned.
         """
         if response.status != 200 or response.data is None:
             raise DataFailureException(request_id,
@@ -125,31 +145,31 @@ class Account:
     @staticmethod
     def _is_permission_set(code):
         """
-        :param code an integer value  
-        :return: Ture if successful, False otherwise.
+        :param code: an integer value  
+        :return: Ture if the code means successful, False otherwise.
         """
         return code == 1003
 
     @staticmethod
     def _is_editor_added(code):
         """
-        :param code an integer value  
-        :return: Ture if successful, False otherwise.
+        :param code: an integer value  
+        :return: Ture if the code means successful, False otherwise.
         """
         return (code == 1001 or code == 3012)
 
     @staticmethod
     def _is_editor_deleted(code):
         """
-        :param code an integer value  
-        :return: Ture if successful, False otherwise.
+        :param code: an integer value  
+        :return: Ture if the code means successful, False otherwise.
         """
         return code == 1002
 
     @staticmethod
     def _check_err(code):
         """
-        :param code an integer value  
+        :param code: an integer value  
         Check possible error code returned in the response body
         raise the coresponding TrumbaException
         """
