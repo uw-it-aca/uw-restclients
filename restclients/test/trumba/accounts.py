@@ -46,7 +46,25 @@ class TrumbaTestAccounts(TestCase):
             ):
             self.assertTrue(Account.delete_editor('test10'))
 
+    def test_sea_permissions_error_cases(self):
+        with self.settings(
+            RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
+            ):
+            self.assertRaises(AccountNotExist,
+                              Account.set_sea_permissions, 1, '', 'EDIT')
+
+            self.assertRaises(NoAllowedPermission,
+                              Account.set_sea_permissions, 1, 'test10', 'PUBLISH')
+
+    def test_delete_editor_normal_cases(self):
+        with self.settings(
+            RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
+            ):
+            self.assertTrue(Account.set_sea_permissions(1, 'test10', 'SHOWON'))
+
+            self.assertTrue(Account.set_sea_permissions(1, 'test10', 'EDIT'))
 
 
+            
 
 
