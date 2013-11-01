@@ -66,7 +66,7 @@ class Account:
         :return: the URL string for GET request call 
         to Trumba SetPermissions method
         """
-        return "/service/Calendars.asmx/SetPermissions?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (calendar_id, userid, level) 
+        return "/service/calendars.asmx/SetPermissions?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (calendar_id, userid, level) 
 
     @staticmethod
     def set_bot_permissions(calendar_id, userid, level):
