@@ -4,6 +4,7 @@ from restclients.dao_implementation.live import get_con_pool, get_live_url
 from django.conf import settings
 import logging
 import base64
+import json
 
 class FileSea(object):
     """
@@ -14,17 +15,28 @@ class FileSea(object):
     RESTCLIENTS_TRUMBA_SEA_DAO_CLASS =
     'restclients.dao_implementation.trumba.FileSea'
     """
+    logger = logging.getLogger(
+        'restclients.dao_implementation.trumba.File')
+
     def get_path_prefix(self):
         return "trumba_sea"
     
     def getURL(self, url, headers):
+        FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))    
         return get_mockdata_url(self.get_path_prefix(), "file",
                                 url, headers,
                                 dir_base=dirname(__file__))
 
     def postURL(self, url, headers, body):
-        return post_mockdata_url(self.get_path_prefix(), "file", 
-                                 url, headers, body)
+        # convert to a get method call    
+        new_url = url
+        if body is not None:
+            new_url = "%s.Post" % url
+            params = json.loads(body)
+            for key in params:
+                new_url = "%s%s=%s&" % (new_url, key, params[key])
+            new_url.rstrip('&')
+        return self.getURL(new_url, headers)
 
 class LiveSea(object):
     """
@@ -40,8 +52,8 @@ class LiveSea(object):
     'restclients.dao_implementation.trumba.LiveSea'
     """
 
-    logger = logging.getLogger
-    ('restclients.dao_implementation.trumba.LiveSea')
+    logger = logging.getLogger(
+        'restclients.dao_implementation.trumba.Live')
 
     pool = None
 
