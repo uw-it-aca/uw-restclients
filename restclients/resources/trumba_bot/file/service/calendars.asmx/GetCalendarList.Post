@@ -1,0 +1,6 @@
+{"d":{"__type":"Graw.Rainbow.Import.Response",
+"Calendars":[{"ID":21,"Name":"Bothell Calendar","ChildCalendars":[
+        {"ID":211,"Name":"Bothell sub-calendar1","ChildCalendars":null},
+        {"ID":212,"Name":"Bothell sub-calendar2","ChildCalendars":null},
+        {"ID":213,"Name":"Bothell sub-calendar3","ChildCalendars":null}]}
+], "Messages":null,"Users":null}}
