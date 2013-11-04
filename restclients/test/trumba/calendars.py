@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.exceptions import DataFailureException
 from restclients.trumba.calendar import Calendar
-from restclients.trumba.exceptions import TrumbaException, CalendarNotExist, CalendarOwnByDiffAccount, NoDataReturned, UnknownError
+from restclients.trumba.exceptions import TrumbaException, CalendarNotExist, CalendarOwnByDiffAccount, NoDataReturned, UnknownError, UnexpectedError
 
 class TrumbaTestCalendars(TestCase):
 
@@ -102,3 +102,67 @@ class TrumbaTestCalendars(TestCase):
 
             self.assertRaises(CalendarOwnByDiffAccount,
                               Calendar.get_sea_permissions, 2)
+
+    def test_create_body(self):
+        self.assertEqual(Calendar._create_get_perm_body(1), '{"CalendarID": 1}')
+
+    def test_is_valid_calendarid(self):
+        self.assertTrue(Calendar._is_valid_calendarid(1))
+        self.assertFalse(Calendar._is_valid_calendarid(0))
+        self.assertFalse(Calendar._is_valid_calendarid(-1))
+
+    def test_is_valid_email(self):
+        self.assertTrue(Calendar._is_valid_email('test@washington.edu'))
+        self.assertFalse(Calendar._is_valid_email('test-email@washington.edu'))
+        self.assertFalse(Calendar._is_valid_email('test_email@washington.edu'))
+        self.assertFalse(Calendar._is_valid_email('test.email@washington.edu'))
+        self.assertFalse(Calendar._is_valid_email('test@uw.edu'))
+        self.assertFalse(Calendar._is_valid_email('0test@washington.edu'))
+        self.assertFalse(Calendar._is_valid_email(''))
+
+    def test_extract_uwnetid(self):
+        self.assertEqual(Calendar._extract_uwnetid('test@washington.edu'), 'test')
+        self.assertEqual(Calendar._extract_uwnetid('test'), 'test')
+        self.assertEqual(Calendar._extract_uwnetid('@washington.edu'), '')
+        self.assertEqual(Calendar._extract_uwnetid('bad@uw.edu'), 'bad@uw.edu')
+        self.assertEqual(Calendar._extract_uwnetid(''), '')
+        
+    def test_check_err(self):
+        self.assertRaises(UnexpectedError,
+                          Calendar._check_err, 
+                          {"d":{"Messages":[{"Code":3009,
+                                             "Description":"..."}]}})
+
+        self.assertRaises(CalendarOwnByDiffAccount,
+                          Calendar._check_err, 
+                          {"d":{"Messages":[{"Code":3007}]}})
+
+        self.assertRaises(CalendarNotExist,
+                          Calendar._check_err, 
+                          {"d":{"Messages":[{"Code":3006}]}})
+
+        self.assertRaises(NoDataReturned,
+                          Calendar._check_err, {'d': None})
+
+        self.assertRaises(UnknownError,
+                          Calendar._check_err, 
+                          {"d":{"Messages":[]}})
+
+        self.assertRaises(UnknownError,
+                          Calendar._check_err, 
+                          {"d":{"Messages":[{"Code": None}]}})
+
+        self.assertIsNone(Calendar._check_err({"d":{"Messages":None}}))
+
+    def test_process_get_cal_resp(self):
+        """
+        Omit for now . To be implemented using httmock
+        """
+        pass
+
+    def test_process_get_perm_resp(self):
+        """
+        Omit for now . To be implemented using httmock
+        """
+        pass
+
