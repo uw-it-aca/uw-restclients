@@ -49,7 +49,19 @@ class PWSTestPersonData(TestCase):
             self.assertRaises(DataFailureException, 
                               pws.get_person_by_regid,
                               "9136CCB8F66711D5BE060004AC494FFF")
-        
+
+    def test_compare_persons(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            pws = PWS()
+            
+            person1 = pws.get_person_by_regid("7718EB38AE3411D689DA0004AC494FFE")
+            person2 = pws.get_person_by_regid("7718EB38AE3411D689DA0004AC494FFE")
+            person3 = pws.get_person_by_regid("9136CCB8F66711D5BE060004AC494FFE")
+
+            self.assertEquals(person1 == person2, True, "persons are equal") 
+            self.assertEquals(person1 == person3, False, "persons are inequal")
+
     def _test_regid(self, netid, regid):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):

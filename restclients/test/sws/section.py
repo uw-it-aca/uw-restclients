@@ -128,6 +128,19 @@ class SWSTestSectionData(TestCase):
                               sws.get_section_by_label,
                               '2010,autumn,CM,101/A')
 
+    def test_instructor_in_section(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+            section = sws.get_section_by_label('2013,winter,ASIAN,203/A')
+
+            person1 = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
+            self.assertEquals(section.is_instructor(person1), False, "Person is not instructor")
+
+            person2 = Person(uwregid="6DF0A9206A7D11D5A4AE0004AC494FFE")
+            self.assertEquals(section.is_instructor(person2), True, "Person is instructor")
+
     def test_joint_sections(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',

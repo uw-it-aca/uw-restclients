@@ -56,6 +56,9 @@ class Person(models.Model):
         }
         return data
 
+    def __eq__(self, other):
+        return self.uwregid == other.uwregid
+
     class Meta:
         app_label = "restclients"
 
@@ -76,6 +79,9 @@ class Entity(models.Model):
             'display_name': self.display_name,
         }
         return data
+
+    def __eq__(self, other):
+        return self.uwregid == other.uwregid
 
 
 class Term(models.Model):
@@ -223,6 +229,12 @@ class Section(models.Model):
         return "%s,%s,%s,%s/%s" % (self.term.year,
                self.term.quarter, self.primary_section_curriculum_abbr,
                self.primary_section_course_number, self.primary_section_id)
+
+    def is_instructor(self, person):
+        for meeting in self.meetings:
+            if person in meeting.instructors:
+                return True
+        return False
 
     def json_data(self):
         data = {
