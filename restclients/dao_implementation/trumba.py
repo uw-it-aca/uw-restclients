@@ -22,7 +22,7 @@ class FileSea(object):
         return "trumba_sea"
     
     def getURL(self, url, headers):
-        FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))    
+        #FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))    
         return get_mockdata_url(self.get_path_prefix(), "file",
                                 url, headers,
                                 dir_base=dirname(__file__))
@@ -31,12 +31,16 @@ class FileSea(object):
         # convert to a get method call    
         new_url = url
         if body is not None:
-            new_url = "%s.Post" % url
-            params = json.loads(body)
-            for key in params:
-                new_url = "%s%s=%s&" % (new_url, key, params[key])
-            new_url.rstrip('&')
+            new_url = FileSea.convert_body(url, body)
         return self.getURL(new_url, headers)
+
+    @staticmethod
+    def convert_body(url, body):
+        new_url = "%s.Post" % url
+        params = json.loads(body)
+        for key in params:
+            new_url = "%s&%s=%s" % (new_url, key, params[key])
+        return new_url
 
 class LiveSea(object):
     """
