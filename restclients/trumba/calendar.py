@@ -4,8 +4,7 @@ The interface for accessing Trumba's Calendars Service
 
 from restclients.models.trumba import CalendarGroup, Permission
 from restclients.exceptions import DataFailureException
-from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist
-from restclients.trumba.exceptions import NoDataReturned, UnknownError
+from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
 from restclients.trumba import Trumba
 import json
 import logging
@@ -64,6 +63,10 @@ class Calendar:
 
 
     @staticmethod
+    def _create_get_perm_body(calendar_id):
+        return json.dumps({'CalendarID': calendar_id})
+
+    @staticmethod
     def get_bot_permissions(calendar_id):
         """
         :param calendar_id: an integer representing calendar ID
@@ -73,11 +76,10 @@ class Calendar:
         raise DataFailureException or a corresponding TrumbaException
         if the request failed or an error code has been returned.
         """
-        body = json.dumps({'CalendarID': calendar_id})
         return Calendar._process_get_perm_resp(
             Calendar.get_permissions_url,
             Trumba.post_bot_resource(Calendar.get_permissions_url,
-                                     body),
+                                     Calendar._create_get_perm_body(calendar_id)),
             Calendar.bot_campus_code,
             calendar_id)
 
@@ -89,11 +91,10 @@ class Calendar:
         If request failed, return None.
         :return: Permission[]
         """
-        body = json.dumps({'CalendarID': calendar_id})
         return Calendar._process_get_perm_resp(
             Calendar.get_permissions_url,
             Trumba.post_sea_resource(Calendar.get_permissions_url,
-                                     body),
+                                     Calendar._create_get_perm_body(calendar_id)),
             Calendar.sea_campus_code,
             calendar_id)
 
@@ -105,11 +106,10 @@ class Calendar:
         If request failed, return None.
         :return: Permission[]
         """
-        body = json.dumps({'CalendarID': calendar_id})
         return Calendar._process_get_perm_resp(
             Calendar.get_permissions_url,
             Trumba.post_tac_resource(Calendar.get_permissions_url,
-                                     body),
+                                     Calendar._create_get_perm_body(calendar_id)),
             Calendar.tac_campus_code,
             calendar_id)
 
@@ -161,7 +161,7 @@ class Calendar:
                                 calendar_groups)
         return calendar_groups
 
-    re_email = re.compile(r'\S+@washington.edu')
+    re_email = re.compile(r'[a-z][a-z0-9]+@washington.edu')
 
     @staticmethod
     def _is_valid_email(email):
@@ -197,10 +197,14 @@ class Calendar:
         :return: Permissions[]
         """
         request_id = "%s %s CalendarID:%s" % (campus, url, calendarid)
-        if post_response.status != 200 or post_response.data is None:
+        if post_response.status != 200:
             raise DataFailureException(request_id,
                                        post_response.status,
-                                       post_response.data)
+                                       post_response.reason)
+        if post_response.data is None:
+            raise DataFailureException(request_id,
+                                       post_response.status,
+                                       None)
         data = json.loads(post_response.data)
         Calendar._check_err(data)
         if data['d']['Users'] is None or len(data['d']['Users']) == 0:
@@ -213,6 +217,7 @@ class Calendar:
     @staticmethod
     def _check_err(data):
         """
+        :param data: response json data object (must be not None).
         Check possible error code returned in the response body
         raise the coresponding exceptions
         """
@@ -231,8 +236,8 @@ class Calendar:
         elif code == 3007:
             raise CalendarOwnByDiffAccount()
         else:
-            logger.error(
-                "Invalid Error Code: %s %s" % (
+            Calendar.logger.error(
+                "Unexpected Error Code: %s %s" % (
                     code, msg[0]['Description']))
-
+            raise UnexpectedError()
 
