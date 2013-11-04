@@ -5,6 +5,7 @@ from django.conf import settings
 import logging
 import base64
 import json
+import re
 
 class FileSea(object):
     """
@@ -28,7 +29,9 @@ class FileSea(object):
                                 dir_base=dirname(__file__))
 
     def postURL(self, url, headers, body):
-        # convert to a get method call    
+        """
+        Implement post using a get call
+        """    
         new_url = url
         if body is not None:
             new_url = FileSea.convert_body(url, body)
@@ -36,10 +39,16 @@ class FileSea(object):
 
     @staticmethod
     def convert_body(url, body):
+        """
+        :return: the url string with extra data in the body 
+        Extract the data in the body and convert to URL query string
+        """    
         new_url = "%s.Post" % url
         params = json.loads(body)
         for key in params:
-            new_url = "%s&%s=%s" % (new_url, key, params[key])
+            new_url = "%s&%s=%s" % (new_url, key, 
+                                    re.sub(' ', '%20', 
+                                           str(params[key])))
         return new_url
 
 class LiveSea(object):
