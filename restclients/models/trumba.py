@@ -63,6 +63,15 @@ class Permission(models.Model):
     def is_showon(self):
         return self.level in (self.SHOWON)
     
+    def is_bot(self):
+        return self.campus in (CalendarGroup.BOTHELL)
+
+    def is_sea(self):
+        return self.campus in (CalendarGroup.SEATTLE)
+
+    def is_tac(self):
+        return self.campus in (CalendarGroup.TACOMA)
+
     def __str__(self):
         return "{calendarid: %s, campus: %s, name: %s, uwnetid: %s, level: %s}" % (
             self.calendarid, self.campus, self.name, self.uwnetid, self.level)
