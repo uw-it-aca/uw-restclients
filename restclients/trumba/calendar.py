@@ -21,7 +21,7 @@ class Calendar:
     sea_campus_code = 'sea'
     tac_campus_code = 'tac'
     get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
-    get_permissions_url = "/service/calendars.asmx/GetPermissions?CalendarID="
+    get_permissions_url = "/service/calendars.asmx/GetPermissions"
 
     @staticmethod
     def get_bot_calendars():
@@ -62,10 +62,6 @@ class Calendar:
             Trumba.post_tac_resource(Calendar.get_calendarlist_url,"{}"),
             Calendar.tac_campus_code)
 
-    @staticmethod
-    def _make_get_permissions_url(calendar_id):
-        return "%s%s" % (Calendar.get_permissions_url,
-                         calendar_id)
 
     @staticmethod
     def get_bot_permissions(calendar_id):
@@ -77,11 +73,11 @@ class Calendar:
         raise DataFailureException or a corresponding TrumbaException
         if the request failed or an error code has been returned.
         """
-        url = Calendar._make_get_permissions_url(calendar_id)
         body = json.dumps({'CalendarID': calendar_id})
         return Calendar._process_get_perm_resp(
-            url,
-            Trumba.post_bot_resource(url, body),
+            Calendar.get_permissions_url,
+            Trumba.post_bot_resource(Calendar.get_permissions_url,
+                                     body),
             Calendar.bot_campus_code,
             calendar_id)
 
@@ -93,11 +89,11 @@ class Calendar:
         If request failed, return None.
         :return: Permission[]
         """
-        url = Calendar._make_get_permissions_url(calendar_id)
         body = json.dumps({'CalendarID': calendar_id})
         return Calendar._process_get_perm_resp(
-            url,
-            Trumba.post_sea_resource(url, body),
+            Calendar.get_permissions_url,
+            Trumba.post_sea_resource(Calendar.get_permissions_url,
+                                     body),
             Calendar.sea_campus_code,
             calendar_id)
 
@@ -109,15 +105,15 @@ class Calendar:
         If request failed, return None.
         :return: Permission[]
         """
-        url = Calendar._make_get_permissions_url(calendar_id)
         body = json.dumps({'CalendarID': calendar_id})
         return Calendar._process_get_perm_resp(
-            url,
-            Trumba.post_tac_resource(url, body),
+            Calendar.get_permissions_url,
+            Trumba.post_tac_resource(Calendar.get_permissions_url,
+                                     body),
             Calendar.tac_campus_code,
             calendar_id)
 
-    re_cal_id = re.compile(r'[1-9]\d+')
+    re_cal_id = re.compile(r'[1-9]\d*')
 
     @staticmethod
     def _is_valid_calendarid(calendarid):
@@ -130,12 +126,12 @@ class Calendar:
         """
         for record in resp_fragment:
             cal_grp = CalendarGroup()
-            cal_grp.campus = campus
             cal_grp.calendarid = record['ID']
+            cal_grp.campus = campus
             cal_grp.name = record['Name']
-            #print "%s %s_%s" % (cal.name, cal.campus, cal.calendarid)
             if not Calendar._is_valid_calendarid(record['ID']):
-                logger.error("%s InvalidCalendarId, entry skipped!" % cal_grp)
+                Calendar.logger.error(
+                    "%s InvalidCalendarId, entry skipped!" % cal_grp)
                 continue
             calendars.append(cal_grp)
             if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
