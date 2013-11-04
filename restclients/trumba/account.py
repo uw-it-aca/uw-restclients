@@ -122,6 +122,9 @@ class Account:
     @staticmethod
     def _process_resp(request_id, response, is_success_func):
         """
+        :param request_id: campus url identifying the request
+        :param response: the GET method response object
+        :param is_success_func: the name of the function for verifying a success code
         :return: Ture if successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
