@@ -230,6 +230,12 @@ class Section(models.Model):
                self.term.quarter, self.primary_section_curriculum_abbr,
                self.primary_section_course_number, self.primary_section_id)
 
+    def get_instructors(self):
+        instructors = []
+        for meeting in self.meetings:
+            instructors.extend(meeting.instructors)
+        return instructors
+
     def is_instructor(self, person):
         for meeting in self.meetings:
             if person in meeting.instructors:

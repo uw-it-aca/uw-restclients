@@ -13,18 +13,18 @@ class SWSTestSectionData(TestCase):
             sws = SWS()
 
             section = sws.get_section_by_label('2013,summer,B BIO,180/A')
-            self.assertEquals(section.final_exam, None, "No final exame for B BIO 180")
+            self.assertEquals(section.final_exam, None, "No final exam for B BIO 180")
 
             section = sws.get_section_by_label('2013,summer,MATH,125/G')
             final_exam = section.final_exam
 
-            self.assertEquals(final_exam.is_confirmed, False, "Final exame for Math 125 isn't confirmed")
-            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exame for Math 125 isn't non-traditional")
+            self.assertEquals(final_exam.is_confirmed, False, "Final exam for Math 125 isn't confirmed")
+            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exam for Math 125 isn't non-traditional")
             section = sws.get_section_by_label('2013,summer,TRAIN,101/A')
             final_exam = section.final_exam
 
-            self.assertEquals(final_exam.is_confirmed, True, "Final exame for Train 101 is confirmed")
-            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exame for Train 101 isn't non-traditional")
+            self.assertEquals(final_exam.is_confirmed, True, "Final exam for Train 101 is confirmed")
+            self.assertEquals(final_exam.no_exam_or_nontraditional, False, "Final exam for Train 101 isn't non-traditional")
             self.assertEquals(final_exam.building, "KNE", "Has right final building")
             self.assertEquals(final_exam.room_number, "012", "Has right room #")
 
@@ -128,18 +128,23 @@ class SWSTestSectionData(TestCase):
                               sws.get_section_by_label,
                               '2010,autumn,CM,101/A')
 
-    def test_instructor_in_section(self):
+    def test_instructors_in_section(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
             section = sws.get_section_by_label('2013,winter,ASIAN,203/A')
 
+            self.assertEquals(len(section.get_instructors()), 1, "Correct number of instructors")
+
             person1 = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
             self.assertEquals(section.is_instructor(person1), False, "Person is not instructor")
 
             person2 = Person(uwregid="6DF0A9206A7D11D5A4AE0004AC494FFE")
             self.assertEquals(section.is_instructor(person2), True, "Person is instructor")
+
+            section2 = sws.get_section_by_label('2013,summer,TRAIN,101/A')
+            self.assertEquals(len(section2.get_instructors()), 2, "Correct number of instructors")
 
     def test_delegates_in_section(self):
         with self.settings(
