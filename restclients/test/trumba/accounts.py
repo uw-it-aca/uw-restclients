@@ -126,6 +126,6 @@ class TrumbaTestAccounts(TestCase):
                           Account._check_err,
                           3018)
 
-        self.assertRaises(UnknownError,
+        self.assertRaises(UnexpectedError,
                           Account._check_err,
                           3020)
