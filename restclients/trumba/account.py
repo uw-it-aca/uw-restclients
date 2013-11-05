@@ -1,6 +1,6 @@
 from urllib import quote, unquote
 from restclients.trumba import Trumba
-from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnknownError
+from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnexpectedError, UnknownError
 from restclients.exceptions import DataFailureException
 import logging
 import re
@@ -137,7 +137,7 @@ class Account:
             raise NoDataReturned()
         root = objectify.fromstring(response.data)
         if root.ResponseMessage is None or root.ResponseMessage.attrib['Code'] is None:
-            raise NoDataReturned()
+            raise UnknownError()
         resp_code = int(root.ResponseMessage.attrib['Code'])
         func = partial(is_success_func)
         if func(resp_code):
@@ -197,4 +197,4 @@ class Account:
         elif code == 3017 or code == 3018:
             raise ErrorCreatingEditor()
         else:
-            raise UnknownError()
+            raise UnexpectedError()
