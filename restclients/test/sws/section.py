@@ -141,6 +141,22 @@ class SWSTestSectionData(TestCase):
             person2 = Person(uwregid="6DF0A9206A7D11D5A4AE0004AC494FFE")
             self.assertEquals(section.is_instructor(person2), True, "Person is instructor")
 
+    def test_delegates_in_section(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+            section = sws.get_section_by_label('2013,winter,ASIAN,203/A')
+
+            self.assertEquals(len(section.grade_submission_delegates), 3,
+                "Correct number of delegates")
+
+            person1 = Person(uwregid="6DF0A9206A7D11D5A4AE0004AC494FFE")
+            self.assertEquals(section.is_grade_submission_delegate(person1), False, "Person is not delegate")
+
+            person2 = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
+            self.assertEquals(section.is_grade_submission_delegate(person2), True, "Person is delegate")
+
     def test_joint_sections(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',

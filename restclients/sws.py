@@ -733,6 +733,13 @@ class SWS(object):
             url = joint_section_data["Href"]
             section.joint_section_urls.append(url)
 
+        section.grade_submission_delegates = []
+        for del_data in section_data["GradeSubmissionDelegates"]:
+            delegate = GradeSubmissionDelegate(
+                person=pws.get_person_by_regid(del_data["Person"]["RegID"]),
+                delegate_level=del_data["DelegateLevel"])
+            section.grade_submission_delegates.append(delegate)
+
         section.meetings = []
         for meeting_data in section_data["Meetings"]:
             meeting = SectionMeeting()
@@ -771,10 +778,8 @@ class SWS(object):
 
                 if "RegID" in pdata and pdata["RegID"] is not None:
                     instructor = pws.get_person_by_regid(pdata["RegID"])
-
                     instructor.TSPrint = instructor_data["TSPrint"]
-                    if instructor is not None:
-                        meeting.instructors.append(instructor)
+                    meeting.instructors.append(instructor)
 
             section.meetings.append(meeting)
 

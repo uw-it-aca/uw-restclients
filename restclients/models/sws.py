@@ -236,6 +236,12 @@ class Section(models.Model):
                 return True
         return False
 
+    def is_grade_submission_delegate(self, person):
+        for delegate in self.grade_submission_delegates:
+            if person == delegate.person:
+                return True
+        return False
+
     def json_data(self):
         data = {
             'curriculum_abbr': self.curriculum_abbr,
