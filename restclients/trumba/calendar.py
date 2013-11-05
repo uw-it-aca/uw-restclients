@@ -146,14 +146,7 @@ class Calendar:
         :return: CalendarGroup[]
         """
         request_id = "%s %s" % (campus, url)
-        if post_response.status != 200 or post_response.data is None:
-            raise DataFailureException(request_id,
-                                       post_response.status,
-                                       post_response.reason)
-        
-        data = json.loads(post_response.data)
-        Calendar._check_err(data)
-
+        data = Calendar._load_json(request_id, post_response)
         if data['d']['Calendars'] is None or len(data['d']['Calendars']) == 0:
             return None
         calendar_groups = []
@@ -197,16 +190,7 @@ class Calendar:
         :return: Permissions[]
         """
         request_id = "%s %s CalendarID:%s" % (campus, url, calendarid)
-        if post_response.status != 200:
-            raise DataFailureException(request_id,
-                                       post_response.status,
-                                       post_response.reason)
-        if post_response.data is None:
-            raise DataFailureException(request_id,
-                                       post_response.status,
-                                       None)
-        data = json.loads(post_response.data)
-        Calendar._check_err(data)
+        data = Calendar._load_json(request_id, post_response)
         if data['d']['Users'] is None or len(data['d']['Users']) == 0:
             return None
         permissions = []
@@ -241,3 +225,15 @@ class Calendar:
                     code, msg[0]['Description']))
             raise UnexpectedError()
 
+
+    @staticmethod
+    def _load_json(request_id, post_response):
+        if post_response.status != 200:
+            raise DataFailureException(request_id,
+                                       post_response.status,
+                                       post_response.reason)
+        if post_response.data is None:
+            raise NoDataReturned()
+        data = json.loads(post_response.data)
+        Calendar._check_err(data)
+        return data

@@ -129,29 +129,21 @@ class Account:
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
-        if response.status != 200 or response.data is None:
+        if response.status != 200:
             raise DataFailureException(request_id,
                                        response.status,
                                        response.reason)
-
+        if response.data is None:
+            raise NoDataReturned()
         root = objectify.fromstring(response.data)
         if root.ResponseMessage is None or root.ResponseMessage.attrib['Code'] is None:
             raise NoDataReturned()
-
         resp_code = int(root.ResponseMessage.attrib['Code'])
         func = partial(is_success_func)
-        successed = func(resp_code)
-        if not successed:
-            Account._check_err(resp_code)
-        return successed
+        if func(resp_code):
+            return True
+        Account._check_err(resp_code)
 
-    @staticmethod
-    def _is_permission_set(code):
-        """
-        :param code: an integer value  
-        :return: Ture if the code means successful, False otherwise.
-        """
-        return code == 1003
 
     @staticmethod
     def _is_editor_added(code):
@@ -168,6 +160,14 @@ class Account:
         :return: Ture if the code means successful, False otherwise.
         """
         return code == 1002
+
+    @staticmethod
+    def _is_permission_set(code):
+        """
+        :param code: an integer value  
+        :return: Ture if the code means successful, False otherwise.
+        """
+        return code == 1003
 
     @staticmethod
     def _check_err(code):
