@@ -11,18 +11,21 @@ class TrumbaException(Exception):
 class AccountNameEmpty(TrumbaException):
     """
     Exception when creating an account with an empty name
+    Coresponding to Trumba error code: 3016
     """
     pass
 
 class AccountNotExist(TrumbaException):
     """
     Exception when the account has not been created
+    Coresponding to Trumba error code: 3008
     """
     pass
 
 class AccountUsedByDiffUser(TrumbaException):
     """
     Exception when the account already been used for another user
+    Coresponding to Trumba error code: 3009 or 3013
     """
     pass
 
@@ -49,24 +52,28 @@ class ErrorCreatingEditor(TrumbaException):
 class FailedToClosePublisher(TrumbaException):
     """
     Exception when the account to close is a publisher account
+    Coresponding to Trumba error code: 3011
     """
     pass
 
 class InvalidEmail(TrumbaException):
     """
     Exception when creating an account with an invalid email address
+    Coresponding to Trumba error code: 3014
     """
     pass
 
 class InvalidPermissionLevel(TrumbaException):
     """
     Exception when the permission level is not valid
+    Coresponding to Trumba error code: 3010
     """
     pass
 
 class NoAllowedPermission(TrumbaException):
     """
     Exception when the permission level is not allowed for this account
+    Coresponding to Trumba error code: 3015
     """
     pass
 
@@ -78,7 +85,7 @@ class NoDataReturned(TrumbaException):
 
 class UnknownError(TrumbaException):
     """
-    Exception when there is Messages in the response but no error code presents
+    Exception when no ResponseMessage or no error code presents
     """
     pass
 
