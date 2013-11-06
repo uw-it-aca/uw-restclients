@@ -549,22 +549,26 @@ class SWS(object):
 
         return curricula
 
-    def get_graderoster(self, section, instructor):
+    def get_graderoster(self, section, instructor, section_id=None):
         """
         Returns a restclients.GradeRoster model for the passed Section model
-        and instructor Person.
+        and instructor Person. If section_id is not None, the returned
+        graderoster includes only students in that section.
         """
-        section_id = section.section_label().replace('/', ',')
-        url = "/student/v4/graderoster/%s,%s" % (section_id,
-                                                 instructor.uwregid)
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "text/xhtml",
-                                    "X-UW-Act-as": instructor.uwnetid})
+        url = "/student/v4/graderoster/%s,%s" % (
+            section.section_label().replace('/', ','),
+            instructor.uwregid)
+
+        response = SWS_DAO().getURL(url, {"Accept": "text/xhtml",
+                                          "X-UW-Act-as": instructor.uwnetid})
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
+            root = etree.fromstring(response.data)
+            msg = root.find('.//*[@class="status_description"]').text.strip()
+            raise DataFailureException(url, response.status, msg)
 
-        return self._graderoster_from_xhtml(response.data, section, instructor)
+        return self._graderoster_from_xhtml(response.data, section, instructor,
+                                            filter_section_id=section_id)
 
     def update_graderoster(self, graderoster):
         """
@@ -583,7 +587,9 @@ class SWS(object):
                               body)
 
         if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
+            root = etree.fromstring(response.data)
+            msg = root.find('.//*[@class="status_description"]').text.strip()
+            raise DataFailureException(url, response.status, msg)
 
         return self._graderoster_from_xhtml(response.data,
                                             graderoster.section,
@@ -847,7 +853,8 @@ class SWS(object):
 
         return section_status
 
-    def _graderoster_from_xhtml(self, data, section, instructor):
+    def _graderoster_from_xhtml(self, data, section, instructor,
+                                filter_section_id=None):
         pws = PWS()
         people = {instructor.uwregid: instructor}
         root = etree.fromstring(data)
@@ -888,6 +895,12 @@ class SWS(object):
         day_format = "%Y-%m-%d"
         item_elements = root.findall('.//*[@class="graderoster_item"]')
         for item in item_elements:
+            section_element = item.find('.//*[@class="section_id"]')
+            section_id = section_element.text if section_element is not None else default_section_id
+
+            if filter_section_id is not None and filter_section_id != section_id:
+                continue
+
             grade_choices = []
             grade_default = None
             grades = item.findall('.//*[@class="grade"]')
@@ -898,7 +911,8 @@ class SWS(object):
                     grade_default = grade_value
 
             gr_item = GradeRosterItem(grade=grade_default,
-                                      grade_choices=grade_choices)
+                                      grade_choices=grade_choices,
+                                      section_id=section_id)
 
             reg_id = item.find('.//*[@class="reg_id"]').text.strip()
             gr_item.student = pws.get_person_by_regid(reg_id)
@@ -918,9 +932,6 @@ class SWS(object):
             gr_item.student_former_name = student_former_name
 
             gr_item.student_credits = item.find('.//*[@class="student_credits"]').text.strip()
-
-            section_element = item.find('.//*[@class="section_id"]')
-            gr_item.section_id = section_element.text if section_element is not None else default_section_id
 
             auditor = item.find('.//*[@class="auditor"]').get("checked")
             gr_item.is_auditor = True if auditor == "checked" else False
