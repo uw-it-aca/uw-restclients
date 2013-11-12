@@ -2,7 +2,7 @@
 The interface for accessing Trumba's Calendars Service 
 """
 
-from restclients.models.trumba import CalendarGroup, Permission
+from restclients.models.trumba import TrumbaCalendar, Permission, is_bot, is_sea, is_tac
 from restclients.exceptions import DataFailureException
 from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
 from restclients.trumba import Trumba
@@ -16,51 +16,81 @@ class Calendar:
     """
 
     logger = logging.getLogger('restclients.trumba.Calendar')
-    bot_campus_code = 'bot'
-    sea_campus_code = 'sea'
-    tac_campus_code = 'tac'
     get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
     get_permissions_url = "/service/calendars.asmx/GetPermissions"
 
     @staticmethod
+    def get_campus_calendars(campus_code):
+        """
+        :return: a dictionary of {calenderid, TrumbaCalendar}
+                 corresponding to the given campus calendars.
+                 None if error, {} if not exists
+        raise DataFailureException if the request failed.
+        """
+        if is_bot(campus_code):
+            return Calendar.get_bot_calendars()
+        elif is_sea(campus_code):
+            return Calendar.get_sea_calendars()
+        elif is_tac(campus_code):
+            return Calendar.get_tac_calendars()
+        else:
+            None
+
+    @staticmethod
     def get_bot_calendars():
         """
-        :return: CalendarGroup[] or None if not exists
-        Return a list of CalendarGroup objects corresponding to
-        Bothell calendars. 
+        :return: a dictionary of {calenderid, TrumbaCalendar}
+                 corresponding to Bothell calendars. 
+                 None if error, {} if not exists
         raise DataFailureException if the request failed.
         """
         return Calendar._process_get_cal_resp(
             Calendar.get_calendarlist_url,
             Trumba.post_bot_resource(Calendar.get_calendarlist_url,"{}"),
-            Calendar.bot_campus_code)
+            TrumbaCalendar.BOT_CAMPUS_CODE)
 
     @staticmethod
     def get_sea_calendars():
         """
-        :return: CalendarGroup[] or None if not exists
-        Return a list of CalendarGroup objects corresponding to
-        Seattle calendars. 
+        :return: a dictionary of {calenderid, TrumbaCalendar}
+                 corresponding to Seattle calendars. 
+                 None if error, {} if not exists
         raise DataFailureException if the request failed.
         """
         return Calendar._process_get_cal_resp(
             Calendar.get_calendarlist_url,
             Trumba.post_sea_resource(Calendar.get_calendarlist_url,"{}"),
-            Calendar.sea_campus_code)
+            TrumbaCalendar.SEA_CAMPUS_CODE)
 
     @staticmethod
     def get_tac_calendars():
         """
-        :return: CalendarGroup[] or None if not exists
-        Return a list of CalendarGroup objects corresponding to
-        Tacoma calendars. 
+        :return: a dictionary of {calenderid, TrumbaCalendar}
+                 corresponding to Tacoma calendars. 
+                 None if error, {} if not exists
         raise DataFailureException if the request failed.
         """
         return Calendar._process_get_cal_resp(
             Calendar.get_calendarlist_url,
             Trumba.post_tac_resource(Calendar.get_calendarlist_url,"{}"),
-            Calendar.tac_campus_code)
+            TrumbaCalendar.TAC_CAMPUS_CODE)
 
+    @staticmethod
+    def get_campus_permissions(calendar_id, campus_code):
+        """
+        :return: a dictionary of {uwnetid, Permission}
+                 corresponding to the given campus calendar.
+                 None if error, {} if not exists
+        raise DataFailureException if the request failed.
+        """
+        if is_bot(campus_code):
+            return Calendar.get_bot_permissions()
+        elif is_sea(campus_code):
+            return Calendar.get_sea_permissions()
+        elif is_tac(campus_code):
+            return Calendar.get_tac_permissions()
+        else:
+            None
 
     @staticmethod
     def _create_get_perm_body(calendar_id):
@@ -80,7 +110,7 @@ class Calendar:
             Calendar.get_permissions_url,
             Trumba.post_bot_resource(Calendar.get_permissions_url,
                                      Calendar._create_get_perm_body(calendar_id)),
-            Calendar.bot_campus_code,
+            TrumbaCalendar.BOT_CAMPUS_CODE,
             calendar_id)
 
     @staticmethod
@@ -95,7 +125,7 @@ class Calendar:
             Calendar.get_permissions_url,
             Trumba.post_sea_resource(Calendar.get_permissions_url,
                                      Calendar._create_get_perm_body(calendar_id)),
-            Calendar.sea_campus_code,
+            TrumbaCalendar.SEA_CAMPUS_CODE,
             calendar_id)
 
     @staticmethod
@@ -110,7 +140,7 @@ class Calendar:
             Calendar.get_permissions_url,
             Trumba.post_tac_resource(Calendar.get_permissions_url,
                                      Calendar._create_get_perm_body(calendar_id)),
-            Calendar.tac_campus_code,
+            TrumbaCalendar.TAC_CAMPUS_CODE,
             calendar_id)
 
     re_cal_id = re.compile(r'[1-9]\d*')
@@ -120,12 +150,13 @@ class Calendar:
         return Calendar.re_cal_id.match(str(calendarid)) is not None
 
     @staticmethod
-    def _load_calendar(campus, resp_fragment, calendars):
+    def _load_calendar(campus, resp_fragment, calendar_dict):
         """
-        :return: CalendarGroup[]
+        :return: a dictionary of {calenderid, TrumbaCalendar}
+                 None if error, {} if not exists
         """
         for record in resp_fragment:
-            cal_grp = CalendarGroup()
+            cal_grp = TrumbaCalendar()
             cal_grp.calendarid = record['ID']
             cal_grp.campus = campus
             cal_grp.name = record['Name']
@@ -133,26 +164,28 @@ class Calendar:
                 Calendar.logger.error(
                     "%s InvalidCalendarId, entry skipped!" % cal_grp)
                 continue
-            calendars.append(cal_grp)
+            calendar_dict[cal_grp.calendarid] =cal_grp
             if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
-                Calendar._load_calendar(campus, record['ChildCalendars'], calendars)
+                Calendar._load_calendar(campus, 
+                                        record['ChildCalendars'], 
+                                        calendar_dict)
 
     @staticmethod
     def _process_get_cal_resp(url, post_response, campus):
         """
+        :return: a dictionary of {calenderid, TrumbaCalendar}
+                 None if error, {} if not exists
         If the request is successful, process the response data 
-        and load the json data into a list of CalendarGroup objects; 
-        otherwise return None.
-        :return: CalendarGroup[]
+        and load the json data into the return object.
         """
         request_id = "%s %s" % (campus, url)
         data = Calendar._load_json(request_id, post_response)
         if data['d']['Calendars'] is None or len(data['d']['Calendars']) == 0:
             return None
-        calendar_groups = []
+        calendar_dict = {}
         Calendar._load_calendar(campus, data['d']['Calendars'],
-                                calendar_groups)
-        return calendar_groups
+                                calendar_dict)
+        return calendar_dict
 
     re_email = re.compile(r'[a-z][a-z0-9]+@washington.edu')
 
@@ -165,9 +198,10 @@ class Calendar:
         return re.sub("@washington.edu", "", email)
 
     @staticmethod
-    def _load_permissions(campus, calendarid, resp_fragment, permissions):
+    def _load_permissions(campus, calendarid, resp_fragment, permission_dict):
         """
-        :return: Permissions[]
+        :return: a dictionary of {uwnetid, Permission}
+                 None if error, {} if not exists
         """
         for record in resp_fragment:
             if not Calendar._is_valid_email(record['Email']):
@@ -179,24 +213,26 @@ class Calendar:
             perm.uwnetid = Calendar._extract_uwnetid(record['Email'])
             perm.level = record['Level']
             perm.name = record['Name']
-            permissions.append(perm)
+            permission_dict[perm.uwnetid] = perm
 
     @staticmethod
     def _process_get_perm_resp(url, post_response, campus, calendarid):
         """
+        :return: a dictionary of {uwnetid, Permission}
+                 None if error, {} if not exists
         If the response is successful, process the response data 
-        and load into a list of Permission objects; 
+        and load into the return objects 
         otherwise raise DataFailureException
-        :return: Permissions[]
         """
         request_id = "%s %s CalendarID:%s" % (campus, url, calendarid)
         data = Calendar._load_json(request_id, post_response)
         if data['d']['Users'] is None or len(data['d']['Users']) == 0:
             return None
-        permissions = []
+        permission_dict = {}
         Calendar._load_permissions(campus, calendarid, 
-                                   data['d']['Users'], permissions)
-        return permissions
+                                   data['d']['Users'], 
+                                   permission_dict)
+        return permission_dict
 
     @staticmethod
     def _check_err(data):

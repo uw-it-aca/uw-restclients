@@ -20,29 +20,22 @@ class TrumbaTestCalendars(TestCase):
             result = Calendar.get_sea_calendars()
             self.assertTrue(result is not None and len(result) == 10)
 
-            cal_grp = result[0]
-            self.assertEqual(cal_grp.calendarid, 11)
-            self.assertEqual(cal_grp.campus, 'sea')
-            self.assertEqual(cal_grp.name, 'Seattle calendar')
-            self.assertTrue(cal_grp.is_sea())
-            self.assertFalse(cal_grp.is_bot())
-            self.assertFalse(cal_grp.is_tac())
-            self.assertEqual(cal_grp.get_uw_editor_groupid(),
-                             'u_eventcal_sea_11-editor')
-            self.assertEqual(cal_grp.get_uw_showon_groupid(),
-                             'u_eventcal_sea_11-showon')
+            trumba_cal = result[11]
+            self.assertEqual(trumba_cal.calendarid, 11)
+            self.assertEqual(trumba_cal.campus, 'sea')
+            self.assertEqual(trumba_cal.name, 'Seattle calendar')
+            self.assertTrue(trumba_cal.is_sea())
+            self.assertFalse(trumba_cal.is_bot())
+            self.assertFalse(trumba_cal.is_tac())
             
-            cal_grp = result[9]
-            self.assertEqual(cal_grp.calendarid, 11321)
-            self.assertEqual(cal_grp.campus, 'sea')
-            self.assertEqual(cal_grp.name, 'Seattle child-sub-sub-calendar321')
-            self.assertTrue(cal_grp.is_sea())
-            self.assertFalse(cal_grp.is_bot())
-            self.assertFalse(cal_grp.is_tac())
-            self.assertEqual(cal_grp.get_uw_editor_groupid(),
-                             'u_eventcal_sea_11321-editor')
-            self.assertEqual(cal_grp.get_uw_showon_groupid(),
-                             'u_eventcal_sea_11321-showon')
+            trumba_cal = result[11321]
+            self.assertEqual(trumba_cal.calendarid, 11321)
+            self.assertEqual(trumba_cal.campus, 'sea')
+            self.assertEqual(trumba_cal.name, 'Seattle child-sub-sub-calendar321')
+            self.assertTrue(trumba_cal.is_sea())
+            self.assertFalse(trumba_cal.is_bot())
+            self.assertFalse(trumba_cal.is_tac())
+
             
     def test_get_tac_calendars_normal_cases(self):
         with self.settings(
@@ -57,7 +50,7 @@ class TrumbaTestCalendars(TestCase):
             ):
             result = Calendar.get_sea_permissions(1)
             self.assertTrue(result is not None and len(result) == 3)
-            perm = result[0]
+            perm = result['dummyp']
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
             self.assertEqual(perm.name, 'Dummy publisher')
@@ -69,7 +62,7 @@ class TrumbaTestCalendars(TestCase):
             self.assertFalse(perm.is_bot())
             self.assertFalse(perm.is_tac())
 
-            perm = result[1]
+            perm = result['dummye']
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
             self.assertEqual(perm.name, 'Dummy editor')
@@ -81,7 +74,7 @@ class TrumbaTestCalendars(TestCase):
             self.assertFalse(perm.is_bot())
             self.assertFalse(perm.is_tac())
 
-            perm = result[2]
+            perm = result['dummys']
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
             self.assertEqual(perm.name, 'Dummy showon')
