@@ -52,13 +52,13 @@ def make_group_name(campus, calendarid, gtype):
     return "u_eventcal_%s_%s-%s" % (campus, calendarid, gtype)
 
 def make_group_title(calendar_name, gtype):
-    return "%s calendar %s group" % (campus_name, calendar_name, gtype)
+    return "%s calendar %s group" % (calendar_name, gtype)
 
-def make_group_desc(gtype, campus_name):
+def make_group_desc(gtype):
     if is_editor_group(gtype):
-        return "Specifying the editors who are able to add/edit/delete any event on the corresponding %s Trumba calendar" % campus_name
+        return "Specifying the editors who are able to add/edit/delete any event on the corresponding Trumba calendar"
     else:
-        return "Specifying the users with view and showon permission of the corresponding %s Trumba calendar" % campus_name
+        return "Specifying the users with view and showon permission of the corresponding Trumba calendar"
 
 class UwcalGroup(models.Model):
     GTYEP_EDITOR = 'editor'
@@ -73,6 +73,9 @@ class UwcalGroup(models.Model):
 
     def get_calendarid(self):
         return self.calendar.calendarid
+
+    def get_campus_code(self):
+        return self.calendar.campus
 
     def get_name(self):
         if self.name is not None and len(self.name) > 0:
@@ -90,8 +93,7 @@ class UwcalGroup(models.Model):
     def get_desc(self):
         if self.description is not None and len(self.description) > 0:
             return self.description
-        return make_group_desc(gtype, 
-                               self.calendar.get_campus_display())
+        return make_group_desc(gtype)
 
     def is_editor_group(self):
         return is_editor_group(self.level)
