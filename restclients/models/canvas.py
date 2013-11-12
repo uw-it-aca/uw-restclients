@@ -8,11 +8,17 @@ class Account(models.Model):
     parent_account_id = models.CharField(max_length=30)
     root_account_id = models.CharField(max_length=30)
 
+    class Meta:
+        db_table = "restclients_canvas_account"
+
 
 class Term(models.Model):
     term_id = models.IntegerField(max_length=20)
     sis_term_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "restclients_canvas_term"
 
 
 class Course(models.Model):
@@ -36,6 +42,9 @@ class Course(models.Model):
 
         return sws_id
 
+    class Meta:
+        db_table = "restclients_canvas_course"
+
 
 class Section(models.Model):
     section_id = models.IntegerField(max_length=20)
@@ -43,6 +52,9 @@ class Section(models.Model):
     name = models.CharField(max_length=200)
     course_id = models.IntegerField(max_length=20)
     nonxlist_course_id = models.IntegerField(max_length=20)
+
+    class Meta:
+        db_table = "restclients_canvas_section"
 
 
 class Enrollment(models.Model):
@@ -85,6 +97,9 @@ class Enrollment(models.Model):
 
         return sws_id
 
+    class Meta:
+        db_table = "restclients_canvas_enrollment"
+
 
 class Attachment(models.Model):
     attachment_id = models.IntegerField(max_length=20)
@@ -93,6 +108,9 @@ class Attachment(models.Model):
     content_type = models.CharField(max_length=50)
     size = models.IntegerField(max_length=20)
     url = models.CharField(max_length=500)
+
+    class Meta:
+        db_table = "restclients_canvas_attachment"
 
 
 class Report(models.Model):
@@ -103,6 +121,9 @@ class Report(models.Model):
     status = models.CharField(max_length=50)
     progress = models.SmallIntegerField(max_length=3, default=0)
     attachment = models.ForeignKey(Attachment, null=True)
+
+    class Meta:
+        db_table = "restclients_canvas_report"
 
 
 class ReportType(models.Model):
@@ -118,6 +139,9 @@ class ReportType(models.Model):
 
     name = models.CharField(max_length=500, choices=NAME_CHOICES)
     title = models.CharField(max_length=500)
+
+    class Meta:
+        db_table = "restclients_canvas_reporttype"
 
 
 class User(models.Model):
@@ -141,8 +165,14 @@ class User(models.Model):
                               "sis_user_id": self.sis_user_id,
                               "send_confirmation": False}}
 
+    class Meta:
+        db_table = "restclients_canvas_user"
+
 
 class Admin(models.Model):
     admin_id = models.IntegerField(max_length=20)
     role = models.CharField(max_length=100)
     user = models.ForeignKey(User)
+
+    class Meta:
+        db_table = "restclients_canvas_admin"
