@@ -65,11 +65,11 @@ class UwcalGroup(models.Model):
     GTYEP_SHOWON = 'showon'
     calendar = models.ForeignKey(TrumbaCalendar)
     gtype = models.CharField(max_length=6)
+    uwregid = models.CharField(max_length=32, null=True, default=None)
     name = models.CharField(max_length=500, null=True, default=None)
     title = models.CharField(max_length=500, null=True, default=None)
     description = models.CharField(max_length=500, null=True, blank=True, default=None)
     lastverified = models.DateTimeField(null=True, default=None)
-    uwregid = models.CharField(max_length=32, null=True, default=None)
 
     def get_calendarid(self):
         return self.calendar.calendarid
@@ -93,7 +93,7 @@ class UwcalGroup(models.Model):
     def get_desc(self):
         if self.description is not None and len(self.description) > 0:
             return self.description
-        return make_group_desc(gtype)
+        return make_group_desc(self.gtype)
 
     def is_editor_group(self):
         return is_editor_group(self.level)
@@ -105,8 +105,8 @@ class UwcalGroup(models.Model):
         return self.calendar == other.calendar and self.gtype == other.gtype
 
     def __str__(self):
-        return "{name: %s, title: %s, uwregid: %s, description: %s}" % (
-            self.get_name(), self.get_title(), self.uwregid, self.get_desc())
+        return "{uwregid: %s, name: %s, title: %s, description: %s}" % (
+            self.uwregid, self.get_name(), self.get_title(), self.get_desc())
 
 def is_edit_permission(level):
     return level is not None and level == Permission.EDIT
