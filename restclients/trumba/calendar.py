@@ -78,9 +78,9 @@ class Calendar:
     @staticmethod
     def get_campus_permissions(calendar_id, campus_code):
         """
-        :return: a dictionary of {uwnetid, Permission}
+        :return: a list of trumba.Permission objects
                  corresponding to the given campus calendar.
-                 None if error, {} if not exists
+                 None if error, [] if not exists
         raise DataFailureException if the request failed.
         """
         if is_bot(campus_code):
@@ -100,7 +100,9 @@ class Calendar:
     def get_bot_permissions(calendar_id):
         """
         :param calendar_id: an integer representing calendar ID
-        :return: Permission[] or None if not exists
+        :return: a list of trumba.Permission objects
+                 corresponding to the given campus calendar.
+                 None if error, [] if not exists
         Return a list of Permission objects representing
         the user permissions of a given Bothell calendar. 
         raise DataFailureException or a corresponding TrumbaException
@@ -118,8 +120,11 @@ class Calendar:
         """
         Return a list of Permission objects representing
         the user permissions of a given Seattle calendar. 
-        If request failed, return None.
-        :return: Permission[]
+        :return: a list of trumba.Permission objects
+                 corresponding to the given campus calendar.
+                 None if error, [] if not exists
+        raise DataFailureException or a corresponding TrumbaException
+        if the request failed or an error code has been returned.
         """
         return Calendar._process_get_perm_resp(
             Calendar.get_permissions_url,
@@ -133,8 +138,11 @@ class Calendar:
         """
         Return a list of Permission objects representing
         the user permissions of a given Tacoma calendar. 
-        If request failed, return None.
-        :return: Permission[]
+        :return: a list of trumba.Permission objects
+                 corresponding to the given campus calendar.
+                 None if error, [] if not exists
+        raise DataFailureException or a corresponding TrumbaException
+        if the request failed or an error code has been returned.
         """
         return Calendar._process_get_perm_resp(
             Calendar.get_permissions_url,
@@ -198,10 +206,10 @@ class Calendar:
         return re.sub("@washington.edu", "", email)
 
     @staticmethod
-    def _load_permissions(campus, calendarid, resp_fragment, permission_dict):
+    def _load_permissions(campus, calendarid, resp_fragment, permission_list):
         """
-        :return: a dictionary of {uwnetid, Permission}
-                 None if error, {} if not exists
+        :return: a list of trumba.Permission objects
+                 None if error, [] if not exists
         """
         for record in resp_fragment:
             if not Calendar._is_valid_email(record['Email']):
@@ -213,7 +221,7 @@ class Calendar:
             perm.uwnetid = Calendar._extract_uwnetid(record['Email'])
             perm.level = record['Level']
             perm.name = record['Name']
-            permission_dict[perm.uwnetid] = perm
+            permission_list.append(perm)
 
     @staticmethod
     def _process_get_perm_resp(url, post_response, campus, calendarid):
@@ -228,11 +236,11 @@ class Calendar:
         data = Calendar._load_json(request_id, post_response)
         if data['d']['Users'] is None or len(data['d']['Users']) == 0:
             return None
-        permission_dict = {}
+        permission_list = []
         Calendar._load_permissions(campus, calendarid, 
                                    data['d']['Users'], 
-                                   permission_dict)
-        return permission_dict
+                                   permission_list)
+        return permission_list
 
     @staticmethod
     def _check_err(data):

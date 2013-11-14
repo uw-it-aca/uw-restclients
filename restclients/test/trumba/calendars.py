@@ -50,7 +50,7 @@ class TrumbaTestCalendars(TestCase):
             ):
             result = Calendar.get_sea_permissions(1)
             self.assertTrue(result is not None and len(result) == 3)
-            perm = result['dummyp']
+            perm = result[0]
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
             self.assertEqual(perm.name, 'Dummy publisher')
@@ -62,7 +62,7 @@ class TrumbaTestCalendars(TestCase):
             self.assertFalse(perm.is_bot())
             self.assertFalse(perm.is_tac())
 
-            perm = result['dummye']
+            perm = result[1]
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
             self.assertEqual(perm.name, 'Dummy editor')
@@ -74,7 +74,7 @@ class TrumbaTestCalendars(TestCase):
             self.assertFalse(perm.is_bot())
             self.assertFalse(perm.is_tac())
 
-            perm = result['dummys']
+            perm = result[2]
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
             self.assertEqual(perm.name, 'Dummy showon')
