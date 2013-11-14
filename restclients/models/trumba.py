@@ -69,7 +69,7 @@ class UwcalGroup(models.Model):
     name = models.CharField(max_length=500, null=True, default=None)
     title = models.CharField(max_length=500, null=True, default=None)
     description = models.CharField(max_length=500, null=True, blank=True, default=None)
-    lastverified = models.DateTimeField(null=True, default=None)
+    lastverified = models.DateTimeField(null=True, default=datetime.now())
 
     def get_calendarid(self):
         return self.calendar.calendarid
@@ -100,6 +100,9 @@ class UwcalGroup(models.Model):
     
     def is_showon_group(self):
         return is_showon_group(self.level)
+
+    def set_lastverified(self):
+        self.lastverified = datetime.now()
 
     def __eq__(self, other):
         return self.calendar == other.calendar and self.gtype == other.gtype
