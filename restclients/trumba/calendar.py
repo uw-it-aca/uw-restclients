@@ -84,11 +84,11 @@ class Calendar:
         raise DataFailureException if the request failed.
         """
         if is_bot(campus_code):
-            return Calendar.get_bot_permissions()
+            return Calendar.get_bot_permissions(calendar_id)
         elif is_sea(campus_code):
-            return Calendar.get_sea_permissions()
+            return Calendar.get_sea_permissions(calendar_id)
         elif is_tac(campus_code):
-            return Calendar.get_tac_permissions()
+            return Calendar.get_tac_permissions(calendar_id)
         else:
             None
 
