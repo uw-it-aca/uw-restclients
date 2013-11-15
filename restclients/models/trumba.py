@@ -96,10 +96,10 @@ class UwcalGroup(models.Model):
         return make_group_desc(self.gtype)
 
     def is_editor_group(self):
-        return is_editor_group(self.level)
+        return is_editor_group(self.gtype)
     
     def is_showon_group(self):
-        return is_showon_group(self.level)
+        return is_showon_group(self.gtype)
 
     def set_lastverified(self):
         self.lastverified = datetime.now()
@@ -166,8 +166,8 @@ class Permission(models.Model):
         return self.calendarid == other.calendarid and self.uwnetid == other.uwnetid and self.name == other.name and self.level == other.level
 
     def __str__(self):
-        return "{calendarid: %s, campus: %s, name: %s, uwnetid: %s, level: %s}" % (
-            self.calendarid, self.campus, self.name, self.uwnetid, self.level)
+        return "{calendarid: %s, campus: %s, uwnetid: %s, level: %s}" % (
+                self.calendarid, self.campus, self.uwnetid, self.level)
     
 
 
