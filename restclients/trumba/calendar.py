@@ -220,7 +220,7 @@ class Calendar:
             perm.campus = campus
             perm.uwnetid = Calendar._extract_uwnetid(record['Email'])
             perm.level = record['Level']
-            perm.name = record['Name']
+            perm.name = unicode(record['Name'])
             permission_list.append(perm)
 
     @staticmethod
