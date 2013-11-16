@@ -6,6 +6,14 @@ from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, Acc
 
 class TrumbaTestAccounts(TestCase):
 
+    def test_make_add_editor_url(self):
+        with self.settings(
+            RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
+            ):
+            self.assertEqual(Account._make_add_editor_url('Margaret Murray', 'murray4'),
+                             "/service/accounts.asmx/CreateEditor?Name=Margaret%20Murray&Email=murray4@washington.edu&Password=")
+
+
     def test_add_editor_error_cases(self):
         with self.settings(
             RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
