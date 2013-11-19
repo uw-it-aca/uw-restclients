@@ -13,7 +13,7 @@ class Account:
     holders of the calendar
     """
 
-    logger = logging.getLogger('restclients.trumba.Account')
+    logger = logging.getLogger(__name__)
 
     @staticmethod
     def _make_add_editor_url(name, userid):

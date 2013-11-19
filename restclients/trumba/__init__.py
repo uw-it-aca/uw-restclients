@@ -13,7 +13,7 @@ class Trumba(object):
     """
     The Trumba object has methods for getting resources about calendar
     """
-    logger = logging.getLogger('restclients.trumba.Trumba')
+    logger = logging.getLogger(__name__)
 
     @staticmethod
     def _log_xml_resp(campus, url, response, timer):

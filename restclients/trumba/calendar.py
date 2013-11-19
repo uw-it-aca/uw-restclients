@@ -15,7 +15,7 @@ class Calendar:
     This object access calendar info and user permissions in Trumba
     """
 
-    logger = logging.getLogger('restclients.trumba.Calendar')
+    logger = logging.getLogger(__name__)
     get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
     get_permissions_url = "/service/calendars.asmx/GetPermissions"
 
