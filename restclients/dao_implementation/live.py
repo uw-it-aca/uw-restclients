@@ -52,6 +52,4 @@ def get_live_url(con_pool,
         the POST, PUT body of the request
     """
     timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", con_pool.timeout)
-    logger = logging.getLogger('restclients.dao_implementation.live')
-    logger.info('%s %s%s', method, host, url) 
     return con_pool.urlopen(method, url, body=body, headers=headers, retries=retries, timeout=timeout)
