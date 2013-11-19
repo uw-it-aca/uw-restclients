@@ -489,6 +489,9 @@ class GradeRosterItem(models.Model):
         super(GradeRosterItem, self).__init__(*args, **kwargs)
         self._meta.get_field_by_name('grade')[0]._choices = grade_choices
 
+    def grade_choices(self):
+        return self._meta.get_field("grade").choices
+
     class Meta:
         app_label = "restclients"
 
