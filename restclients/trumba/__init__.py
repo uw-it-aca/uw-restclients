@@ -13,37 +13,43 @@ class Trumba(object):
     """
     The Trumba object has methods for getting resources about calendar
     """
-    logger = logging.getLogger(__name__)
-    logger.addHandler(null_handler)
 
     @staticmethod
     def _log_xml_resp(campus, url, response, timer):
+        logger = logging.getLogger(__name__)
+        logger.addHandler(null_handler)
         if response.status == 200 and response.data is not None:
-            root = etree.fromstring(response.data)
-            resp_msg = ''
-            for el in root.iterchildren():
-                resp_msg = resp_msg + str(el.attrib)
-
-            log_info(Trumba.logger,
-                     "%s %s ==RETURNS==> %s %s" % (
-                    campus, url, response.status, resp_msg),
+            log_info(logger,
+                     "%s %s ==status==> %s" % (
+                    campus, url, response.status),
                      timer)
+            if logger.getEffectiveLevel() == logging.DEBUG:
+                root = etree.fromstring(response.data)
+                resp_msg = ''
+                for el in root.iterchildren():
+                    resp_msg = resp_msg + str(el.attrib)
+                logger.debug("%s %s ==data==> %s" % (
+                        campus, url, resp_msg))
         else:
-            log_err(Trumba.logger,
-                    "%s %s ==RETURNS==> %s %s" % (
+            log_err(logger,
+                    "%s %s ==error==> %s %s" % (
                     campus, url, response.status, response.reason),
                     timer)
 
     @staticmethod
     def _log_json_resp(campus, url, body, response, timer):
+        logger = logging.getLogger(__name__)
+        logger.addHandler(null_handler)
         if response.status == 200 and response.data is not None:
-            log_info(Trumba.logger,
-                     "%s %s %s ==RETURNS==> %s %s" % (
-                    campus, url, body, response.status, response.data),
+            log_info(logger,
+                     "%s %s %s ==status==> %s" % (
+                    campus, url, body, response.status),
                      timer)
+            logger.debug("%s %s %s ==data==> %s" % (
+                    campus, url, body, response.data))
         else:
-            log_err(Trumba.logger,
-                    "%s %s %s ==RETURNS==> %s %s" % (
+            log_err(logger,
+                    "%s %s %s ==error==> %s %s" % (
                     campus, url, body, response.status, response.reason),
                     timer)
 
