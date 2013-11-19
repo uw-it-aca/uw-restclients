@@ -6,6 +6,7 @@ from restclients.models.trumba import TrumbaCalendar, Permission, is_bot, is_sea
 from restclients.exceptions import DataFailureException
 from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
 from restclients.trumba import Trumba
+from restclients.util.log import null_handler
 import json
 import logging
 import re
@@ -14,8 +15,9 @@ class Calendar:
     """
     This object access calendar info and user permissions in Trumba
     """
-
     logger = logging.getLogger(__name__)
+    logger.addHandler(null_handler)
+
     get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
     get_permissions_url = "/service/calendars.asmx/GetPermissions"
 
@@ -273,6 +275,8 @@ class Calendar:
     @staticmethod
     def _load_json(request_id, post_response):
         if post_response.status != 200:
+            Calendar.logger.error("DataFailureException (%s, %s) when %s" % (
+                    post_response.status, post_response.reason, request_id))
             raise DataFailureException(request_id,
                                        post_response.status,
                                        post_response.reason)

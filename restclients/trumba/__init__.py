@@ -4,7 +4,7 @@ The interface for interacting with Trumba web services.
 
 from restclients.dao import TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
 from restclients.util.timer import Timer
-from restclients.util.log import log_info, log_err
+from restclients.util.log import log_info, log_err, null_handler
 from lxml import etree
 import logging
 import json
@@ -14,6 +14,7 @@ class Trumba(object):
     The Trumba object has methods for getting resources about calendar
     """
     logger = logging.getLogger(__name__)
+    logger.addHandler(null_handler)
 
     @staticmethod
     def _log_xml_resp(campus, url, response, timer):

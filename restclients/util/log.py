@@ -1,6 +1,12 @@
 import logging
 from restclients.util.timer import Timer
 
+class NullHandler(logging.Handler):
+    def emit(self, record):
+        pass
+
+null_handler = NullHandler()
+
 def log_info(logger, action_desc, timer):
     """
     :param action_desc: the string description of the action

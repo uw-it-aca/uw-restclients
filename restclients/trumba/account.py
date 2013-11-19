@@ -2,6 +2,7 @@ from urllib import quote, unquote
 from restclients.trumba import Trumba
 from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnexpectedError, UnknownError
 from restclients.exceptions import DataFailureException
+from restclients.util.log import null_handler
 import logging
 import re
 from lxml import etree, objectify
@@ -14,6 +15,7 @@ class Account:
     """
 
     logger = logging.getLogger(__name__)
+    logger.addHandler(null_handler)
 
     @staticmethod
     def _make_add_editor_url(name, userid):
@@ -130,6 +132,8 @@ class Account:
         if the request failed or an error code has been returned.
         """
         if response.status != 200:
+            Account.logger.error("DataFailureException (%s, %s) when %s" % (
+                    post_response.status, post_response.reason, request_id))
             raise DataFailureException(request_id,
                                        response.status,
                                        response.reason)
