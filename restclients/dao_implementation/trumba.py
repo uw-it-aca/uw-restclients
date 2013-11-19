@@ -16,8 +16,7 @@ class FileSea(object):
     RESTCLIENTS_TRUMBA_SEA_DAO_CLASS =
     'restclients.dao_implementation.trumba.FileSea'
     """
-    logger = logging.getLogger(
-        'restclients.dao_implementation.trumba.File')
+    #logger = logging.getLogger('restclients.dao_implementation.trumba.File')
 
     def get_path_prefix(self):
         return "trumba_sea"
@@ -64,9 +63,6 @@ class LiveSea(object):
     RESTCLIENTS_TRUMBA_SEA_DAO_CLASS =
     'restclients.dao_implementation.trumba.LiveSea'
     """
-
-    logger = logging.getLogger(
-        'restclients.dao_implementation.trumba.Live')
 
     pool = None
 
