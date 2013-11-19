@@ -20,6 +20,9 @@ import json
 import re
 
 
+QUARTER_SEQ = ["winter", "spring", "summer", "autumn"] 
+
+
 class SWS(object):
     """
     The SWS object has methods for getting information
@@ -90,18 +93,27 @@ class SWS(object):
 
         return self._term_from_json(response.data)
 
+    def get_term_before(self, term):
+        """                                                                     
+        Returns a restclients.Term object, for the term after the term given.   
+        """
+        prev_year = term.year
+        prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) - 1] 
+
+        if prev_quarter == "autumn":
+            prev_year = prev_year - 1
+
+        return self.get_term_by_year_and_quarter(prev_year, prev_quarter)
+ 
     def get_term_after(self, term):
         """
         Returns a restclients.Term object, for the term after the term given.
         """
-        quarter_map = {
-            "winter": "spring",
-            "spring": "summer",
-            "summer": "autumn",
-            "autumn": "winter",
-        }
         next_year = term.year
-        next_quarter = quarter_map[term.quarter]
+        if term.quarter == "autumn":
+            next_quarter = QUARTER_SEQ[0]
+        else:
+            next_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) + 1]
 
         if next_quarter == "winter":
             next_year = next_year + 1

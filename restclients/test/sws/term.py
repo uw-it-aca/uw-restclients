@@ -65,12 +65,12 @@ class SWSTestTerm(TestCase):
                               "Return %s for the next quarter" %
                               expected_quarter)
 
-            self.assertEquals(term.last_day_add.year, 2013)                     
-            self.assertEquals(term.last_day_add.month, 7)                       
-            self.assertEquals(term.last_day_add.day, 14)                        
-                                                                                
-            self.assertEquals(term.last_day_drop.year, 2013)                    
-            self.assertEquals(term.last_day_drop.month, 8)                      
+            self.assertEquals(term.last_day_add.year, 2013)
+            self.assertEquals(term.last_day_add.month, 7)
+            self.assertEquals(term.last_day_add.day, 14)
+
+            self.assertEquals(term.last_day_drop.year, 2013)
+            self.assertEquals(term.last_day_drop.month, 8)
             self.assertEquals(term.last_day_drop.day, 11)
 
             self.assertEquals(term.first_day_quarter.year, 2013)
@@ -89,12 +89,12 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.bterm_first_date.month, 7)
             self.assertEquals(term.bterm_first_date.day, 25)
 
-            self.assertEquals(term.aterm_last_day_add.year, 2013)                  
-            self.assertEquals(term.aterm_last_day_add.month, 7)                    
-            self.assertEquals(term.aterm_last_day_add.day, 14)                     
-                                                                                
-            self.assertEquals(term.bterm_last_day_add.year, 2013)                 
-            self.assertEquals(term.bterm_last_day_add.month, 7)                   
+            self.assertEquals(term.aterm_last_day_add.year, 2013)
+            self.assertEquals(term.aterm_last_day_add.month, 7)
+            self.assertEquals(term.aterm_last_day_add.day, 14)
+
+            self.assertEquals(term.bterm_last_day_add.year, 2013)
+            self.assertEquals(term.bterm_last_day_add.month, 7)
             self.assertEquals(term.bterm_last_day_add.day, 31)
 
             self.assertEquals(term.last_final_exam_date.year, 2013)
@@ -112,6 +112,28 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.aterm_grading_period_open.date().day, 18)
             self.assertEquals(term.aterm_grading_period_open.time().hour, 8)
             self.assertEquals(term.aterm_grading_period_open.time().minute, 0)
+
+    def test_quarter_before(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+
+            starting = sws.get_next_term()
+            self.assertEquals(starting.year, 2013)
+            self.assertEquals(starting.quarter, 'summer')
+
+            next1 = sws.get_term_before(starting)
+            self.assertEquals(next1.year, 2013)
+            self.assertEquals(next1.quarter, 'spring')
+
+            next2 = sws.get_term_before(next1)
+            self.assertEquals(next2.year, 2013)
+            self.assertEquals(next2.quarter, 'winter')
+
+            next3 = sws.get_term_before(next2)
+            self.assertEquals(next3.year, 2012)
+            self.assertEquals(next3.quarter, 'autumn')
 
     def test_quarter_after(self):
         with self.settings(
