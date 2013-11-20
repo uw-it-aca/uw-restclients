@@ -1,8 +1,11 @@
+"""
+The interface for accessing Trumba Accounts' Service
+"""
+
 from urllib import quote, unquote
 from restclients.trumba import Trumba
 from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnexpectedError, UnknownError
 from restclients.exceptions import DataFailureException
-from restclients.util.log import null_handler
 import logging
 import re
 from lxml import etree, objectify
@@ -10,12 +13,12 @@ from functools import partial
 
 class Account:
     """
-    Access editors of the calendar, viewer and showon permission 
-    holders of the calendar
-    """
+    The Account class provides methods for adding and deleting editors 
+    and set their calendar  permissions 
 
-    logger = logging.getLogger(__name__)
-    logger.addHandler(null_handler)
+    The underline http requests and responses will be logged.
+    Be sure to set the logging configuration if you use the LiveDao!
+    """
 
     @staticmethod
     def _make_add_editor_url(name, userid):
@@ -132,8 +135,6 @@ class Account:
         if the request failed or an error code has been returned.
         """
         if response.status != 200:
-            Account.logger.error("DataFailureException (%s, %s) when %s" % (
-                    post_response.status, post_response.reason, request_id))
             raise DataFailureException(request_id,
                                        response.status,
                                        response.reason)
@@ -146,7 +147,7 @@ class Account:
         func = partial(is_success_func)
         if func(resp_code):
             return True
-        Account._check_err(resp_code)
+        Account._check_err(resp_code, request_id)
 
 
     @staticmethod
@@ -174,9 +175,10 @@ class Account:
         return code == 1003
 
     @staticmethod
-    def _check_err(code):
+    def _check_err(code, request_id):
         """
         :param code: an integer value  
+        :param request_id: campus url identifying the request
         Check possible error code returned in the response body
         raise the coresponding TrumbaException
         """
@@ -201,4 +203,7 @@ class Account:
         elif code == 3017 or code == 3018:
             raise ErrorCreatingEditor()
         else:
+            logging.getLogger(__name__).warn(
+                 "Unexpected Error Code: %s with %s" % (
+                     code, request_id))
             raise UnexpectedError()

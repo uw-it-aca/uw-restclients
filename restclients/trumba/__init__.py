@@ -1,35 +1,37 @@
 """
-The interface for interacting with Trumba web services.
+The low level interface for accessing all Trumba web services.
 """
 
 from restclients.dao import TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
 from restclients.util.timer import Timer
-from restclients.util.log import log_info, log_err, null_handler
+from restclients.util.log import log_info, log_err
 from lxml import etree
 import logging
 import json
 
 class Trumba(object):
     """
-    The Trumba object has methods for getting resources about calendar
+    This class interacts with campus specific resources on Trumba.
+
+    It will log the http requests and responses. 
+    Be sure to set the logging configuration if you use the LiveDao!
     """
 
     @staticmethod
     def _log_xml_resp(campus, url, response, timer):
         logger = logging.getLogger(__name__)
-        logger.addHandler(null_handler)
+
         if response.status == 200 and response.data is not None:
             log_info(logger,
                      "%s %s ==status==> %s" % (
                     campus, url, response.status),
                      timer)
-            if logger.getEffectiveLevel() == logging.DEBUG:
-                root = etree.fromstring(response.data)
-                resp_msg = ''
-                for el in root.iterchildren():
-                    resp_msg = resp_msg + str(el.attrib)
-                logger.debug("%s %s ==data==> %s" % (
-                        campus, url, resp_msg))
+            root = etree.fromstring(response.data)
+            resp_msg = ''
+            for el in root.iterchildren():
+                resp_msg = resp_msg + str(el.attrib)
+            logger.info("%s %s ==message==> %s" % (
+                    campus, url, resp_msg))
         else:
             log_err(logger,
                     "%s %s ==error==> %s %s" % (
@@ -39,7 +41,7 @@ class Trumba(object):
     @staticmethod
     def _log_json_resp(campus, url, body, response, timer):
         logger = logging.getLogger(__name__)
-        logger.addHandler(null_handler)
+
         if response.status == 200 and response.data is not None:
             log_info(logger,
                      "%s %s %s ==status==> %s" % (

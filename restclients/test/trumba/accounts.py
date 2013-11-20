@@ -88,52 +88,52 @@ class TrumbaTestAccounts(TestCase):
     def test_check_err(self):
         self.assertRaises(CalendarNotExist,
                           Account._check_err,
-                          3006)
+                          3006, 'test if CalendarNotExist is thrown')
 
         self.assertRaises(CalendarOwnByDiffAccount,
                           Account._check_err,
-                          3007)
+                          3007, 'test if CalendarOwnByDiffAccount is thrown')
 
         self.assertRaises(AccountNotExist,
                           Account._check_err,
-                          3008)
+                          3008, 'test if AccountNotExist is thrown')
 
         self.assertRaises(AccountUsedByDiffUser,
                           Account._check_err,
-                          3009)
+                          3009, 'test if AccountUsedByDiffUser is thrown')
 
         self.assertRaises(AccountUsedByDiffUser,
                           Account._check_err,
-                          3013)
+                          3013, 'test if AccountUsedByDiffUser is thrown')
 
         self.assertRaises(InvalidPermissionLevel,
                           Account._check_err,
-                          3010)
+                          3010, 'test if InvalidPermissionLevel is thrown')
 
         self.assertRaises(FailedToClosePublisher,
                           Account._check_err,
-                          3011)
+                          3011, 'test if FailedToClosePublisher is thrown')
 
         self.assertRaises(InvalidEmail,
                           Account._check_err,
-                          3014)
+                          3014, 'test if InvalidEmail is thrown')
 
         self.assertRaises(NoAllowedPermission,
                           Account._check_err,
-                          3015)
+                          3015, 'test if NoAllowedPermission is thrown')
 
         self.assertRaises(AccountNameEmpty,
                           Account._check_err,
-                          3016)
+                          3016, 'test if AccountNameEmpty is thrown')
 
         self.assertRaises(ErrorCreatingEditor,
                           Account._check_err,
-                          3017)
+                          3017, 'test if ErrorCreatingEditor is thrown')
 
         self.assertRaises(ErrorCreatingEditor,
                           Account._check_err,
-                          3018)
+                          3018, 'test if ErrorCreatingEditor is thrown')
 
         self.assertRaises(UnexpectedError,
                           Account._check_err,
-                          3020)
+                          3020, 'test if UnexpectedError is thrown')

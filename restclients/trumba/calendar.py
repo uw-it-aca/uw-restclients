@@ -1,22 +1,23 @@
 """
-The interface for accessing Trumba's Calendars Service 
+The interface for accessing Trumba Calendars' Service 
 """
 
 from restclients.models.trumba import TrumbaCalendar, Permission, is_bot, is_sea, is_tac
 from restclients.exceptions import DataFailureException
 from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
 from restclients.trumba import Trumba
-from restclients.util.log import null_handler
 import json
 import logging
 import re
 
 class Calendar:
     """
-    This object access calendar info and user permissions in Trumba
+    This class provides methods to obtain calendar info 
+    and user calendar permissions in Trumba
+
+    The underline http requests and responses will be logged.
+    Be sure to set the logging configuration if you use the LiveDao!
     """
-    logger = logging.getLogger(__name__)
-    logger.addHandler(null_handler)
 
     get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
     get_permissions_url = "/service/calendars.asmx/GetPermissions"
@@ -165,13 +166,14 @@ class Calendar:
         :return: a dictionary of {calenderid, TrumbaCalendar}
                  None if error, {} if not exists
         """
+        logger = logging.getLogger(__name__)
         for record in resp_fragment:
             cal_grp = TrumbaCalendar()
             cal_grp.calendarid = record['ID']
             cal_grp.campus = campus
             cal_grp.name = record['Name']
             if not Calendar._is_valid_calendarid(record['ID']):
-                Calendar.logger.error(
+                logger.warn(
                     "%s InvalidCalendarId, entry skipped!" % cal_grp)
                 continue
             calendar_dict[cal_grp.calendarid] =cal_grp
@@ -251,6 +253,7 @@ class Calendar:
         Check possible error code returned in the response body
         raise the coresponding exceptions
         """
+        logger = logging.getLogger(__name__)
         if data['d'] is None:
             raise NoDataReturned()
         if data['d']['Messages'] is None:
@@ -266,7 +269,7 @@ class Calendar:
         elif code == 3007:
             raise CalendarOwnByDiffAccount()
         else:
-            Calendar.logger.error(
+            logger.warn(
                 "Unexpected Error Code: %s %s" % (
                     code, msg[0]['Description']))
             raise UnexpectedError()
@@ -275,8 +278,6 @@ class Calendar:
     @staticmethod
     def _load_json(request_id, post_response):
         if post_response.status != 200:
-            Calendar.logger.error("DataFailureException (%s, %s) when %s" % (
-                    post_response.status, post_response.reason, request_id))
             raise DataFailureException(request_id,
                                        post_response.status,
                                        post_response.reason)
