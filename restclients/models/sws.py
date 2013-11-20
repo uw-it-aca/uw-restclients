@@ -472,7 +472,6 @@ class GradeRosterItem(models.Model):
     is_auditor = models.BooleanField()
     allows_incomplete = models.BooleanField()
     has_incomplete = models.BooleanField()
-    allows_writing_credit = models.BooleanField()
     has_writing_credit = models.BooleanField()
     no_grade_now = models.BooleanField()
     date_withdrawn = models.DateField(null=True)
