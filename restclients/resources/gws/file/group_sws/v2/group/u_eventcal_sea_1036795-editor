@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+
+
+
+
+<div class="group" version="2">
+
+ Regid: <span class="regid">${group.regid}</span>
+ <br/>
+ <span class="names">
+ Name: <span class="name">${group.cn}</span>
+ </span>
+ <br/>
+ Title: <span class="title">${group.safeTitle}</span>
+ <br/>
+ Description: <span class="description">${group.safeDescription}</span>
+ <br/>
+
+ Group contact: <span class="contact"></span>
+ <br/>
+
+ Created: <span class="createtime"></span>
+ <br/>
+ Modified: <span class="modifytime"></span>
+ <br/>
+ Membership modified: <span class="membermodifytime"></span>
+ <br/>
+ Authn factor: <span class="authnfactor"></span>
+ <br/>
+ Classification: <span class="classification"></span>
+ <br/>
+ Membership dependency group: <span class="dependson"></span>
+ <br/>
+ GID: <span class="gid"></span>
+
+
+
+ Email Enabled: <span class="emailenabled"></span>
+ <br/>
+
+
+
+
+
+
+  Administrators:
+  <ul class="admins">
+    </ul>
+  Updaters:
+  <ul class="updaters">
+    </ul>
+  Creators:
+  <ul class="creators">
+    </ul>
+  Readers:
+  <ul class="readers">
+    </ul>
+
+  Optins:
+  <ul class="optins">
+    </ul>
+  Optouts:
+  <ul class="optouts">
+    </ul>
+
+<br/>
+
+ Membership: <a rel="members" href="/group_sws/v2/group/${group.regid}/member">Membership</a>
+
+</div>
+
+<div class="status"></div>
+</body>
+</html>
