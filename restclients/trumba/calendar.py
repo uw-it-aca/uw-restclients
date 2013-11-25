@@ -191,12 +191,11 @@ class Calendar:
         and load the json data into the return object.
         """
         request_id = "%s %s" % (campus, url)
-        data = Calendar._load_json(request_id, post_response)
-        if data['d']['Calendars'] is None or len(data['d']['Calendars']) == 0:
-            return None
         calendar_dict = {}
-        Calendar._load_calendar(campus, data['d']['Calendars'],
-                                calendar_dict)
+        data = Calendar._load_json(request_id, post_response)
+        if data['d']['Calendars'] is not None and len(data['d']['Calendars']) > 0:
+            Calendar._load_calendar(campus, data['d']['Calendars'],
+                                    calendar_dict)
         return calendar_dict
 
     re_email = re.compile(r'[a-z][a-z0-9]+@washington.edu')
@@ -230,20 +229,19 @@ class Calendar:
     @staticmethod
     def _process_get_perm_resp(url, post_response, campus, calendarid):
         """
-        :return: a dictionary of {uwnetid, Permission}
-                 None if error, {} if not exists
+        :return: a list of trumba.Permission objects
+                 None if error, [] if not exists
         If the response is successful, process the response data 
         and load into the return objects 
         otherwise raise DataFailureException
         """
         request_id = "%s %s CalendarID:%s" % (campus, url, calendarid)
         data = Calendar._load_json(request_id, post_response)
-        if data['d']['Users'] is None or len(data['d']['Users']) == 0:
-            return None
         permission_list = []
-        Calendar._load_permissions(campus, calendarid, 
-                                   data['d']['Users'], 
-                                   permission_list)
+        if data['d']['Users'] is not None and len(data['d']['Users']) > 0:
+            Calendar._load_permissions(campus, calendarid, 
+                                       data['d']['Users'], 
+                                       permission_list)
         return permission_list
 
     @staticmethod
