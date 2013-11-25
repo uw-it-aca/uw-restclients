@@ -64,3 +64,4 @@ from restclients.test.canvas.users import CanvasTestUsers
 
 from restclients.test.trumba.accounts import TrumbaTestAccounts
 from restclients.test.trumba.calendars import TrumbaTestCalendars
+from restclients.test.gws.trumba_group import TestGwsTrumbaGroup
