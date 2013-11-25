@@ -42,6 +42,10 @@ class TrumbaCalendar(models.Model):
         return "{name: %s, campus: %s, calendarid: %s}" % (
             self.name, self.campus, self.calendarid)
 
+    def __unicode__(self):
+        return u'{name: %s, campus: %s, calendarid: %s}' % (
+            self.name, self.campus, self.calendarid)
+
 def is_editor_group(gtype):
     return gtype is not None and gtype == UwcalGroup.GTYEP_EDITOR
 
@@ -111,6 +115,10 @@ class UwcalGroup(models.Model):
         return "{uwregid: %s, name: %s, title: %s, description: %s}" % (
             self.uwregid, self.get_name(), self.get_title(), self.get_desc())
 
+    def __unicode__(self):
+        return u'{uwregid: %s, name: %s, title: %s, description: %s}' % (
+            self.uwregid, self.get_name(), self.get_title(), self.get_desc())
+
 def is_edit_permission(level):
     return level is not None and level == Permission.EDIT
     
@@ -168,6 +176,10 @@ class Permission(models.Model):
     def __str__(self):
         return "{calendarid: %s, campus: %s, uwnetid: %s, level: %s}" % (
                 self.calendarid, self.campus, self.uwnetid, self.level)
+    
+    def __unicode__(self):
+        return u'{calendarid: %s, campus: %s, uwnetid: %s, name: %s, level: %s}' % (
+                self.calendarid, self.campus, self.uwnetid, self.name, self.level)
     
 
 
