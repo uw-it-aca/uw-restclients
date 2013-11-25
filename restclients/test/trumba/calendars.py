@@ -18,7 +18,8 @@ class TrumbaTestCalendars(TestCase):
             RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
             ):
             result = Calendar.get_sea_calendars()
-            self.assertTrue(result is not None and len(result) == 10)
+            self.assertIsNotNone(result)
+            self.assertTrue(len(result) == 10)
 
             trumba_cal = result[11]
             self.assertEqual(trumba_cal.calendarid, 11)
@@ -41,7 +42,8 @@ class TrumbaTestCalendars(TestCase):
         with self.settings(
             RESTCLIENTS_TRUMBA_TAC_DAO_CLASS='restclients.dao_implementation.trumba.FileTac'
             ):
-            self.assertTrue(Calendar.get_tac_calendars() is None)
+            self.assertIsNotNone(Calendar.get_tac_calendars())
+            self.assertTrue(len(Calendar.get_tac_calendars()) == 0)
             
 
     def test_get_sea_permissions_normal_cases(self):
@@ -49,7 +51,8 @@ class TrumbaTestCalendars(TestCase):
             RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
             ):
             result = Calendar.get_sea_permissions(1)
-            self.assertTrue(result is not None and len(result) == 3)
+            self.assertIsNotNone(result)
+            self.assertTrue(len(result) == 3)
             perm = result[0]
             self.assertEqual(perm.calendarid, 1)
             self.assertEqual(perm.campus, 'sea')
