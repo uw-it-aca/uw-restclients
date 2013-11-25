@@ -285,26 +285,31 @@ class GWS(object):
             # Legacy class name for this attribute
             group.reporttoorig = root.find('.//*[@class="reporttoowner"]').text
 
-        group.admins = []
         for user in root.findall('.//*[@class="admins"]/*[@class="admin"]'):
             group.admins.append(GroupUser(name=user.text,
                                           user_type=user.get("type")))
 
-        group.updaters = []
         for user in root.findall('.//*[@class="updaters"]/*[@class="updater"]'):
             group.updaters.append(GroupUser(name=user.text,
                                             user_type=user.get("type")))
 
-        group.creators = []
         for user in root.findall('.//*[@class="creators"]/*[@class="creator"]'):
             group.creators.append(GroupUser(name=user.text,
                                             user_type=user.get("type")))
 
-        group.readers = []
         for user in root.findall('.//*[@class="readers"]/*[@class="reader"]'):
             group.readers.append(GroupUser(name=user.text,
                                            user_type=user.get("type")))
 
+        for user in root.findall('.//*[@class="optins"]/*[@class="optin"]'):
+            group.optins.append(GroupUser(name=user.text,
+                                           user_type=user.get("type")))
+
+        for user in root.findall('.//*[@class="optouts"]/*[@class="optout"]'):
+            group.optouts.append(GroupUser(name=user.text,
+                                           user_type=user.get("type")))
+
+        # viewers are not used according to Jim Fox
         group.viewers = []
         for user in root.findall('.//*[@class="viewers"]/*[@class="viewer"]'):
             group.viewers.append(GroupUser(name=user.text,
