@@ -58,6 +58,12 @@ class Group(models.Model):
         self.readers = []
         self.updaters = []
 
+    def __str__(self):
+        return "{uwregid: %s, name: %s, title: %s, description: %s}" % (
+            self.uwregid, self.name, self.title, self.description)
+
+    def has_regid(self):
+        return self.uwregid is not None and len(self.uwregid) == 32
 
 class CourseGroup(Group):
     SPRING = "spring"
