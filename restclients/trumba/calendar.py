@@ -168,15 +168,17 @@ class Calendar:
         """
         logger = logging.getLogger(__name__)
         for record in resp_fragment:
-            cal_grp = TrumbaCalendar()
-            cal_grp.calendarid = record['ID']
-            cal_grp.campus = campus
-            cal_grp.name = record['Name']
+            if re.match('Internal Event Actions', record['Name']):
+                continue
+            trumba_cal = TrumbaCalendar()
+            trumba_cal.calendarid = record['ID']
+            trumba_cal.campus = campus
+            trumba_cal.name = record['Name']
             if not Calendar._is_valid_calendarid(record['ID']):
                 logger.warn(
-                    "%s InvalidCalendarId, entry skipped!" % cal_grp)
+                    "%s InvalidCalendarId, entry skipped!" % trumba_cal)
                 continue
-            calendar_dict[cal_grp.calendarid] =cal_grp
+            calendar_dict[trumba_cal.calendarid] = trumba_cal
             if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
                 Calendar._load_calendar(campus, 
                                         record['ChildCalendars'], 
