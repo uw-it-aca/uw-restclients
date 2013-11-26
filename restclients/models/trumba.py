@@ -99,6 +99,9 @@ class UwcalGroup(models.Model):
             return self.description
         return make_group_desc(self.gtype)
 
+    def has_regid(self):
+        return self.uwregid is not None and len(self.uwregid) == 32
+
     def is_editor_group(self):
         return is_editor_group(self.gtype)
     
