@@ -168,7 +168,7 @@ class Calendar:
         """
         logger = logging.getLogger(__name__)
         for record in resp_fragment:
-            if re.match('Internal Event Actions', record['Name']):
+            if re.match('Internal Event Actions', record['Name']) or re.match('Migrated events', record['Name']) :
                 continue
             trumba_cal = TrumbaCalendar()
             trumba_cal.calendarid = record['ID']
