@@ -21,8 +21,8 @@ class TrumbaTestCalendars(TestCase):
             self.assertIsNotNone(result)
             self.assertTrue(len(result) == 10)
 
-            trumba_cal = result[11]
-            self.assertEqual(trumba_cal.calendarid, 11)
+            trumba_cal = result[1]
+            self.assertEqual(trumba_cal.calendarid, 1)
             self.assertEqual(trumba_cal.campus, 'sea')
             self.assertEqual(trumba_cal.name, 'Seattle calendar')
             self.assertTrue(trumba_cal.is_sea())
@@ -43,7 +43,7 @@ class TrumbaTestCalendars(TestCase):
             RESTCLIENTS_TRUMBA_TAC_DAO_CLASS='restclients.dao_implementation.trumba.FileTac'
             ):
             self.assertIsNotNone(Calendar.get_tac_calendars())
-            self.assertTrue(len(Calendar.get_tac_calendars()) == 0)
+            self.assertTrue(len(Calendar.get_tac_calendars()) == 1)
             
 
     def test_get_sea_permissions_normal_cases(self):
