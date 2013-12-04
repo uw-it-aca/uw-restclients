@@ -129,7 +129,10 @@ def is_showon_permission(level):
     return level is not None and level == Permission.SHOWON
     
 def is_publish_permission(level):
-    return level is not None and (level == Permission.PUBLISH or level == Permission.REPUBLISH)
+    return level is not None and level == Permission.PUBLISH
+
+def is_republish_permission(level):
+    return level is not None and level == Permission.REPUBLISH
 
 class Permission(models.Model):
     EDIT = 'EDIT'
@@ -162,6 +165,9 @@ class Permission(models.Model):
     
     def is_publish(self):
         return is_publish_permission(self.level)
+    
+    def is_republish(self):
+        return is_republish_permission(self.level)
     
     def is_showon(self):
         return is_showon_permission(self.level)
