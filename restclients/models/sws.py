@@ -1,4 +1,5 @@
 from django.db import models
+from django.template import Context, loader
 import pickle
 from base64 import b64encode, b64decode
 
@@ -456,6 +457,14 @@ class GradeRoster(models.Model):
     section_credits = models.FloatField()
     allows_writing_credit = models.BooleanField()
 
+    def xhtml(self):
+        template = loader.get_template("sws/graderoster.xhtml")
+        context = Context({
+            "graderoster": self,
+            "section_id": self.section.section_label()
+        })
+        return template.render(context)
+
     class Meta:
         app_label = "restclients"
 
@@ -486,7 +495,7 @@ class GradeRosterItem(models.Model):
     def __init__(self, *args, **kwargs):
         grade_choices = kwargs.pop("grade_choices", ())
         super(GradeRosterItem, self).__init__(*args, **kwargs)
-        self._meta.get_field_by_name('grade')[0]._choices = grade_choices
+        self._meta.get_field_by_name("grade")[0]._choices = grade_choices
 
     def grade_choices(self):
         return self._meta.get_field("grade").choices

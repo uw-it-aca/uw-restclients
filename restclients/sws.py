@@ -2,7 +2,6 @@
 This is the interface for interacting with the Student Web Service.
 """
 
-from django.template import Context, loader
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models.sws import Term, Section, SectionReference
@@ -561,11 +560,10 @@ class SWS(object):
 
         return curricula
 
-    def get_graderoster(self, section, instructor, section_id=None):
+    def get_graderoster(self, section, instructor):
         """
         Returns a restclients.GradeRoster model for the passed Section model
-        and instructor Person. If section_id is not None, the returned
-        graderoster includes only students in that section.
+        and instructor Person.
         """
         url = "/student/v4/graderoster/%s,%s" % (
             section.section_label().replace('/', ','),
@@ -579,8 +577,7 @@ class SWS(object):
             msg = root.find('.//*[@class="status_description"]').text.strip()
             raise DataFailureException(url, response.status, msg)
 
-        return self._graderoster_from_xhtml(response.data, section, instructor,
-                                            filter_section_id=section_id)
+        return self._graderoster_from_xhtml(response.data, section, instructor)
 
     def update_graderoster(self, graderoster):
         """
@@ -591,7 +588,7 @@ class SWS(object):
         section_id = graderoster.section.section_label().replace('/', ',')
         reg_id = graderoster.instructor.uwregid
         url = "/student/v4/graderoster/%s,%s" % (section_id, reg_id)
-        body = self._xhtml_from_graderoster(graderoster)
+        body = graderoster.xhtml()
 
         dao = SWS_DAO()
         response = dao.putURL(url, {"Content-Type": "application/xhtml+xml",
@@ -865,8 +862,7 @@ class SWS(object):
 
         return section_status
 
-    def _graderoster_from_xhtml(self, data, section, instructor,
-                                filter_section_id=None):
+    def _graderoster_from_xhtml(self, data, section, instructor):
         pws = PWS()
         people = {instructor.uwregid: instructor}
         root = etree.fromstring(data)
@@ -909,9 +905,6 @@ class SWS(object):
         for item in item_elements:
             section_element = item.find('.//*[@class="section_id"]')
             section_id = section_element.text if section_element is not None else default_section_id
-
-            if filter_section_id is not None and filter_section_id != section_id:
-                continue
 
             grade_choices = []
             grade_default = None
@@ -983,11 +976,3 @@ class SWS(object):
             graderoster.items.append(gr_item)
 
         return graderoster
-
-    def _xhtml_from_graderoster(self, graderoster):
-        template = loader.get_template("sws/graderoster.xhtml")
-        context = Context({
-            "graderoster": graderoster,
-            "section_id": graderoster.section.section_label()
-        })
-        return template.render(context)

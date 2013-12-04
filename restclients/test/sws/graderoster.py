@@ -45,10 +45,10 @@ class SWSTestGradeRoster(TestCase):
                 new_grade = str(round(random.uniform(1, 4), 1))
                 item.grade = new_grade
 
-            orig_xhtml = split_xhtml(sws._xhtml_from_graderoster(graderoster))
+            orig_xhtml = split_xhtml(graderoster.xhtml())
 
             new_graderoster = sws.update_graderoster(graderoster)
-            new_xhtml = split_xhtml(sws._xhtml_from_graderoster(new_graderoster))
+            new_xhtml = split_xhtml(new_graderoster.xhtml())
             self.assertEquals(orig_xhtml, new_xhtml, "XHTML is equal")
 
 
