@@ -129,17 +129,19 @@ def is_showon_permission(level):
     return level is not None and level == Permission.SHOWON
     
 def is_publish_permission(level):
-    return level is not None and level == Permission.PUBLISH
+    return level is not None and (level == Permission.PUBLISH or level == Permission.REPUBLISH)
 
 class Permission(models.Model):
     EDIT = 'EDIT'
     NONE = 'NONE'
     PUBLISH = 'PUBLISH'
+    REPUBLISH = 'REPUBLISH'
     SHOWON = 'SHOWON'
     VIEW = 'VIEW'
     LEVEL_CHOICES = (
         (EDIT, 'Can add, delete and change content'),
         (PUBLISH, 'Can view, edit and publish'),
+        (REPUBLISH, 'Can view, edit and republish'),
         (SHOWON, 'Can view and show on'),
         (VIEW, 'Can view content'),
         (NONE, 'None')
