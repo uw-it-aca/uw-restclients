@@ -3,7 +3,7 @@ from restclients.canvas.users import Users
 from restclients.models.canvas import Admin
 from restclients.exceptions import DataFailureException
 from restclients.dao import Canvas_DAO
-from urllib import quote
+from urllib import quote, unquote
 
 
 class Admins(Canvas):
@@ -35,7 +35,7 @@ class Admins(Canvas):
         https://canvas.instructure.com/doc/api/admins.html#method.admins.create
         """
         url = "/api/v1/accounts/%s/admins" % account_id
-        body = {"user_id": user_id,
+        body = {"user_id": unquote(user_id),
                 "role": role,
                 "send_confirmation": False}
 
