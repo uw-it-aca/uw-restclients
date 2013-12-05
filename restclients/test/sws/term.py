@@ -46,6 +46,12 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.grade_submission_deadline.time().hour, 17)
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
 
+            self.assertEquals(len(term.time_schedule_construction), 3)
+
+            for tsc in term.time_schedule_construction:
+                if tsc.campus == 'seattle':
+                    self.assertEquals(tsc.is_on, False)
+
     #Expected values will have to change when the json files are updated
     def test_next_quarter(self):
         with self.settings(
@@ -112,6 +118,12 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.aterm_grading_period_open.date().day, 18)
             self.assertEquals(term.aterm_grading_period_open.time().hour, 8)
             self.assertEquals(term.aterm_grading_period_open.time().minute, 0)
+
+            self.assertEquals(len(term.time_schedule_construction), 3)
+
+            for tsc in term.time_schedule_construction:
+                if tsc.campus == 'bothell':
+                    self.assertEquals(tsc.is_on, True)
 
     def test_quarter_before(self):
         with self.settings(

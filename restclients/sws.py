@@ -5,6 +5,7 @@ This is the interface for interacting with the Student Web Service.
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models.sws import Term, Section, SectionReference
+from restclients.models.sws import TimeScheduleConstruction
 from restclients.models.sws import SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
@@ -672,6 +673,12 @@ class SWS(object):
 
         term.grade_submission_deadline = strptime(
             term_data["GradeSubmissionDeadline"], datetime_format)
+
+        term.time_schedule_construction = []
+        for campus in term_data["TimeScheduleConstructionOn"]:
+            tsc = TimeScheduleConstruction(campus=campus.lower(),
+                                           is_on = (term_data["TimeScheduleConstructionOn"][campus] == True))
+            term.time_schedule_construction.append(tsc)
 
         term.full_clean()
         return term

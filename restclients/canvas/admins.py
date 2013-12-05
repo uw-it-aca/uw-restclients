@@ -35,7 +35,7 @@ class Admins(Canvas):
         https://canvas.instructure.com/doc/api/admins.html#method.admins.create
         """
         url = "/api/v1/accounts/%s/admins" % account_id
-        body = {"user_id": unquote(user_id),
+        body = {"user_id": unquote(str(user_id)),
                 "role": role,
                 "send_confirmation": False}
 

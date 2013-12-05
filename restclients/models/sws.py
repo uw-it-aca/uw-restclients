@@ -503,3 +503,11 @@ class GradeSubmissionDelegate(models.Model):
 
     class Meta:
         app_label = "restclients"
+
+
+class TimeScheduleConstruction(models.Model):
+    campus = models.SlugField(max_length=15)
+    is_on = models.BooleanField()
+
+    class Meta:
+        app_label = "restclients"
