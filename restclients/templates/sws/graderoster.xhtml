@@ -41,6 +41,11 @@
                     <div>
                         Duplicate code:
                         <span class="duplicate_code">{{item.duplicate_code|default_if_none:" "}}</span></div>
+                    {% if item.section_id != graderoster.section.section_id %}
+                    <div>
+                        Linked Section:
+                        <a class="section" rel="secondary" href="/student/v4/course/{{graderoster.section.term.year}},{{graderoster.section.term.quarter}},{{graderoster.section.curriculum_abbr}},{{graderoster.section.course_number}}/{{item.section_id}}"><span class="year">{{graderoster.section.term.year}}</span> <span class="quarter">{{graderoster.section.term.quarter}}</span> <span class="curriculum_abbreviation">{{graderoster.section.curriculum_abbr}}</span> <span class="course_number">{{graderoster.section.course_number}}</span> <span class="section_id">{{item.section_id}}</span></a></div>
+                    {% endif %}
                     <div>
                         Student Former Name:
                         <span class="student_former_name">{{item.student_former_name|default_if_none:""}}</span></div>

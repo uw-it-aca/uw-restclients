@@ -910,10 +910,10 @@ class SWS(object):
         day_format = "%Y-%m-%d"
         item_elements = root.findall('.//*[@class="graderoster_item"]')
         for item in item_elements:
-            section_element = item.find('.//*[@class="section_id"]')
-            section_id = section_element.text if section_element is not None else default_section_id
+            gr_item = GradeRosterItem()
 
-            gr_item = GradeRosterItem(section_id=section_id)
+            section_element = item.find('.//*[@class="section_id"]')
+            gr_item.section_id = section_element.text if section_element is not None else default_section_id
 
             reg_id = item.find('.//*[@class="reg_id"]').text.strip()
             gr_item.student = pws.get_person_by_regid(reg_id)
