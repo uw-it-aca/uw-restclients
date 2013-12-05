@@ -19,7 +19,7 @@ import json
 import re
 
 
-QUARTER_SEQ = ["winter", "spring", "summer", "autumn"] 
+QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
 
 
 class SWS(object):
@@ -93,17 +93,17 @@ class SWS(object):
         return self._term_from_json(response.data)
 
     def get_term_before(self, term):
-        """                                                                     
-        Returns a restclients.Term object, for the term after the term given.   
+        """
+        Returns a restclients.Term object, for the term after the term given.
         """
         prev_year = term.year
-        prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) - 1] 
+        prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) - 1]
 
         if prev_quarter == "autumn":
             prev_year = prev_year - 1
 
         return self.get_term_by_year_and_quarter(prev_year, prev_quarter)
- 
+
     def get_term_after(self, term):
         """
         Returns a restclients.Term object, for the term after the term given.
@@ -906,18 +906,7 @@ class SWS(object):
             section_element = item.find('.//*[@class="section_id"]')
             section_id = section_element.text if section_element is not None else default_section_id
 
-            grade_choices = []
-            grade_default = None
-            grades = item.findall('.//*[@class="grade"]')
-            for grade in grades:
-                grade_value = grade.get("value").strip()
-                grade_choices.append((grade_value, grade.text))
-                if grade.get("selected") == "selected":
-                    grade_default = grade_value
-
-            gr_item = GradeRosterItem(grade=grade_default,
-                                      grade_choices=grade_choices,
-                                      section_id=section_id)
+            gr_item = GradeRosterItem(section_id=section_id)
 
             reg_id = item.find('.//*[@class="reg_id"]').text.strip()
             gr_item.student = pws.get_person_by_regid(reg_id)
@@ -940,6 +929,14 @@ class SWS(object):
 
             auditor = item.find('.//*[@class="auditor"]').get("checked")
             gr_item.is_auditor = True if auditor == "checked" else False
+
+            gr_item.grade_choices = []
+            gr_item.grade = None
+            for grade in item.findall('.//*[@class="grade"]'):
+                grade_value = grade.get("value").strip()
+                gr_item.grade_choices.append(grade_value)
+                if grade.get("selected") == "selected":
+                    gr_item.grade = grade_value
 
             incomplete_node = item.find('.//*[@class="incomplete"]')
             gr_item.allows_incomplete = False if incomplete_node.get("disabled") == "disabled" else True

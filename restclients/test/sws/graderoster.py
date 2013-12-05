@@ -25,9 +25,7 @@ class SWSTestGradeRoster(TestCase):
 
             grades = ['0.7', None, '3.1', '1.5', '4.0']
             for idx, item in enumerate(graderoster.items):
-                grade = item._meta.get_field("grade")
-                self.assertEquals(len(grade.choices), 36, "Correct grade choices count")
-                self.assertEquals(len(item.grade_choices()), len(grade.choices), "grade_choices() returns correct grades")
+                self.assertEquals(len(item.grade_choices), 36, "grade_choices returns correct grades")
                 self.assertEquals(item.grade, grades[idx], "Correct default grade")
 
     def test_put_graderoster(self):

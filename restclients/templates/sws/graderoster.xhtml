@@ -78,7 +78,7 @@
                     </div>
                     <div>
                         Grade:
-                        <select class="grades"{%if not item.allows_grade_change %} disabled="disabled"{% endif %}>{% for grade in item.grade_choices %}<option class="grade" value="{{grade.0}}"{%if grade.0 == item.grade %} selected="selected"{% endif %}>{{grade.0}}</option>{% endfor %}</select></div>
+                        <select class="grades"{%if not item.allows_grade_change %} disabled="disabled"{% endif %}>{% for grade in item.grade_choices %}<option class="grade" value="{{grade}}"{%if grade == item.grade %} selected="selected"{% endif %}>{{grade}}</option>{% endfor %}</select></div>
                     <div>
                         Grade document ID: <span class="grade_document_id">{{item.grade_document_id|default_if_none:""}}</span></div>
                     <div>

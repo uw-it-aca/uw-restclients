@@ -484,21 +484,13 @@ class GradeRosterItem(models.Model):
     has_writing_credit = models.BooleanField()
     no_grade_now = models.BooleanField()
     date_withdrawn = models.DateField(null=True)
-    grade = models.CharField(max_length=20, choices=[])
+    grade = models.CharField(max_length=20)
     allows_grade_change = models.BooleanField()
     date_graded = models.DateField(null=True)
     grade_submitter_person = models.ForeignKey(Person,
                                                related_name="grade_submitter",
                                                null=True)
     grade_submitter_source = models.CharField(max_length=8, null=True)
-
-    def __init__(self, *args, **kwargs):
-        grade_choices = kwargs.pop("grade_choices", ())
-        super(GradeRosterItem, self).__init__(*args, **kwargs)
-        self._meta.get_field_by_name("grade")[0]._choices = grade_choices
-
-    def grade_choices(self):
-        return self._meta.get_field("grade").choices
 
     class Meta:
         app_label = "restclients"
