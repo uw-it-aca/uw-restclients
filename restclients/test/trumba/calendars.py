@@ -59,7 +59,7 @@ class TrumbaTestCalendars(TestCase):
             self.assertEqual(perm.name, 'Dummy publisher')
             self.assertEqual(perm.uwnetid, 'dummyp')
             self.assertEqual(perm.level, 'PUBLISH')
-            self.assertFalse(perm.is_edit())
+            self.assertTrue(perm.is_edit())
             self.assertFalse(perm.is_showon())
             self.assertTrue(perm.is_sea())
             self.assertFalse(perm.is_bot())
