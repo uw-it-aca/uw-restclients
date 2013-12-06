@@ -69,35 +69,32 @@ class UwcalGroup(models.Model):
     GTYEP_SHOWON = 'showon'
     calendar = models.ForeignKey(TrumbaCalendar)
     gtype = models.CharField(max_length=6)
-    uwregid = models.CharField(max_length=32, null=True, default=None)
-    name = models.CharField(max_length=500, null=True, default=None)
-    title = models.CharField(max_length=500, null=True, default=None)
-    description = models.CharField(max_length=500, null=True, blank=True, default=None)
-    lastverified = models.DateTimeField(null=True, default=datetime.now())
+    uwregid = models.CharField(max_length=32, db_index=True, unique=True)
+    name = models.CharField(max_length=64, db_index=True, unique=True)
+    title = models.CharField(max_length=256)
+    description = models.CharField(max_length=500, null=True)
+    lastverified = models.DateTimeField(null=True)
+
+    def __init__(self, *args, **kwargs):
+        super(UwcalGroup, self).__init__(*args, **kwargs)
+
+        if self.name is None or len(self.name) == 0:
+            self.name = make_group_name(self.calendar.campus,
+                               self.calendar.calendarid,
+                               self.gtype)
+
+        if self.title is None or len(self.title) == 0:
+            self.title = make_group_title(self.calendar.name,
+                                          self.gtype)
+
+        if self.description is None or len(self.description) == 0:
+            self.description = make_group_desc(self.gtype)
 
     def get_calendarid(self):
         return self.calendar.calendarid
 
     def get_campus_code(self):
         return self.calendar.campus
-
-    def get_name(self):
-        if self.name is not None and len(self.name) > 0:
-            return self.name
-        return make_group_name(self.calendar.campus,
-                               self.calendar.calendarid,
-                               self.gtype)
-
-    def get_title(self):
-        if self.title is not None and len(self.title) > 0:
-            return self.title
-        return make_group_title(self.calendar.name,
-                                self.gtype)
-
-    def get_desc(self):
-        if self.description is not None and len(self.description) > 0:
-            return self.description
-        return make_group_desc(self.gtype)
 
     def has_regid(self):
         return self.uwregid is not None and len(self.uwregid) == 32
@@ -116,11 +113,11 @@ class UwcalGroup(models.Model):
 
     def __str__(self):
         return "{uwregid: %s, name: %s, title: %s, description: %s}" % (
-            self.uwregid, self.get_name(), self.get_title(), self.get_desc())
+            self.uwregid, self.name, self.title, self.description)
 
     def __unicode__(self):
         return u'{uwregid: %s, name: %s, title: %s, description: %s}' % (
-            self.uwregid, self.get_name(), self.get_title(), self.get_desc())
+            self.uwregid, self.name, self.title, self.description)
 
 def is_edit_permission(level):
     return level is not None and level == Permission.EDIT
