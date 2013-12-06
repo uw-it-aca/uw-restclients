@@ -161,16 +161,10 @@ class Permission(models.Model):
         return "%s@washington.edu" % uwnetid
 
     def is_edit(self):
-        return is_edit_permission(self.level)
-    
-    def is_publish(self):
-        return is_publish_permission(self.level)
-    
-    def is_republish(self):
-        return is_republish_permission(self.level)
+        return is_edit_permission(self.level) or is_publish_permission(self.level)
     
     def is_showon(self):
-        return is_showon_permission(self.level)
+        return is_showon_permission(self.level) or is_republish_permission(self.level)
     
     def is_bot(self):
         return is_bot(self.campus)
