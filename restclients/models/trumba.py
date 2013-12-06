@@ -10,6 +10,8 @@ def is_sea(campus_code):
 def is_tac(campus_code):
     return campus_code is not None and campus_code == TrumbaCalendar.TAC_CAMPUS_CODE
 
+def is_valid_campus_code(campus_code):
+    return is_bot(campus_code) or is_sea(campus_code) or is_tac(campus_code)
 
 class TrumbaCalendar(models.Model):
     SEA_CAMPUS_CODE = 'sea'
@@ -67,6 +69,7 @@ def make_group_desc(gtype):
 class UwcalGroup(models.Model):
     GTYEP_EDITOR = 'editor'
     GTYEP_SHOWON = 'showon'
+    ADMIN_GROUP_NAME='u_eventcal_support'
     calendar = models.ForeignKey(TrumbaCalendar)
     gtype = models.CharField(max_length=6)
     uwregid = models.CharField(max_length=32, db_index=True, unique=True)
