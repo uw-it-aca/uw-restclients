@@ -18,6 +18,7 @@ class Calendar:
     The underline http requests and responses will be logged.
     Be sure to set the logging configuration if you use the LiveDao!
     """
+    logger = logging.getLogger(__name__)
 
     get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
     get_permissions_url = "/service/calendars.asmx/GetPermissions"
@@ -37,7 +38,10 @@ class Calendar:
         elif is_tac(campus_code):
             return Calendar.get_tac_calendars()
         else:
-            None
+            Calendar.logger.warn(
+                "Calling get_campus_calendars with invalid campus code: %s" 
+                % campus_code)
+            return None
 
     @staticmethod
     def get_bot_calendars():
@@ -93,7 +97,10 @@ class Calendar:
         elif is_tac(campus_code):
             return Calendar.get_tac_permissions(calendar_id)
         else:
-            None
+            Calendar.logger.warn(
+                "Calling get_campus_permissions with invalid campus code: %s" 
+                % campus_code)
+            return None
 
     @staticmethod
     def _create_get_perm_body(calendar_id):
@@ -166,7 +173,6 @@ class Calendar:
         :return: a dictionary of {calenderid, TrumbaCalendar}
                  None if error, {} if not exists
         """
-        logger = logging.getLogger(__name__)
         for record in resp_fragment:
             if re.match('Internal Event Actions', record['Name']) or re.match('Migrated events', record['Name']) :
                 continue
@@ -175,8 +181,8 @@ class Calendar:
             trumba_cal.campus = campus
             trumba_cal.name = record['Name']
             if not Calendar._is_valid_calendarid(record['ID']):
-                logger.warn(
-                    "%s InvalidCalendarId, entry skipped!" % trumba_cal)
+                Calendar.logger.warn(
+                    "InvalidCalendarId %s, entry skipped!" % trumba_cal)
                 continue
             calendar_dict[trumba_cal.calendarid] = trumba_cal
             if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
