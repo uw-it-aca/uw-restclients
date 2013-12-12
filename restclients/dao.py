@@ -12,6 +12,7 @@ from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
 from restclients.dao_implementation.trumba import FileSea
 from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
+from restclients.dao_implementation.catalyst import File as CatalystFile
 from restclients.cache_implementation import NoCache
 
 
@@ -92,6 +93,15 @@ class PWS_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_PWS_DAO_CLASS', PWSFile)
+
+
+class Catalyst_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('catalyst', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_CATALYST_DAO_CLASS', CatalystFile)
+
 
 
 class GWS_DAO(MY_DAO):
