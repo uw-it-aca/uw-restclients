@@ -59,6 +59,8 @@ class Live(object):
 
 
         if hasattr(settings, 'RESTCLIENTS_CATALYST_SOL_AUTH_PRIVATE_KEY'):
+            # Use js_rest instead of rest, to avoid certificate issues
+            url = url.replace('/rest/', '/js_rest/')
             now_with_tz = datetime.datetime.now(pytz.utc).strftime("%a %b %d %H:%M:%S %Z %Y")
             header_base = "%s\nGET\n%s\n%s\n" % (settings.RESTCLIENTS_CATALYST_SOL_AUTH_PRIVATE_KEY,
                                                 url,
