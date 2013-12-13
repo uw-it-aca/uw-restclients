@@ -9,8 +9,8 @@ from django.conf import settings
 
 
 def get_con_pool(host,
-                 key_file,
-                 cert_file,
+                 key_file=None,
+                 cert_file=None,
                  socket_timeout=15.0,
                  max_pool_size=3):
     """
