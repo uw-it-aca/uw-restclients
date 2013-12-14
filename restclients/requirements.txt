@@ -9,4 +9,4 @@ simplejson>=2.1
 -e svn+https://svn.cac.washington.edu/svn/notifications/NotificationViewModel/trunk#egg=NotificationViewModel
 python-dateutil>=2.1
 unittest2>=0.5.1
-pytx
+pytz
