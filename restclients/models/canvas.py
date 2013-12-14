@@ -176,3 +176,23 @@ class Admin(models.Model):
 
     class Meta:
         db_table = "restclients_canvas_admin"
+
+class Submission(models.Model):
+    submission_id = models.IntegerField(max_length=20)
+    body = models.TextField(null=True)
+    attempt = models.IntegerField(max_length=2)
+    submitted_at = models.DateTimeField()
+    assignment_id = models.IntegerField(max_length=20)
+    workflow_state = models.CharField(max_length=100, null=True)
+    preview_url = models.CharField(max_length=500)
+    late = models.BooleanField()
+    grade = models.TextField(max_length=12, null=True)
+    score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    grade_matches_current_submission = models.BooleanField()
+    url = models.CharField(max_length=500, null=True)
+    grader_id = models.IntegerField(max_length=20)
+    graded_at = models.DateTimeField(null=True)
+    submission_type = models.CharField(max_length=100, null=True)
+
+    class Meta:
+        db_table = "restclients_canvas_submission"
