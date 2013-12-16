@@ -12,6 +12,7 @@ class GradeBook(object):
         """
         returns a restclients.models.catalyst.CourseGradeData object
         """
+        quarter = quarter.capitalize()
         url = "/rest/gradebook/v1/grades/%s/%s/%s" % (netid, year, quarter)
         dao = Catalyst_DAO()
         response = dao.getURL(url, { "Accept": "application/json" })
