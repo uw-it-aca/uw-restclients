@@ -22,8 +22,11 @@ class Catalyst(object):
             for gradebook in data[app][section_id]:
                 grade_data.section = section
                 grade_data.name = gradebook["name"]
-                grade_data.class_grade = gradebook["class_grade"]["score"]
-                grade_data.total_score = gradebook["total_score"]["score"]
+                if "class_grade" in gradebook:
+                    grade_data.class_grade = gradebook["class_grade"]["score"]
+
+                if "total_score" in gradebook:
+                    grade_data.total_score = gradebook["total_score"]["score"]
                 grade_data.url = gradebook["url"]
 
                 grade_data.items = []
