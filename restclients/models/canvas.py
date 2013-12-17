@@ -177,6 +177,7 @@ class Admin(models.Model):
     class Meta:
         db_table = "restclients_canvas_admin"
 
+
 class Submission(models.Model):
     submission_id = models.IntegerField(max_length=20)
     body = models.TextField(null=True)
@@ -196,3 +197,16 @@ class Submission(models.Model):
 
     class Meta:
         db_table = "restclients_canvas_submission"
+
+
+class Assignment(models.Model):
+    assignment_id = models.IntegerField(max_length=20)
+    due_at = models.DateTimeField()
+    points_possible = models.IntegerField(max_length=8)
+    position = models.IntegerField(max_length=8)
+    name = models.CharField(max_length=500)
+    muted = models.BooleanField()
+    html_url = models.CharField(max_length=500, null=True)
+
+    class Meta:
+        db_table = "restclients_canvas_assignment"

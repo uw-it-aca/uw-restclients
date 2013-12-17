@@ -62,6 +62,7 @@ from restclients.test.canvas.bad_sis_ids import CanvasBadSISIDs
 from restclients.test.canvas.terms import CanvasTestTerms
 from restclients.test.canvas.users import CanvasTestUsers
 from restclients.test.canvas.submissions import CanvasTestSubmissions
+from restclients.test.canvas.assignments import CanvasTestAssignments
 
 from restclients.test.trumba.accounts import TrumbaTestAccounts
 from restclients.test.trumba.calendars import TrumbaTestCalendars
