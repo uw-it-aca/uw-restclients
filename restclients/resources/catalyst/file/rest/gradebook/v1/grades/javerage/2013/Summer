@@ -1,4 +1,64 @@
 {
     "GradeBook": {
+        "2013,summer,PHYS,121/A": [
+            {
+                "class_grade": {
+                    "score": "3.6"
+                },
+                "name": "my test",
+                "url": "https://catalyst.uw.edu/gradebook/notreal/999",
+                "total_score": {
+                    "score": "89"
+                },
+                "items": [
+                    {
+                        "name": "Homework 1",
+                        "type": "percentage",
+                        "score": "80"
+                    },
+                    {
+                        "max_points": "60",
+                        "name": "Homework 3",
+                        "type": "points",
+                        "score": null
+                    },
+                    {
+                        "name": "Homework 4",
+                        "type": "grade_point",
+                        "score": "3.6"
+                    },
+                    {
+                        "name": "Homework 5",
+                        "type": "text",
+                        "score": "text value"
+                    },
+                    {
+                        "name": "Quizzes 1",
+                        "type": "custom",
+                        "score": "B"
+                    },
+                    {
+                        "name": "Quizzes 2",
+                        "type": "percentage",
+                        "score": "89"
+                    }
+                ]
+            }
+        ],
+        "2013,summer,TRAIN,100/A": [
+            {
+                "class_grade": { "score": "3.1" },
+                "name": "Setup by the Prof",
+                "url": "https://catalyst.uw.edu/gradebook/notrealprof/9991",
+                "items": []
+            },
+            {
+                "class_grade": { "score": "3.3" },
+                "name": "Setup by the TA",
+                "url": "https://catalyst.uw.edu/gradebook/notrealta/9992",
+                "items": []
+            }
+        ]
     }
 }
+
