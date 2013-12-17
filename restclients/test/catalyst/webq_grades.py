@@ -21,3 +21,14 @@ class CatalystWebQGrades(TestCase):
                 self.assertEquals(train[0].items[0].score, 10)
                 self.assertEquals(train[0].items[0].max_points, 20)
 
+
+   def test_student_grades_2_quizzes(self):
+         with self.settings(
+                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File'):
+
+                catalyst = WebQ()
+                data = catalyst.get_grades_for_student_and_term('javerage', 2013, 'Spring')
+
+
+
+
