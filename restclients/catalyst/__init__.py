@@ -10,8 +10,6 @@ class Catalyst(object):
     def parse_grade_data(self, app, content):
         data = json.loads(content)
 
-        grade_data = CourseGradeData()
-
         grading_by_section = {}
 
         for section_id in data[app]:
@@ -20,6 +18,7 @@ class Catalyst(object):
 
             section = SWS().get_section_by_label(section_id)
             for gradebook in data[app][section_id]:
+                grade_data = CourseGradeData()
                 grade_data.section = section
                 grade_data.name = gradebook["name"]
                 if "class_grade" in gradebook:
@@ -41,6 +40,7 @@ class Catalyst(object):
 
                     grade_data.items.append(grade_item)
 
-            grading_by_section[section_id].append(grade_data)
+                grading_by_section[section_id].append(grade_data)
+
         return grading_by_section
 
