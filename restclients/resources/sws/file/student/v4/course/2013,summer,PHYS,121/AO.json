@@ -68,7 +68,7 @@
   "SectionID" : "AO",
   "SectionType" : "quiz",
   "ServiceLearning" : false,
-  "SummerTerm" : "",
+  "SummerTerm" : "Full-term",
   "Term" : { "Href" : "/student/v4/term/2013,summer.json",
       "Quarter" : "summer",
       "Year" : "2013"
