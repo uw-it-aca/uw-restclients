@@ -3,6 +3,7 @@ This is the interface for interacting with the Student Web Service.
 """
 
 from django.template import Context, loader
+from restclients.thread import Thread
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models.sws import Term, Section, SectionReference
@@ -16,11 +17,10 @@ from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from urllib import urlencode
 from datetime import datetime
 from lxml import etree
-import threading
 import json
 import re
 
-class SWSThread(threading.Thread):
+class SWSThread(Thread):
     url = None
     headers = None
     response = None
@@ -34,7 +34,7 @@ class SWSThread(threading.Thread):
         dao = SWS_DAO()
         self.response = dao.getURL(self.url, args)
 
-class SWSPersonByRegIDThread(threading.Thread):
+class SWSPersonByRegIDThread(Thread):
     regid = None
     person = None
 
