@@ -10,6 +10,7 @@ from restclients.models.sws import SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
 from restclients.models.sws import GradeRoster, GradeRosterItem
+from restclients.models.sws import StudentGrades, StudentCourseGrade
 from restclients.models.sws import GradeSubmissionDelegate
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
@@ -374,6 +375,41 @@ class SWS(object):
                 seen_registrations[reg_data["RegID"]] = True
 
         return registrations
+
+    def grades_for_regid_and_term(self, regid, term):
+        """
+        Returns a StudentGrades model for the regid and term.
+        """
+        dao = SWS_DAO()
+        pws = PWS()
+        url = "/student/v4/enrollment/%s,%s,%s.json" % (term.year, term.quarter, regid)
+
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+        pws = PWS()
+
+        grades = StudentGrades()
+        grades.term = term
+        grades.user = pws.get_person_by_regid(regid)
+
+        grades.grade_points = data["QtrGradePoints"]
+        grades.credits_attempted = data["QtrGradedAttmp"]
+        grades.non_grade_credits = data["QtrNonGrdEarned"]
+        grades.grades = []
+
+        for registration in data["Registrations"]:
+            grade = StudentCourseGrade()
+            grade.grade = registration["Grade"]
+            grade.credits = registration["Credits"].replace(" ", "")
+            grade.section = self.get_section_by_url(registration["Section"]["Href"])
+            grades.grades.append(grade)
+
+        return grades
+
 
     def schedule_for_regid_and_term(self, regid, term):
         """

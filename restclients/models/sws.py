@@ -389,6 +389,20 @@ class SectionMeeting(models.Model):
         return data
 
 
+class StudentGrades(models.Model):
+    user = models.ForeignKey(Person)
+    term = models.ForeignKey(Term)
+
+    grade_points = models.DecimalField(max_digits=5, decimal_places=2)
+    credits_attempted = models.DecimalField(max_digits=3, decimal_places=1)
+    non_grade_credits = models.DecimalField(max_digits=3, decimal_places=1)
+
+class StudentCourseGrade(models.Model):
+    grade = models.CharField(max_length = 10)
+    credits = models.DecimalField(max_digits=3, decimal_places=1)
+    section = models.ForeignKey(Section,
+                                on_delete=models.PROTECT)
+
 class ClassSchedule(models.Model):
     user = models.ForeignKey(Person)
     term = models.ForeignKey(Term,
