@@ -26,11 +26,13 @@ class CourseGradeItem(models.Model):
     name = models.CharField(max_length=250)
     score = models.CharField(max_length=200)
     url = models.CharField(max_length=250)
+    max_points = models.CharField(max_length=50)
 
     def json_data(self):
         return {
             "name": self.name,
             "score": self.score,
             "url": self.url,
+            "max_points": self.max_points,
         }
 

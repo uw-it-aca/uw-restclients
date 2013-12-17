@@ -1,0 +1,17 @@
+{
+    "WebQ": {
+        "2013,autumn,TRAIN,100/A": [
+            {
+                "name": "",
+                "items": [
+                    {
+                        "max_points": 20,
+                        "url": "https://catalyst.uw.edu/webq/survey/fake/999",
+                        "name": "Quiz 1",
+                        "score": 10
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -68,4 +68,5 @@ from restclients.test.trumba.calendars import TrumbaTestCalendars
 from restclients.test.gws.trumba_group import TestGwsTrumbaGroup
 
 from restclients.test.catalyst.gradebook_grades import CatalystGradebookGrades
+from restclients.test.catalyst.webq_grades import CatalystWebQGrades
 

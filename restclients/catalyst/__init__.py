@@ -26,7 +26,9 @@ class Catalyst(object):
 
                 if "total_score" in gradebook:
                     grade_data.total_score = gradebook["total_score"]["score"]
-                grade_data.url = gradebook["url"]
+
+                if "url" in gradebook:
+                    grade_data.url = gradebook["url"]
 
                 grade_data.items = []
 
@@ -37,6 +39,9 @@ class Catalyst(object):
 
                     if "url" in item:
                         grade_item.url = item["url"]
+
+                    if "max_points" in item:
+                        grade_item.max_points = item["max_points"]
 
                     grade_data.items.append(grade_item)
 
