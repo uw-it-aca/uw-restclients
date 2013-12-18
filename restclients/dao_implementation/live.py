@@ -18,16 +18,16 @@ def get_con_pool(host,
     :param socket_timeout:
         socket timeout for each connection in seconds
     """
-    if key_file is None or cert_file is None:
-        return connection_from_url(host,
-                                   timeout=socket_timeout,
-                                   maxsize=max_pool_size)
     kwargs = {
-        "key_file": key_file,
-        "cert_file": cert_file,
         "timeout": socket_timeout,
         "maxsize": max_pool_size,
+        "block": True,
         }
+
+    if key_file is not None and cert_file is not None:
+        kwargs["key_file"] = key_file
+        kwargs["cert_file"] = cert_file
+
     return connection_from_url(host, **kwargs)
 
 
@@ -52,4 +52,5 @@ def get_live_url(con_pool,
         the POST, PUT body of the request
     """
     timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", con_pool.timeout)
+
     return con_pool.urlopen(method, url, body=body, headers=headers, retries=retries, timeout=timeout)
