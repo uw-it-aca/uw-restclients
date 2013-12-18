@@ -210,3 +210,15 @@ class Assignment(models.Model):
 
     class Meta:
         db_table = "restclients_canvas_assignment"
+
+
+class Quiz(models.Model):
+    quiz_id = models.IntegerField(max_length=20)
+    due_at = models.DateTimeField()
+    title = models.CharField(max_length=500)
+    html_url = models.CharField(max_length=500, null=True)
+    published = models.BooleanField()
+
+    class Meta:
+        db_table ="restclients_canvas_quiz" 
+
