@@ -436,7 +436,7 @@ class Campus(models.Model):
 
 class College(models.Model):
     campus_label = models.SlugField(max_length=15)
-    label = models.SlugField(max_length=15, unique=True)
+    label = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
 
@@ -445,8 +445,8 @@ class College(models.Model):
 
 
 class Department(models.Model):
-    college_label = models.SlugField(max_length=15)
-    label = models.SlugField(max_length=15, unique=True)
+    college_label = models.CharField(max_length=15)
+    label = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
 
@@ -455,7 +455,7 @@ class Department(models.Model):
 
 
 class Curriculum(models.Model):
-    label = models.SlugField(max_length=15, unique=True)
+    label = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
 
