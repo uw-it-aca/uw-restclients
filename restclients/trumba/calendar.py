@@ -174,7 +174,7 @@ class Calendar:
                  None if error, {} if not exists
         """
         for record in resp_fragment:
-            if re.match('Internal Event Actions', record['Name']) or re.match('Migrated events', record['Name']) :
+            if re.match('Internal Event Actions', record['Name']) or re.match('Migrated .*', record['Name']) :
                 continue
             trumba_cal = TrumbaCalendar()
             trumba_cal.calendarid = record['ID']
