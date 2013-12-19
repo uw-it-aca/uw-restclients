@@ -1,9 +1,35 @@
 from django.test import TestCase
 from django.conf import settings
+from datetime import datetime, timedelta
 from restclients.sws import SWS
 from restclients.exceptions import DataFailureException
 
 class SWSTestTerm(TestCase):
+    def test_mock_data_fake_grading_window(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+
+            sws = SWS()
+            term = sws.get_current_term()
+
+            now = datetime.now()
+
+            deadline_diff = term.grade_submission_deadline - now
+
+            # This rounds down to 0 days, so check by seconds :(
+            hour_1 = 60 * 60
+            hours_48 = 60 * 60 * 48
+            self.assertEquals(deadline_diff.seconds > hour_1, True, "Deadline is in the future")
+            self.assertEquals(deadline_diff.seconds < hours_48, True, "But not too far in the future")
+
+            open_diff_all = now - term.grading_period_open
+            self.assertEquals(open_diff_all.days > 0, True, "Open date is in the past")
+            self.assertEquals(open_diff_all.days < 2, True, "But not too far in the past")
+
+            open_diff_summer_a = now - term.aterm_grading_period_open
+            self.assertEquals(open_diff_summer_a.days > 0, True, "Open date is in the past")
+            self.assertEquals(open_diff_summer_a.days < 2, True, "But not too far in the past")
 
     #Expected values will have to change when the json files are updated
     def test_previous_quarter(self):
