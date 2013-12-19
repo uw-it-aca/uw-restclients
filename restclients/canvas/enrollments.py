@@ -101,4 +101,10 @@ class Enrollments(Canvas):
         enrollment.html_url = data["html_url"]
         if 'user' in data:
             enrollment.login_id = data["user"]["login_id"]
+        if 'grades' in data:
+            enrollment.current_score = data["grades"]["current_score"] 
+            enrollment.final_score = data["grades"]["final_score"]
+            enrollment.current_grade = data["grades"]["current_grade"]
+            enrollment.final_grade = data["grades"]["final_grade"]
+            enrollment.grade_html_url = data["grades"]["html_url"]
         return enrollment

@@ -82,6 +82,11 @@ class Enrollment(models.Model):
     sis_course_id = models.CharField(max_length=100, null=True)
     course_url = models.CharField(max_length=2000, null=True)
     course_name = models.CharField(max_length=100, null=True)
+    current_score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    final_score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    current_grade = models.TextField(max_length=12, null=True)
+    final_grade = models.TextField(max_length=12, null=True)
+    grade_html_url = models.CharField(max_length=1000)
 
     def sws_course_id(self):
         if self.sis_course_id is None:
