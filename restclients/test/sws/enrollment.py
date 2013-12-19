@@ -14,7 +14,7 @@ class SWSTestEnrollments(TestCase):
             grades = sws.grades_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
 
             self.assertEquals(grades.term.year, 2013)
-            self.assertEquals(grades.term.quarter, "summer")
+            self.assertEquals(grades.term.quarter, "spring")
             self.assertEquals(grades.user.uwnetid, "javerage")
             self.assertEquals(grades.grade_points, 30)
             self.assertEquals(grades.credits_attempted, 10)

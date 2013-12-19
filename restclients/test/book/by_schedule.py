@@ -45,5 +45,5 @@ class BookstoreScheduleTest(TestCase):
 
             verba_link = books.get_verba_link_for_schedule(schedule)
 
-            self.assertEquals("http://uw-seattle.verbacompare.com/m?section_id=AB12345&quarter=summer", verba_link, "Seattle student has seattle link")
+            self.assertEquals("http://uw-seattle.verbacompare.com/m?section_id=AB12345&quarter=spring", verba_link, "Seattle student has seattle link")
 
