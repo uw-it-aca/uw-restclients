@@ -29,7 +29,8 @@ class Assignments(Canvas):
     def _assignment_from_json(self, data):
         assignment = Assignment()
         assignment.assignment_id = data['id']
-        assignment.due_at = dateutil.parser.parse(data['due_at'])
+        if data['due_at']:
+            assignment.due_at = dateutil.parser.parse(data['due_at'])
         assignment.points_possible = data['points_possible']
         assignment.position = data['position']
         assignment.name = data['name']

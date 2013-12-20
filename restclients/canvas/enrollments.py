@@ -99,7 +99,7 @@ class Enrollments(Canvas):
         enrollment.role = data["type"]
         enrollment.status = data["enrollment_state"]
         enrollment.html_url = data["html_url"]
-        if 'user' in data:
+        if 'user' in data and 'login_id' in data['user']:
             enrollment.login_id = data["user"]["login_id"]
         if 'grades' in data:
             enrollment.current_score = data["grades"]["current_score"] 

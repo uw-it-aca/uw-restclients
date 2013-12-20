@@ -206,7 +206,7 @@ class Submission(models.Model):
 
 class Assignment(models.Model):
     assignment_id = models.IntegerField(max_length=20)
-    due_at = models.DateTimeField()
+    due_at = models.DateTimeField(null=True)
     points_possible = models.IntegerField(max_length=8)
     position = models.IntegerField(max_length=8)
     name = models.CharField(max_length=500)

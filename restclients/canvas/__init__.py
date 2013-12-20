@@ -12,6 +12,7 @@ import re
 
 
 DEFAULT_PAGINATION = 0
+MASQUERADING_USER = None
 
 
 def deprecation(message):
@@ -25,11 +26,12 @@ class Canvas(object):
     Canvas
     """
 
-    def __init__(self, per_page=DEFAULT_PAGINATION):
+    def __init__(self, per_page=DEFAULT_PAGINATION, as_user=MASQUERADING_USER):
         """
         Prepares for paginated responses
         """
         self._per_page = per_page
+        self._as_user = as_user
         self._re_canvas_id = re.compile(r'^\d+$')
 
     def get_courses_for_regid(self, regid):
@@ -135,12 +137,16 @@ class Canvas(object):
         Canvas GET method. Return representation of the requested resource,
         chasing pagination links to coalesce resources.
         """
+        if(self._as_user is not None):
+            url = url + "?as_user_id=" + self.sis_user_id(self._as_user)
+        
         response = Canvas_DAO().getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
+        print url
 
         if isinstance(data, list):
             next_page = self._next_page(response)
