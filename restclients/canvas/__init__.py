@@ -146,7 +146,6 @@ class Canvas(object):
             raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
-        print url
 
         if isinstance(data, list):
             next_page = self._next_page(response)
