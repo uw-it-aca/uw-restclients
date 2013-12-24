@@ -35,5 +35,6 @@ class Quizzes(Canvas):
         quiz.title = data['title']
         quiz.html_url = data['html_url']
         quiz.published = data['published']
+        quiz.points_possible = data['points_possible']
 
         return quiz

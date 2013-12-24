@@ -205,3 +205,39 @@ class Canvas(object):
                                        get_response.data)
 
         return json.loads(get_response.data)
+
+    def generate_section_id(self, section):
+        """
+        Generates the unique identifier for a course in the form of
+        year-quarter-curriculum-coursenum-sectionid[-regid]
+        Ex. 2012-summer-ESS-101-AB[-85AEF8566A7C11D5A4AE0004AC494FFE]
+        """
+        parts = [
+            self.generate_term_id(section.term),
+            section.curriculum_abbr,
+            section.course_number,
+            section.section_id
+        ]
+
+        if section.is_independent_study:
+            if section.independent_study_instructor_regid is None:
+                raise Exception("Undefined instructor regid for independent " +
+                                "study section: %s" % "-".join(parts))
+
+            parts.append(section.independent_study_instructor_regid)
+
+        try:
+            if section.is_dummy:
+                parts.append("-")
+        except AttributeError:
+            pass
+
+        return "-".join(parts)
+
+    def generate_term_id(self, term):
+        """
+        Generates the unique identifier for a term in the form of year-quarter
+        Ex. 2012-summer
+        """
+        return "-".join([str(term.year), term.quarter.lower()])
+
