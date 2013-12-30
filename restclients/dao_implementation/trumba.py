@@ -24,8 +24,7 @@ class FileSea(object):
     def getURL(self, url, headers):
         #FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))    
         return get_mockdata_url(self.get_path_prefix(), "file",
-                                url, headers,
-                                dir_base=dirname(__file__))
+                                url, headers)
 
     def postURL(self, url, headers, body):
         """
