@@ -13,12 +13,9 @@ class Local(object):
     This implements a local queue, using django models.
     """
     def create_queue(self, queue_name):
-        try:
-            queue = MockAmazonSQSQueue(name=queue_name)
-            queue.save()
-            return queue
-        except IntegrityError as ex:
-            return self.get_queue(queue_name)
+        obj, created = MockAmazonSQSQueue.objects.get_or_create(name=queue_name)
+
+        return obj
 
     def get_queue(self, queue_name):
         queues = MockAmazonSQSQueue.objects.filter(name=queue_name)
