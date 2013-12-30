@@ -9,7 +9,6 @@ from lxml import etree
 import logging
 import json
 
-print __name__
 class Trumba(object):
     """
     This class interacts with campus specific resources on Trumba.
