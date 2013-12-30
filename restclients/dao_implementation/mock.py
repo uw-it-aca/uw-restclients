@@ -59,6 +59,8 @@ def get_mockdata_url(service_name, implementation_name,
             return response
 
     # If no response has been found in any installed app, return a 404
+    logger = logging.getLogger(__name__)
+    logger.info("404 for url %s", url)
     response = MockHTTP()
     response.status = 404
     return response
@@ -87,7 +89,7 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
                 return
 
         logger = logging.getLogger(__name__)
-        logger.info("URL: %s; App: %s; File: %s" % (url, app, file_path))
+        logger.debug("URL: %s; App: %s; File: %s" % (url, app, file_path))
 
         response = MockHTTP()
         response.status = 200
