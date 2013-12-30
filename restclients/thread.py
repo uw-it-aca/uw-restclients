@@ -11,7 +11,17 @@ class Thread(threading.Thread):
     _use_thread = False
 
     def __init__(self, *args, **kwargs):
-        if hasattr(settings, "RESTCLIENTS_USE_THREADING"):
+        # Threading has been tested w/ the mysql backend.
+        # It should also work with the postgres/oracle/and so on backends,
+        # but we don't use those.
+        if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+            if hasattr(settings, "RESTCLIENTS_DISABLE_THREADING"):
+                if not settings.RESTCLIENTS_DISABLE_THREADING:
+                    self._use_thread = True
+            else:
+                self._use_thread = True
+
+        elif hasattr(settings, "RESTCLIENTS_USE_THREADING"):
             if settings.RESTCLIENTS_USE_THREADING:
                 self._use_thread = True
 
