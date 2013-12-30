@@ -24,7 +24,7 @@ class File(object):
         response = get_mockdata_url("sws", "file", url, headers)
 
         # This is to enable mock data grading.
-        if "/student/v4/term/current.json" == url:
+        if "/student/v4/term/current.json" == url or "/student/v4/term/2013,spring.json" == url:
             now = datetime.now()
             tomorrow = now + timedelta(days=1)
             yesterday = now - timedelta(days=1)
