@@ -948,110 +948,119 @@ class SWS(object):
     def _graderoster_from_xhtml(self, data, section, instructor):
         pws = PWS()
         people = {instructor.uwregid: instructor}
-        root = etree.fromstring(data)
 
         graderoster = GradeRoster()
         graderoster.section = section
         graderoster.instructor = instructor
-        graderoster.section_credits = root.find('.//*[@class="section_credits"]').text.strip()
-
-        writing_credit = root.find('.//*[@class="writing_credit_display"]').get("checked")
-        graderoster.allows_writing_credit = True if writing_credit == "checked" else False
-
-        default_section_id = root.find('.//*[@rel="section"]//*[@class="section_id"]').text.upper()
-
         graderoster.authorized_grade_submitters = []
         graderoster.grade_submission_delegates = []
         graderoster.items = []
 
-        auth_grade_submitters = root.findall('.//*[@rel="authorized_grade_submitter"]')
-        for ags in auth_grade_submitters:
-            reg_id = ags.find('.//*[@class="reg_id"]').text.strip()
+        tree = etree.fromstring(data.strip())
+        nsmap = {"xhtml": "http://www.w3.org/1999/xhtml"}
+        root = tree.xpath(".//xhtml:div[@class='graderoster']",
+                          namespaces=nsmap)[0]
+
+        default_section_id = None
+        el = root.xpath("./xhtml:div/xhtml:a[@rel='section']/*[@class='section_id']",
+                        namespaces=nsmap)[0]
+        default_section_id = el.text.upper()
+
+        el = root.xpath("./xhtml:div/*[@class='section_credits']",
+                        namespaces=nsmap)[0]
+        graderoster.section_credits = el.text.strip()
+
+        el = root.xpath("./xhtml:div/*[@class='writing_credit_display']",
+                        namespaces=nsmap)[0]
+        if el.get("checked", "") == "checked":
+            graderoster.allows_writing_credit = True
+
+        for el in root.xpath("./xhtml:div//*[@rel='authorized_grade_submitter']",
+                             namespaces=nsmap):
+            reg_id = el.xpath(".//*[@class='reg_id']")[0].text.strip()
             if reg_id not in people:
                 people[reg_id] = pws.get_person_by_regid(reg_id)
-
             graderoster.authorized_grade_submitters.append(people[reg_id])
 
-        grade_submission_delegates = root.findall('.//*[@class="grade_submission_delegate"]')
-        for gsd in grade_submission_delegates:
-            reg_id = gsd.find('.//*[@class="reg_id"]').text.strip()
-            delegate_level = gsd.find('.//*[@class="delegate_level"]').text.strip()
+        for el in root.xpath("./xhtml:div//*[@class='grade_submission_delegate']",
+                             namespaces=nsmap):
+            reg_id = el.xpath(".//*[@class='reg_id']")[0].text.strip()
+            delegate_level = el.xpath(".//*[@class='delegate_level']")[0].text.strip()
             if reg_id not in people:
                 people[reg_id] = pws.get_person_by_regid(reg_id)
             delegate = GradeSubmissionDelegate(person=people[reg_id],
                                                delegate_level=delegate_level)
             graderoster.grade_submission_delegates.append(delegate)
 
-        strptime = datetime.strptime
-        day_format = "%Y-%m-%d"
-        item_elements = root.findall('.//*[@class="graderoster_item"]')
-        for item in item_elements:
-            gr_item = GradeRosterItem()
-
-            section_element = item.find('.//*[@class="section_id"]')
-            gr_item.section_id = section_element.text if section_element is not None else default_section_id
-
-            reg_id = item.find('.//*[@class="reg_id"]').text.strip()
-            gr_item.student = pws.get_person_by_regid(reg_id)
-
-            duplicate_code = item.find('.//*[@class="duplicate_code"]').text
-            if duplicate_code is not None:
-                duplicate_code = duplicate_code.strip()
-                duplicate_code = duplicate_code if len(duplicate_code) else None
-            gr_item.duplicate_code = duplicate_code
-
-            gr_item.student_number = item.find('.//*[@class="student_number"]').text.strip()
-
-            student_former_name = item.find('.//*[@class="student_former_name"]').text
-            if student_former_name is not None:
-                student_former_name = student_former_name.strip()
-                student_former_name = student_former_name if len(student_former_name) else None
-            gr_item.student_former_name = student_former_name
-
-            gr_item.student_credits = item.find('.//*[@class="student_credits"]').text.strip()
-
-            auditor = item.find('.//*[@class="auditor"]').get("checked")
-            gr_item.is_auditor = True if auditor == "checked" else False
-
+        for item in root.xpath("./*[@class='graderoster_items']/*[@class='graderoster_item']"):
+            gr_item = GradeRosterItem(section_id=default_section_id)
             gr_item.grade_choices = []
-            gr_item.grade = None
-            for grade in item.findall('.//*[@class="grade"]'):
-                grade_value = grade.get("value").strip()
-                gr_item.grade_choices.append(grade_value)
-                if grade.get("selected") == "selected":
-                    gr_item.grade = grade_value
 
-            incomplete_node = item.find('.//*[@class="incomplete"]')
-            gr_item.allows_incomplete = False if incomplete_node.get("disabled") == "disabled" else True
-            gr_item.has_incomplete = True if incomplete_node.get("checked") == "checked" else False
+            for el in item.xpath(".//xhtml:a[@rel='student']/*[@class='reg_id']",
+                                 namespaces=nsmap):
+                gr_item.student_uwregid = el.text.strip()
 
-            writing_credit = item.find('.//*[@class="writing_course"]').get("checked")
-            gr_item.has_writing_credit = True if writing_credit == "checked" else False
+            for el in item.xpath(".//*[@class]"):
+                classname = el.get("class")
+                if classname == "name" and el.text is not None:
+                    full_name = el.text.strip()
+                    try:
+                        (surname, first_name) = full_name.split(",", 1)
+                        gr_item.student_first_name = first_name
+                        gr_item.student_surname = surname
+                    except ValueError:
+                        pass
+                elif classname == "duplicate_code" and el.text is not None:
+                    duplicate_code = el.text.strip()
+                    if len(duplicate_code):
+                        gr_item.duplicate_code = duplicate_code
+                elif classname == "section_id" and el.text is not None:
+                    gr_item.section_id = el.text.strip()
+                elif classname == "student_former_name" and el.text is not None:
+                    student_former_name = el.text.strip()
+                    if len(student_former_name):
+                        gr_item.student_former_name = student_former_name
+                elif classname == "student_number":
+                    gr_item.student_number = el.text.strip()
+                elif classname == "student_credits" and el.text is not None:
+                    gr_item.student_credits = el.text.strip()
+                elif classname == "date_withdrawn date" and el.text is not None:
+                    gr_item.date_withdrawn = el.text.strip()
+                elif classname == "incomplete":
+                    if el.get("checked", "") == "checked":
+                        gr_item.has_incomplete = True
+                    if el.get("disabled", "") != "disabled":
+                        gr_item.allows_incomplete = True
+                elif classname == "writing_course":
+                    if el.get("checked", "") == "checked":
+                        gr_item.has_writing_credit = True
+                elif classname == "auditor":
+                    if el.get("checked", "") == "checked":
+                        gr_item.is_auditor = True
+                elif classname == "no_grade_now":
+                    if el.get("checked", "") == "checked":
+                        gr_item.no_grade_now = True
+                elif classname == "grades":
+                    if el.get("disabled", "") != "disabled":
+                        gr_item.allows_grade_change = True
+                elif classname == "grade":
+                    grade = el.text.strip() if el.text is not None else ""
+                    gr_item.grade_choices.append(grade)
+                    if el.get("selected", "") == "selected":
+                        gr_item.grade = grade
+                elif classname == "grade_document_id" and el.text is not None:
+                    gr_item.grade_document_id = el.text.strip()
+                elif classname == "date_graded date" and el.text is not None:
+                    gr_item.date_graded = el.text.strip()
+                elif classname == "grade_submitter_source" and el.text is not None:
+                    gr_item.grade_submitter_source = el.text.strip()
 
-            no_grade_now = item.find('.//*[@class="no_grade_now"]').get("checked")
-            gr_item.no_grade_now = True if no_grade_now == "checked" else False
-
-            date_withdrawn = item.find('.//*[@class="date_withdrawn date"]').text
-            if date_withdrawn is not None:
-                gr_item.date_withdrawn = date_withdrawn.strip()
-
-            grade_select = item.find('.//*[@class="grades"]')
-            gr_item.allows_grade_change = False if grade_select.get("disabled") == "disabled" else True
-
-            gr_item.grade_document_id = item.find('.//*[@class="grade_document_id"]').text
-
-            date_graded = item.find('.//*[@class="date_graded date"]').text
-            if date_graded is not None:
-                gr_item.date_graded = date_graded.strip()
-
-            gsp = item.find('.//*[@rel="grade_submitter_person"]')
-            if gsp is not None:
-                reg_id = gsp.find('.//*[@class="reg_id"]').text.strip()
+            for el in item.xpath(".//xhtml:a[@rel='grade_submitter_person']/*[@class='reg_id']",
+                                 namespaces=nsmap):
+                reg_id = el.text.strip()
                 if reg_id not in people:
                     people[reg_id] = pws.get_person_by_regid(reg_id)
                 gr_item.grade_submitter_person = people[reg_id]
-
-            gr_item.grade_submitter_source = item.find('.//*[@class="grade_submitter_source"]').text
 
             graderoster.items.append(gr_item)
 

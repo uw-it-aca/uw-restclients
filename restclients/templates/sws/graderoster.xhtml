@@ -34,9 +34,9 @@
             </div>
             <ul class="graderoster_items">{% for item in graderoster.items %}
                 <li class="graderoster_item">
-                    <h1>{{item.student.surname|default_if_none:""}},{{item.student.first_name|default_if_none:""}}</h1>
+                    <h1>{{item.student_surname|default_if_none:""}},{{item.student_first_name|default_if_none:""}}</h1>
                     <div>
-                        <a class="person" rel="student" href="/student/v4/person/{{item.student.uwregid}}"><span class="name">{{item.student.surname|default_if_none:""}},{{item.student.first_name|default_if_none:""}}</span> - <span class="reg_id">{{item.student.uwregid}}</span></a>
+                        <a class="person" rel="student" href="/student/v4/person/{{item.student_uwregid}}"><span class="name">{{item.student_surname|default_if_none:""}},{{item.student_first_name|default_if_none:""}}</span> - <span class="reg_id">{{item.student_uwregid}}</span></a>
                     </div>
                     <div>
                         Duplicate code:
@@ -62,24 +62,24 @@
                         Date Withdrawn:
                         <span class="date_withdrawn date">{{item.date_withdrawn|default_if_none:""}}</span></div>
                     <div>
-                        <label for="incomplete_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Incomplete:
+                        <label for="incomplete_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Incomplete:
                         </label>
-                        <input type="checkbox" class="incomplete" id="incomplete_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="incomplete_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.has_incomplete %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
+                        <input type="checkbox" class="incomplete" id="incomplete_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="incomplete_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.has_incomplete %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
                     </div>
                     <div>
-                        <label for="writing_course_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Writing course:
+                        <label for="writing_course_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Writing course:
                         </label>
-                        <input type="checkbox" class="writing_course" id="writing_course_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="writing_course_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.has_writing_credit %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
+                        <input type="checkbox" class="writing_course" id="writing_course_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="writing_course_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.has_writing_credit %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
                     </div>
                     <div>
-                        <label for="auditor_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Auditor:
+                        <label for="auditor_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}">Auditor:
                         </label>
-                        <input type="checkbox" class="auditor" id="auditor_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="auditor_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.is_auditor %} checked="checked"{% endif %} disabled="disabled"/>
+                        <input type="checkbox" class="auditor" id="auditor_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="auditor_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.is_auditor %} checked="checked"{% endif %} disabled="disabled"/>
                     </div>
                     <div>
-                        <label for="no_grade_now_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}">No grade now:
+                        <label for="no_grade_now_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}">No grade now:
                         </label>
-                        <input type="checkbox" class="no_grade_now" id="no_grade_now_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="no_grade_now_{{item.student.uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.no_grade_now %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
+                        <input type="checkbox" class="no_grade_now" id="no_grade_now_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}" name="no_grade_now_{{item.student_uwregid}}_{{item.duplicate_code|default_if_none:" "}}"{%if item.no_grade_now %} checked="checked"{% endif %}{%if item.date_graded %} disabled="disabled"{% endif %}/>
                     </div>
                     <div>
                         Grade:
