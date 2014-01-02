@@ -3,11 +3,14 @@ Contains SWS DAO implementations.
 """
 
 import json
+import time
 from datetime import datetime, timedelta
 from django.conf import settings
 from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
+
+from lxml import etree
 
 # XXX - this is arbitrary.  I didn't have a handy multi-threaded sws test
 # case that went over 4 concurrent connections.  Just took the PWS number
@@ -20,6 +23,9 @@ class File(object):
 
     RESTCLIENTS_SWS_DAO_CLASS = 'restclients.dao_implementation.sws.File'
     """
+
+    grade_roster_document = None
+
     def getURL(self, url, headers):
         response = get_mockdata_url("sws", "file", url, headers)
 
@@ -37,9 +43,21 @@ class File(object):
 
             response.data = json.dumps(json_data)
 
+        # This would come from putURL below - grading workflow
+        if url.startswith('/student/v4/graderoster/2013,spring'):
+            if File.grade_roster_document:
+                response.data = self._make_grade_roster_submitted(File.grade_roster_document)
+                File.grade_roster_document = None
+
         return response
 
     def putURL(self, url, headers, body):
+        # To support the grading workflow - there's a GET after the PUT
+        # stash the PUT graderoster away, with submitted dates/grader values
+        if url.startswith('/student/v4/graderoster/2013,spring'):
+            time.sleep(5)
+            File.grade_roster_document = body
+
         response = MockHTTP()
         if body is not None:
             response.status = 200
@@ -50,6 +68,18 @@ class File(object):
             response.data = "Bad Request: no PUT body"
 
         return response
+
+    def _make_grade_roster_submitted(self, submitted_body):
+        root = etree.fromstring(submitted_body)
+        item_elements = root.findall('.//*[@class="graderoster_item"]')
+        for item in item_elements:
+            date_graded = item.find('.//*[@class="date_graded date"]')
+            date_graded.text = '2013-06-01'
+
+            grade_submitter_source = item.find('.//*[@class="grade_submitter_source"]')
+            grade_submitter_source.text = 'CGB'
+
+        return etree.tostring(root)
 
 class Live(object):
     """
