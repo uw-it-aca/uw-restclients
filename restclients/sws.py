@@ -1024,7 +1024,7 @@ class SWS(object):
                     gr_item.student_number = el.text.strip()
                 elif classname == "student_credits" and el.text is not None:
                     gr_item.student_credits = el.text.strip()
-                elif classname == "date_withdrawn date" and el.text is not None:
+                elif "date_withdrawn" in classname and el.text is not None:
                     gr_item.date_withdrawn = el.text.strip()
                 elif classname == "incomplete":
                     if el.get("checked", "") == "checked":
@@ -1050,7 +1050,7 @@ class SWS(object):
                         gr_item.grade = grade
                 elif classname == "grade_document_id" and el.text is not None:
                     gr_item.grade_document_id = el.text.strip()
-                elif classname == "date_graded date" and el.text is not None:
+                elif "date_graded" in classname and el.text is not None:
                     gr_item.date_graded = el.text.strip()
                 elif classname == "grade_submitter_source" and el.text is not None:
                     gr_item.grade_submitter_source = el.text.strip()
