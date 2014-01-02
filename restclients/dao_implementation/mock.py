@@ -98,9 +98,21 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
 
         try:
             headers = open(handle.name + '.http-headers')
-            response.headers = dict(response.headers.items() + json.loads(headers.read()).items())
+            file_values = json.loads(headers.read())
+
+            if "headers" in file_values:
+                response.headers = dict(response.headers.items() + file_values['headers'].items())
+
+                if 'status' in file_values:
+                    response.status = file_values['status']
+
+            else:
+                response.headers = dict(response.headers.items() + json.loads(headers.read()).items())
+
         except IOError:
             pass
+        except Exception as ex:
+            print "Error: ", ex
 
         return response
 
