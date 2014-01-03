@@ -4,6 +4,7 @@ connections for live data from a web service
 
 """
 import logging
+import ssl
 from urllib3 import connection_from_url
 from django.conf import settings
 
@@ -22,6 +23,7 @@ def get_con_pool(host,
         "timeout": socket_timeout,
         "maxsize": max_pool_size,
         "block": True,
+        "ssl_version": ssl.PROTOCOL_SSLv3,
         }
 
     if key_file is not None and cert_file is not None:

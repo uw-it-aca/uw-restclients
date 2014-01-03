@@ -1,7 +1,7 @@
 # Make sure you also add things to ../setup.py
 Django
 lxml==2.3.5
-urllib3>=1.4
+urllib3>=1.6
 twilio==3.4.1
 boto
 ordereddict>=1.1
