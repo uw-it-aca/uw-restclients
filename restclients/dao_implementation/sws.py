@@ -52,6 +52,21 @@ class File(object):
         return response
 
     def putURL(self, url, headers, body):
+        # For developing against crashes in grade submission
+        if url.startswith('/student/v4/graderoster/2013,spring,ZERROR,101,S1,'):
+            response = MockHTTP()
+            response.data = "No employee found for ID 1234567890"
+            response.status = 500
+            return response
+
+        # Submitted too late, sad.
+        if url.startswith('/student/v4/graderoster/2013,spring,ZERROR,101,S2,'):
+            response = MockHTTP()
+            response.data = "grading period not active for year/quarter"
+            response.status = 404
+            return response
+
+
         # To support the grading workflow - there's a GET after the PUT
         # stash the PUT graderoster away, with submitted dates/grader values
         if url.startswith('/student/v4/graderoster/2013,spring'):
