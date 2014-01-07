@@ -507,6 +507,12 @@ class GradeRosterItem(models.Model):
                                                null=True)
     grade_submitter_source = models.CharField(max_length=8, null=True)
 
+    def student_label(self, separator=","):
+        label = self.student_uwregid
+        if self.duplicate_code is not None and len(self.duplicate_code):
+            label += "%s%s" % (separator, self.duplicate_code)
+        return label
+
     class Meta:
         app_label = "restclients"
 

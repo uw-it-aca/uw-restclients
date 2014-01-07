@@ -24,9 +24,15 @@ class SWSTestGradeRoster(TestCase):
             self.assertEquals(len(graderoster.items), 5, "GradeRoster items")
 
             grades = ['0.7', None, '3.1', '1.5', '4.0']
+            labels = ['1914B1B26A7D11D5A4AE0004AC494FFE',
+                      '511FC8241DC611DB9943F9D03AACCE31',
+                      'F00E253C634211DA9755000629C31437',
+                      'C7EED7406A7C11D5A4AE0004AC494FFE',
+                      'A9D2DDFA6A7D11D5A4AE0004AC494FFE,A']
             for idx, item in enumerate(graderoster.items):
                 self.assertEquals(len(item.grade_choices), 36, "grade_choices returns correct grades")
                 self.assertEquals(item.grade, grades[idx], "Correct default grade")
+                self.assertEquals(item.student_label(), labels[idx], "Correct student label")
 
     def test_put_graderoster(self):
         with self.settings(
