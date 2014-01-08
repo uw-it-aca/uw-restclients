@@ -5,7 +5,9 @@ class CatalystGradebookGrades(TestCase):
 
    def test_student_grades(self):
          with self.settings(
-                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File'):
+                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File',
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
                 catalyst = GradeBook()
                 data = catalyst.get_grades_for_student_and_term('javerage', 2013, 'Autumn')
@@ -21,7 +23,9 @@ class CatalystGradebookGrades(TestCase):
 
    def test_2_courses(self):
          with self.settings(
-                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File'):
+                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File',
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
                 catalyst = GradeBook()
                 data = catalyst.get_grades_for_student_and_term('javerage', 2013, 'Spring')
