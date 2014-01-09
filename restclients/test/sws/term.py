@@ -22,7 +22,8 @@ class SWSTestTerm(TestCase):
             # This rounds down to 0 days, so check by seconds :(
             hour_1 = 60 * 60
             hours_48 = 60 * 60 * 48
-            self.assertEquals(deadline_diff.seconds > hour_1, True, "Deadline is in the future")
+
+            self.assertEquals(deadline_diff.total_seconds() > hour_1, True, "Deadline is in the future")
             self.assertEquals(deadline_diff.seconds < hours_48, True, "But not too far in the future")
 
             open_diff_all = now - term.grading_period_open
@@ -47,7 +48,7 @@ class SWSTestTerm(TestCase):
             # This rounds down to 0 days, so check by seconds :(
             hour_1 = 60 * 60
             hours_48 = 60 * 60 * 48
-            self.assertEquals(deadline_diff.seconds > hour_1, True, "Deadline is in the future")
+            self.assertEquals(deadline_diff.total_seconds() > hour_1, True, "Deadline is in the future")
             self.assertEquals(deadline_diff.seconds < hours_48, True, "But not too far in the future")
 
             open_diff_all = now - term.grading_period_open
