@@ -5,7 +5,9 @@ class CatalystWebQGrades(TestCase):
 
    def test_student_grades(self):
          with self.settings(
-                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File'):
+                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File',
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
                 catalyst = WebQ()
                 data = catalyst.get_grades_for_student_and_term('javerage', 2013, 'Autumn')
@@ -24,7 +26,9 @@ class CatalystWebQGrades(TestCase):
 
    def test_student_grades_2_quizzes(self):
          with self.settings(
-                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File'):
+                RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File',
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
                 catalyst = WebQ()
                 data = catalyst.get_grades_for_student_and_term('javerage', 2013, 'Spring')
