@@ -15,6 +15,8 @@ class SWSTestTerm(TestCase):
 
             now = datetime.now()
 
+            self.assertEquals(term.is_grading_period_open(), True, "Grading period is open")
+
             deadline_diff = term.grade_submission_deadline - now
 
             # This rounds down to 0 days, so check by seconds :(
@@ -37,6 +39,8 @@ class SWSTestTerm(TestCase):
             term = sws.get_term_by_year_and_quarter(2013, 'spring')
 
             now = datetime.now()
+
+            self.assertEquals(term.is_grading_period_open(), True, "Grading period is open")
 
             deadline_diff = term.grade_submission_deadline - now
 
@@ -123,6 +127,8 @@ class SWSTestTerm(TestCase):
                 if tsc.campus == 'seattle':
                     self.assertEquals(tsc.is_on, False)
 
+            self.assertEquals(term.is_grading_period_open(), False, "Grading period is not open")
+
     #Expected values will have to change when the json files are updated
     def test_next_quarter(self):
         with self.settings(
@@ -195,6 +201,8 @@ class SWSTestTerm(TestCase):
             for tsc in term.time_schedule_construction:
                 if tsc.campus == 'bothell':
                     self.assertEquals(tsc.is_on, True)
+
+            self.assertEquals(term.is_grading_period_open(), False, "Grading period is not open")
 
     def test_quarter_before(self):
         with self.settings(

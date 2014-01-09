@@ -306,3 +306,18 @@ class SWSTestSectionData(TestCase):
             section2 = sws.get_section_by_label('2013,winter,EMBA,503/A')
             self.assertEquals(section2.allows_secondary_grading, False,
                               "Does not allow secondary grading")
+
+    def test_grading_period_open(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+
+            section = sws.get_section_by_label('2012,summer,PHYS,121/A')
+
+            self.assertEquals(section.is_grading_period_open(), False, "Grading window is not open")
+
+            # Spring 2013 is 'current' term
+            section = sws.get_section_by_label('2013,spring,MATH,125/G')
+
+            self.assertEquals(section.is_grading_period_open(), True, "Grading window is open")

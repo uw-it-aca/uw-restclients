@@ -1,7 +1,8 @@
 from django.db import models
 from django.template import Context, loader
-import pickle
 from base64 import b64encode, b64decode
+from datetime import datetime
+import pickle
 
 
 class Person(models.Model):
@@ -117,11 +118,18 @@ class Term(models.Model):
 
     class Meta:
         app_label = "restclients"
-        unique_together = ('year',
-                           'quarter')
+        unique_together = ("year", "quarter")
 
     def __eq__(self, other):
         return self.year == other.year and self.quarter == other.quarter
+
+    def is_grading_period_open(self):
+        if self.quarter == self.SUMMER:
+            open_date = self.aterm_grading_period_open
+        else:
+            open_date = self.grading_period_open
+
+        return (open_date <= datetime.now() <= self.grade_submission_deadline)
 
     def json_data(self):
         data = {
@@ -130,6 +138,7 @@ class Term(models.Model):
             'last_final_exam_date': self.last_final_exam_date.strftime("%Y-%m-%d 23:59:59"),
         }
         return data
+
 
 class FinalExam(models.Model):
     is_confirmed = models.BooleanField()
@@ -158,6 +167,7 @@ class FinalExam(models.Model):
 
 
 class Section(models.Model):
+    SUMMER_A_TERM = "a-term"
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
     final_exam = models.ForeignKey(FinalExam,
@@ -248,6 +258,15 @@ class Section(models.Model):
             if person == delegate.person:
                 return True
         return False
+
+    def is_grading_period_open(self):
+        now = datetime.now()
+        if self.summer_term == self.SUMMER_A_TERM:
+            open_date = self.term.aterm_grading_period_open
+        else:
+            open_date = self.term.grading_period_open
+
+        return (open_date <= now <= self.term.grade_submission_deadline)
 
     def json_data(self):
         data = {
