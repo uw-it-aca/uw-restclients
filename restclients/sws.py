@@ -642,8 +642,9 @@ class SWS(object):
         Returns a restclients.GradeRoster model for the passed Section model
         and instructor Person.
         """
+        section_label = section.section_label().replace('/', ',')
         url = "/student/v4/graderoster/%s,%s" % (
-            section.section_label().replace('/', ','),
+            re.sub(r'\s', '%20', section_label),
             instructor.uwregid)
 
         response = SWS_DAO().getURL(url, {"Accept": "text/xhtml",
@@ -662,9 +663,10 @@ class SWS(object):
         restclients.GradeRoster model. A new restclients.GradeRoster is
         returned.
         """
-        section_id = graderoster.section.section_label().replace('/', ',')
+        section_label = graderoster.section.section_label().replace('/', ',')
         reg_id = graderoster.instructor.uwregid
-        url = "/student/v4/graderoster/%s,%s" % (section_id, reg_id)
+        url = "/student/v4/graderoster/%s,%s" % (
+            re.sub(r'\s', '%20', section_label), reg_id)
         body = graderoster.xhtml()
 
         dao = SWS_DAO()
