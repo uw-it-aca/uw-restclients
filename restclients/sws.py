@@ -21,7 +21,13 @@ from lxml import etree
 import json
 import re
 
+
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
+
+
+def encode_section_label(label):
+    return re.sub(r'\s', '%20', label)
+
 
 class SWSThread(Thread):
     url = None
@@ -36,6 +42,7 @@ class SWSThread(Thread):
 
         dao = SWS_DAO()
         self.response = dao.getURL(self.url, args)
+
 
 class SWSPersonByRegIDThread(Thread):
     regid = None
@@ -54,7 +61,6 @@ class SWS(object):
     The SWS object has methods for getting information
     about courses, and everything related.
     """
-
     def get_term_by_year_and_quarter(self, year, quarter):
         """
         Returns a restclients.Term object, for the passed year and quarter.
@@ -179,16 +185,16 @@ class SWS(object):
         Returns a list of restclients.SectionReference objects for the passed
         instructor and term.
         """
-        return self._get_sections_by_person_and_term(person, term,
-            course_role="Instructor")
+        return self._get_sections_by_person_and_term(
+            person, term, course_role="Instructor")
 
     def get_sections_by_delegate_and_term(self, person, term):
         """
         Returns a list of restclients.SectionReference objects for the passed
         grade submission delegate and term.
         """
-        return self._get_sections_by_person_and_term(person, term,
-            course_role="GradeSubmissionDelegate")
+        return self._get_sections_by_person_and_term(
+            person, term, course_role="GradeSubmissionDelegate")
 
     def get_sections_by_curriculum_and_term(self, curriculum, term):
         """
@@ -233,7 +239,7 @@ class SWS(object):
         if not valid.match(label):
             raise InvalidSectionID(label)
 
-        url = "/student/v4/course/%s.json" % re.sub(r'\s', '%20', label)
+        url = "/student/v4/course/%s.json" % encode_section_label(label)
 
         return self.get_section_by_url(url)
 
@@ -254,7 +260,7 @@ class SWS(object):
 
     def get_section_status_by_label(self, label):
         """
-        Returns a restclients.SectionStatus object for the passed section label.
+        Return a restclients.SectionStatus object for the passed section label.
         """
         valid = re.compile('^\d{4},'                           # year
                            '(?:winter|spring|summer|autumn),'  # quarter
@@ -265,7 +271,7 @@ class SWS(object):
         if not valid.match(label):
             raise InvalidSectionID(label)
 
-        url = "/student/v4/course/%s/status.json" % re.sub(r'\s', '%20', label)
+        url = "/student/v4/course/%s/status.json" % encode_section_label(label)
 
         dao = SWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
@@ -472,7 +478,7 @@ class SWS(object):
 
             thread = SWSThread()
             thread.url = reg_url
-            thread.headers = { "Accept": "application/json" }
+            thread.headers = {"Accept": "application/json"}
             thread.start()
             sws_threads.append(thread)
 
@@ -644,7 +650,7 @@ class SWS(object):
         """
         section_label = section.section_label().replace('/', ',')
         url = "/student/v4/graderoster/%s,%s" % (
-            re.sub(r'\s', '%20', section_label),
+            encode_section_label(section_label),
             instructor.uwregid)
 
         response = SWS_DAO().getURL(url, {"Accept": "text/xhtml",
@@ -666,7 +672,7 @@ class SWS(object):
         section_label = graderoster.section.section_label().replace('/', ',')
         reg_id = graderoster.instructor.uwregid
         url = "/student/v4/graderoster/%s,%s" % (
-            re.sub(r'\s', '%20', section_label), reg_id)
+            encode_section_label(section_label), reg_id)
         body = graderoster.xhtml()
 
         dao = SWS_DAO()
@@ -754,8 +760,10 @@ class SWS(object):
 
         term.time_schedule_construction = []
         for campus in term_data["TimeScheduleConstructionOn"]:
-            tsc = TimeScheduleConstruction(campus=campus.lower(),
-                                           is_on = (term_data["TimeScheduleConstructionOn"][campus] == True))
+            tsc = TimeScheduleConstruction(
+                campus=campus.lower(),
+                is_on=(term_data["TimeScheduleConstructionOn"][campus] is True)
+            )
             term.time_schedule_construction.append(tsc)
 
         term.full_clean()
