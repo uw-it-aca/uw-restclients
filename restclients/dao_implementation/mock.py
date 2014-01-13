@@ -1,6 +1,7 @@
 from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
 from django.conf import settings
+from django.core.exceptions import *
 from django.utils.importlib import import_module
 import sys
 import os
