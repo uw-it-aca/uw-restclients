@@ -1,7 +1,7 @@
 from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
 from django.conf import settings
-from django.core.exceptions import *
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.importlib import import_module
 import sys
 import os
@@ -14,23 +14,31 @@ A centralized the mock data access
 # Based on django.template.loaders.app_directories
 fs_encoding = sys.getfilesystemencoding() or sys.getdefaultencoding()
 app_resource_dirs = []
-for app in settings.INSTALLED_APPS:
-    try:
-        mod = import_module(app)
-    except ImportError, e:
-        raise ImproperlyConfigured('ImportError %s: %s' % (app, e.args[0]))
 
-    resource_dir = os.path.join(os.path.dirname(mod.__file__), 'resources')
-    if os.path.isdir(resource_dir):
-        # Cheating, to make sure our resources are overridable
-        data = {
-            'path': resource_dir.decode(fs_encoding),
-            'app': app,
-        }
-        if app == 'restclients':
-            app_resource_dirs.append(data)
-        else:
-            app_resource_dirs.insert(0, data)
+# An issue w/ loading order in management commands means this needs to be
+# a function.  Otherwise we can be trying to load modules that are trying to
+# load this code, and python bails on us.
+
+def __initialize_app_resource_dirs():
+    if len(app_resource_dirs) > 0:
+        return
+    for app in settings.INSTALLED_APPS:
+        try:
+            mod = import_module(app)
+        except ImportError, e:
+            raise ImproperlyConfigured('ImportError %s: %s' % (app, e.args[0]))
+
+        resource_dir = os.path.join(os.path.dirname(mod.__file__), 'resources')
+        if os.path.isdir(resource_dir):
+            # Cheating, to make sure our resources are overridable
+            data = {
+                'path': resource_dir.decode(fs_encoding),
+                'app': app,
+            }
+            if app == 'restclients':
+                app_resource_dirs.append(data)
+            else:
+                app_resource_dirs.insert(0, data)
 
 def get_mockdata_url(service_name, implementation_name,
                      url, headers):
@@ -43,7 +51,7 @@ def get_mockdata_url(service_name, implementation_name,
     """
 
     dir_base = dirname(__file__)
-
+    __initialize_app_resource_dirs()
 
 
     RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
