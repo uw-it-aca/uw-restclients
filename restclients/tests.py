@@ -24,7 +24,7 @@ from restclients.test.sws.graderoster import SWSTestGradeRoster
 
 from restclients.test.pws.person import PWSTestPersonData
 from restclients.test.pws.entity import PWSTestEntityData
-
+from restclients.test.pws.idcard import TestIdCardPhoto
 from restclients.test.pws.err404.dao import PWSTestDAO404
 from restclients.test.pws.err404.pws import PWSTest404
 from restclients.test.pws.err500.dao import PWSTestDAO500

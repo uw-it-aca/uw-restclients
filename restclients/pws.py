@@ -4,8 +4,10 @@ This is the interface for interacting with the Person Web Service.
 
 from restclients.dao import PWS_DAO
 from restclients.exceptions import InvalidRegID, InvalidNetID
+from restclients.exceptions import InvalidIdCardPhotoSize
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import Person, Entity
+from StringIO import StringIO
 import json
 import re
 
@@ -14,6 +16,10 @@ class PWS(object):
     """
     The PWS object has methods for getting person information.
     """
+    def __init__(self, actas=None):
+        self.actas = actas
+        self._re_regid = re.compile(r'^[A-F0-9]{32}$', re.I)
+        self._re_netid = re.compile(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', re.I)
 
     def get_person_by_regid(self, regid):
         """
@@ -21,7 +27,7 @@ class PWS(object):
         regid isn't found, nothing will be returned.  If there is an error
         communicating with the PWS, a DataFailureException will be thrown.
         """
-        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
+        if not self.valid_uwregid(regid):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
@@ -39,8 +45,7 @@ class PWS(object):
         netid isn't found, nothing will be returned.  If there is an error
         communicating with the PWS, a DataFailureException will be thrown.
         """
-
-        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', netid, re.I):
+        if not self.valid_uwnetid(netid):
             raise InvalidNetID(netid)
 
         dao = PWS_DAO()
@@ -58,7 +63,7 @@ class PWS(object):
         regid isn't found, nothing will be returned.  If there is an error
         communicating with the PWS, a DataFailureException will be thrown.
         """
-        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
+        if not self.valid_uwregid(regid):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
@@ -76,8 +81,7 @@ class PWS(object):
         netid isn't found, nothing will be returned.  If there is an error
         communicating with the PWS, a DataFailureException will be thrown.
         """
-
-        if not re.match(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', netid, re.I):
+        if not self.valid_uwnetid(netid):
             raise InvalidNetID(netid)
 
         dao = PWS_DAO()
@@ -93,7 +97,7 @@ class PWS(object):
         """
         Returns data for the given regid.
         """
-        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
+        if not self.valid_uwregid(regid):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
@@ -107,6 +111,44 @@ class PWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return json.loads(response.data)
+
+    def get_idcard_photo(self, regid, size="medium"):
+        """
+        Returns a jpeg image, for the passed uwregid. Size is configured as:
+            "small" (20w x 25h px),
+            "medium" (120w x 150h px),
+            "large" (240w x 300h px),
+            {height in pixels} (custom height, default aspect ratio)
+        """
+        if not self.valid_uwregid(regid):
+            raise InvalidRegID(regid)
+
+        size = str(size)
+        if (not re.match(r"(?:small|medium|large)$", size) and
+                not re.match(r"[1-9]\d{1,3}$", size)):
+            raise InvalidIdCardPhotoSize(size)
+
+        url = "/idcard/v1/photo/%s-%s.jpg" % (regid.upper(), size)
+
+        headers = {"Accept": "image/jpeg"}
+
+        if self.actas is not None:
+            if not self.valid_uwnetid(self.actas):
+                raise InvalidNetID(self.actas)
+            headers["X-UW-Act-as"] = self.actas
+
+        response = PWS_DAO().getURL(url, headers)
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return StringIO(response.data)
+
+    def valid_uwnetid(self, netid):
+        return True if self._re_netid.match(str(netid)) else False
+
+    def valid_uwregid(self, regid):
+        return True if self._re_regid.match(str(regid)) else False
 
     def _person_from_json(self, data):
         """
@@ -164,16 +206,3 @@ class PWS(object):
         entity.display_name = entity_data["DisplayName"]
 
         return entity
-    
-    def get_idcard_photo(self, regid, size):
-        if not re.match(r'^[A-F0-9]{32}$', regid, re.I):
-            raise InvalidRegID(regid)
-
-        dao = PWS_DAO()
-        url = "/idcard/v1/photo/%s-%s.jpg" % (regid.upper(), size)
-        response = dao.getURL(url, {})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return response.data

@@ -35,6 +35,10 @@ class InvalidGroupID(Exception):
     """Exception for invalid group id."""
     pass
 
+class InvalidIdCardPhotoSize(Exception):
+    """Exception for invalid photo size."""
+    pass
+
 class InvalidEndpointProtocol(Exception):
     """Exception for invalid endpoint protocol."""
     pass
