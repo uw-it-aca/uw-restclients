@@ -20,7 +20,21 @@ class File(object):
         return get_mockdata_url("canvas", "file", url, headers)
 
     def putURL(self, url, headers, body):
-        return put_mockdata_url("canvas", "file", url, headers, body)
+        response = put_mockdata_url("canvas", "file", url, headers, body)
+        if response.status == 400:
+            return response
+
+        path = abspath(dirname(__file__) + "/../resources/canvas/file" +
+                       url + ".PUT")
+
+        try:
+            handle = open(path)
+            response.data = handle.read()
+            response.status = 200
+        except IOError:
+            response.status = 404
+
+        return response
 
     def postURL(self, url, headers, body):
         response = post_mockdata_url("canvas", "file", url, headers, body)

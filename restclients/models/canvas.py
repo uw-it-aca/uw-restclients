@@ -174,6 +174,21 @@ class User(models.Model):
         db_table = "restclients_canvas_user"
 
 
+class Login(models.Model):
+    login_id = models.IntegerField(max_length=20)
+    account_id = models.IntegerField(max_length=20)
+    sis_user_id = models.CharField(max_length=100, null=True)
+    unique_id = models.CharField(max_length=100, null=True)
+    user_id = models.IntegerField(max_length=20)
+
+    def put_data(self):
+        return {"login": {"unique_id": self.unique_id,
+                          "sis_user_id": self.sis_user_id}}
+
+    class Meta:
+        db_table = "restclients_canvas_login"
+
+
 class Admin(models.Model):
     admin_id = models.IntegerField(max_length=20)
     role = models.CharField(max_length=100)

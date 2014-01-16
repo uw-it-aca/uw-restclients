@@ -1,6 +1,6 @@
 from django.conf import settings
 from restclients.canvas import Canvas
-from restclients.models.canvas import User
+from restclients.models.canvas import User, Login
 
 
 class Users(Canvas):
@@ -33,8 +33,44 @@ class Users(Canvas):
         data = self._post_resource(url, user.post_data())
         return self._user_from_json(data)
 
+    def get_user_logins(self, user_id):
+        """
+        Return a user's logins for the given user_id.
+
+        https://canvas.instructure.com/doc/api/logins.html#method.pseudonyms.index
+        """
+        url = "/api/v1/users/%s/logins" % user_id
+
+        data = self._get_resource(url)
+
+        logins = []
+        for login_data in data:
+            logins.append(self._login_from_json(login_data))
+
+        return logins
+
+    def get_user_logins_by_sis_id(self, sis_user_id):
+        """
+        Returns user login data for the passed user sis id.
+        """
+        return self.get_user_logins(self._sis_id(sis_user_id, sis_field="user"))
+
+    def update_user_login(self, login, account_id=None):
+        """
+        Update an existing login for a user in the given account.
+
+        https://canvas.instructure.com/doc/api/logins.html#method.pseudonyms.update
+        """
+        if account_id is None:
+            account_id = settings.RESTCLIENTS_CANVAS_ACCOUNT_ID
+
+        url = "/api/v1/accounts/%s/logins/%s" % (account_id, login.login_id)
+
+        data = self._put_resource(url, login.put_data())
+        return self._login_from_json(data)
+
     def _user_from_json(self, data):
-        user  = User()
+        user = User()
         user.user_id = data["id"]
         user.name = data["name"]
         user.short_name = data["short_name"] if "short_name" in data else None
@@ -45,3 +81,12 @@ class Users(Canvas):
         user.time_zone = data["time_zone"] if "time_zone" in data else None
         user.locale = data["locale"] if "locale" in data else None
         return user
+
+    def _login_from_json(self, data):
+        login = Login()
+        login.login_id = data["id"]
+        login.account_id = data["account_id"]
+        login.sis_user_id = data["sis_user_id"] if "sis_user_id" in data else None
+        login.unique_id = data["unique_id"]
+        login.user_id = data["user_id"]
+        return login
