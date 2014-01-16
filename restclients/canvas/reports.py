@@ -92,6 +92,16 @@ class Reports(Canvas):
         return self.create_report(ReportType.PROVISIONING, account_id, term_id,
                                   params)
 
+    def create_user_provisioning_report(self, account_id, term_id=None,
+                                        params={}):
+        """
+        Convenience method for create_report, for creating an user
+        provisioning report.
+        """
+        params["users"] = True
+        return self.create_report(ReportType.PROVISIONING, account_id, term_id,
+                                  params)
+
     def get_report_data(self, report):
         """
         Returns a completed report as a list of csv strings.
