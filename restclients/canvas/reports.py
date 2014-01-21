@@ -102,6 +102,14 @@ class Reports(Canvas):
         return self.create_report(ReportType.PROVISIONING, account_id, term_id,
                                   params)
 
+    def create_unused_courses_report(self, account_id, term_id=None):
+        """
+        Convenience method for create_report, for creating an unused courses
+        report.
+        """
+        return self.create_report(ReportType.UNUSED_COURSES, account_id,
+                                  term_id)
+
     def get_report_data(self, report):
         """
         Returns a completed report as a list of csv strings.
