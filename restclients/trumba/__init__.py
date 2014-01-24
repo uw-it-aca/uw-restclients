@@ -8,6 +8,7 @@ from restclients.util.log import log_info, log_err
 from lxml import etree
 import logging
 import json
+import time
 
 class Trumba(object):
     """
@@ -16,13 +17,12 @@ class Trumba(object):
     It will log the http requests and responses. 
     Be sure to set the logging configuration if you use the LiveDao!
     """
+    logger = logging.getLogger(__name__)
 
     @staticmethod
     def _log_xml_resp(campus, url, response, timer):
-        logger = logging.getLogger(__name__)
-
         if response.status == 200 and response.data is not None:
-            log_info(logger,
+            log_info(Trumba.logger,
                      "%s %s ==status==> %s" % (
                     campus, url, response.status),
                      timer)
@@ -30,27 +30,25 @@ class Trumba(object):
             resp_msg = ''
             for el in root.iterchildren():
                 resp_msg = resp_msg + str(el.attrib)
-            logger.info("%s %s ==message==> %s" % (
+            Trumba.logger.info("%s %s ==message==> %s" % (
                     campus, url, resp_msg))
         else:
-            log_err(logger,
+            log_err(Trumba.logger,
                     "%s %s ==error==> %s %s" % (
                     campus, url, response.status, response.reason),
                     timer)
 
     @staticmethod
     def _log_json_resp(campus, url, body, response, timer):
-        logger = logging.getLogger(__name__)
-
         if response.status == 200 and response.data is not None:
-            log_info(logger,
+            log_info(Trumba.logger,
                      "%s %s %s ==status==> %s" % (
                     campus, url, body, response.status),
                      timer)
-            logger.debug("%s %s %s ==data==> %s" % (
+            Trumba.logger.debug("%s %s %s ==data==> %s" % (
                     campus, url, body, response.data))
         else:
-            log_err(logger,
+            log_err(Trumba.logger,
                     "%s %s %s ==error==> %s %s" % (
                     campus, url, body, response.status, response.reason),
                     timer)
@@ -61,10 +59,17 @@ class Trumba(object):
         Get the requested resource or update resource using Bothell account
         :returns: http response with content in xml
         """
-        timer = Timer()
-        response = TrumbaBot_DAO().getURL(url, 
-                                          {"Content-Type":"application/xml"})
-        Trumba._log_xml_resp("Bothell", url, response, timer)
+        retry = 0
+        while True:
+            timer = Timer()
+            response = TrumbaBot_DAO().getURL(url, 
+                                              {"Content-Type":"application/xml"})
+            Trumba._log_xml_resp("Bothell", url, response, timer)
+            if response.status != 500 or retry == 1:
+                break
+            Trumba.logger.warn("RETRY %s" % url)
+            retry = retry + 1
+            time.sleep(1)
         return response
 
     @staticmethod
@@ -73,10 +78,17 @@ class Trumba(object):
         Get the requested resource or update resource using Seattle account
         :returns: http response with content in xml
         """
-        timer = Timer()
-        response = TrumbaSea_DAO().getURL(url,
-                                          {"Accept": "application/xml"})
-        Trumba._log_xml_resp("Seattle", url, response, timer)
+        retry = 0
+        while True:
+            timer = Timer()
+            response = TrumbaSea_DAO().getURL(url,
+                                              {"Accept": "application/xml"})
+            Trumba._log_xml_resp("Seattle", url, response, timer)
+            if response.status != 500 or retry == 1:
+                break
+            Trumba.logger.warn("RETRY %s" % url)
+            retry = retry + 1
+            time.sleep(1)
         return response
     
     @staticmethod
@@ -85,10 +97,17 @@ class Trumba(object):
         Get the requested resource or update resource using Tacoma account
         :returns: http response with content in xml
         """
-        timer = Timer()
-        response = TrumbaTac_DAO().getURL(url,
-                                          {"Accept": "application/xml"})
-        Trumba._log_xml_resp("Tacoma", url, response, timer)
+        retry = 0
+        while True:
+            timer = Timer()
+            response = TrumbaTac_DAO().getURL(url,
+                                              {"Accept": "application/xml"})
+            Trumba._log_xml_resp("Tacoma", url, response, timer)
+            if response.status != 500 or retry == 1:
+                break
+            Trumba.logger.warn("RETRY %s" % url)
+            retry = retry + 1
+            time.sleep(1)
         return response
 
 
@@ -98,11 +117,18 @@ class Trumba(object):
         Get the requested resource of Bothell calendars
         :returns: http response with content in json
         """
-        timer = Timer()
-        response = TrumbaBot_DAO().postURL(url,
-                                           {"Content-Type": "application/json"},
-                                           body)
-        Trumba._log_json_resp("Bothell", url, body, response, timer)
+        retry = 0
+        while True:
+            timer = Timer()
+            response = TrumbaBot_DAO().postURL(url,
+                                               {"Content-Type": "application/json"},
+                                               body)
+            Trumba._log_json_resp("Bothell", url, body, response, timer)
+            if response.status != 500 or retry == 1:
+                break
+            Trumba.logger.warn("RETRY %s %s" % (url, body))
+            retry = retry + 1
+            time.sleep(1)
         return response
     
     @staticmethod
@@ -111,11 +137,18 @@ class Trumba(object):
         Get the requested resource using the Seattle account
         :returns: http response with content in json
         """
-        timer = Timer()
-        response = TrumbaSea_DAO().postURL(url,
-                                           {"Content-Type": "application/json"},
-                                           body)
-        Trumba._log_json_resp("Seattle", url, body, response, timer)
+        retry = 0
+        while True:
+            timer = Timer()
+            response = TrumbaSea_DAO().postURL(url,
+                                               {"Content-Type": "application/json"},
+                                               body)
+            Trumba._log_json_resp("Seattle", url, body, response, timer)
+            if response.status != 500 or retry == 1:
+                break
+            Trumba.logger.warn("RETRY %s %s" % (url, body))
+            retry = retry + 1
+            time.sleep(1)
         return response
 
     @staticmethod
@@ -124,10 +157,17 @@ class Trumba(object):
         Get the requested resource of Tacoma calendars
         :returns: http response with content in json
         """
-        timer = Timer()
-        response = TrumbaTac_DAO().postURL(url,
-                                           {"Content-Type": "application/json"},
-                                           body)
-        Trumba._log_json_resp("Tacoma", url, body, response, timer)
+        retry = 0
+        while True:
+            timer = Timer()
+            response = TrumbaTac_DAO().postURL(url,
+                                               {"Content-Type": "application/json"},
+                                               body)
+            Trumba._log_json_resp("Tacoma", url, body, response, timer)
+            if response.status != 500 or retry == 1:
+                break
+            Trumba.logger.warn("RETRY %s %s" % (url, body))
+            retry = retry + 1
+            time.sleep(1)
         return response
 
