@@ -127,6 +127,11 @@ class Reports(Canvas):
             return
 
         url = report.attachment.url
+
+        # Ensure file url matches the hostname in settings,
+        # workaround for Canvas bug help.instructure.com/tickets/362386
+        url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
+
         response = PoolManager().request("GET", url, retries=5,
                                          timeout=settings.RESTCLIENTS_TIMEOUT)
 
