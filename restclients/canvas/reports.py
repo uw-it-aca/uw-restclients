@@ -6,6 +6,7 @@ from restclients.models.canvas import Report, ReportType, Attachment
 from urllib3 import PoolManager
 from time import sleep
 import json
+import re
 
 
 class ReportFailureException(Exception):
