@@ -538,7 +538,7 @@ class SWS(object):
             campus.label = campus_data["CampusShortName"]
             campus.name = campus_data["CampusName"]
             campus.full_name = campus_data["CampusFullName"]
-            campus.full_clean()
+            campus.clean_fields()
             campuses.append(campus)
 
         return campuses
@@ -564,7 +564,7 @@ class SWS(object):
             college.label = college_data["CollegeAbbreviation"]
             college.name = college_data["CollegeName"]
             college.full_name = college_data["CollegeFullName"]
-            college.full_clean()
+            college.clean_fields()
             colleges.append(college)
 
         return colleges
@@ -591,7 +591,7 @@ class SWS(object):
             department.label = dept_data["DepartmentAbbreviation"]
             department.name = dept_data["DepartmentFullName"]
             department.full_name = dept_data["DepartmentFullName"]
-            department.full_clean()
+            department.clean_fields()
             departments.append(department)
 
         return departments
@@ -697,7 +697,7 @@ class SWS(object):
         curriculum.label = data["CurriculumAbbreviation"]
         curriculum.name = data["CurriculumName"]
         curriculum.full_name = data["CurriculumFullName"]
-        curriculum.full_clean()
+        curriculum.clean_fields()
         return curriculum
 
     def _term_from_json(self, data):
@@ -766,7 +766,7 @@ class SWS(object):
             )
             term.time_schedule_construction.append(tsc)
 
-        term.full_clean()
+        term.clean_fields()
         return term
 
     def _section_from_json(self, data, term=None):
@@ -921,7 +921,7 @@ class SWS(object):
                                                   final_data["EndTime"])
                         final_exam.end_date = strptime(end_string, final_format)
 
-                final_exam.full_clean()
+                final_exam.clean_fields()
                 section.final_exam = final_exam
 
         return section
