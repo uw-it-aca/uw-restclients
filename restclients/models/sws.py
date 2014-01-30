@@ -131,6 +131,9 @@ class Term(models.Model):
 
         return (open_date <= datetime.now() <= self.grade_submission_deadline)
 
+    def is_grading_period_past(self):
+        return (datetime.now() > self.grade_submission_deadline)
+
     def json_data(self):
         data = {
             'quarter': self.get_quarter_display(),

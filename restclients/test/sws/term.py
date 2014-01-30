@@ -16,6 +16,7 @@ class SWSTestTerm(TestCase):
             now = datetime.now()
 
             self.assertEquals(term.is_grading_period_open(), True, "Grading period is open")
+            self.assertEquals(term.is_grading_period_past(), False, "Grading period is not past")
 
             deadline_diff = term.grade_submission_deadline - now
 
@@ -42,6 +43,7 @@ class SWSTestTerm(TestCase):
             now = datetime.now()
 
             self.assertEquals(term.is_grading_period_open(), True, "Grading period is open")
+            self.assertEquals(term.is_grading_period_past(), False, "Grading period is not past")
 
             deadline_diff = term.grade_submission_deadline - now
 
@@ -129,6 +131,7 @@ class SWSTestTerm(TestCase):
                     self.assertEquals(tsc.is_on, False)
 
             self.assertEquals(term.is_grading_period_open(), False, "Grading period is not open")
+            self.assertEquals(term.is_grading_period_past(), True, "Grading period is past")
 
     #Expected values will have to change when the json files are updated
     def test_next_quarter(self):
@@ -204,6 +207,7 @@ class SWSTestTerm(TestCase):
                     self.assertEquals(tsc.is_on, True)
 
             self.assertEquals(term.is_grading_period_open(), False, "Grading period is not open")
+            self.assertEquals(term.is_grading_period_past(), True, "Grading period is past")
 
     def test_quarter_before(self):
         with self.settings(
