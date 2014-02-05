@@ -138,7 +138,7 @@ class Term(models.Model):
         return self.get_week_of_term_for_date(datetime.now())
 
     def get_week_of_term_for_date(self, date):
-        days = (date - self.first_day_quarter).days
+        days = (date.date() - self.first_day_quarter).days
         if days >= 0:
             return (days / 7) + 1
 
