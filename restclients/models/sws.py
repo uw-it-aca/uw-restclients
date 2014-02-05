@@ -134,6 +134,17 @@ class Term(models.Model):
     def is_grading_period_past(self):
         return (datetime.now() > self.grade_submission_deadline)
 
+    def get_week_of_term(self):
+        return self.get_week_of_term_for_date(datetime.now())
+
+    def get_week_of_term_for_date(self, date):
+        days = (date - self.first_day_quarter).days
+        if days >= 0:
+            return (days / 7) + 1
+
+        return (days / 7)
+
+
     def json_data(self):
         data = {
             'quarter': self.get_quarter_display(),

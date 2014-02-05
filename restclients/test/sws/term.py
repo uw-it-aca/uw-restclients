@@ -285,3 +285,76 @@ class SWSTestTerm(TestCase):
 
             self.assertNotEquals(sws.get_term_by_year_and_quarter(2012, 'autumn'),
                                  sws.get_term_by_year_and_quarter(2013, 'winter'))
+
+    def test_week_of_term(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            sws = SWS()
+            now = datetime.now()
+            term = sws.get_current_term()
+
+
+            term.first_day_quarter = now
+
+            # First day of class
+            self.assertEquals(term.get_week_of_term(), 1, "Term starting now in first week")
+            self.assertEquals(term.get_week_of_term_for_date(now), 1, "Term starting now in first week, by date")
+
+            # Middle of the term
+            start_date = now + timedelta(days=-6)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), 1, "6 days in")
+            self.assertEquals(term.get_week_of_term_for_date(now), 1, "6 days in")
+
+            start_date = now + timedelta(days=-7)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), 2, "7 days in")
+            self.assertEquals(term.get_week_of_term_for_date(now), 2, "7 days in")
+
+            start_date = now + timedelta(days=-8)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), 2, "8 days in")
+            self.assertEquals(term.get_week_of_term_for_date(now), 2, "8 days in")
+
+            start_date = now + timedelta(days=-13)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), 2, "13 days in")
+            self.assertEquals(term.get_week_of_term_for_date(now), 2, "13 days in")
+
+            start_date = now + timedelta(days=-14)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), 3, "14 days in")
+            self.assertEquals(term.get_week_of_term_for_date(now), 3, "14 days in")
+
+            # Before the term
+            start_date = now + timedelta(days=1)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), -1, "-1 days")
+            self.assertEquals(term.get_week_of_term_for_date(now), -1, "-1 days")
+
+            start_date = now + timedelta(days=7)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), -1, "-7 days")
+            self.assertEquals(term.get_week_of_term_for_date(now), -1, "-7 days")
+
+            start_date = now + timedelta(days=8)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), -2, "-8 days")
+            self.assertEquals(term.get_week_of_term_for_date(now), -2, "-8 days")
+
+            start_date = now + timedelta(days=9)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), -2, "-9 days")
+            self.assertEquals(term.get_week_of_term_for_date(now), -2, "-9 days")
+
+            start_date = now + timedelta(days=14)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), -2, "-14 days")
+            self.assertEquals(term.get_week_of_term_for_date(now), -2, "-14 days")
+
+            start_date = now + timedelta(days=15)
+            term.first_day_quarter = start_date
+            self.assertEquals(term.get_week_of_term(), -3, "-15 days")
+            self.assertEquals(term.get_week_of_term_for_date(now), -3, "-15 days")
+
