@@ -546,6 +546,11 @@ class GradeRosterItem(models.Model):
             label += "%s%s" % (separator, self.duplicate_code)
         return label
 
+    def __eq__(self, other):
+        return (self.section_id == other.section_id and
+                self.student_uwregid == other.student_uwregid and
+                self.duplicate_code == other.duplicate_code)
+
     class Meta:
         app_label = "restclients"
 
