@@ -539,6 +539,8 @@ class GradeRosterItem(models.Model):
                                                related_name="grade_submitter",
                                                null=True)
     grade_submitter_source = models.CharField(max_length=8, null=True)
+    status_code = models.CharField(max_length=3, null=True)
+    status_message = models.CharField(max_length=500, null=True)
 
     def student_label(self, separator=","):
         label = self.student_uwregid

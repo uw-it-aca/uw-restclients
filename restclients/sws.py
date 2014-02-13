@@ -1064,6 +1064,10 @@ class SWS(object):
                     gr_item.date_graded = el.text.strip()
                 elif classname == "grade_submitter_source" and el.text is not None:
                     gr_item.grade_submitter_source = el.text.strip()
+                elif classname == "code" and el.text is not None:
+                    gr_item.status_code = el.text.strip()
+                elif classname == "message" and el.text is not None:
+                    gr_item.status_message = el.text.strip()
 
             for el in item.xpath(".//xhtml:a[@rel='grade_submitter_person']/*[@class='reg_id']",
                                  namespaces=nsmap):
