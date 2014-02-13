@@ -89,8 +89,7 @@
                     <div>
                         Date Graded: <span class="date_graded date">{{item.date_graded|default_if_none:""}}</span></div>
                     <div>
-                        Grade submitter person:
-                        {%if item.grade_submitter_person %}<a class="person" rel="grade_submitter_person" href="/student/v4/person/{{item.grade_submitter_person.uwregid}}"><span class="name">{{item.grade_submitter_person.surname}},{{item.grade_submitter_person.first_name}}</span> - <span class="reg_id">{{item.grade_submitter_person.uwregid}}</span></a>{% endif %}</div>
+                        Grade submitter person:</div>
                     <div>
                         Grade submitter source:
                         <span class="grade_submitter_source">{{item.grade_submitter_source|default_if_none:""}}</span></div>
