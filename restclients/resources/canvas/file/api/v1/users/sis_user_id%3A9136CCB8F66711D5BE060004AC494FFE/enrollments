@@ -36,10 +36,10 @@
         "last_activity_at": null,
         "grades": {
             "html_url": "https://uw.test.instructure.com/courses/862539/grades/496164",
-            "current_score": 0,
-            "final_score": 0,
-            "current_grade": null,
-            "final_grade": null
+            "current_score": 23.0,
+            "final_score": 66.15,
+            "current_grade": 88.2,
+            "final_grade": 56.14
         },
         "html_url": "https://uw.test.instructure.com/courses/862539/users/496164",
         "user": {
