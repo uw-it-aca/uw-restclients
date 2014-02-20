@@ -5,8 +5,11 @@ connections for live data from a web service
 """
 import logging
 import ssl
+import time
+import socket
 from urllib3 import connection_from_url
 from django.conf import settings
+from restclients.signals import rest_request
 
 
 def get_con_pool(host,
@@ -55,4 +58,11 @@ def get_live_url(con_pool,
     """
     timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", con_pool.timeout)
 
-    return con_pool.urlopen(method, url, body=body, headers=headers, retries=retries, timeout=timeout)
+    start_time = time.time()
+    response = con_pool.urlopen(method, url, body=body, headers=headers, retries=retries, timeout=timeout)
+    request_time = time.time() - start_time
+    rest_request.send(sender='restclients',
+                      url=url,
+                      request_time=request_time,
+                      hostname=socket.gethostname())
+    return response

@@ -7,6 +7,10 @@ import sys
 import os
 import json
 import logging
+import time
+import socket
+
+from restclients.signals import rest_request
 
 """
 A centralized the mock data access
@@ -42,7 +46,6 @@ def __initialize_app_resource_dirs():
 
 def get_mockdata_url(service_name, implementation_name,
                      url, headers):
-
     """
     :param service_name:
         possible "sws", "pws", "book", "hfs", etc.
@@ -59,12 +62,17 @@ def get_mockdata_url(service_name, implementation_name,
 
     file_path = None
     success = False
-
+    start_time = time.time()
     for resource_dir in app_resource_dirs:
         response = _load_resource_from_path(resource_dir, service_name,
                                             implementation_name, url, headers)
 
         if response:
+            request_time = time.time() - start_time
+            rest_request.send(sender='restclients',
+                              url=url,
+                              request_time=request_time,
+                              hostname=socket.gethostname())
             return response
 
     # If no response has been found in any installed app, return a 404
