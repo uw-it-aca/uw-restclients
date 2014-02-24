@@ -1,5 +1,8 @@
-from status_app.dispatch import dispatch
-from status_app.models import RawEvent
+try:
+    from status_app.dispatch import dispatch
+    from status_app.models import RawEvent
+except Exception as ex:
+    pass
 from django.utils import timezone
 import django.dispatch
 
