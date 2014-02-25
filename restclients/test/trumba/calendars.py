@@ -32,7 +32,8 @@ class TrumbaTestCalendars(TestCase):
             trumba_cal = result[11321]
             self.assertEqual(trumba_cal.calendarid, 11321)
             self.assertEqual(trumba_cal.campus, 'sea')
-            self.assertEqual(trumba_cal.name, 'Seattle child-sub-sub-calendar321')
+            self.assertEqual(trumba_cal.name, 
+                             'Seattle calendar >> Seattle child calendar3 >> Seattle child-sub-calendar32 >> Seattle child-sub-sub-calendar321')
             self.assertTrue(trumba_cal.is_sea())
             self.assertFalse(trumba_cal.is_bot())
             self.assertFalse(trumba_cal.is_tac())

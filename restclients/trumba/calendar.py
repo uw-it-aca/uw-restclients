@@ -168,7 +168,7 @@ class Calendar:
         return Calendar.re_cal_id.match(str(calendarid)) is not None
 
     @staticmethod
-    def _load_calendar(campus, resp_fragment, calendar_dict):
+    def _load_calendar(campus, resp_fragment, calendar_dict, parent):
         """
         :return: a dictionary of {calenderid, TrumbaCalendar}
                  None if error, {} if not exists
@@ -179,16 +179,22 @@ class Calendar:
             trumba_cal = TrumbaCalendar()
             trumba_cal.calendarid = record['ID']
             trumba_cal.campus = campus
-            trumba_cal.name = record['Name']
+            if parent is None:
+                trumba_cal.name = record['Name']
+            else:
+                trumba_cal.name = "%s >> %s" % (parent, record['Name'])
+
             if not Calendar._is_valid_calendarid(record['ID']):
                 Calendar.logger.warn(
                     "InvalidCalendarId %s, entry skipped!" % trumba_cal)
                 continue
+
             calendar_dict[trumba_cal.calendarid] = trumba_cal
             if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
                 Calendar._load_calendar(campus, 
                                         record['ChildCalendars'], 
-                                        calendar_dict)
+                                        calendar_dict,
+                                        trumba_cal.name)
 
     @staticmethod
     def _process_get_cal_resp(url, post_response, campus):
@@ -203,7 +209,7 @@ class Calendar:
         data = Calendar._load_json(request_id, post_response)
         if data['d']['Calendars'] is not None and len(data['d']['Calendars']) > 0:
             Calendar._load_calendar(campus, data['d']['Calendars'],
-                                    calendar_dict)
+                                    calendar_dict, None)
         return calendar_dict
 
     re_email = re.compile(r'[a-z][a-z0-9]+@washington.edu')
