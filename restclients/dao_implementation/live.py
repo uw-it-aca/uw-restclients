@@ -9,7 +9,8 @@ import time
 import socket
 from urllib3 import connection_from_url
 from django.conf import settings
-from restclients.signals import rest_request
+from restclients.signals.rest_request import rest_request
+from restclients.signals.success import rest_request_passfail
 
 
 def get_con_pool(host,
@@ -65,4 +66,9 @@ def get_live_url(con_pool,
                       url=url,
                       request_time=request_time,
                       hostname=socket.gethostname())
+    rest_request_passfail.send(sender='restclients',
+                               url=url,
+                               success=True,
+                               hostname=socket.gethostname())
+
     return response

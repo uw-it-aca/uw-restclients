@@ -9,8 +9,8 @@ import json
 import logging
 import time
 import socket
-
-from restclients.signals import rest_request
+from restclients.signals.rest_request import rest_request
+from restclients.signals.success import rest_request_passfail
 
 """
 A centralized the mock data access
@@ -63,6 +63,7 @@ def get_mockdata_url(service_name, implementation_name,
     file_path = None
     success = False
     start_time = time.time()
+
     for resource_dir in app_resource_dirs:
         response = _load_resource_from_path(resource_dir, service_name,
                                             implementation_name, url, headers)
@@ -73,11 +74,19 @@ def get_mockdata_url(service_name, implementation_name,
                               url=url,
                               request_time=request_time,
                               hostname=socket.gethostname())
+            rest_request_passfail.send(sender='restclients',
+                                       url=url,
+                                       success=True,
+                                       hostname=socket.gethostname())
             return response
 
     # If no response has been found in any installed app, return a 404
     logger = logging.getLogger(__name__)
     logger.info("404 for url %s", url)
+    rest_request_passfail.send(sender='restclients',
+                               url=url,
+                               success=False,
+                               hostname=socket.gethostname())
     response = MockHTTP()
     response.status = 404
     return response
