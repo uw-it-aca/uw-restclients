@@ -27,5 +27,6 @@ class Live(object):
         if Live.pool == None:
             Live.pool = get_con_pool(host, None, None)
         return get_live_url (Live.pool, 'GET', 
-                             host, url, headers=headers)
+                             host, url, headers=headers,
+                             service_name='book')
 

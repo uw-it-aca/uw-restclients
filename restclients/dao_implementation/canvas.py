@@ -74,7 +74,8 @@ class Live(object):
         if Live.pool == None:
             Live.pool = get_con_pool(host, None, None)
         return get_live_url(Live.pool, 'GET',
-                            host, url, headers=headers)
+                            host, url, headers=headers,
+                            service_name='canvas')
 
     def putURL(self, url, headers, body):
         host = settings.RESTCLIENTS_CANVAS_HOST
@@ -85,7 +86,8 @@ class Live(object):
         if Live.pool == None:
             Live.pool = get_con_pool(host, None, None)
         return get_live_url(Live.pool, 'PUT',
-                            host, url, headers=headers, body=body)
+                            host, url, headers=headers, body=body,
+                            service_name='canvas')
 
     def postURL(self, url, headers, body):
         host = settings.RESTCLIENTS_CANVAS_HOST
@@ -96,7 +98,8 @@ class Live(object):
         if Live.pool == None:
             Live.pool = get_con_pool(host, None, None)
         return get_live_url(Live.pool, 'POST',
-                            host, url, headers=headers, body=body)
+                            host, url, headers=headers, body=body,
+                            service_name='canvas')
 
     def deleteURL(self, url, headers):
         host = settings.RESTCLIENTS_CANVAS_HOST
@@ -107,4 +110,5 @@ class Live(object):
         if Live.pool == None:
             Live.pool = get_con_pool(host, None, None)
         return get_live_url(Live.pool, 'DELETE',
-                            host, url, headers=headers)
+                            host, url, headers=headers,
+                            service_name='canvas')

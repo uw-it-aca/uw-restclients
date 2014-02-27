@@ -59,7 +59,8 @@ class Live(object):
 
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_GWS_HOST,
-                            url, headers=headers)
+                            url, headers=headers,
+                            service_name='gws')
 
     def putURL(self, url, headers, body):
         if Live.pool is None:
@@ -67,7 +68,8 @@ class Live(object):
 
         return get_live_url(Live.pool, 'PUT',
                             settings.RESTCLIENTS_GWS_HOST,
-                            url, headers=headers, body=body)
+                            url, headers=headers, body=body,
+                            service_name='gws')
 
     def deleteURL(self, url, headers):
         if Live.pool is None:
@@ -75,7 +77,8 @@ class Live(object):
 
         return get_live_url(Live.pool, 'DELETE',
                             settings.RESTCLIENTS_GWS_HOST,
-                            url, headers=headers)
+                            url, headers=headers,
+                            service_name='gws')
 
     def _get_pool(self):
         return get_con_pool(settings.RESTCLIENTS_GWS_HOST,

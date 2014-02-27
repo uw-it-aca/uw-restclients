@@ -43,7 +43,8 @@ def get_live_url(con_pool,
                  url,
                  headers,
                  retries=1,
-                 body=None):
+                 body=None,
+                 service_name=None):
     """
     Return a connection from the pool and perform an HTTP request.
     :param con_pool:
@@ -65,10 +66,12 @@ def get_live_url(con_pool,
     rest_request.send(sender='restclients',
                       url=url,
                       request_time=request_time,
-                      hostname=socket.gethostname())
+                      hostname=socket.gethostname(),
+                      service_name=service_name)
     rest_request_passfail.send(sender='restclients',
                                url=url,
                                success=True,
-                               hostname=socket.gethostname())
+                               hostname=socket.gethostname(),
+                               service_name=service_name)
 
     return response

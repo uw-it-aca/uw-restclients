@@ -112,7 +112,8 @@ class Live(object):
 
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_SWS_HOST,
-                            url, headers=headers)
+                            url, headers=headers,
+                            service_name='sws')
 
     def putURL(self, url, headers, body):
         if Live.pool is None:
@@ -120,7 +121,8 @@ class Live(object):
 
         return get_live_url(Live.pool, 'PUT',
                             settings.RESTCLIENTS_SWS_HOST,
-                            url, headers=headers, body=body)
+                            url, headers=headers, body=body,
+                            service_name='sws')
 
     def _get_pool(self):
         return get_con_pool(settings.RESTCLIENTS_SWS_HOST,

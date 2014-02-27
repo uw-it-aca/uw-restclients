@@ -45,28 +45,32 @@ class Live(object):
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_NWS_HOST,
-                            url, headers=headers)
+                            url, headers=headers,
+                            service_name='nws')
 
     def deleteURL(self, url, headers):
         if Live.pool == None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'DELETE',
                             settings.RESTCLIENTS_NWS_HOST,
-                            url, headers=headers)
+                            url, headers=headers,
+                            service_name='nws')
 
     def postURL(self, url, headers, body):
         if Live.pool == None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'POST',
                             settings.RESTCLIENTS_NWS_HOST,
-                            url, headers=headers, body=body)
+                            url, headers=headers, body=body,
+                            service_name='nws')
 
     def putURL(self, url, headers, body):
         if Live.pool == None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'PUT',
                             settings.RESTCLIENTS_NWS_HOST,
-                            url, headers=headers, body=body)
+                            url, headers=headers, body=body,
+                            service_name='nws')
 
 
     def _get_pool(self):

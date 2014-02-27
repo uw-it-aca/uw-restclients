@@ -75,4 +75,5 @@ class Live(object):
                                      max_pool_size= PWS_MAX_POOL_SIZE)
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_PWS_HOST,
-                            url, headers=headers)
+                            url, headers=headers,
+                            service_name='pws')

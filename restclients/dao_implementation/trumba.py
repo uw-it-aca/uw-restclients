@@ -84,14 +84,16 @@ class LiveSea(object):
         self.set_pool()
         return get_live_url(LiveSea.pool, 'GET',
                             settings.RESTCLIENTS_TRUMBA_HOST, url, 
-                            headers=self.add_basicauth_header(headers))
+                            headers=self.add_basicauth_header(headers),
+                            service_name='trumba')
 
     def postURL(self, url, headers, body):
         self.set_pool()
         return get_live_url(LiveSea.pool, 'POST',
                             settings.RESTCLIENTS_TRUMBA_HOST, url,
                             headers=self.add_basicauth_header(headers),
-                            body=body)
+                            body=body,
+                            service_name='trumba')
 
 class FileBot(FileSea):
     """

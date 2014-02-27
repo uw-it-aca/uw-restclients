@@ -77,7 +77,8 @@ def get_mockdata_url(service_name, implementation_name,
             rest_request_passfail.send(sender='restclients',
                                        url=url,
                                        success=True,
-                                       hostname=socket.gethostname())
+                                       hostname=socket.gethostname(),
+                                       service_name=service_name)
             return response
 
     # If no response has been found in any installed app, return a 404
@@ -86,7 +87,8 @@ def get_mockdata_url(service_name, implementation_name,
     rest_request_passfail.send(sender='restclients',
                                url=url,
                                success=False,
-                               hostname=socket.gethostname())
+                               hostname=socket.gethostname(),
+                               service_name=service_name)
     response = MockHTTP()
     response.status = 404
     return response
