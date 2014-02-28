@@ -73,7 +73,8 @@ def get_mockdata_url(service_name, implementation_name,
             rest_request.send(sender='restclients',
                               url=url,
                               request_time=request_time,
-                              hostname=socket.gethostname())
+                              hostname=socket.gethostname(),
+                              service_name=service_name)
             rest_request_passfail.send(sender='restclients',
                                        url=url,
                                        success=True,
