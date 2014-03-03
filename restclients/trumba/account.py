@@ -2,14 +2,15 @@
 The interface for accessing Trumba Accounts' Service
 """
 
+import logging
+import re
+from functools import partial
 from urllib import quote, unquote
+from lxml import etree, objectify
 from restclients.trumba import Trumba
 from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnexpectedError, UnknownError
 from restclients.exceptions import DataFailureException
-import logging
-import re
-from lxml import etree, objectify
-from functools import partial
+
 
 class Account:
     """
@@ -33,7 +34,7 @@ class Account:
         """
         :param name: a string representing the user's name
         :param userid: a string representing the user's UW NetID
-        :return: Ture if request is successful, False otherwise.
+        :return: True if request is successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
@@ -55,7 +56,7 @@ class Account:
     def delete_editor(userid):
         """
         :param userid: a string representing the user's UW NetID
-        :return: Ture if request is successful, False otherwise.
+        :return: True if request is successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
@@ -79,7 +80,7 @@ class Account:
         :param calendar_id: an integer representing calendar ID
         :param userid: a string representing the user's UW NetID
         :param level: a string representing the permission level
-        :return: Ture if request is successful, False otherwise.
+        :return: True if request is successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
@@ -96,7 +97,7 @@ class Account:
         :param calendar_id: an integer representing calendar ID
         :param userid: a string representing the user's UW NetID
         :param level: a string representing the permission level
-        :return: Ture if request is successful, False otherwise.
+        :return: True if request is successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
@@ -113,7 +114,7 @@ class Account:
         :param calendar_id: an integer representing calendar ID
         :param userid: a string representing the user's UW NetID
         :param level: a string representing the permission level
-        :return: Ture if request is successful, False otherwise.
+        :return: True if request is successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
@@ -130,7 +131,7 @@ class Account:
         :param request_id: campus url identifying the request
         :param response: the GET method response object
         :param is_success_func: the name of the function for verifying a success code
-        :return: Ture if successful, False otherwise.
+        :return: True if successful, False otherwise.
         raise DataFailureException or a corresponding TrumbaException 
         if the request failed or an error code has been returned.
         """
@@ -154,15 +155,15 @@ class Account:
     def _is_editor_added(code):
         """
         :param code: an integer value  
-        :return: Ture if the code means successful, False otherwise.
+        :return: True if the code means successful, False otherwise.
         """
-        return (code == 1001 or code == 3012)
+        return code == 1001 or code == 3012
 
     @staticmethod
     def _is_editor_deleted(code):
         """
         :param code: an integer value  
-        :return: Ture if the code means successful, False otherwise.
+        :return: True if the code means successful, False otherwise.
         """
         return code == 1002
 
@@ -170,7 +171,7 @@ class Account:
     def _is_permission_set(code):
         """
         :param code: an integer value  
-        :return: Ture if the code means successful, False otherwise.
+        :return: True if the code means successful, False otherwise.
         """
         return code == 1003
 
@@ -180,7 +181,7 @@ class Account:
         :param code: an integer value  
         :param request_id: campus url identifying the request
         Check possible error code returned in the response body
-        raise the coresponding TrumbaException
+        raise the corresponding TrumbaException
         """
         if code == 3006:
             raise CalendarNotExist()
