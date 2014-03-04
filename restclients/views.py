@@ -64,6 +64,13 @@ def proxy(request, service, url):
     }
 
     try:
+        loader.get_template("restclients/extra_info.html")
+        context["has_extra_template"] = True
+        context["extra_template"] = "restclients/extra_info.html"
+    except TemplateDoesNotExist:
+        pass
+
+    try:
         loader.get_template("restclients/proxy_wrapper.html")
         context["wrapper_template"] = "restclients/proxy_wrapper.html"
     except TemplateDoesNotExist:
