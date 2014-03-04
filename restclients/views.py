@@ -1,10 +1,12 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO
-from authz_group import Group
 from django.conf import settings
-from userservice.user import UserService
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+from django.http import HttpResponseRedirect
+from django.template import loader, RequestContext, TemplateDoesNotExist
+from django.shortcuts import render_to_response
+from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO
+from authz_group import Group
+from userservice.user import UserService
 from time import time
 import urllib
 import json
@@ -47,27 +49,28 @@ def proxy(request, service, url):
     response = dao.getURL(url, {})
     end = time()
 
-    content = response.data
-
     # Assume json, and try to format it.
     try:
-        content = format_json(service, content)
+        content = format_json(service, response.data)
     except Exception as e:
-        content = format_html(service, content)
+        content = format_html(service, response.data)
 
-    content = add_response_info(response, content, end-start)
+    context = {
+        "content": content,
+        "response_code": response.status,
+        "time_taken": "%f seconds" % (end - start),
+        "headers": response.headers,
+    }
 
-    return HttpResponse(content)
+    try:
+        loader.get_template("restclients_proxy_wrapper.html")
+        context["wrapper_template"] = "restclients_proxy_wrapper.html"
+    except TemplateDoesNotExist:
+        context["wrapper_template"] = "proxy_wrapper.html"
 
-def add_response_info(response, content, time_taken):
-    meta = []
-    meta.append("<b>Code</b>: %s" % response.status)
-    meta.append("<b>Time Taken</b>: %f seconds" % time_taken)
-
-    for header in response.headers:
-        meta.append("<b>%s</b>: %s" % (header, response.headers[header]))
-
-    return "<br />".join(["<br />".join(meta), "<b>Response Body:</b>", content])
+    return render_to_response("proxy.html",
+                              context,
+                              context_instance=RequestContext(request))
 
 def format_json(service, content):
     json_data = json.loads(content)

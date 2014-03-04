@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Restclients</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+
+        <style type="text/css">
+            body {
+                padding-top: 40px;
+                padding-bottom: 40px;
+                background-color: #eee;
+            }
+
+            .restclients-proxy {
+                padding: 15px;
+                margin: 0 auto;
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        {% block content %}{% endblock %}
+        {% if has_extra_template %}
+            {% include extra_template %}
+        {% endif %}
+
+    </body>
+</html>
