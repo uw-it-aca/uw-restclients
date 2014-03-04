@@ -21,8 +21,8 @@ def proxy(request, service, url):
         print 'Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"'
         raise Exception("Missing RESTCLIENTS_ADMIN_GROUP in settings")
 
-
-    actual_user = UserService().get_original_user()
+    user_service = UserService()
+    actual_user = user_service.get_original_user()
     g = Group()
     is_admin = g.is_member_of_group(actual_user, settings.RESTCLIENTS_ADMIN_GROUP)
 
@@ -60,11 +60,12 @@ def proxy(request, service, url):
         "response_code": response.status,
         "time_taken": "%f seconds" % (end - start),
         "headers": response.headers,
+        "override_user": user_service.get_override_user(),
     }
 
     try:
-        loader.get_template("restclients_proxy_wrapper.html")
-        context["wrapper_template"] = "restclients_proxy_wrapper.html"
+        loader.get_template("restclients/proxy_wrapper.html")
+        context["wrapper_template"] = "restclients/proxy_wrapper.html"
     except TemplateDoesNotExist:
         context["wrapper_template"] = "proxy_wrapper.html"
 
