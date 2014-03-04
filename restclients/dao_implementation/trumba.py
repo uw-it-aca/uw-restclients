@@ -1,11 +1,11 @@
 from os.path import dirname
-from restclients.dao_implementation.mock import get_mockdata_url
-from restclients.dao_implementation.live import get_con_pool, get_live_url
-from django.conf import settings
-import logging
 import base64
 import json
+import logging
 import re
+from django.conf import settings
+from restclients.dao_implementation.mock import get_mockdata_url
+from restclients.dao_implementation.live import get_con_pool, get_live_url
 
 class FileSea(object):
     """
