@@ -29,8 +29,10 @@ def proxy(request, service, url):
     if is_admin == False:
         return HttpResponseRedirect("/")
 
+    headers = {}
     if service == "sws":
         dao = SWS_DAO()
+        headers["X-UW-Act-as"] = actual_user
     elif service == "pws":
         dao = PWS_DAO()
     elif service == "gws":
@@ -46,7 +48,7 @@ def proxy(request, service, url):
         url = "%s?%s" % (url, urllib.urlencode(request.GET))
 
     start = time()
-    response = dao.getURL(url, {})
+    response = dao.getURL(url, headers)
     end = time()
 
     # Assume json, and try to format it.
