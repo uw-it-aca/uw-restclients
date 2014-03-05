@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO
@@ -40,7 +40,7 @@ def proxy(request, service, url):
     elif service == "nws":
         dao = NWS_DAO()
     else:
-        raise Exception("Unknown service: %s" % service)
+        return HttpResponseNotFound("Unknown service: %s" % service)
 
     url = "/%s" % url
 
@@ -56,6 +56,9 @@ def proxy(request, service, url):
         content = format_json(service, response.data)
     except Exception as e:
         content = format_html(service, response.data)
+        # Error responses can include page-altering style tags
+        if "200" != str(response.status):
+            content = re.sub(re.compile(r"<style.*/style>", re.S), "", content)
 
     context = {
         "content": content,
