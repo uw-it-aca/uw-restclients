@@ -93,6 +93,12 @@
                     <div>
                         Grade submitter source:
                         <span class="grade_submitter_source">{{item.grade_submitter_source|default_if_none:""}}</span></div>
+                    {% if item.status_code != None %}
+                    <div class="update_status">
+                        <span class="code">{{item.status_code}}</span>
+                        <span class="message">item.status_message|default_if_none:""</span>
+                    </div>
+                    {% endif %}
                 </li>{% endfor %}
             </ul>
         </div>
