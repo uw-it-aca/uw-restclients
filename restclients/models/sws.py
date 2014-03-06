@@ -549,8 +549,7 @@ class GradeRosterItem(models.Model):
         return label
 
     def __eq__(self, other):
-        return (self.section_id == other.section_id and
-                self.student_uwregid == other.student_uwregid and
+        return (self.student_uwregid == other.student_uwregid and
                 self.duplicate_code == other.duplicate_code)
 
     class Meta:
