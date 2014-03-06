@@ -56,9 +56,6 @@ def proxy(request, service, url):
         content = format_json(service, response.data)
     except Exception as e:
         content = format_html(service, response.data)
-        # Error responses can include page-altering style tags
-        if "200" != str(response.status):
-            content = re.sub(re.compile(r"<style.*/style>", re.S), "", content)
 
     context = {
         "content": content,
@@ -100,5 +97,6 @@ def format_json(service, content):
 
 def format_html(service, content):
     formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", r"href='/restclients/view/%s/\1'" % service, content)
+    formatted = re.sub(re.compile(r"<style.*/style>", re.S), "", formatted)
     return formatted
 
