@@ -1,16 +1,17 @@
-from restclients.mock_http import MockHTTP
-from os.path import abspath, dirname
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
 import sys
 import os
+from os.path import abspath, dirname
+import re
 import json
 import logging
 import time
 import socket
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.importlib import import_module
 from restclients.signals.rest_request import rest_request
 from restclients.signals.success import rest_request_passfail
+from restclients.mock_http import MockHTTP
 
 """
 A centralized the mock data access
@@ -203,3 +204,12 @@ def delete_mockdata_url(service_name, implementation_name,
     response.status = 204
 
     return response
+
+def convert_to_platform_safe(dir_file_name):
+    """
+    :param dir_file_name: a string to be processed
+    :return: a string with all the reserved characters replaced 
+    """
+    return  re.sub('[\?|<>=:*,;+&"@]', '_', dir_file_name)
+
+ 
