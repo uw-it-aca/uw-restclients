@@ -10,13 +10,10 @@ class Courses(Canvas):
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.show
         """
-        if "include" in params and params["include"] is not None:
-            includes = params["include"].split(",")
-            if "term" not in includes:
-                params["include"] = ",".join(includes.append("term"))
-
-        else:
-            params["include"] = "term"
+        include = params.get("include", None)
+        if include is None:
+            include = "term"
+        params["include"] = include
 
         url = "/api/v1/courses/%s%s" % (course_id, self._params(params))
         return self._course_from_json(self._get_resource(url))
@@ -103,14 +100,20 @@ class Courses(Canvas):
         course.sis_course_id = data["sis_course_id"] if "sis_course_id" in data else None
         course.account_id = data["account_id"]
         course.name = data["name"]
+        course.workflow_state = data["workflow_state"]
+        course.public_syllabus = data["public_syllabus"]
 
         course_url = data["calendar"]["ics"]
         course_url = re.sub(r"(.*?[a-z]/).*", r"\1", course_url)
         course.course_url = "%scourses/%s" % (course_url, data["id"])
 
+        # Optional attributes specified in the course URL
         if "term" in data:
             course.term = Term(term_id=data["term"]["id"],
                                sis_term_id=data["term"]["sis_term_id"],
                                name=data["term"]["name"])
+
+        if "syllabus_body" in data:
+            course.syllabus_body = data["syllabus_body"]
 
         return course

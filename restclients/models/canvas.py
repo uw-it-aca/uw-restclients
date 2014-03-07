@@ -28,6 +28,9 @@ class Course(models.Model):
     term = models.ForeignKey(Term, null=True)
     course_name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
+    workflow_state = models.CharField(max_length=50)
+    public_syllabus = models.BooleanField()
+    syllabus_body = models.TextField(null=True)
 
     def sws_course_id(self):
         if self.sis_course_id is None:
@@ -240,5 +243,5 @@ class Quiz(models.Model):
     published = models.BooleanField()
 
     class Meta:
-        db_table ="restclients_canvas_quiz" 
+        db_table ="restclients_canvas_quiz"
 

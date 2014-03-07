@@ -17,6 +17,23 @@ class CanvasTestCourses(TestCase):
             self.assertEquals(course.account_id, 84378, "Has proper account id")
             self.assertEquals(course.term.sis_term_id, "2013-spring", "SIS term id")
             self.assertEquals(course.term.term_id, 810, "Term id")
+            self.assertEquals(course.public_syllabus, False, "public_syllabus")
+            self.assertEquals(course.workflow_state, "unpublished", "workflow_state")
+
+    def test_course_with_params(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Courses()
+            course1 = canvas.get_course(149650, params={"include":"term"})
+
+            self.assertEquals(course1.term.term_id, 810, "Course contains term data")
+            self.assertEquals(course1.syllabus_body, None, "Course doesn't contain syllabus_body")
+
+            course2 = canvas.get_course(149650, params={"include":"syllabus_body"})
+
+            self.assertEquals(course2.syllabus_body, "Syllabus", "Course contains syllabus_body")
+            self.assertEquals(course2.term, None, "Course doesn't contain term")
+            
 
     def test_courses(self):
         with self.settings(
