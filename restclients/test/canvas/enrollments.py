@@ -46,9 +46,9 @@ class CanvasTestEnrollment(TestCase):
             enrollment = enrollments[0]
 
             self.assertEquals(enrollment.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
-            self.assertEquals(enrollment.sis_course_id, "2012-summer-PHYS-121-A")
-            self.assertEquals(enrollment.sws_course_id(), "2012,summer,PHYS,121/A")
+            self.assertEquals(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
+            self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
             stu_enrollment = enrollments[1]
             self.assertEquals(stu_enrollment.grade_html_url, "https://uw.test.instructure.com/courses/862539/grades/496164", "Grade URL")
-            self.assertEquals(stu_enrollment.current_score, 0, "Current score")
+            self.assertEquals(stu_enrollment.current_score, 23.0, "Current score")
 

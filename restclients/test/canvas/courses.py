@@ -12,10 +12,10 @@ class CanvasTestCourses(TestCase):
 
             self.assertEquals(course.course_id, 149650, "Has proper course id")
             self.assertEquals(course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
-            self.assertEquals(course.sis_course_id, "2012-summer-PHYS-121-A")
-            self.assertEquals(course.sws_course_id(), "2012,summer,PHYS,121/A")
+            self.assertEquals(course.sis_course_id, "2013-spring-PHYS-121-A")
+            self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A")
             self.assertEquals(course.account_id, 84378, "Has proper account id")
-            self.assertEquals(course.term.sis_term_id, "2012-summer", "SIS term id")
+            self.assertEquals(course.term.sis_term_id, "2013-spring", "SIS term id")
             self.assertEquals(course.term.term_id, 810, "Term id")
 
     def test_courses(self):
@@ -70,8 +70,8 @@ class CanvasTestCourses(TestCase):
             course = courses[0]
 
             self.assertEquals(course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
-            self.assertEquals(course.sis_course_id, "2012-summer-PHYS-121-A")
-            self.assertEquals(course.sws_course_id(), "2012,summer,PHYS,121/A")
+            self.assertEquals(course.sis_course_id, "2013-spring-PHYS-121-A")
+            self.assertEquals(course.sws_course_id(), "2013,spring,PHYS,121/A")
             self.assertEquals(course.account_id, 84378, "Has proper account id")
 
     def test_create_course(self):
