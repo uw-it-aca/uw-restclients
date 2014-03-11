@@ -4,6 +4,7 @@ a successful request.
 """
 
 class TrumbaException(Exception):
+
     def __str__(self):
         return self.__class__.__name__
 

@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
 from restclients.models.sws import Term, Curriculum, Person
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
+from restclients.sws import SWS
 
 class SWSTestSectionData(TestCase):
     def test_final_exams(self):

@@ -1,12 +1,17 @@
 """
 This is the interface for interacting with the Student Web Service.
 """
-
+import logging
+import json
+import re
+import warnings
+from urllib import urlencode
+from datetime import datetime
+from lxml import etree
 from restclients.thread import Thread
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.models.sws import Term, Section, SectionReference
-from restclients.models.sws import TimeScheduleConstruction
 from restclients.models.sws import SectionMeeting, SectionStatus
 from restclients.models.sws import Registration, ClassSchedule, FinalExam
 from restclients.models.sws import Campus, College, Department, Curriculum
@@ -14,18 +19,15 @@ from restclients.models.sws import StudentGrades, StudentCourseGrade
 from restclients.models.sws import GradeSubmissionDelegate
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
-from urllib import urlencode
-from datetime import datetime
-import json
-import re
 
 
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
 
+def deprecation(message):
+    warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 def encode_section_label(label):
     return re.sub(r'\s', '%20', label)
-
 
 class SWSThread(Thread):
     url = None
@@ -59,96 +61,56 @@ class SWS(object):
     The SWS object has methods for getting information
     about courses, and everything related.
     """
-    def get_term_by_year_and_quarter(self, year, quarter):
-        """
-        Returns a restclients.Term object, for the passed year and quarter.
-        """
-        url = "/student/v4/term/%s,%s.json" % (str(year), quarter.lower())
 
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
+    logger = logging.getLogger(__name__)
 
+    @staticmethod
+    def get_resource(url):
+        """
+        Issue a GET request to SWS with the given url
+        and return a response in json format.
+        :returns: http response with content in json
+        """
+        response = SWS_DAO().getURL(url, {"Accept": "application/json"})
+        SWS.logger.debug("%s ==> %s, %s" % (url, response.status, response.data))
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
+        return json.loads(response.data)
 
-        return self._term_from_json(response.data)
+    def get_term_by_year_and_quarter(self, year, quarter):
+        deprecation("Use restclients.sws.term.Terms.get_by_year_and_quarter")
+        from restclients.sws.term import Terms
+        return Terms.get_by_year_and_quarter(year, quarter)
 
     def get_current_term(self):
-        """
-        Returns a restclients.Term object, for the current term.
-        """
-        url = "/student/v4/term/current.json"
-
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        term = self._term_from_json(response.data)
-
-        # A term doesn't become "current" until 2 days before the start of
-        # classes.  That's too late to be useful, so if we're after the last
-        # day of grade submission window, use the next term resource.
-        if datetime.now() > term.grade_submission_deadline:
-            return self.get_next_term()
-
-        return term
+        deprecation("Use restclients.sws.term.Terms.get_current")
+        from restclients.sws.term import Terms
+        return Terms.get_current()
 
     def get_next_term(self):
-        """
-        Returns a restclients.Term object, for the next term.
-        """
-        url = "/student/v4/term/next.json"
-
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._term_from_json(response.data)
+        deprecation("Use restclients.sws.term.Terms.get_next")
+        from restclients.sws.term import Terms
+        return Terms.get_next()
 
     def get_previous_term(self):
-        """
-        Returns a restclients.Term object, for the previous term.
-        """
-        url = "/student/v4/term/previous.json"
-
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._term_from_json(response.data)
+        deprecation("Use restclients.sws.term.Terms.get_previous")
+        from restclients.sws.term import Terms
+        return Terms.get_previous()
 
     def get_term_before(self, term):
-        """
-        Returns a restclients.Term object, for the term after the term given.
-        """
-        prev_year = term.year
-        prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) - 1]
-
-        if prev_quarter == "autumn":
-            prev_year = prev_year - 1
-
-        return self.get_term_by_year_and_quarter(prev_year, prev_quarter)
+        deprecation("Use restclients.sws.term.Terms.get_term_before")
+        from restclients.sws.term import Terms
+        return Terms.get_term_before(term)
 
     def get_term_after(self, term):
-        """
-        Returns a restclients.Term object, for the term after the term given.
-        """
-        next_year = term.year
-        if term.quarter == "autumn":
-            next_quarter = QUARTER_SEQ[0]
-        else:
-            next_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) + 1]
+        deprecation("Use restclients.sws.term.Terms.get_term_after")
+        from restclients.sws.term import Terms
+        return Terms.get_term_after(term)
 
-        if next_quarter == "winter":
-            next_year = next_year + 1
-
-        return self.get_term_by_year_and_quarter(next_year, next_quarter)
+    def _term_from_json(self, data):
+        deprecation("Use restclients.sws.term.Terms._json_to_term_model")
+        from restclients.sws.term import Terms
+        return Terms._json_to_term_model(data)
 
     def _get_sections_by_person_and_term(self, person, term, course_role):
         url = "/student/v4/section.json?" + urlencode({
@@ -652,75 +614,6 @@ class SWS(object):
         curriculum.clean_fields()
         return curriculum
 
-    def _term_from_json(self, data):
-        """
-        Returns a term model created from the passed json.
-        """
-        term_data = json.loads(data)
-
-        strptime = datetime.strptime
-        day_format = "%Y-%m-%d"
-        datetime_format = "%Y-%m-%dT%H:%M:%S"
-
-        term = Term()
-        term.year = term_data["Year"]
-        term.quarter = term_data["Quarter"]
-
-        term.last_day_add = strptime(
-            term_data["LastAddDay"], day_format)
-
-        term.first_day_quarter = strptime(
-            term_data["FirstDay"], day_format)
-
-        term.last_day_instruction = strptime(
-            term_data["LastDayOfClasses"], day_format)
-
-        term.last_day_drop = strptime(
-            term_data["LastDropDay"], day_format)
-
-        if term_data["ATermLastDay"] is not None:
-            term.aterm_last_date = strptime(
-                term_data["ATermLastDay"], day_format)
-
-        if term_data["BTermFirstDay"] is not None:
-            term.bterm_first_date = strptime(
-                term_data["BTermFirstDay"], day_format)
-
-        if term_data["LastAddDayATerm"] is not None:
-            term.aterm_last_day_add = strptime(
-                term_data["LastAddDayATerm"], day_format)
-
-        if term_data["LastAddDayBTerm"] is not None:
-            term.bterm_last_day_add = strptime(
-                term_data["LastAddDayBTerm"], day_format)
-
-        term.last_final_exam_date = strptime(
-            term_data["LastFinalExamDay"], day_format)
-
-        term.grading_period_open = strptime(
-            term_data["GradingPeriodOpen"], datetime_format)
-
-        if term_data["GradingPeriodOpenATerm"] is not None:
-            term.aterm_grading_period_open = strptime(
-                term_data["GradingPeriodOpenATerm"], datetime_format)
-
-        term.grading_period_close = strptime(
-            term_data["GradingPeriodClose"], datetime_format)
-
-        term.grade_submission_deadline = strptime(
-            term_data["GradeSubmissionDeadline"], datetime_format)
-
-        term.time_schedule_construction = []
-        for campus in term_data["TimeScheduleConstructionOn"]:
-            tsc = TimeScheduleConstruction(
-                campus=campus.lower(),
-                is_on=(term_data["TimeScheduleConstructionOn"][campus] is True)
-            )
-            term.time_schedule_construction.append(tsc)
-
-        term.clean_fields()
-        return term
-
     def _section_from_json(self, data, term=None):
         """
         Returns a section model created from the passed json.
@@ -734,7 +627,8 @@ class SWS(object):
                                  term.quarter == section_data["Course"]["Quarter"]):
             section.term = term
         else:
-            section.term = self.get_term_by_year_and_quarter(
+            from restclients.sws.term import Terms
+            section.term = Terms.get_by_year_and_quarter(
                 section_data["Course"]["Year"],
                 section_data["Course"]["Quarter"])
 

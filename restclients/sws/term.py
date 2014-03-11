@@ -1,0 +1,160 @@
+"""
+This class interfaces with the Student Web Service, Term resource.
+"""
+import logging
+from datetime import datetime
+from restclients.sws import SWS, QUARTER_SEQ
+from restclients.models.sws import Term as TermModel
+from restclients.exceptions import DataFailureException
+from restclients.models.sws import TimeScheduleConstruction
+
+term_res_url_prefix = "/student/v4/term"
+logger = logging.getLogger(__name__)
+
+class Terms:
+
+    @staticmethod
+    def get_by_year_and_quarter(year, quarter):
+        """
+        Returns a restclients.models.sws.Term object, 
+        for the passed year and quarter.
+        """
+        url = "%s/%s,%s.json" % (term_res_url_prefix, str(year), quarter.lower())
+        return Terms._json_to_term_model(SWS.get_resource(url))
+
+    @staticmethod
+    def get_current():
+        """
+        Returns a restclients.models.sws.Term object, 
+        for the current term.
+        """
+        url = "%s/current.json" % term_res_url_prefix
+        term = Terms._json_to_term_model(SWS.get_resource(url))
+
+        # A term doesn't become "current" until 2 days before the start of
+        # classes.  That's too late to be useful, so if we're after the last
+        # day of grade submission window, use the next term resource.
+        if datetime.now() > term.grade_submission_deadline:
+            return Terms.get_next_term()
+
+        return term
+
+    @staticmethod
+    def get_next():
+        """
+        Returns a restclients.models.sws.Term object, 
+        for the next term.
+        """
+        url = "%s/next.json" % term_res_url_prefix
+        return Terms._json_to_term_model(SWS.get_resource(url))
+
+    @staticmethod
+    def get_previous():
+        """
+        Returns a restclients.models.sws.Term object, 
+        for the previous term.
+        """
+        url = "%s/previous.json" % term_res_url_prefix
+        return Terms._json_to_term_model(SWS.get_resource(url))
+
+    @staticmethod
+    def get_term_before(term):
+        """
+        Returns a restclients.models.sws.Term object, 
+        for the term before the term given.
+        """
+        prev_year = term.year
+        prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) - 1]
+
+        if prev_quarter == "autumn":
+            prev_year = prev_year - 1
+
+        return Terms.get_by_year_and_quarter(prev_year, prev_quarter)
+
+    @staticmethod
+    def get_term_after(term):
+        """
+        Returns a restclients.models.sws.Term object, 
+        for the term after the term given.
+        """
+        next_year = term.year
+        if term.quarter == "autumn":
+            next_quarter = QUARTER_SEQ[0]
+        else:
+            next_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) + 1]
+
+        if next_quarter == "winter":
+            next_year = next_year + 1
+
+        return Terms.get_by_year_and_quarter(next_year, next_quarter)
+
+    @staticmethod
+    def _json_to_term_model(term_data):
+        """
+        Returns a term model created from the passed json data.
+        param: term_data loaded json data
+        """
+
+        strptime = datetime.strptime
+        day_format = "%Y-%m-%d"
+        datetime_format = "%Y-%m-%dT%H:%M:%S"
+
+        term = TermModel()
+        term.year = term_data["Year"]
+        term.quarter = term_data["Quarter"]
+
+        term.last_day_add = strptime(
+            term_data["LastAddDay"], day_format)
+
+        term.first_day_quarter = strptime(
+            term_data["FirstDay"], day_format)
+
+        term.last_day_instruction = strptime(
+            term_data["LastDayOfClasses"], day_format)
+
+        term.last_day_drop = strptime(
+            term_data["LastDropDay"], day_format)
+            
+        if term_data["ATermLastDay"] is not None:
+            term.aterm_last_date = strptime(
+                term_data["ATermLastDay"], day_format)
+
+        if term_data["BTermFirstDay"] is not None:
+            term.bterm_first_date = strptime(
+                term_data["BTermFirstDay"], day_format)
+
+        if term_data["LastAddDayATerm"] is not None:
+            term.aterm_last_day_add = strptime(
+                term_data["LastAddDayATerm"], day_format)
+
+        if term_data["LastAddDayBTerm"] is not None:
+            term.bterm_last_day_add = strptime(
+                term_data["LastAddDayBTerm"], day_format)
+
+        term.last_final_exam_date = strptime(
+            term_data["LastFinalExamDay"], day_format)
+
+        term.grading_period_open = strptime(
+            term_data["GradingPeriodOpen"], datetime_format)
+
+        if term_data["GradingPeriodOpenATerm"] is not None:
+            term.aterm_grading_period_open = strptime(
+                term_data["GradingPeriodOpenATerm"], datetime_format)
+
+        term.grading_period_close = strptime(
+            term_data["GradingPeriodClose"], datetime_format)
+
+        term.grade_submission_deadline = strptime(
+            term_data["GradeSubmissionDeadline"], datetime_format)
+
+        term.time_schedule_construction = []
+        for campus in term_data["TimeScheduleConstructionOn"]:
+            tsc = TimeScheduleConstruction(
+                campus=campus.lower(),
+                is_on=(term_data["TimeScheduleConstructionOn"][campus] is True)
+                )
+            term.time_schedule_construction.append(tsc)
+        
+        term.clean_fields()
+        return term
+

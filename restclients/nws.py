@@ -9,7 +9,7 @@ from urllib import quote
 from datetime import datetime, time
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 from vm.v1.viewmodels import Person, PersonList
-from restclients.sws import SWS
+from restclients.sws.term import Terms as TermSws
 import re
 import json
 
@@ -665,14 +665,13 @@ class NWS(object):
         # a channel for any course in that term.
         # when the sws term resource provides us with a timeschedule publish
         # date, use that instead of this.
-        sws = SWS()
-        term = sws.get_current_term()
+        term = TermSws.get_current()
         terms = []
         if self.term_has_active_channel(channel_type, term):
             terms.append(term)
 
         for i in range(3):
-            term = sws.get_term_after(term)
+            term = TermSws.get_term_after(term)
             if self.term_has_active_channel(channel_type, term):
                 terms.append(term)
 

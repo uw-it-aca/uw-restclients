@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sws import SWS
+from restclients.sws.term import Terms as TermSws
 
 class SWSIndependentStudy(TestCase):
     def test_instructor_list(self):
@@ -9,7 +10,7 @@ class SWSIndependentStudy(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
-            term = sws.get_current_term()
+            term = TermSws.get_current()
             schedule = sws.schedule_for_regid_and_term("BB000000000000000000000000000004", term)
 
             self.assertEquals(len(schedule.sections), 1, "Has 1 section")

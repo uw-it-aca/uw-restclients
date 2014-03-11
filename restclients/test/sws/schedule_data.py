@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
 from restclients.exceptions import DataFailureException
+from restclients.sws import SWS
+from restclients.sws.term import Terms as TermSws
 
 class SWSTestScheduleData(TestCase):
     def test_sws_schedule_data(self):
@@ -11,15 +12,15 @@ class SWSTestScheduleData(TestCase):
             sws = SWS()
             
             #Valid data, shouldn't throw exceptions
-            term = sws.get_previous_term()
+            term = TermSws.get_previous()
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
-            term = sws.get_current_term()
+            term = TermSws.get_current()
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
-            term = sws.get_next_term()
+            term = TermSws.get_next()
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
-            term = sws.get_term_by_year_and_quarter(2012, 'summer')
+            term = TermSws.get_by_year_and_quarter(2012, 'summer')
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
-            term = sws.get_current_term()
+            term = TermSws.get_current()
 
             #Bad data, should throw exceptions
             self.assertRaises(DataFailureException, 

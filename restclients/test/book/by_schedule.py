@@ -3,7 +3,7 @@ from django.conf import settings
 from restclients.bookstore import Bookstore
 from restclients.sws import SWS
 from unittest2 import skipIf
-
+from restclients.sws.term import Terms as TermSws
 
 class BookstoreScheduleTest(TestCase):
     @skipIf(True, "Bookstore structure still in flux")
@@ -16,7 +16,7 @@ class BookstoreScheduleTest(TestCase):
             sws = SWS()
             books = Bookstore()
 
-            term = sws.get_current_term()
+            term = TermSws.get_current()
             schedule = sws.schedule_for_regid_and_term('AA36CCB8F66711D5BE060004AC494FFE', term)
 
             book_data = books.get_books_for_schedule(schedule)
@@ -40,7 +40,7 @@ class BookstoreScheduleTest(TestCase):
             sws = SWS()
             books = Bookstore()
 
-            term = sws.get_current_term()
+            term = TermSws.get_current()
             schedule = sws.schedule_for_regid_and_term('AA36CCB8F66711D5BE060004AC494FFE', term)
 
             verba_link = books.get_verba_link_for_schedule(schedule)
