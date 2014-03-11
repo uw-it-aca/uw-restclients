@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.exceptions import DataFailureException
 from restclients.sws import SWS
-from restclients.sws.term import Terms as TermSws
+import restclients.sws.term as TermSws
 
 class SWSTestScheduleData(TestCase):
     def test_sws_schedule_data(self):

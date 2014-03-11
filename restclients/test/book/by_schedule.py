@@ -3,7 +3,7 @@ from django.conf import settings
 from restclients.bookstore import Bookstore
 from restclients.sws import SWS
 from unittest2 import skipIf
-from restclients.sws.term import Terms as TermSws
+import restclients.sws.term as TermSws
 
 class BookstoreScheduleTest(TestCase):
     @skipIf(True, "Bookstore structure still in flux")

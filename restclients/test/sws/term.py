@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from datetime import datetime, timedelta
 from restclients.exceptions import DataFailureException
-from restclients.sws.term import Terms as TermSws
+import restclients.sws.term as TermSws
 
 
 class SWSTestTerm(TestCase):

@@ -9,7 +9,7 @@ from urllib import quote
 from datetime import datetime, time
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 from vm.v1.viewmodels import Person, PersonList
-from restclients.sws.term import Terms as TermSws
+import restclients.sws.term as TermSws
 import re
 import json
 

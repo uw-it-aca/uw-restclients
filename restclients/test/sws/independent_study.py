@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sws import SWS
-from restclients.sws.term import Terms as TermSws
+import restclients.sws.term as TermSws
 
 class SWSIndependentStudy(TestCase):
     def test_instructor_list(self):

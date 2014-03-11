@@ -20,14 +20,27 @@ from restclients.models.sws import GradeSubmissionDelegate
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 
-
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
+logger = logging.getLogger(__name__)
+
 
 def deprecation(message):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 def encode_section_label(label):
     return re.sub(r'\s', '%20', label)
+
+def get_resource(url):
+    """
+    Issue a GET request to SWS with the given url
+    and return a response in json format.
+    :returns: http response with content in json
+    """
+    response = SWS_DAO().getURL(url, {"Accept": "application/json"})
+    logger.debug("%s ==> %s, %s" % (url, response.status, response.data))
+    if response.status != 200:
+        raise DataFailureException(url, response.status, response.data)
+    return json.loads(response.data)
 
 class SWSThread(Thread):
     url = None
@@ -62,55 +75,40 @@ class SWS(object):
     about courses, and everything related.
     """
 
-    logger = logging.getLogger(__name__)
-
-    @staticmethod
-    def get_resource(url):
-        """
-        Issue a GET request to SWS with the given url
-        and return a response in json format.
-        :returns: http response with content in json
-        """
-        response = SWS_DAO().getURL(url, {"Accept": "application/json"})
-        SWS.logger.debug("%s ==> %s, %s" % (url, response.status, response.data))
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-        return json.loads(response.data)
-
     def get_term_by_year_and_quarter(self, year, quarter):
-        deprecation("Use restclients.sws.term.Terms.get_by_year_and_quarter")
-        from restclients.sws.term import Terms
-        return Terms.get_by_year_and_quarter(year, quarter)
+        deprecation("Use restclients.sws.term.get_by_year_and_quarter")
+        import restclients.sws.term
+        return term.get_by_year_and_quarter(year, quarter)
 
     def get_current_term(self):
-        deprecation("Use restclients.sws.term.Terms.get_current")
-        from restclients.sws.term import Terms
-        return Terms.get_current()
+        deprecation("Use restclients.sws.term.get_current")
+        import restclients.sws.term
+        return term.get_current()
 
     def get_next_term(self):
-        deprecation("Use restclients.sws.term.Terms.get_next")
-        from restclients.sws.term import Terms
-        return Terms.get_next()
+        deprecation("Use restclients.sws.term.get_next")
+        import restclients.sws.term
+        return term.get_next()
 
     def get_previous_term(self):
-        deprecation("Use restclients.sws.term.Terms.get_previous")
-        from restclients.sws.term import Terms
-        return Terms.get_previous()
+        deprecation("Use restclients.sws.term.get_previous")
+        import restclients.sws.term
+        return term.get_previous()
 
     def get_term_before(self, term):
-        deprecation("Use restclients.sws.term.Terms.get_term_before")
-        from restclients.sws.term import Terms
-        return Terms.get_term_before(term)
+        deprecation("Use restclients.sws.term.get_term_before")
+        import restclients.sws.term
+        return term.get_term_before(term)
 
     def get_term_after(self, term):
-        deprecation("Use restclients.sws.term.Terms.get_term_after")
-        from restclients.sws.term import Terms
-        return Terms.get_term_after(term)
+        deprecation("Use restclients.sws.term.get_term_after")
+        import restclients.sws.term
+        return term.get_term_after(term)
 
     def _term_from_json(self, data):
-        deprecation("Use restclients.sws.term.Terms._json_to_term_model")
-        from restclients.sws.term import Terms
-        return Terms._json_to_term_model(data)
+        deprecation("Use restclients.sws.term._json_to_term_model")
+        import restclients.sws.term
+        return term._json_to_term_model(data)
 
     def _get_sections_by_person_and_term(self, person, term, course_role):
         url = "/student/v4/section.json?" + urlencode({
@@ -627,8 +625,8 @@ class SWS(object):
                                  term.quarter == section_data["Course"]["Quarter"]):
             section.term = term
         else:
-            from restclients.sws.term import Terms
-            section.term = Terms.get_by_year_and_quarter(
+            import restclients.sws.term as TermSws
+            section.term = TermSws.get_by_year_and_quarter(
                 section_data["Course"]["Year"],
                 section_data["Course"]["Quarter"])
 

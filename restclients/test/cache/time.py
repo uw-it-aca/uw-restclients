@@ -7,7 +7,7 @@ from restclients.models import CacheEntryTimed
 from restclients.mock_http import MockHTTP
 from datetime import timedelta
 from restclients.sws import SWS
-from restclients.sws.term import Terms as TermSws
+import restclients.sws.term as TermSws
 
 class TimeCacheTest(TestCase):
     def test_threaded_caching(self):
