@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.exceptions import DataFailureException
-from restclients.trumba.calendar import Calendar
+import restclients.trumba.calendar as Calendar
 from restclients.trumba.exceptions import TrumbaException, CalendarNotExist, CalendarOwnByDiffAccount, NoDataReturned, UnknownError, UnexpectedError
 
 class TrumbaTestCalendars(TestCase):

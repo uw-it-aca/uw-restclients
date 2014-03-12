@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.exceptions import DataFailureException
-from restclients.trumba.account import Account
+import restclients.trumba.account as Account
 from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnknownError, UnexpectedError
 
 class TrumbaTestAccounts(TestCase):
