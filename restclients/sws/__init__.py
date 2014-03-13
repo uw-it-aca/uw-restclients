@@ -95,20 +95,20 @@ class SWS(object):
         import restclients.sws.term
         return term.get_previous()
 
-    def get_term_before(self, term):
+    def get_term_before(self, aterm):
         deprecation("Use restclients.sws.term.get_term_before")
         import restclients.sws.term
-        return term.get_term_before(term)
+        return term.get_term_before(aterm)
 
-    def get_term_after(self, term):
+    def get_term_after(self, aterm):
         deprecation("Use restclients.sws.term.get_term_after")
         import restclients.sws.term
-        return term.get_term_after(term)
+        return term.get_term_after(aterm)
 
-    def _term_from_json(self, data):
+    def _term_from_json(self, resp_data):
         deprecation("Use restclients.sws.term._json_to_term_model")
         import restclients.sws.term
-        return term._json_to_term_model(data)
+        return term._json_to_term_model(resp_data)
 
     def _get_sections_by_person_and_term(self, person, term, course_role):
         url = "/student/v4/section.json?" + urlencode({

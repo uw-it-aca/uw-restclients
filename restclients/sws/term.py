@@ -51,29 +51,29 @@ def get_previous():
     url = "%s/previous.json" % term_res_url_prefix
     return _json_to_term_model(get_resource(url))
 
-def get_term_before(term):
+def get_term_before(aterm):
     """
     Returns a restclients.models.sws.Term object, 
     for the term before the term given.
     """
-    prev_year = term.year
-    prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) - 1]
+    prev_year = aterm.year
+    prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(aterm.quarter) - 1]
 
     if prev_quarter == "autumn":
         prev_year = prev_year - 1
 
     return get_by_year_and_quarter(prev_year, prev_quarter)
 
-def get_term_after(term):
+def get_term_after(aterm):
     """
     Returns a restclients.models.sws.Term object, 
     for the term after the term given.
     """
-    next_year = term.year
-    if term.quarter == "autumn":
+    next_year = aterm.year
+    if aterm.quarter == "autumn":
         next_quarter = QUARTER_SEQ[0]
     else:
-        next_quarter = QUARTER_SEQ[QUARTER_SEQ.index(term.quarter) + 1]
+        next_quarter = QUARTER_SEQ[QUARTER_SEQ.index(aterm.quarter) + 1]
 
     if next_quarter == "winter":
         next_year = next_year + 1
