@@ -63,5 +63,8 @@ class SWSTest(TestCase):
             sections = sws.get_sections_by_curriculum_and_term(curriculum, term)
             self.assertEquals(len(sections), 2)
 
+            section_status = sws.get_section_status_by_label(
+                '2012,autumn,CSE,100/W')
+            self.assertEquals(section_status.sln, 12588)
 
             

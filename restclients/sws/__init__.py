@@ -132,8 +132,8 @@ class SWS(object):
 
     def get_section_status_by_label(self, label):
         deprecation("Use restclients.sws.section.get_section_status_by_label")
-        import restclients.sws.section
-        return section.get_section_status_by_label(label)
+        import restclients.sws.section_status
+        return section_status.get_by_section_label(label)
 
     def get_linked_sections(self, asection):
         deprecation("Use restclients.sws.section.get_linked_sections")

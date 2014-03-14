@@ -9,15 +9,24 @@ from urllib import urlencode
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.models.sws import Section, SectionReference, FinalExam
-from restclients.models.sws import SectionMeeting, SectionStatus
+from restclients.models.sws import SectionMeeting
 from restclients.models.sws import GradeSubmissionDelegate
 from restclients.pws import PWS
 from restclients.sws import get_resource, encode_section_label
 import restclients.sws.term as TermSws
 
-course_res_url_prefix = "/student/v4/course"
 course_url_pattern = re.compile(r'^\/student\/v4\/course\/')
+course_res_url_prefix = "/student/v4/course"
 section_res_url_prefix = "/student/v4/section.json"
+
+section_label_pattern = re.compile(
+    '^\d{4},'                           # year
+    '(?:winter|spring|summer|autumn),'  # quarter
+    '[\w& ]+,'                          # curriculum
+    '\d{3}\/'                           # course number
+    '[A-Z][A-Z0-9]?$',                  # section id
+    re.VERBOSE)
+
 logger = logging.getLogger(__name__)
 
 def get_sections_by_instructor_and_term(person, term):
@@ -82,7 +91,6 @@ def _get_sections_by_person_and_term(person, term, course_role,
 
     return _json_to_sectionref(get_resource(url), term)
 
-
 def get_section_by_url(url):
     """
     Returns a restclients.models.sws.Section object 
@@ -92,14 +100,6 @@ def get_section_by_url(url):
         raise InvalidSectionURL(url)
 
     return _json_to_section(get_resource(url))
-
-section_label_pattern = re.compile(
-    '^\d{4},'                           # year
-    '(?:winter|spring|summer|autumn),'  # quarter
-    '[\w& ]+,'                          # curriculum
-    '\d{3}\/'                           # course number
-    '[A-Z][A-Z0-9]?$',                  # section id
-    re.VERBOSE)
 
 def get_section_by_label(label):
     """
@@ -114,18 +114,6 @@ def get_section_by_label(label):
         encode_section_label(label))
 
     return get_section_by_url(url)
-
-def get_section_status_by_label(label):
-    """
-    Return a restclients.SectionStatus object for the passed section label.
-    """
-    if not section_label_pattern.match(label):
-        raise InvalidSectionID(label)
-
-    url = "%s/%s/status.json" % (course_res_url_prefix,
-                                 encode_section_label(label))
-
-    return _json_to_sectionstatus(get_resource(url))
 
 def get_linked_sections(section):
     """
@@ -307,31 +295,3 @@ def _json_to_section(section_data, term=None):
             section.final_exam = final_exam
 
     return section
-
-def _json_to_sectionstatus(section_data):
-    """
-    Returns a restclients.models.sws.SectionStatus object
-    created from the passed json.
-    """
-    section_status = SectionStatus()
-    if section_data["AddCodeRequired"] == 'true':
-        section_status.add_code_required = True
-    else:
-        section_status.add_code_required = False
-    section_status.current_enrollment = int(section_data["CurrentEnrollment"])
-    section_status.current_registration_period = int(section_data["CurrentRegistrationPeriod"])
-    if section_data["FacultyCodeRequired"] == 'true':
-        section_status.faculty_code_required = True
-    else:
-        section_status.faculty_code_required = False
-    section_status.limit_estimated_enrollment = int(section_data["LimitEstimateEnrollment"])
-    section_status.limit_estimate_enrollment_indicator = section_data["LimitEstimateEnrollmentIndicator"]
-    section_status.room_capacity = int(section_data["RoomCapacity"])
-    section_status.sln = int(section_data["SLN"])
-    section_status.space_available = int(section_data["SpaceAvailable"])
-    if section_data["Status"] == "open":
-        section_status.is_open = True
-    else:
-        section_status.is_open = False
-
-    return section_status
