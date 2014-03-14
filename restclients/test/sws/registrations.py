@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sws import SWS
+import restclients.sws.section as SectionSws
 from restclients.exceptions import DataFailureException
 
 class SWSTestRegistrations(TestCase):
@@ -12,7 +13,7 @@ class SWSTestRegistrations(TestCase):
             sws = SWS()
 
             # Valid section, missing file resources
-            section = sws.get_section_by_label('2013,winter,C LIT,396/A')
+            section = SectionSws.get_section_by_label('2013,winter,C LIT,396/A')
 
             self.assertRaises(DataFailureException,
                               sws.get_active_registrations_for_section,
@@ -25,7 +26,7 @@ class SWSTestRegistrations(TestCase):
             sws = SWS()
 
             # Valid section, missing file resources
-            section = sws.get_section_by_label('2013,winter,C LIT,396/A')
+            section = SectionSws.get_section_by_label('2013,winter,C LIT,396/A')
 
             self.assertRaises(DataFailureException,
                               sws.get_all_registrations_for_section,
@@ -37,7 +38,7 @@ class SWSTestRegistrations(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
-            section = sws.get_section_by_label('2013,winter,DROP_T,100/A')
+            section = SectionSws.get_section_by_label('2013,winter,DROP_T,100/A')
 
             registrations = sws.get_all_registrations_for_section(section)
 
@@ -52,7 +53,7 @@ class SWSTestRegistrations(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             sws = SWS()
 
-            section = sws.get_section_by_label('2013,winter,DROP_T,100/B')
+            section = SectionSws.get_section_by_label('2013,winter,DROP_T,100/B')
 
             registrations = sws.get_all_registrations_for_section(section)
 

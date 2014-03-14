@@ -1,11 +1,11 @@
+import random
+import re
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
+import restclients.sws.section as SectionSws
 from restclients.sws.graderoster import GradeRoster
 from restclients.models.sws import Section
 from restclients.exceptions import DataFailureException
-import random
-import re
 
 
 class SWSTestGradeRoster(TestCase):
@@ -15,7 +15,7 @@ class SWSTestGradeRoster(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            section = SWS().get_section_by_label('2013,summer,CSS,161/A')
+            section = SectionSws.get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
 
             graderoster = GradeRoster().get(section, instructor)
@@ -39,7 +39,7 @@ class SWSTestGradeRoster(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            section = SWS().get_section_by_label('2013,summer,CSS,161/A')
+            section = SectionSws.get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
 
             graderoster = GradeRoster().get(section, instructor)

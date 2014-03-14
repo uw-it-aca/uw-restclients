@@ -9,10 +9,9 @@ class SWSTestEnrollments(TestCase):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
             term = TermSws.get_current()
-            grades = sws.grades_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            grades = SWS().grades_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
 
             self.assertEquals(grades.term.year, 2013)
             self.assertEquals(grades.term.quarter, "spring")

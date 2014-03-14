@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
+import restclients.sws.section as SectionSws
 from restclients.models.sws import Term, Curriculum, Person
 from restclients.exceptions import DataFailureException, InvalidSectionID
 
@@ -9,10 +9,9 @@ class SWSTestSectionStatusData(TestCase):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
             #Valid data, shouldn't throw any exceptions
-            section_status = sws.get_section_status_by_label('2012,autumn,CSE,100/W')
+            section_status = SectionSws.get_section_status_by_label('2012,autumn,CSE,100/W')
 
             self.assertFalse(section_status.add_code_required)
             self.assertEquals(section_status.current_enrollment, 305)
