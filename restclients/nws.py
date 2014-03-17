@@ -2,6 +2,8 @@
 This is the interface for interacting with the Notifications Web Service.
 """
 
+import re
+import json
 from restclients.dao import NWS_DAO
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol, InvalidRegID
 from restclients.models import CourseAvailableEvent
@@ -9,9 +11,7 @@ from urllib import quote
 from datetime import datetime, time
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 from vm.v1.viewmodels import Person, PersonList
-import restclients.sws.term as TermSws
-import re
-import json
+from restclients.sws.term import get_current_term, get_term_after
 
 
 MANAGED_ATTRIBUTES = ('DispatchedEmailCount', 'DispatchedTextMessageCount', 'SentTextMessageCount', 'SubscriptionCount')
@@ -665,13 +665,13 @@ class NWS(object):
         # a channel for any course in that term.
         # when the sws term resource provides us with a timeschedule publish
         # date, use that instead of this.
-        term = TermSws.get_current()
+        term = get_current_term()
         terms = []
         if self.term_has_active_channel(channel_type, term):
             terms.append(term)
 
         for i in range(3):
-            term = TermSws.get_term_after(term)
+            term = get_term_after(term)
             if self.term_has_active_channel(channel_type, term):
                 terms.append(term)
 

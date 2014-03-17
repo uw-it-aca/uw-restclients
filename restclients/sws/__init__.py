@@ -76,33 +76,33 @@ class SWS(object):
     """
 
     def get_term_by_year_and_quarter(self, year, quarter):
-        deprecation("Use restclients.sws.term.get_by_year_and_quarter")
-        import restclients.sws.term
-        return term.get_by_year_and_quarter(year, quarter)
+        deprecation("Use restclients.sws.term.get_term_by_year_and_quarter")
+        from restclients.sws.term import get_term_by_year_and_quarter
+        return get_term_by_year_and_quarter(year, quarter)
 
     def get_current_term(self):
-        deprecation("Use restclients.sws.term.get_current")
-        import restclients.sws.term
-        return term.get_current()
+        deprecation("Use restclients.sws.term.get_current_term")
+        from restclients.sws.term import get_current_term
+        return get_current_term()
 
     def get_next_term(self):
-        deprecation("Use restclients.sws.term.get_next")
-        import restclients.sws.term
-        return term.get_next()
+        deprecation("Use restclients.sws.term.get_next_term")
+        from restclients.sws.term import get_next_term
+        return get_next_term()
 
     def get_previous_term(self):
-        deprecation("Use restclients.sws.term.get_previous")
-        import restclients.sws.term
-        return term.get_previous()
+        deprecation("Use restclients.sws.term.get_previous_term")
+        from restclients.sws.term import get_previous_term
+        return get_previous_term()
 
     def get_term_before(self, aterm):
         deprecation("Use restclients.sws.term.get_term_before")
-        import restclients.sws.term
-        return term.get_term_before(aterm)
+        from restclients.sws.term import get_term_before
+        return get_term_before(aterm)
 
     def get_term_after(self, aterm):
         deprecation("Use restclients.sws.term.get_term_after")
-        import restclients.sws.term
+        from restclients.sws.term import get_term_after
         return term.get_term_after(aterm)
 
     def get_sections_by_instructor_and_term(self, person, term):

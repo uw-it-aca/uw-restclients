@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
-import restclients.sws.term as TermSws
+from restclients.sws.registration import get_schedule_by_regid_and_term
+from restclients.sws.term import get_current_term
 
 
 class SWSMissingRegid(TestCase):
@@ -9,10 +9,9 @@ class SWSMissingRegid(TestCase):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
-            term = TermSws.get_current()
-            schedule = sws.schedule_for_regid_and_term("BB000000000000000000000000009994", term)
+            term = get_current_term()
+            schedule = get_schedule_by_regid_and_term("BB000000000000000000000000009994", term)
 
             self.assertEquals(len(schedule.sections), 1, "Has 1 section")
 

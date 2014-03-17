@@ -6,8 +6,8 @@ from restclients.cache_implementation import TimeSimpleCache, FourHourCache
 from restclients.models import CacheEntryTimed
 from restclients.mock_http import MockHTTP
 from datetime import timedelta
-from restclients.sws import SWS
-import restclients.sws.term as TermSws
+from restclients.sws.registration import get_schedule_by_regid_and_term
+from restclients.sws.term import get_current_term
 
 class TimeCacheTest(TestCase):
     def test_threaded_caching(self):
@@ -15,9 +15,8 @@ class TimeCacheTest(TestCase):
                            RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
 
-            sws = SWS()
-            term = TermSws.get_current()
-            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            term = get_current_term()
+            get_schedule_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
 
     def test_simple_time(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',

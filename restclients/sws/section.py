@@ -13,7 +13,7 @@ from restclients.models.sws import SectionMeeting
 from restclients.models.sws import GradeSubmissionDelegate
 from restclients.pws import PWS
 from restclients.sws import get_resource, encode_section_label
-import restclients.sws.term as TermSws
+from restclients.sws.term import get_term_by_year_and_quarter
 
 course_url_pattern = re.compile(r'^\/student\/v4\/course\/')
 course_res_url_prefix = "/student/v4/course"
@@ -152,7 +152,7 @@ def _json_to_section(section_data, term=None):
                              term.quarter == section_data["Course"]["Quarter"]):
         section.term = term
     else:
-        section.term = TermSws.get_by_year_and_quarter(
+        section.term = get_term_by_year_and_quarter(
             section_data["Course"]["Year"],
             section_data["Course"]["Quarter"])
 

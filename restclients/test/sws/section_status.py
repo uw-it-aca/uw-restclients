@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws.section_status import get_section_status_by_label
 from restclients.models.sws import Term, Curriculum, Person
 from restclients.exceptions import DataFailureException, InvalidSectionID
+from restclients.sws.section_status import get_section_status_by_label
 
 class SWSTestSectionStatusData(TestCase):
     def test_section_by_label(self):

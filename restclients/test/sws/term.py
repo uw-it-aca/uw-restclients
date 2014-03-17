@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.conf import settings
 from datetime import datetime, timedelta
 from restclients.exceptions import DataFailureException
-import restclients.sws.term as TermSws
+from restclients.sws.term import get_term_by_year_and_quarter, get_term_before, get_term_after
+from restclients.sws.term import get_current_term, get_next_term, get_previous_term
 
 
 class SWSTestTerm(TestCase):
@@ -17,7 +18,7 @@ class SWSTestTerm(TestCase):
             hour48_delta = timedelta(hours=-48)
             now = datetime.now()
 
-            term = TermSws.get_current()
+            term = get_current_term()
             self.assertEquals(term.is_grading_period_open(), True, "Grading period is open")
             self.assertEquals(term.is_grading_period_past(), False, "Grading period is not past")
 
@@ -36,7 +37,7 @@ class SWSTestTerm(TestCase):
             self.assertEquals(open_diff_summer_a.days < 2, True, "But not too far in the past")
 
             # Also test for Spring 2013, as that's the "current" quarter
-            term = TermSws.get_by_year_and_quarter(2013, 'spring')
+            term = get_term_by_year_and_quarter(2013, 'spring')
 
             self.assertEquals(term.is_grading_period_open(), True, "Grading period is open")
             self.assertEquals(term.is_grading_period_past(), False, "Grading period is not past")
@@ -61,7 +62,7 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            term = TermSws.get_current()
+            term = get_current_term()
 
             expected_quarter = "spring"
             expected_year = 2013
@@ -81,7 +82,7 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            term = TermSws.get_previous()
+            term = get_previous_term()
 
             expected_quarter = "winter"
             expected_year = 2013
@@ -131,7 +132,7 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            term = TermSws.get_next()
+            term = get_next_term()
 
             expected_quarter = "summer"
             expected_year = 2013
@@ -206,19 +207,19 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            starting = TermSws.get_next()
+            starting = get_next_term()
             self.assertEquals(starting.year, 2013)
             self.assertEquals(starting.quarter, 'summer')
 
-            next1 = TermSws.get_term_before(starting)
+            next1 = get_term_before(starting)
             self.assertEquals(next1.year, 2013)
             self.assertEquals(next1.quarter, 'spring')
 
-            next2 = TermSws.get_term_before(next1)
+            next2 = get_term_before(next1)
             self.assertEquals(next2.year, 2013)
             self.assertEquals(next2.quarter, 'winter')
 
-            next3 = TermSws.get_term_before(next2)
+            next3 = get_term_before(next2)
             self.assertEquals(next3.year, 2012)
             self.assertEquals(next3.quarter, 'autumn')
 
@@ -227,15 +228,15 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            starting = TermSws.get_next()
+            starting = get_next_term()
             self.assertEquals(starting.year, 2013)
             self.assertEquals(starting.quarter, 'summer')
 
-            next1 = TermSws.get_term_after(starting)
+            next1 = get_term_after(starting)
             self.assertEquals(next1.year, 2013)
             self.assertEquals(next1.quarter, 'autumn')
 
-            next2 = TermSws.get_term_after(next1)
+            next2 = get_term_after(next1)
             self.assertEquals(next2.year, 2014)
             self.assertEquals(next2.quarter, 'winter')
 
@@ -246,35 +247,35 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
             self.assertRaises(DataFailureException,
-                              TermSws.get_by_year_and_quarter,
+                              get_term_by_year_and_quarter,
                               -2012, 'summer')
 
             self.assertRaises(DataFailureException,
-                              TermSws.get_by_year_and_quarter,
+                              get_term_by_year_and_quarter,
                               0, 'summer')
 
             self.assertRaises(DataFailureException,
-                              TermSws.get_by_year_and_quarter,
+                              get_term_by_year_and_quarter,
                               1901, 'summer')
 
             self.assertRaises(DataFailureException,
-                              TermSws.get_by_year_and_quarter,
+                              get_term_by_year_and_quarter,
                               2012, 'fall')
 
             self.assertRaises(DataFailureException,
-                              TermSws.get_by_year_and_quarter,
+                              get_term_by_year_and_quarter,
                               2012, '')
 
             self.assertRaises(DataFailureException,
-                              TermSws.get_by_year_and_quarter,
+                              get_term_by_year_and_quarter,
                               2012, ' ')
 
             # Equality tests
-            self.assertEquals(TermSws.get_by_year_and_quarter(2012, 'autumn'),
-                              TermSws.get_by_year_and_quarter(2012, 'autumn'))
+            self.assertEquals(get_term_by_year_and_quarter(2012, 'autumn'),
+                              get_term_by_year_and_quarter(2012, 'autumn'))
 
-            self.assertNotEquals(TermSws.get_by_year_and_quarter(2012, 'autumn'),
-                                 TermSws.get_by_year_and_quarter(2013, 'winter'))
+            self.assertNotEquals(get_term_by_year_and_quarter(2012, 'autumn'),
+                                 get_term_by_year_and_quarter(2013, 'winter'))
 
     def test_week_of_term(self):
         with self.settings(
@@ -282,7 +283,7 @@ class SWSTestTerm(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
             now = datetime.now()
-            term = TermSws.get_current()
+            term = get_current_term()
 
 
             term.first_day_quarter = now.date()

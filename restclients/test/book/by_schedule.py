@@ -3,7 +3,7 @@ from django.conf import settings
 from restclients.bookstore import Bookstore
 from restclients.sws import SWS
 from unittest2 import skipIf
-import restclients.sws.term as TermSws
+from restclients.sws.term import get_current_term
 from restclients.sws.registration import get_schedule_by_regid_and_term
 
 class BookstoreScheduleTest(TestCase):
@@ -15,10 +15,9 @@ class BookstoreScheduleTest(TestCase):
             RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
             ):
 
-            sws = SWS()
             books = Bookstore()
 
-            term = TermSws.get_current()
+            term = get_current_term()
             schedule = get_schedule_by_regid_and_term('AA36CCB8F66711D5BE060004AC494FFE', term)
 
             book_data = books.get_books_for_schedule(schedule)
@@ -40,10 +39,9 @@ class BookstoreScheduleTest(TestCase):
             RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
             ):
 
-            sws = SWS()
             books = Bookstore()
 
-            term = TermSws.get_current()
+            term = get_current_term()
             schedule = get_schedule_by_regid_and_term('AA36CCB8F66711D5BE060004AC494FFE', term)
 
             verba_link = books.get_verba_link_for_schedule(schedule)

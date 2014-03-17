@@ -3,16 +3,15 @@ Interfaceing with the Student Web Service,
  for Course resource.
 """
 import logging
-from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID
 from restclients.models.sws import SectionStatus
 from restclients.sws import get_resource, encode_section_label
 from restclients.sws.section import section_label_pattern
 
-course_res_url_prefix = "/student/v4/course"
 logger = logging.getLogger(__name__)
+course_res_url_prefix = "/student/v4/course"
 
-def get_by_section_label(label):
+def get_section_status_by_label(label):
     """
     Return a restclients.models.sws.SectionStatus object 
     for the passed section label.
