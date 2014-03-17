@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from datetime import datetime, timedelta
 from restclients.sws import SWS
-from restclients.models.sws import Term, Curriculum, Person
+from restclients.models.sws import Term, Curriculum, Person, College
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionURL
 
@@ -82,3 +82,7 @@ class SWSTest(TestCase):
 
             colleges = sws.get_all_colleges()
             self.assertEquals(len(colleges), 20)
+
+            college = College(label="MED")
+            depts = sws.get_departments_for_college(college)
+            self.assertEquals(len(depts), 30)
