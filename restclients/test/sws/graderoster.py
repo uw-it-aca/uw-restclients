@@ -2,8 +2,9 @@ import random
 import re
 from django.test import TestCase
 from django.conf import settings
+from restclients.sws import graderoster as sws_graderoster
+from restclients.sws import section as sws_section
 import restclients.sws.section as SectionSws
-from restclients.sws.graderoster import GradeRoster
 from restclients.models.sws import Section
 from restclients.exceptions import DataFailureException
 
@@ -15,11 +16,14 @@ class SWSTestGradeRoster(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            section = SectionSws.get_section_by_label('2013,summer,CSS,161/A')
+            section = sws_section.get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
 
-            graderoster = GradeRoster().get(section, instructor)
+            graderoster = sws_graderoster.get(section, instructor)
 
+            self.assertEquals(graderoster.graderoster_label(),
+                              "2013,summer,CSS,161,A,%s" % instructor.uwregid,
+                              "Correct graderoster_label()")
             self.assertEquals(len(graderoster.grade_submission_delegates), 2, "Grade submission delegates")
             self.assertEquals(len(graderoster.items), 5, "GradeRoster items")
 
@@ -39,10 +43,10 @@ class SWSTestGradeRoster(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            section = SectionSws.get_section_by_label('2013,summer,CSS,161/A')
+            section = sws_section.get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
 
-            graderoster = GradeRoster().get(section, instructor)
+            graderoster = sws_graderoster.get(section, instructor)
 
             for item in graderoster.items:
                 new_grade = str(round(random.uniform(1, 4), 1))
@@ -50,7 +54,7 @@ class SWSTestGradeRoster(TestCase):
 
             orig_xhtml = split_xhtml(graderoster.xhtml())
 
-            new_graderoster = GradeRoster().update(graderoster)
+            new_graderoster = sws_graderoster.update(graderoster)
             new_xhtml = split_xhtml(new_graderoster.xhtml())
             self.assertEquals(orig_xhtml, new_xhtml, "XHTML is equal")
 

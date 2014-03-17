@@ -504,6 +504,12 @@ class GradeRoster(models.Model):
     section_credits = models.FloatField()
     allows_writing_credit = models.BooleanField()
 
+    def graderoster_label(self):
+        return "%s,%s,%s,%s,%s,%s" % (self.section.term.year,
+            self.section.term.quarter, self.section.curriculum_abbr,
+            self.section.course_number, self.section.section_id,
+            self.instructor.uwregid)
+
     def xhtml(self):
         template = loader.get_template("sws/graderoster.xhtml")
         context = Context({
