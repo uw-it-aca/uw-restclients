@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
+from restclients.sws.college import get_all_colleges
 from restclients.exceptions import DataFailureException
 
 class SWSTestCollege(TestCase):
@@ -9,8 +9,6 @@ class SWSTestCollege(TestCase):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
-            colleges = sws.get_all_colleges()
-
+            colleges = get_all_colleges()
             self.assertEquals(len(colleges), 20)

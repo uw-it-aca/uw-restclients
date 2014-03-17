@@ -79,3 +79,6 @@ class SWSTest(TestCase):
 
             campuses = sws.get_all_campuses()
             self.assertEquals(len(campuses), 3)
+
+            colleges = sws.get_all_colleges()
+            self.assertEquals(len(colleges), 20)

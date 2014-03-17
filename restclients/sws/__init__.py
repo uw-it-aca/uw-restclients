@@ -176,30 +176,10 @@ class SWS(object):
         return get_all_campuses()
 
     def get_all_colleges(self):
-        """
-        Returns a list of restclients.College models, representing all
-        colleges.
-        """
-        url = "/student/v4/college.json"
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        data = json.loads(response.data)
-
-        colleges = []
-        for college_data in data.get("Colleges", []):
-            college = College()
-            college.campus_label = college_data["CampusShortName"]
-            college.label = college_data["CollegeAbbreviation"]
-            college.name = college_data["CollegeName"]
-            college.full_name = college_data["CollegeFullName"]
-            college.clean_fields()
-            colleges.append(college)
-
-        return colleges
+        deprecation(
+            "Use restclients.sws.campus.get_all_colleges")
+        from restclients.sws.college import get_all_colleges
+        return get_all_colleges()
 
     def get_departments_for_college(self, college):
         """
