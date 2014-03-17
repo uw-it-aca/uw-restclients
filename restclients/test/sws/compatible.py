@@ -67,4 +67,10 @@ class SWSTest(TestCase):
                 '2012,autumn,CSE,100/W')
             self.assertEquals(section_status.sln, 12588)
 
-            
+            section = sws.get_section_by_label('2013,winter,DROP_T,100/A')
+            registrations = sws.get_all_registrations_for_section(section)
+            self.assertEquals(len(registrations), 1)
+
+            term = sws.get_current_term()
+            sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
+                                            term)

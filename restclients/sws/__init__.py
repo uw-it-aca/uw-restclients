@@ -146,108 +146,22 @@ class SWS(object):
         return section.get_joint_sections(asection)
 
     def get_all_registrations_for_section(self, section):
-        """
-        Returns a list of restclients.Registration objects, representing
-        all (active and inactive) registrations for the passed section. For
-        independent study sections, section.independent_study_instructor_regid
-        limits registrations to that instructor.
-        """
-        registrations = self.get_active_registrations_for_section(section)
-
-        seen_registrations = {}
-        for registration in registrations:
-            seen_registrations[registration.person.uwregid] = True
-
-        all_registrations = self._registrations_for_section_with_active_flag(section, False)
-
-        for registration in all_registrations:
-            regid = registration.person.uwregid
-            if regid not in seen_registrations:
-                # This is just being set by induction.  The all registrations
-                # resource can't know if a registration is active.
-                registration.is_active = False
-                seen_registrations[regid] = True
-                registrations.append(registration)
-
-        return registrations
-
-    def _registrations_for_section_with_active_flag(self, section, is_active):
-        """
-        Returns a list of all restclients.Registration objects for a section.
-        There can be duplicates for a person.
-        If is_active is True, the objects will have is_active set to True.
-        Otherwise, is_active is undefined, and out of scope for this method.
-        """
-        instructor_reg_id = ''
-        if (section.is_independent_study and
-                section.independent_study_instructor_regid is not None):
-            instructor_reg_id = section.independent_study_instructor_regid
-
-        activity_flag = ""
-        if is_active:
-            activity_flag = "on"
-
-        url = "/student/v4/registration.json?" + urlencode({
-            "year": section.term.year,
-            "quarter": section.term.quarter,
-            "curriculum_abbreviation": section.curriculum_abbr,
-            "course_number": section.course_number,
-            "section_id": section.section_id,
-            "instructor_reg_id": instructor_reg_id,
-            "is_active": activity_flag})
-
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        data = json.loads(response.data)
-
-        pws = PWS()
-        seen_registrations = {}
-        registrations = []
-
-        # Keeping is_active on the registration resource undefined
-        # unless is_active is true - the response with all registrations
-        # doesn't tell us if it's active or not.
-        # use get_all_registrations_for_section if you need to know that.
-        is_active_flag = None
-        if is_active:
-            is_active_flag = True
-
-        person_threads = []
-        for reg_data in data.get("Registrations", []):
-            if reg_data["RegID"] not in seen_registrations:
-                registration = Registration()
-                registration.section = section
-
-                thread = SWSPersonByRegIDThread()
-                thread.regid = reg_data["RegID"]
-                thread.start()
-                person_threads.append(thread)
-                registration.is_active = is_active_flag
-                registrations.append(registration)
-
-                seen_registrations[reg_data["RegID"]] = True
-
-        for i in range(len(person_threads)):
-            thread = person_threads[i]
-            thread.join()
-            registration = registrations[i]
-
-            registration.person = thread.person
-
-        return registrations
+        deprecation(
+            "Use restclients.sws.registration.get_all_registrations_for_section")
+        import restclients.sws.registration
+        return registration.get_all_registrations_for_section(section)
 
     def get_active_registrations_for_section(self, section):
-        """
-        Returns a list of restclients.Registration objects, representing
-        active registrations for the passed section. For independent study
-        sections, section.independent_study_instructor_regid limits
-        registrations to that instructor.
-        """
-        return self._registrations_for_section_with_active_flag(section, True)
+        deprecation(
+            "Use restclients.sws.registration.get_active_registrations_for_section")
+        import restclients.sws.registration
+        return registration.get_active_registrations_for_section(section)
+
+    def schedule_for_regid_and_term(self, regid, term):
+        deprecation(
+            "Use restclients.sws.registration.schedule_for_regid_and_term")
+        import restclients.sws.registration
+        return registration.schedule_for_regid_and_term(regid, term)
 
     def grades_for_regid_and_term(self, regid, term):
         """
@@ -284,79 +198,6 @@ class SWS(object):
             grades.grades.append(grade)
 
         return grades
-
-    def schedule_for_regid_and_term(self, regid, term):
-        """
-        Returns a restclients.ClassSchedule for the regid and term passed in.
-        """
-        dao = SWS_DAO()
-        pws = PWS()
-        url = "/student/v4/registration.json?" + urlencode([
-            ('reg_id', regid),
-            ('quarter', term.quarter),
-            ('is_active', 'on'),
-            ('year', term.year),
-        ])
-
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        term_data = json.loads(response.data)
-
-        sections = []
-
-        sws_threads = []
-        for registration in term_data["Registrations"]:
-            reg_url = registration["Href"]
-
-            # Skip a step here, and go right to the course section resource
-            reg_url = re.sub('registration', 'course', reg_url)
-            reg_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', reg_url)
-            reg_url = re.sub(',([^,]*).json', '/\\1.json', reg_url)
-
-            thread = SWSThread()
-            thread.url = reg_url
-            thread.headers = {"Accept": "application/json"}
-            thread.start()
-            sws_threads.append(thread)
-
-        for thread in sws_threads:
-            thread.join()
-
-        for thread in sws_threads:
-            response = thread.response
-
-            if response.status != 200:
-                raise DataFailureException(reg_url,
-                                           response.status,
-                                           response.data)
-            import restclients.sws.section as sectionsws
-            section = sectionsws._json_to_section(json.loads(response.data), term)
-
-            # For independent study courses, only include the one relevant
-            # instructor
-            if registration["Instructor"]:
-                actual_instructor = None
-                regid = registration["Instructor"]["RegID"]
-
-                for instructor in section.meetings[0].instructors:
-                    if instructor.uwregid == regid:
-                        actual_instructor = instructor
-
-                if actual_instructor:
-                    section.meetings[0].instructors = [actual_instructor]
-                else:
-                    section.meetings[0].instructors = []
-                section.independent_study_instructor_regid = registration["Instructor"]
-            sections.append(section)
-
-        schedule = ClassSchedule()
-        schedule.sections = sections
-        schedule.term = term
-
-        return schedule
 
     def get_all_campuses(self):
         """

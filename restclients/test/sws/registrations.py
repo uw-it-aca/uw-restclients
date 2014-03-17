@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import SWS
 import restclients.sws.section as SectionSws
+import restclients.sws.registration as RegistrationSws
 from restclients.exceptions import DataFailureException
 
 class SWSTestRegistrations(TestCase):
@@ -10,37 +10,34 @@ class SWSTestRegistrations(TestCase):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
             # Valid section, missing file resources
             section = SectionSws.get_section_by_label('2013,winter,C LIT,396/A')
 
             self.assertRaises(DataFailureException,
-                              sws.get_active_registrations_for_section,
+                              RegistrationSws.get_active_registrations_for_section,
                               section)
 
     def test_all_registrations_for_section(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
             # Valid section, missing file resources
             section = SectionSws.get_section_by_label('2013,winter,C LIT,396/A')
 
             self.assertRaises(DataFailureException,
-                              sws.get_all_registrations_for_section,
+                              RegistrationSws.get_all_registrations_for_section,
                               section)
 
     def test_active_registration_status_after_drop(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
             section = SectionSws.get_section_by_label('2013,winter,DROP_T,100/A')
 
-            registrations = sws.get_all_registrations_for_section(section)
+            registrations = RegistrationSws.get_all_registrations_for_section(section)
 
             self.assertEquals(len(registrations), 1)
             javerage_reg = registrations[0]
@@ -51,11 +48,10 @@ class SWSTestRegistrations(TestCase):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            sws = SWS()
 
             section = SectionSws.get_section_by_label('2013,winter,DROP_T,100/B')
 
-            registrations = sws.get_all_registrations_for_section(section)
+            registrations = RegistrationSws.get_all_registrations_for_section(section)
 
             self.assertEquals(len(registrations), 1)
             javerage_reg = registrations[0]
