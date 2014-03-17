@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sws import SWS
-import restclients.sws.term as TermSws
+from restclients.sws.term import get_current
+from restclients.sws.enrollment import get_grades_by_regid_and_term
 from restclients.exceptions import DataFailureException
 
 class SWSTestEnrollments(TestCase):
@@ -10,8 +11,8 @@ class SWSTestEnrollments(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            term = TermSws.get_current()
-            grades = SWS().grades_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            term = get_current()
+            grades = get_grades_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
 
             self.assertEquals(grades.term.year, 2013)
             self.assertEquals(grades.term.quarter, "spring")

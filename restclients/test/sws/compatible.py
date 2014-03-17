@@ -74,3 +74,6 @@ class SWSTest(TestCase):
             term = sws.get_current_term()
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
                                             term)
+            grades = sws.grades_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
+            self.assertEquals(grades.user.uwnetid, "javerage")
+
