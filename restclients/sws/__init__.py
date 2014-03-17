@@ -107,42 +107,42 @@ class SWS(object):
 
     def get_sections_by_instructor_and_term(self, person, term):
         deprecation("Use restclients.sws.section.get_sections_by_instructor_and_term")
-        from restclients.sws.registration import get_sections_by_instructor_and_term
+        from restclients.sws.section import get_sections_by_instructor_and_term
         return get_sections_by_instructor_and_term(person, term)
 
     def get_sections_by_delegate_and_term(self, person, term):
         deprecation("Use restclients.sws.section.get_sections_by_delegate_and_term")
-        from restclients.sws.registration import get_sections_by_delegate_and_term
+        from restclients.sws.section import get_sections_by_delegate_and_term
         return get_sections_by_delegate_and_term(person, term)
 
     def get_sections_by_curriculum_and_term(self, curriculum, term):
         deprecation("Use restclients.sws.section.get_sections_by_curriculum_and_term")
-        from restclients.sws.registration import get_sections_by_curriculum_and_term
+        from restclients.sws.section import get_sections_by_curriculum_and_term
         return get_sections_by_curriculum_and_term(curriculum, term)
 
     def get_section_by_label(self, label):
         deprecation("Use restclients.sws.section.get_section_by_label")
-        from restclients.sws.registration import get_section_by_label
+        from restclients.sws.section import get_section_by_label
         return get_section_by_label(label)
 
     def get_section_by_url(self, url):
         deprecation("Use restclients.sws.section.get_section_by_url")
-        from restclients.sws.registration import get_section_by_url
+        from restclients.sws.section import get_section_by_url
         return get_section_by_url(url)
 
     def get_section_status_by_label(self, label):
         deprecation("Use restclients.sws.section.get_section_status_by_label")
-        from restclients.sws.registration import get_section_status_by_label
+        from restclients.sws.section_status import get_section_status_by_label
         return get_section_status_by_label(label)
 
     def get_linked_sections(self, asection):
         deprecation("Use restclients.sws.section.get_linked_sections")
-        from restclients.sws.registration import get_linked_sections
+        from restclients.sws.section import get_linked_sections
         return get_linked_sections(asection)
 
     def get_joint_sections(self, asection):
         deprecation("Use restclients.sws.section.get_joint_sections")
-        from restclients.sws.registration import get_joint_sections
+        from restclients.sws.section import get_joint_sections
         return get_joint_sections(asection)
 
     def get_all_registrations_for_section(self, section):
