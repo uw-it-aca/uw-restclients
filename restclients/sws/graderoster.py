@@ -1,4 +1,5 @@
 from restclients.pws import PWS
+from restclients.sws import encode_section_label
 from restclients.dao import SWS_DAO
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import GradeRoster, GradeRosterItem
@@ -7,18 +8,14 @@ from lxml import etree
 import re
 
 
-def encode_label(label):
-    return re.sub(r"\s", "%20", label)
-
-
-def get(section, instructor):
+def get_graderoster(section, instructor):
     """
     Returns a restclients.GradeRoster for the passed Section model and
     instructor Person.
     """
     label = GradeRoster(section=section,
                         instructor=instructor).graderoster_label()
-    url = "/student/v4/graderoster/%s" % encode_label(label)
+    url = "/student/v4/graderoster/%s" % encode_section_label(label)
     headers = {"Accept": "text/xhtml",
                "X-UW-Act-as": instructor.uwnetid}
 
@@ -32,14 +29,14 @@ def get(section, instructor):
     return graderoster_from_xhtml(response.data, section, instructor)
 
 
-def update(graderoster):
+def update_graderoster(graderoster):
     """
     Updates the graderoster resource for the passed restclients.GradeRoster
     model. A new restclients.GradeRoster is returned, representing the
     document returned from the update request.
     """
     label = graderoster.graderoster_label()
-    url = "/student/v4/graderoster/%s" % encode_label(label)
+    url = "/student/v4/graderoster/%s" % encode_section_label(label)
     headers = {"Content-Type": "application/xhtml+xml",
                "X-UW-Act-as": graderoster.instructor.uwnetid}
     body = graderoster.xhtml()
