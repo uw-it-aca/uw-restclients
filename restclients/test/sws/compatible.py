@@ -77,3 +77,5 @@ class SWSTest(TestCase):
             grades = sws.grades_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
             self.assertEquals(grades.user.uwnetid, "javerage")
 
+            campuses = sws.get_all_campuses()
+            self.assertEquals(len(campuses), 3)

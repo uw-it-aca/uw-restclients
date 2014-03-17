@@ -170,29 +170,10 @@ class SWS(object):
         return get_grades_by_regid_and_term(regid, term)
 
     def get_all_campuses(self):
-        """
-        Returns a list of restclients.Campus models, representing all
-        campuses.
-        """
-        url = "/student/v4/campus.json"
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        data = json.loads(response.data)
-
-        campuses = []
-        for campus_data in data.get("Campuses", []):
-            campus = Campus()
-            campus.label = campus_data["CampusShortName"]
-            campus.name = campus_data["CampusName"]
-            campus.full_name = campus_data["CampusFullName"]
-            campus.clean_fields()
-            campuses.append(campus)
-
-        return campuses
+        deprecation(
+            "Use restclients.sws.campus.get_all_campuses")
+        from restclients.sws.campus import get_all_campuses
+        return get_all_campuses()
 
     def get_all_colleges(self):
         """
