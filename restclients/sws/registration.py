@@ -8,7 +8,7 @@ from urllib import urlencode
 from restclients.models.sws import Registration, ClassSchedule
 from restclients.exceptions import DataFailureException
 from restclients.sws import get_resource, SWSPersonByRegIDThread, SWSThread
-import restclients.sws.section as SectionSws
+from restclients.sws.section import _json_to_section
 
 registration_res_url_prefix = "/student/v4/registration.json"
 
@@ -79,7 +79,7 @@ def _json_to_registrations(data, section, is_active):
 
     return registrations
 
-def get_active_registrations_for_section(section):
+def get_active_registrations_by_section(section):
     """
     Returns a list of restclients.Registration objects, representing
     active registrations for the passed section. For independent study
@@ -88,7 +88,7 @@ def get_active_registrations_for_section(section):
     """
     return _registrations_for_section_with_active_flag(section, True)
 
-def get_all_registrations_for_section(section):
+def get_all_registrations_by_section(section):
     """
     Returns a list of restclients.models.sws.Registration objects, 
     representing all (active and inactive) registrations 
@@ -97,7 +97,7 @@ def get_all_registrations_for_section(section):
     section.independent_study_instructor_regid
     limits registrations to that instructor.
     """
-    registrations = get_active_registrations_for_section(section)
+    registrations = get_active_registrations_by_section(section)
 
     seen_registrations = {}
     for registration in registrations:
@@ -117,7 +117,7 @@ def get_all_registrations_for_section(section):
 
     return registrations
 
-def schedule_for_regid_and_term(regid, term):
+def get_schedule_by_regid_and_term(regid, term):
     """
     Returns a restclients.models.sws.ClassSchedule object
     for the regid and term passed in.
@@ -158,8 +158,7 @@ def _json_to_schedule(term_data, term):
                                        response.status,
                                        response.data)
 
-        section = SectionSws._json_to_section(
-            json.loads(response.data), term)
+        section = _json_to_section(json.loads(response.data), term)
 
         # For independent study courses, only include the one relevant
         # instructor

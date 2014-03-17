@@ -107,61 +107,61 @@ class SWS(object):
 
     def get_sections_by_instructor_and_term(self, person, term):
         deprecation("Use restclients.sws.section.get_sections_by_instructor_and_term")
-        import restclients.sws.section
-        return section.get_sections_by_instructor_and_term(person, term)
+        from restclients.sws.registration import get_sections_by_instructor_and_term
+        return get_sections_by_instructor_and_term(person, term)
 
     def get_sections_by_delegate_and_term(self, person, term):
         deprecation("Use restclients.sws.section.get_sections_by_delegate_and_term")
-        import restclients.sws.section
-        return section.get_sections_by_delegate_and_term(person, term)
+        from restclients.sws.registration import get_sections_by_delegate_and_term
+        return get_sections_by_delegate_and_term(person, term)
 
     def get_sections_by_curriculum_and_term(self, curriculum, term):
         deprecation("Use restclients.sws.section.get_sections_by_curriculum_and_term")
-        import restclients.sws.section
-        return section.get_sections_by_curriculum_and_term(curriculum, term)
+        from restclients.sws.registration import get_sections_by_curriculum_and_term
+        return get_sections_by_curriculum_and_term(curriculum, term)
 
     def get_section_by_label(self, label):
         deprecation("Use restclients.sws.section.get_section_by_label")
-        import restclients.sws.section
-        return section.get_section_by_label(label)
+        from restclients.sws.registration import get_section_by_label
+        return get_section_by_label(label)
 
     def get_section_by_url(self, url):
         deprecation("Use restclients.sws.section.get_section_by_url")
-        import restclients.sws.section
-        return section.get_section_by_url(url)
+        from restclients.sws.registration import get_section_by_url
+        return get_section_by_url(url)
 
     def get_section_status_by_label(self, label):
         deprecation("Use restclients.sws.section.get_section_status_by_label")
-        import restclients.sws.section_status
-        return section_status.get_by_section_label(label)
+        from restclients.sws.registration import get_section_status_by_label
+        return get_section_status_by_label(label)
 
     def get_linked_sections(self, asection):
         deprecation("Use restclients.sws.section.get_linked_sections")
-        import restclients.sws.section
-        return section.get_linked_sections(asection)
+        from restclients.sws.registration import get_linked_sections
+        return get_linked_sections(asection)
 
     def get_joint_sections(self, asection):
         deprecation("Use restclients.sws.section.get_joint_sections")
-        import restclients.sws.section
-        return section.get_joint_sections(asection)
+        from restclients.sws.registration import get_joint_sections
+        return get_joint_sections(asection)
 
     def get_all_registrations_for_section(self, section):
         deprecation(
-            "Use restclients.sws.registration.get_all_registrations_for_section")
-        import restclients.sws.registration
-        return registration.get_all_registrations_for_section(section)
+            "Use restclients.sws.registration.get_all_registrations_by_section")
+        from restclients.sws.registration import get_all_registrations_by_section
+        return get_all_registrations_by_section(section)
 
     def get_active_registrations_for_section(self, section):
         deprecation(
-            "Use restclients.sws.registration.get_active_registrations_for_section")
-        import restclients.sws.registration
-        return registration.get_active_registrations_for_section(section)
+            "Use restclients.sws.registration.get_active_registrations_by_section")
+        from restclients.sws.registration import get_active_registrations_by_section
+        return get_active_registrations_by_section(section)
 
     def schedule_for_regid_and_term(self, regid, term):
         deprecation(
-            "Use restclients.sws.registration.schedule_for_regid_and_term")
-        import restclients.sws.registration
-        return registration.schedule_for_regid_and_term(regid, term)
+            "Use restclients.sws.registration.get_schedule_by_regid_and_term")
+        from restclients.sws.registration import get_schedule_by_regid_and_term
+        return get_schedule_by_regid_and_term(regid, term)
 
     def grades_for_regid_and_term(self, regid, term):
         deprecation(
