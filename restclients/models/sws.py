@@ -200,6 +200,7 @@ class Section(models.Model):
     is_independent_study = models.BooleanField()
     independent_study_instructor_regid = models.CharField(max_length=32,
                                                           null=True)
+    institute_name = models.CharField(max_length=200, null=True)
     class_website_url = models.URLField(max_length=255,
                                         blank=True)
     sln = models.PositiveIntegerField()

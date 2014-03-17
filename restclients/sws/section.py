@@ -163,6 +163,7 @@ def _json_to_section(section_data, term=None):
     section.course_title_long = section_data["Course"]["CourseTitleLong"]
     section.course_campus = section_data["CourseCampus"]
     section.section_id = section_data["SectionID"]
+    section.institute_name = section_data.get("InstituteName", "")
 
     section.section_type = section_data["SectionType"]
     if "independent study" == section.section_type:
