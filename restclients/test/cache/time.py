@@ -12,7 +12,8 @@ import restclients.sws.term as TermSws
 class TimeCacheTest(TestCase):
     def test_threaded_caching(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
-                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
+                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
+                           RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
 
             sws = SWS()
             term = TermSws.get_current()
@@ -20,7 +21,8 @@ class TimeCacheTest(TestCase):
 
     def test_simple_time(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
-                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
+                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
+                           RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
 
             # Check initial state
             cache = TimeSimpleCache()
@@ -48,7 +50,8 @@ class TimeCacheTest(TestCase):
 
     def test_4hour_time(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
-                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.FourHourCache'):
+                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
+                           RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.FourHourCache'):
 
             # Check initial state
             cache = FourHourCache()
@@ -97,7 +100,8 @@ class TimeCacheTest(TestCase):
 
     def test_errors(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.errors.Always500',
-                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.FourHourCache'):
+                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File', 
+                           RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.FourHourCache'):
 
             cache = FourHourCache()
             response = cache.getCache('sws', '/invalid/url', {})
@@ -178,5 +182,3 @@ class TimeCacheTest(TestCase):
 
             response = sws.getURL("/valid/url", {})
             self.assertEquals(response.status, 500)
-
-
