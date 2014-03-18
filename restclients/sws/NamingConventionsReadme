@@ -1,0 +1,5 @@
+PEP-8, Function Names:
+Function names should be lowercase, with words separated by underscores as necessary to improve readability.
+
+Local convention for Get methods: get[_modifier]_noun[_by_noun(_and_noun)*]
+

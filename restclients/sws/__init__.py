@@ -11,14 +11,7 @@ from lxml import etree
 from restclients.thread import Thread
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
-from restclients.models.sws import Term, Section, SectionReference
-from restclients.models.sws import SectionMeeting, SectionStatus
-from restclients.models.sws import Registration, ClassSchedule, FinalExam
-from restclients.models.sws import Campus, College, Department, Curriculum
-from restclients.models.sws import StudentGrades, StudentCourseGrade
-from restclients.models.sws import GradeSubmissionDelegate
 from restclients.exceptions import DataFailureException
-from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
 logger = logging.getLogger(__name__)
@@ -188,60 +181,14 @@ class SWS(object):
         return get_departments_by_college(college)
 
     def get_curricula_for_department(self, department, future_terms=0):
-        """
-        Returns a list of restclients.Curriculum models, for the passed
-        Department model.
-        """
-        if future_terms < 0 or future_terms > 2:
-            raise ValueError(future_terms)
-
-        url = "/student/v4/curriculum.json?" + urlencode({
-              "department_abbreviation": department.label,
-              "future_terms": future_terms})
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        data = json.loads(response.data)
-
-        curricula = []
-        for curr_data in data.get("Curricula", []):
-            curricula.append(self._curriculum_from_json(curr_data))
-
-        return curricula
+        deprecation(
+            "Use restclients.sws.curriculum.get_curricula_by_department")
+        from restclients.sws.curriculum import get_curricula_by_department
+        return get_curricula_by_department(department, future_terms)
 
     def get_curricula_for_term(self, term):
-        """
-        Returns a list of restclients.Curriculum models, for the passed
-        Term model.
-        """
-        url = "/student/v4/curriculum.json?" + urlencode({
-            "year": term.year,
-            "quarter": term.quarter.lower()})
-        dao = SWS_DAO()
-        response = dao.getURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        data = json.loads(response.data)
-
-        curricula = []
-        for curr_data in data.get("Curricula", []):
-            curricula.append(self._curriculum_from_json(curr_data))
-
-        return curricula
-
-    def _curriculum_from_json(self, data):
-        """
-        Returns a curriculum model created from the passed json.
-        """
-        curriculum = Curriculum()
-        curriculum.label = data["CurriculumAbbreviation"]
-        curriculum.name = data["CurriculumName"]
-        curriculum.full_name = data["CurriculumFullName"]
-        curriculum.clean_fields()
-        return curriculum
+        deprecation(
+            "Use restclients.sws.curriculum.get_curricula_by_term")
+        from restclients.sws.curriculum import get_curricula_by_term
+        return get_curricula_by_term(term)
 
