@@ -8,9 +8,10 @@ from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO
 from authz_group import Group
 from userservice.user import UserService
 from time import time
-import urllib
+from urllib import quote, unquote, urlencode
 import json
 import re
+
 
 @login_required
 @csrf_protect
@@ -42,10 +43,10 @@ def proxy(request, service, url):
     else:
         return HttpResponseNotFound("Unknown service: %s" % service)
 
-    url = "/%s" % url
+    url = "/%s" % quote(url)
 
     if request.GET:
-        url = "%s?%s" % (url, urllib.urlencode(request.GET))
+        url = "%s?%s" % (url, urlencode(request.GET))
 
     start = time()
     response = dao.getURL(url, headers)
@@ -58,6 +59,7 @@ def proxy(request, service, url):
         content = format_html(service, response.data)
 
     context = {
+        "url": unquote(url),
         "content": content,
         "response_code": response.status,
         "time_taken": "%f seconds" % (end - start),
