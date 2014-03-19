@@ -257,6 +257,7 @@ def _json_to_section(section_data, term=None):
 
             if "RegID" in pdata and pdata["RegID"] is not None:
                 instructor = pws.get_person_by_regid(pdata["RegID"])
+                # Instructor information currently listed on the Time Schedule
                 instructor.TSPrint = instructor_data["TSPrint"]
                 meeting.instructors.append(instructor)
 
