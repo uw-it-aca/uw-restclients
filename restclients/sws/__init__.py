@@ -3,9 +3,8 @@ This is the interface for interacting with the Student Web Service.
 """
 import logging
 import json
-import re
 import warnings
-from urllib import urlencode
+from urllib import quote, urlencode
 from datetime import datetime
 from lxml import etree
 from restclients.thread import Thread
@@ -21,7 +20,7 @@ def deprecation(message):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 def encode_section_label(label):
-    return re.sub(r'\s', '%20', label)
+    return quote(label, safe="/,") 
 
 def get_resource(url):
     """
