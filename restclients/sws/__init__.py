@@ -4,9 +4,8 @@ This is the interface for interacting with the Student Web Service.
 import logging
 import json
 import warnings
-from urllib import quote, urlencode
+from urllib import quote
 from datetime import datetime
-from lxml import etree
 from restclients.thread import Thread
 from restclients.pws import PWS
 from restclients.dao import SWS_DAO
