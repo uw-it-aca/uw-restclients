@@ -7,7 +7,6 @@ import warnings
 from urllib import quote
 from datetime import datetime
 from restclients.thread import Thread
-from restclients.pws import PWS
 from restclients.dao import SWS_DAO
 from restclients.exceptions import DataFailureException
 
@@ -44,20 +43,7 @@ class SWSThread(Thread):
 
         args = self.headers or {}
 
-        dao = SWS_DAO()
-        self.response = dao.getURL(self.url, args)
-
-
-class SWSPersonByRegIDThread(Thread):
-    regid = None
-    person = None
-
-    def run(self):
-        if self.regid is None:
-            raise Exception("SWSPersonByRegIDThread must have a regid")
-
-        pws = PWS()
-        self.person = pws.get_person_by_regid(self.regid)
+        self.response = SWS_DAO().getURL(self.url, args)
 
 
 class SWS(object):

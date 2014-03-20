@@ -7,10 +7,23 @@ import re
 from urllib import urlencode
 from restclients.models.sws import Registration, ClassSchedule
 from restclients.exceptions import DataFailureException
-from restclients.sws import get_resource, SWSPersonByRegIDThread, SWSThread
+from restclients.pws import PWS
+from restclients.thread import Thread
+from restclients.sws import get_resource, SWSThread
 from restclients.sws.section import _json_to_section
 
 registration_res_url_prefix = "/student/v4/registration.json"
+
+class SWSPersonByRegIDThread(Thread):
+    regid = None
+    person = None
+
+    def run(self):
+        if self.regid is None:
+            raise Exception("SWSPersonByRegIDThread must have a regid")
+
+        self.person = PWS().get_person_by_regid(self.regid)
+
 
 def _registrations_for_section_with_active_flag(section, is_active):
     """
