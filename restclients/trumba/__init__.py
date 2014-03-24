@@ -4,13 +4,13 @@ It will log the http requests and responses.
 Be sure to set the logging configuration if you use the LiveDao!
 """
 
-from restclients.dao import TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
-from restclients.util.timer import Timer
-from restclients.util.log import log_info, log_err
-from lxml import etree
 import logging
 import json
 import time
+from lxml import etree
+from restclients.dao import TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
+from restclients.util.timer import Timer
+from restclients.util.log import log_info, log_err
 
 logger = logging.getLogger(__name__)
 
