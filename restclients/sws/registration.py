@@ -130,7 +130,8 @@ def get_all_registrations_by_section(section):
 
     return registrations
 
-def get_schedule_by_regid_and_term(regid, term):
+def get_schedule_by_regid_and_term(regid, term, 
+                                   include_instructor_not_on_time_schedule=True):
     """
     Returns a restclients.models.sws.ClassSchedule object
     for the regid and term passed in.
@@ -141,9 +142,11 @@ def get_schedule_by_regid_and_term(regid, term):
                    ('quarter', term.quarter),
                    ('is_active', 'on'),
                    ('year', term.year)]))
-    return _json_to_schedule(get_resource(url), term)
+    return _json_to_schedule(get_resource(url), term, 
+                             include_instructor_not_on_time_schedule)
 
-def _json_to_schedule(term_data, term):
+def _json_to_schedule(term_data, term,
+                      include_instructor_not_on_time_schedule=True):
     sections = []
     sws_threads = []
     for registration in term_data["Registrations"]:
@@ -171,7 +174,8 @@ def _json_to_schedule(term_data, term):
                                        response.status,
                                        response.data)
 
-        section = _json_to_section(json.loads(response.data), term)
+        section = _json_to_section(json.loads(response.data), term,
+                                   include_instructor_not_on_time_schedule)
 
         # For independent study courses, only include the one relevant
         # instructor

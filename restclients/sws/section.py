@@ -91,7 +91,8 @@ def _get_sections_by_person_and_term(person, term, course_role,
 
     return _json_to_sectionref(get_resource(url), term)
 
-def get_section_by_url(url):
+def get_section_by_url(url,
+                       include_instructor_not_on_time_schedule=True):
     """
     Returns a restclients.models.sws.Section object 
     for the passed section url.
@@ -99,9 +100,12 @@ def get_section_by_url(url):
     if not course_url_pattern.match(url):
         raise InvalidSectionURL(url)
 
-    return _json_to_section(get_resource(url))
+    return _json_to_section(
+        get_resource(url),
+        include_instructor_not_on_time_schedule=include_instructor_not_on_time_schedule)
 
-def get_section_by_label(label):
+def get_section_by_label(label,
+                         include_instructor_not_on_time_schedule=True):
     """
     Returns a restclients.models.sws.Section object for
     the passed section label.
@@ -113,9 +117,11 @@ def get_section_by_label(label):
         course_res_url_prefix,
         encode_section_label(label))
 
-    return get_section_by_url(url)
+    return get_section_by_url(url,
+                              include_instructor_not_on_time_schedule)
 
-def get_linked_sections(section):
+def get_linked_sections(section,
+                        include_instructor_not_on_time_schedule=True):
     """
     Returns a list of restclients.models.sws.Section objects, 
     representing linked sections for the passed section.
@@ -123,12 +129,14 @@ def get_linked_sections(section):
     linked_sections = []
 
     for url in section.linked_section_urls:
-        section = get_section_by_url(url)
+        section = get_section_by_url(url,
+                                     include_instructor_not_on_time_schedule)
         linked_sections.append(section)
 
     return linked_sections
 
-def get_joint_sections(section):
+def get_joint_sections(section,
+                       include_instructor_not_on_time_schedule=True):
     """
     Returns a list of restclients.models.sws.Section objects, 
     representing joint sections for the passed section.
@@ -136,12 +144,15 @@ def get_joint_sections(section):
     joint_sections = []
 
     for url in section.joint_section_urls:
-        section = get_section_by_url(url)
+        section = get_section_by_url(url,
+                                     include_instructor_not_on_time_schedule)
         joint_sections.append(section)
 
     return joint_sections
 
-def _json_to_section(section_data, term=None):
+def _json_to_section(section_data, 
+                     term=None,
+                     include_instructor_not_on_time_schedule=True):
     """
     Returns a section model created from the passed json.
     """
@@ -253,13 +264,15 @@ def _json_to_section(section_data, term=None):
 
         meeting.instructors = []
         for instructor_data in meeting_data["Instructors"]:
-            pdata = instructor_data["Person"]
+            # TSPrint: True 
+            # Instructor information currently listed on the Time Schedule
+            if instructor_data["TSPrint"] or include_instructor_not_on_time_schedule:
+                pdata = instructor_data["Person"]
 
-            if "RegID" in pdata and pdata["RegID"] is not None:
-                instructor = pws.get_person_by_regid(pdata["RegID"])
-                # Instructor information currently listed on the Time Schedule
-                instructor.TSPrint = instructor_data["TSPrint"]
-                meeting.instructors.append(instructor)
+                if "RegID" in pdata and pdata["RegID"] is not None:
+                    instructor = pws.get_person_by_regid(pdata["RegID"])
+                    instructor.TSPrint = instructor_data["TSPrint"]
+                    meeting.instructors.append(instructor)
 
         section.meetings.append(meeting)
 

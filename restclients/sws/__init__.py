@@ -13,7 +13,6 @@ from restclients.exceptions import DataFailureException
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
 logger = logging.getLogger(__name__)
 
-
 def deprecation(message):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
@@ -27,7 +26,6 @@ def get_resource(url):
     :returns: http response with content in json
     """
     response = SWS_DAO().getURL(url, {"Accept": "application/json"})
-    #logger.debug("%s ==> %s, %s" % (url, response.status, response.data))
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
     return json.loads(response.data)
@@ -97,30 +95,34 @@ class SWS(object):
         from restclients.sws.section import get_sections_by_curriculum_and_term
         return get_sections_by_curriculum_and_term(curriculum, term)
 
-    def get_section_by_label(self, label):
+    def get_section_by_label(self, label,
+                             include_instructor_not_on_time_schedule=True):
         deprecation("Use restclients.sws.section.get_section_by_label")
         from restclients.sws.section import get_section_by_label
-        return get_section_by_label(label)
+        return get_section_by_label(label, include_instructor_not_on_time_schedule)
 
-    def get_section_by_url(self, url):
+    def get_section_by_url(self, url,
+                           include_instructor_not_on_time_schedule=True):
         deprecation("Use restclients.sws.section.get_section_by_url")
         from restclients.sws.section import get_section_by_url
-        return get_section_by_url(url)
+        return get_section_by_url(url, include_instructor_not_on_time_schedule)
 
     def get_section_status_by_label(self, label):
         deprecation("Use restclients.sws.section.get_section_status_by_label")
         from restclients.sws.section_status import get_section_status_by_label
         return get_section_status_by_label(label)
 
-    def get_linked_sections(self, asection):
+    def get_linked_sections(self, asection,
+                            include_instructor_not_on_time_schedule=True):
         deprecation("Use restclients.sws.section.get_linked_sections")
         from restclients.sws.section import get_linked_sections
-        return get_linked_sections(asection)
+        return get_linked_sections(asection, include_instructor_not_on_time_schedule)
 
-    def get_joint_sections(self, asection):
+    def get_joint_sections(self, asection,
+                           include_instructor_not_on_time_schedule=True):
         deprecation("Use restclients.sws.section.get_joint_sections")
         from restclients.sws.section import get_joint_sections
-        return get_joint_sections(asection)
+        return get_joint_sections(asection, include_instructor_not_on_time_schedule)
 
     def get_all_registrations_for_section(self, section):
         deprecation(
@@ -134,11 +136,13 @@ class SWS(object):
         from restclients.sws.registration import get_active_registrations_by_section
         return get_active_registrations_by_section(section)
 
-    def schedule_for_regid_and_term(self, regid, term):
+    def schedule_for_regid_and_term(self, regid, term,
+                                    include_instructor_not_on_time_schedule=True):
         deprecation(
             "Use restclients.sws.registration.get_schedule_by_regid_and_term")
         from restclients.sws.registration import get_schedule_by_regid_and_term
-        return get_schedule_by_regid_and_term(regid, term)
+        return get_schedule_by_regid_and_term(regid, term, 
+                                              include_instructor_not_on_time_schedule)
 
     def grades_for_regid_and_term(self, regid, term):
         deprecation(

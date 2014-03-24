@@ -144,6 +144,14 @@ class SWSTestSectionData(TestCase):
             section2 = SectionSws.get_section_by_label('2013,summer,TRAIN,101/A')
             self.assertEquals(len(section2.get_instructors()), 2, "Correct number of instructors")
 
+            section3 = SectionSws.get_section_by_label('2013,spring,PHYS,121/A')
+            self.assertEquals(len(section3.get_instructors()), 5, 
+                              "Correct number of all instructors")
+
+            section3 = SectionSws.get_section_by_label('2013,spring,PHYS,121/A', False)
+            self.assertEquals(len(section3.get_instructors()), 4, 
+                              "Correct number of TSPrinted instructors")
+
     def test_delegates_in_section(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',

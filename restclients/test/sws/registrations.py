@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.conf import settings
+from restclients.models.sws import Term
 from restclients.sws.section import get_section_by_label
 from restclients.sws.registration import get_active_registrations_by_section
 from restclients.sws.registration import get_all_registrations_by_section
+from restclients.sws.registration import get_schedule_by_regid_and_term
 from restclients.exceptions import DataFailureException
 
 class SWSTestRegistrations(TestCase):
@@ -57,4 +59,21 @@ class SWSTestRegistrations(TestCase):
             javerage_reg = registrations[0]
             self.assertEquals(javerage_reg.person.uwnetid, 'javerage')
             self.assertEquals(javerage_reg.is_active, True)
+
+    def test_get_schedule_by_regid_and_term(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            term = Term(quarter="spring", year=2013)
+            class_schedule = get_schedule_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
+                                                            term)
+            for section in class_schedule.sections:
+                if section.section_label() == '2013,spring,TRAIN,100/A':
+                    self.assertEquals(len(section.get_instructors()), 1)
+
+            class_schedule = get_schedule_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
+                                                            term, False)
+            for section in class_schedule.sections:
+                if section.section_label() == '2013,spring,TRAIN,100/A':
+                    self.assertEquals(len(section.get_instructors()), 0)
 
