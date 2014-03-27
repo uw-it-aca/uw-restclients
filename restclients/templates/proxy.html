@@ -3,10 +3,13 @@
 <div class="container">
     <div class="restclients-proxy">
         <div class="row restclients-header">
-            <div class="col-md-2 restclients-header-title" style="">RESTCLIENTS</div>
-            <div class="col-md-5 restclients-header-url" style=""><input type="input" class="form-control" id="inputEmail3" value="{{ url }}"></div>
-            <div class="col-md-3">Time Taken: {{ time_taken }}</div>
-            <div class="col-md-2">Status: {{ response_code }}</div>
+            <div class="col-md-8 restclients-header-url" style=""><span class="glyphicon glyphicon-stats"></span><input type="input" class="form-control input-sm" id="inputEmail3" value="{{ url }}"></div>
+            <div class="col-md-2" style="text-align:center;">
+                <span class="label" style="color:#999;">TIME</span> <span class="label label-default">{{ time_taken }}</span>
+            </div>
+            <div class="col-md-2" style="text-align:center;">
+                <span class="label" style="color:#999;">STATUS</span> <span class="label label-default">{{ response_code }}</span>
+            </div>
         </div>
         
         <div class="restclients-response-content">{{ content|safe }}</div>
