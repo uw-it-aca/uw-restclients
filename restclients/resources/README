@@ -1,0 +1,8 @@
+When creating sub-directories and files, please use underscore '_' 
+to repplace any of the following characters in the original directory and file names:
+
+\?|<>=:*,;+&"@ 
+
+Thanks,
+-Fang 
+3/27/2014
