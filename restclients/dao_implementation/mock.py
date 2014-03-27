@@ -109,14 +109,25 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
         pass
     else:
         try:
-            file_path = RESOURCE_ROOT + url
+            orig_file_path = RESOURCE_ROOT + url
+            file_path = convert_to_platform_safe(orig_file_path)
             handle = open(file_path)
         except IOError:
             try:
-                file_path = RESOURCE_ROOT + url + "/index.html"
+                file_path = "%s/%s" % (file_path,
+                                       "index.html")
                 handle = open(file_path)
             except IOError:
-                return
+                file_path = orig_file_path
+                try:
+                    handle = open(file_path)
+                except IOError:
+                    try:
+                        file_path = "%s/%s" % (file_path,
+                                               "index.html")
+                        handle = open(file_path)
+                    except IOError:
+                        return
 
         logger = logging.getLogger(__name__)
         logger.debug("URL: %s; App: %s; File: %s" % (url, app, file_path))
