@@ -100,5 +100,10 @@ def format_json(service, content):
 def format_html(service, content):
     formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", r"href='/restclients/view/%s/\1'" % service, content)
     formatted = re.sub(re.compile(r"<style.*/style>", re.S), "", formatted)
+    formatted = clean_self_closing_divs(formatted)
     return formatted
+
+def clean_self_closing_divs(content):
+    cleaned = re.sub("((<div[^>]*?)/>)", "<!-- \g<1> -->\g<2>></div>", content)
+    return cleaned
 

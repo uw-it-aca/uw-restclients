@@ -71,4 +71,5 @@ from restclients.test.trumba.calendars import TrumbaTestCalendars
 from restclients.test.gws.trumba_group import TestGwsTrumbaGroup
 
 from restclients.test.thread import ThreadsTest
+from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock
