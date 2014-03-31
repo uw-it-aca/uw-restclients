@@ -2,8 +2,9 @@
 {% block content %}
 <div class="container">
     <div class="restclients-proxy">
+        
         <div class="row restclients-header">
-            <div class="col-md-8 restclients-header-url" style=""><span class="glyphicon glyphicon-stats"></span><input type="input" class="form-control input-sm" id="inputEmail3" value="{{ url }}"></div>
+            <div class="col-md-8 restclients-header-url" style=""><span class="glyphicon glyphicon-stats"></span><input type="input" class="form-control input-sm" id="inputEmail3" value="{{ url }}" disabled></div>
             <div class="col-md-2" style="text-align:center; width:auto;">
                 <span class="label" style="color:#999;">TIME</span> <span class="label label-default">{{ time_taken }}</span>
             </div>
@@ -12,7 +13,9 @@
             </div>
         </div>
         
-        <div class="restclients-response-content">{{ content|safe }}</div>
+        <div class="restclients-response-content">
+            {{ content|safe }}
+        </div>
         
         <div class="restclients-footer">
         <b>Headers:</b><br/>
@@ -20,6 +23,7 @@
             <b>{{ key }}</b>: {{ val }}<br/>
         {% endfor %}
         </div>
+        
     </div>
 </div>
 {% endblock %}
