@@ -1,0 +1,129 @@
+{
+    "Notices": [
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Quarter",
+                    "DataType": "string",
+                    "Value": "Summer"
+                }
+            ],
+            "NoticeCategory": "StudentALR",
+            "NoticeContent": "<b>Before You Register</b><br/>Beginning one week prior to each quarter's registration period you can take care of all the required Notices and Insurance&#47Optional Charges selections so that when your priority registratrion period begins, you can go directly into Web Registration. If you have not already done so, go to the <a href='https://sdb.admin.washington.edu/students/uwnetid/op_charges.asp'>Insurance&#47Optional Charges</a> services now to take care of these requirements prior to registering for summer quarter.",
+            "NoticeType": "PreRegNow"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentGEN",
+            "NoticeContent": "Annual Family Educational Rights and Privacy Act Notification<br>The Family Educational Rights and Privacy Act (FERPA) of 1974 protects the privacy of your education records. However, the "directory" information may be released unless you inform the Registrar's Office. For further details check the <a href='http://www.washington.edu/students/reg/ferpa.html'>Family Educational Rights and Privacy Act</a>web site",
+            "NoticeType": "FERPA"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentGEN",
+            "NoticeContent": "Peer-to-Peer File-Sharing and Copyright Infringement<br>Under copyright law it is illegal to download or share copyrighted mater ials such as music or movies without the permission of the copyright owner. Your actions when downloading or sharing files are traceable and could result in a significant financial penalty to you. For more information, go to the <a href='http://www.washington.edu/students/gencat/policy/p2pshare.html'>Peer-to-Peer File-Sharing and Copyright Infringement</a> page in the Student Guide.",
+            "NoticeType": "RIAA"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140112"
+                }
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to make changes to your  winter quarter schedule without incurring a $20 change fee and possible <a href='http://f2.washington.edu/fm/sfs/tuition/forfeiture-refund/'> tuition forfeiture</a> is <b>January 12, 2014</b>.",
+            "NoticeType": "LastDayRegWOChgFee"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140223"
+                }
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "There is a $20 Change of Registration Fee and possible <a href='http://f2.washington.edu/fm/sfs/tuition/forfeiture-refund/'> tuition forfeiture</a> charged for all registration changes made to your winter quarter schedule on a single day through <b>February 23, 2013</b>.",
+            "NoticeType": "LastDayRegChgFee"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140124"
+                }
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to <a href='https://sdb.admin.washington.edu/students/UWNetID/op_charges.asp'> enroll in, withdraw from, or make changes</A> to your <a href='http://depts.washington.edu/ovpsl/insurance.html'>Student Accident and Sickness Insurance Plan</a> for winter quarter is <b>January 24, 2014</b>.",
+            "NoticeType": "LastDayChgIns"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140119"
+                }
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to drop a class from your winter quarter schedule without a transcript entry is <b>January 19, 2014</b>.",
+            "NoticeType": "LastDayDropNoRecord"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to change a class on your winter quarter schedule to or from an <a href='http://www.washington.edu/students/reg/audit.html'>Audit Grade Option</a> is ",
+            "NoticeType": "LastDayAuditOpt"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to add classes to your winter quarter schedule is <b></b>.",
+            "NoticeType": "LastDayAdd"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to drop winter quarter classes without using your <a href='http://www.washington.edu/students/reg/wdpolicy.html'>Annual Drop</a> is <b></b>.",
+            "NoticeType": "LastDayWOAnnualDrop"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to change a class on your winter quarter schedule to or from an <a href='http://www.washington.edu/students/gencat/front/Grading_Sys.html'>S/NS Grade Option</a> is <b></b>. ",
+            "NoticeType": "LastDayChgGradeOpt"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "The last day to withdraw completely (dropping all courses) from winter quarter is <b></b>.",
+            "NoticeType": "LastDayWithdraw"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentGEN",
+            "NoticeContent": "Payment of tuition and tuition-related fees for winter quarter is due <b></b>. For details, check your <a href='https://sdb.admin.washington.edu/students/UWNetID/tuition.asp'>Tuition Statement</a>.",
+            "NoticeType": "TuitDue"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentGEN",
+            "NoticeContent": "Thank you for confirming your intention to enroll at the University of Washington for autumn quarter 2014. Your new Student Enrollment and Orientation Fee has been accepted and recorded.",
+            "NoticeType": "ThankYouRemark"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentGEN",
+            "NoticeContent": "Here is a summary of your expected status at the University:<br/>Campus: SEATTLE <br/>Class Standing: FRESHMAN <br/>School/College: Arts and Sciences <br/> Department: PRE MAJOR (A&S) <br/>Student Number: 1033333 <br/>Residency Status: RESIDENT<br/><a href='http://www.washington.edu/students/reg/whatsthis.html'><small>Notes and Definitions</small></a>",
+            "NoticeType": "StatusSummary"
+        }
+    ],
+    "Person": {
+        "Href": "",
+        "Name": "JAMES NEW STUDENT",
+        "RegID": "FE36CCB8F66711D5BE060004AC494F31"
+    }
+}
