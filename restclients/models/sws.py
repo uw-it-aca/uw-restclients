@@ -578,3 +578,26 @@ class TimeScheduleConstruction(models.Model):
 
     class Meta:
         app_label = "restclients"
+
+
+class NoticeAttribute(models.Model):
+    name = models.CharField(max_length=100)
+    data_type = models.CharField(max_length=100)
+
+    _url_value = models.URLField(blank=True)
+    _string_value = models.CharField(max_length=100, blank=True)
+    _date_value = models.DateField(blank=True)
+
+    def get_value(self):
+        if self.data_type == "date":
+            return self._date_value
+        if self.data_type == "string":
+            return self._string_value
+        if self.data_type == "url":
+            return self._url_value
+
+
+class Notice(models.Model):
+    notice_category = models.CharField(max_length=100)
+    notice_content = models.TextField()
+    notice_type = models.CharField(max_length=100)

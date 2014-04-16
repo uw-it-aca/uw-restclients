@@ -4,7 +4,7 @@
             "NoticeAttributes": [
                 {
                     "Name": "Campus",
-                    "DataType": "string",
+                    "DataType": "String",
                     "Value": "Seattle"
                 }
             ],
