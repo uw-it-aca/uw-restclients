@@ -38,3 +38,6 @@ class SWSNotice(TestCase):
             #Ensure unknown attributes aren't included
             self.assertEquals(len(notice.attributes), 3)
 
+            #Default custom category
+            self.assertEquals(notice.custom_category, "Uncategorized")
+

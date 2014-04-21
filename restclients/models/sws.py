@@ -601,3 +601,4 @@ class Notice(models.Model):
     notice_category = models.CharField(max_length=100)
     notice_content = models.TextField()
     notice_type = models.CharField(max_length=100)
+    custom_category = models.CharField(max_length=100, default="Uncategorized")
