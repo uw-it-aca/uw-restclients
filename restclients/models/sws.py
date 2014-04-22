@@ -590,7 +590,7 @@ class NoticeAttribute(models.Model):
 
     def get_value(self):
         if self.data_type == "date":
-            return self._date_value
+            return str(self._date_value)
         if self.data_type == "string":
             return self._string_value
         if self.data_type == "url":
@@ -602,3 +602,19 @@ class Notice(models.Model):
     notice_content = models.TextField()
     notice_type = models.CharField(max_length=100)
     custom_category = models.CharField(max_length=100, default="Uncategorized")
+
+    def json_data(self):
+
+        attrib_data = []
+
+        for attrib in self.attributes:
+            attrib_data.append({
+                'name': attrib.name,
+                'data_type': attrib.data_type,
+                'value': attrib.get_value()
+                })
+        data = {
+            'notice_content': self.notice_content,
+            'attributes': attrib_data
+        }
+        return data

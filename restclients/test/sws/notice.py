@@ -21,7 +21,7 @@ class SWSNotice(TestCase):
             attribute = notice.attributes[0]
             self.assertEquals(attribute.name, "Date")
             self.assertEquals(attribute.data_type, "date")
-            self.assertEquals(attribute.get_value(), datetime.date(2014, 6, 23))
+            self.assertEquals(attribute.get_value(), "2014-06-23")
 
             #String Attribute
             attribute = notice.attributes[1]
