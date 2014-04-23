@@ -96,7 +96,7 @@
                     {% if item.status_code != None %}
                     <div class="update_status">
                         <span class="code">{{item.status_code}}</span>
-                        <span class="message">item.status_message|default_if_none:""</span>
+                        <span class="message">{{item.status_message|default_if_none:""}}</span>
                     </div>
                     {% endif %}
                 </li>{% endfor %}
