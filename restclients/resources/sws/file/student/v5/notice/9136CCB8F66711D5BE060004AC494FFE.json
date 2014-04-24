@@ -6,6 +6,11 @@
                     "Name": "Campus",
                     "DataType": "string",
                     "Value": "Bothell"
+                },
+                                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140420"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -47,19 +52,37 @@
             "NoticeType": "EstPd1RegDate"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140723"
+                }
+            ],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "<b>Before You Register</b><br/>Beginning one week prior to each quarter's registration period you can take care of all the required Notices and Insurance&#47Optional Charges selections so that when your priority registratrion period begins, you can go directly into Web Registration. If you have not already done so, go to the <a href='https://sdb.admin.washington.edu/students/uwnetid/op_charges.asp'>Insurance&#47Optional Charges</a> services now to take care of these requirements prior to registering for summer quarter.",
             "NoticeType": "PreRegNow"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140623"
+                }
+            ],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "Online ISS information session required before registration<br/>All new international students are required to complete the <a href='https://catalysttools.washington.edu/webq/survey/torre/79003'>International Student Services(ISS) Online Information Session</a> before registering for classes. You will need your UW NetID and password to access the online ISS information session. After you arrive on campus the International Student Services(ISS) must collect copies of your immigration documents.",
             "NoticeType": "IntlStuCheckIn"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140623"
+                }
+            ],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "The following offices have placed <a href='http://www.washington.edu/students/reg/regrest.html#Q2'>administrative holds</a> on your academic record which will prevent further registration and/or ordering official transcripts: <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Library Account Services, Suzzallo, 1st Floor 206-543-1174 <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Student Fiscal Services, 129 Schmitz, 206-543-4694 <br/><b>Type:</b> Registration  <b>Office:</b> Financial Aid Office, 105 Schmitz Hall, 206-543-6101",
             "NoticeType": "AdminHolds"
