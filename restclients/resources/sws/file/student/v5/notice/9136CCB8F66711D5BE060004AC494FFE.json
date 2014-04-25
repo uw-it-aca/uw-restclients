@@ -42,7 +42,7 @@
 
             ],
             "NoticeCategory": "StudentDAD",
-            "NoticeContent": "Summer quarter begins <b>June 23, 2014<b>",
+            "NoticeContent": "Summer quarter begins <b>June 23, 2014</b>",
             "NoticeType": "QtrBegin"
         },
         {
@@ -56,11 +56,23 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140723"
+                    "Value": "20140425"
                 }
             ],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "<b>Before You Register</b><br/>Beginning one week prior to each quarter's registration period you can take care of all the required Notices and Insurance&#47Optional Charges selections so that when your priority registratrion period begins, you can go directly into Web Registration. If you have not already done so, go to the <a href='https://sdb.admin.washington.edu/students/uwnetid/op_charges.asp'>Insurance&#47Optional Charges</a> services now to take care of these requirements prior to registering for summer quarter.",
+            "NoticeType": "PreRegNow"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "20140426"
+                }
+            ],
+            "NoticeCategory": "StudentALR",
+            "NoticeContent": "<b>Before You Register MK II</b><br/>Beginning one week prior to each quarter's registration period you can take care of all the required Notices and Insurance&#47Optional Charges selections so that when your priority registratrion period begins, you can go directly into Web Registration. If you have not already done so, go to the <a href='https://sdb.admin.washington.edu/students/uwnetid/op_charges.asp'>Insurance&#47Optional Charges</a> services now to take care of these requirements prior to registering for summer quarter.",
             "NoticeType": "PreRegNow"
         },
         {

@@ -10,12 +10,12 @@ class SWSNotice(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
             notices = get_notices_by_regid("9136CCB8F66711D5BE060004AC494FFE")
-            self.assertEquals(len(notices), 6)
+            self.assertEquals(len(notices), 7)
 
             notice = notices[1]
             self.assertEquals(notice.notice_type, "QtrBegin")
             self.assertEquals(notice.notice_category, "StudentDAD")
-            self.assertEquals(notice.notice_content, "Summer quarter begins <b>June 23, 2014<b>")
+            self.assertEquals(notice.notice_content, "Summer quarter begins <b>June 23, 2014</b>")
 
             #Date Attribute
             attribute = notice.attributes[0]
