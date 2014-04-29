@@ -51,4 +51,5 @@ class CanvasTestEnrollment(TestCase):
             stu_enrollment = enrollments[1]
             self.assertEquals(stu_enrollment.grade_html_url, "https://uw.test.instructure.com/courses/862539/grades/496164", "Grade URL")
             self.assertEquals(stu_enrollment.current_score, 23.0, "Current score")
-
+            self.assertEquals(stu_enrollment.login_id, "javerage", "Login ID")
+            self.assertEquals(stu_enrollment.sis_user_id, "9136CCB8F66711D5BE060004AC494FFE", "SIS User ID")

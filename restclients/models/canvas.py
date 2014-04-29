@@ -79,6 +79,7 @@ class Enrollment(models.Model):
     course_id = models.IntegerField(max_length=20)
     section_id = models.IntegerField(max_length=20)
     login_id = models.CharField(max_length=80)
+    sis_user_id = models.CharField(max_length=32, null=True)
     role = models.CharField(max_length=80, choices=ROLE_CHOICES)
     status = models.CharField(max_length=100)
     html_url = models.CharField(max_length=1000)
