@@ -75,7 +75,8 @@ def graderoster_from_xhtml(data, section, instructor):
 
     el = root.xpath("./xhtml:div/*[@class='section_credits']",
                     namespaces=nsmap)[0]
-    graderoster.section_credits = el.text.strip()
+    if el.text is not None:
+        graderoster.section_credits = el.text.strip()
 
     el = root.xpath("./xhtml:div/*[@class='writing_credit_display']",
                     namespaces=nsmap)[0]
