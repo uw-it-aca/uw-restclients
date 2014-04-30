@@ -1,11 +1,23 @@
 {
     "Notices": [
         {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentGEN",
+            "NoticeContent": "<a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>Tuition Account Balance</A>:  $32611.00 CR <a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>details</a><br/><i>UW Professional & Continuing Education fees may show in both the Tuition Account Balance and the UW Professnal & Continuing Education Account Balance</i>.",
+            "NoticeType": "AcctBalance"
+        },
+
+        {
             "NoticeAttributes": [
                 {
                     "Name": "Campus",
                     "DataType": "String",
                     "Value": "Seattle"
+                },
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "past"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -19,49 +31,137 @@
             "NoticeType": "AdminHolds"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "past"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "future"
+            }
+            ],
             "NoticeCategory": "StudentGEN",
             "NoticeContent": "Annual Family Educational Rights and Privacy Act Notification<br>The Family Educational Rights and Privacy Act (FERPA) of 1974 protects the privacy of your education records. However, the \"directory\" information may be released unless you inform the Registrar's Office. For further details check the <a href='http://www.washington.edu/students/reg/ferpa.html'>Family Educational Rights and Privacy Act</a>web site",
             "NoticeType": "FERPA"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "past"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "future"
+            }
+             ],
             "NoticeCategory": "StudentGEN",
             "NoticeContent": "Peer-to-Peer File-Sharing and Copyright Infringement<br>Under copyright law it is illegal to download or share copyrighted materials such as music or movies without the permission of the copyright owner. Your actions when downloading or sharing files are traceable and could result in a significant financial penalty to you. For more information, go to the <a href='http://www.washington.edu/students/gencat/policy/p2pshare.html'>Peer-to-Peer File-Sharing and Copyright Infringement</a> page in the Student Guide.",
             "NoticeType": "RIAA"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "past"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "week"
+            }
+             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "The last day to change a class on your winter quarter schedule to or from an <a href='http://www.washington.edu/students/reg/audit.html'>Audit Grade Option</a> is ",
             "NoticeType": "LastDayAuditOpt"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "yesterday"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "week"
+            }
+             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "Your estimated <a href='http://www.washington.edu/students/reg/2014cal.html#Q3'>Period I Priority Registration Date</a> for winter quarter is <b></b>. Registration begins at <b>6:00 a.m.</b>",
             "NoticeType": "EstPd1RegDate"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "yesterday"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "week"
+            }
+             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "The last day to drop winter quarter classes without using your <a href='http://www.washington.edu/students/reg/wdpolicy.html'>Annual Drop</a> is <b></b>.",
             "NoticeType": "LastDayWOAnnualDrop"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "yesterday"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "week"
+            }
+             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "The last day to add classes to your winter quarter schedule is <b></b>.",
             "NoticeType": "LastDayAdd"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "yesterday"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "week"
+            }
+             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "The last day to change a class on your winter quarter schedule to or from an <a href='http://www.washington.edu/students/gencat/front/Grading_Sys.html'>S/NS Grade Option</a> is <b></b>. ",
             "NoticeType": "LastDayChgGradeOpt"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "past"
+            },
+            {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "week"
+            }
+            ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "Payment of tuition and tuition-related fees for winter quarter is due <b></b>. For details, check your <a href='https://sdb.admin.washington.edu/students/UWNetID/tuition.asp'>Tuition Statement</a>.",
             "NoticeType": "TuitDue"

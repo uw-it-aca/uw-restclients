@@ -17,7 +17,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140623"
+                    "Value": "future"
                 },
                 {
                     "Name": "Quarter",
@@ -45,7 +45,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140117"
+                    "Value": "past"
                 }
 
             ],

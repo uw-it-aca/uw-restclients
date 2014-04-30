@@ -29,7 +29,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140112"
+                    "Value": "past"
                 }
             ],
             "NoticeCategory": "StudentDAD",
@@ -41,7 +41,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140223"
+                    "Value": "past"
                 }
             ],
             "NoticeCategory": "StudentDAD",
@@ -53,7 +53,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140124"
+                    "Value": "past"
                 }
             ],
             "NoticeCategory": "StudentDAD",
@@ -65,7 +65,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140119"
+                    "Value": "past"
                 }
             ],
             "NoticeCategory": "StudentDAD",

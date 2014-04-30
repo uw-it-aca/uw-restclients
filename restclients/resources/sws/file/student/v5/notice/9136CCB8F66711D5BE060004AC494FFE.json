@@ -7,10 +7,10 @@
                     "DataType": "string",
                     "Value": "Bothell"
                 },
-                                {
+                {       
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140420"
+                    "Value": "past"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -22,7 +22,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140623"
+                    "Value": "yesterday"
                 },
                 {
                     "Name": "Quarter",
@@ -56,7 +56,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140425"
+                    "Value": "today"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -68,7 +68,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140426"
+                    "Value": "tomorrow"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -80,7 +80,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140623"
+                    "Value": "future"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -92,15 +92,19 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "20140623"
+                    "Value": "future"
                 }
             ],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "The following offices have placed <a href='http://www.washington.edu/students/reg/regrest.html#Q2'>administrative holds</a> on your academic record which will prevent further registration and/or ordering official transcripts: <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Library Account Services, Suzzallo, 1st Floor 206-543-1174 <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Student Fiscal Services, 129 Schmitz, 206-543-4694 <br/><b>Type:</b> Registration  <b>Office:</b> Financial Aid Office, 105 Schmitz Hall, 206-543-6101",
             "NoticeType": "AdminHolds"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentGEN",
+            "NoticeContent": "<a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>Tuition Account Balance</A>:  $350.00 CR <a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>details</a><br/><i>UW Professional & Continuing Education fees may show in both the Tuition Account Balance and the UW Professnal & Continuing Education Account Balance</i>.",
+            "NoticeType": "AcctBalance"
         }
-
-
 
     ],
     "Person": {

@@ -4,7 +4,7 @@ Contains SWS DAO implementations.
 
 import json
 import time
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from django.conf import settings
 from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
@@ -26,8 +26,46 @@ class File(object):
 
     grade_roster_document = None
 
+    
+    def _make_notice_date(self, response):
+        """
+        Set the date attribte value in the notice mock data
+        """
+        today = date.today()
+        yesterday = today - timedelta(days=1)
+        tomorrow = today + timedelta(days=1)
+        past = today - timedelta(days=3)
+        week = today + timedelta(days=2)
+        future = today + timedelta(weeks=5)
+
+        json_data = json.loads(response.data)
+        for notice in json_data["Notices"]:
+            if notice["NoticeAttributes"] and len(notice["NoticeAttributes"]) > 0:
+                for attr in notice["NoticeAttributes"]:
+                    if attr["DataType"] == "date":
+                        if attr["Value"] == "yesterday":
+                            attr["Value"] = yesterday.strftime("%Y%m%d")
+                        elif attr["Value"] == "today":
+                            attr["Value"] = today.strftime("%Y%m%d")
+                        elif attr["Value"] == "tomorrow":
+                            attr["Value"] = tomorrow.strftime("%Y%m%d")
+                        elif attr["Value"] == "future":
+                            attr["Value"] = future.strftime("%Y%m%d")
+                        elif attr["Value"] == "past":
+                            attr["Value"] = past.strftime("%Y%m%d")
+                        elif attr["Value"] == "week":
+                            attr["Value"] = week.strftime("%Y%m%d")
+                        else:
+                            attr["Value"] = week.strftime("%Y%m%d")
+
+        response.data = json.dumps(json_data)
+
+            
     def getURL(self, url, headers):
         response = get_mockdata_url("sws", "file", url, headers)
+
+        if "/student/v5/notice" in url:
+            self._make_notice_date(response)
 
         # This is to enable mock data grading.
         if "/student/v4/term/current.json" == url or "/student/v4/term/2013,spring.json" == url:
