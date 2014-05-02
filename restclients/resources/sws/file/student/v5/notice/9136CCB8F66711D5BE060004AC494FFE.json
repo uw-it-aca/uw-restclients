@@ -5,12 +5,12 @@
                 {
                     "Name": "Campus",
                     "DataType": "string",
-                    "Value": "Bothell"
+                    "Value": "Seattle"
                 },
                 {       
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "past"
+                    "Value": "yesterday"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -22,7 +22,17 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "yesterday"
+                    "Value": "future_end"
+                },
+                {
+                    "Name": "DisplayBegin",
+                    "DataType": "date",
+                    "Value": "future"
+                },
+                {
+                    "Name": "DisplayEnd",
+                    "DataType": "date",
+                    "Value": "future_end"
                 },
                 {
                     "Name": "Quarter",
@@ -46,9 +56,15 @@
             "NoticeType": "QtrBegin"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "next_week"
+                }   
+            ],
             "NoticeCategory": "StudentDAD",
-            "NoticeContent": "Your estimated <a href='http://www.washington.edu/students/reg/2014cal.html#Q3'>Period I Priority Registration Date</a> for winter quarter is <b></b>. Registration begins at <b>6:00 a.m.</b>",
+            "NoticeContent": "Your estimated <a href='http://www.washington.edu/students/reg/2014cal.html#Q3'>Period I Priority Registration Date</a> for fall quarter is <b>May 13, 2014</b>. Registration begins at <b>6:00 a.m.</b>",
             "NoticeType": "EstPd1RegDate"
         },
         {
@@ -56,7 +72,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "today"
+                    "Value": "week"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -68,7 +84,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "tomorrow"
+                    "Value": "week"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -76,36 +92,82 @@
             "NoticeType": "PreRegNow"
         },
         {
-            "NoticeAttributes": [
-                {
-                    "Name": "Date",
-                    "DataType": "date",
-                    "Value": "future"
-                }
-            ],
+            "NoticeAttributes": [],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "Online ISS information session required before registration<br/>All new international students are required to complete the <a href='https://catalysttools.washington.edu/webq/survey/torre/79003'>International Student Services(ISS) Online Information Session</a> before registering for classes. You will need your UW NetID and password to access the online ISS information session. After you arrive on campus the International Student Services(ISS) must collect copies of your immigration documents.",
             "NoticeType": "IntlStuCheckIn"
         },
         {
-            "NoticeAttributes": [
-                {
-                    "Name": "Date",
-                    "DataType": "date",
-                    "Value": "future"
-                }
-            ],
+            "NoticeAttributes": [],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "The following offices have placed <a href='http://www.washington.edu/students/reg/regrest.html#Q2'>administrative holds</a> on your academic record which will prevent further registration and/or ordering official transcripts: <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Library Account Services, Suzzallo, 1st Floor 206-543-1174 <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Student Fiscal Services, 129 Schmitz, 206-543-4694 <br/><b>Type:</b> Registration  <b>Office:</b> Financial Aid Office, 105 Schmitz Hall, 206-543-6101",
             "NoticeType": "AdminHolds"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+            {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "next_week"
+             }
+            ],
             "NoticeCategory": "StudentGEN",
             "NoticeContent": "<a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>Tuition Account Balance</A>:  $350.00 CR <a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>details</a><br/><i>UW Professional & Continuing Education fees may show in both the Tuition Account Balance and the UW Professnal & Continuing Education Account Balance</i>.",
             "NoticeType": "AcctBalance"
-        }
+        },
+       {
+            "NoticeAttributes": [
+            {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "next_week"
+             }
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Payment of tuition and tuition-related fees for spring quarter is due <b></b>. For details, check your <a href='https://sdb.admin.washington.edu/students/UWNetID/tuition.asp'>Tuition Statement</a>",
+            "NoticeType": "TuitDue"
+        },
+       {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentGEN",
+            "NoticeContent": "Thank you for confirming your intention to enroll at the University of Washington for autumn quarter 2014. Your new Student Enrollment and Orientation Fee has been accepted and recorded.",
+            "NoticeType": "ThankYouRemark"
+        },
+       {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentGEN",
+            "NoticeContent": "The Office of the Registrar has received payment for the following fees: New Student Enrollment & Orientation Fee",
+            "NoticeType": "FeesPaid"
+        },
+       {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentCLIST",
+            "NoticeContent": "You can <a href=\"https://sdb.admin.washington.edu/students/uwnetid/finaidstatus.asp\">review the status</a> of your financial aid application online.",
+            "NoticeType": "FinAid"
+        },
+        {
+            "NoticeAttributes": [
+             {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "future_end"
+             },
+             {
+                 "Name": "DisplayBegin",
+                 "DataType": "date",
+                 "Value": "future"
+             },
+             {
+                 "Name": "DisplayEnd",
+                 "DataType": "date",
+                 "Value": "future_end"
+             }
 
+           ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Spring quarter ends <b>June 13, 2014<b>",
+            "NoticeType": "QtrEnd"
+        }
     ],
     "Person": {
         "Href": "",

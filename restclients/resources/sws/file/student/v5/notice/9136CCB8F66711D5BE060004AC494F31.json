@@ -1,23 +1,11 @@
 {
     "Notices": [
         {
-            "NoticeAttributes": [],
-            "NoticeCategory": "StudentGEN",
-            "NoticeContent": "<a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>Tuition Account Balance</A>:  $32611.00 CR <a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>details</a><br/><i>UW Professional & Continuing Education fees may show in both the Tuition Account Balance and the UW Professnal & Continuing Education Account Balance</i>.",
-            "NoticeType": "AcctBalance"
-        },
-
-        {
             "NoticeAttributes": [
                 {
                     "Name": "Campus",
                     "DataType": "String",
-                    "Value": "Seattle"
-                },
-                {
-                    "Name": "Date",
-                    "DataType": "date",
-                    "Value": "past"
+                    "Value": "Bothell"
                 }
             ],
             "NoticeCategory": "StudentALR",
@@ -35,12 +23,12 @@
             {
                "Name": "Begin",
                "DataType": "date",
-               "Value": "past"
+               "Value": "future"
             },
             {
                "Name": "End",
                "DataType": "date",
-               "Value": "future"
+               "Value": "future_end"
             }
             ],
             "NoticeCategory": "StudentGEN",
@@ -52,12 +40,12 @@
             {
                "Name": "Begin",
                "DataType": "date",
-               "Value": "past"
+               "Value": "future"
             },
             {
                "Name": "End",
                "DataType": "date",
-               "Value": "future"
+               "Value": "future_end"
             }
              ],
             "NoticeCategory": "StudentGEN",
@@ -69,12 +57,12 @@
             {
                "Name": "Begin",
                "DataType": "date",
-               "Value": "past"
+               "Value": "week"
             },
             {
                "Name": "End",
                "DataType": "date",
-               "Value": "week"
+               "Value": "next_week"
             }
              ],
             "NoticeCategory": "StudentDAD",
@@ -152,21 +140,47 @@
         {
             "NoticeAttributes": [
             {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "next_week"
+             },
+            {
                "Name": "Begin",
                "DataType": "date",
-               "Value": "past"
+               "Value": "week"
             },
             {
                "Name": "End",
                "DataType": "date",
-               "Value": "week"
+               "Value": "next_week"
             }
             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "Payment of tuition and tuition-related fees for winter quarter is due <b></b>. For details, check your <a href='https://sdb.admin.washington.edu/students/UWNetID/tuition.asp'>Tuition Statement</a>.",
             "NoticeType": "TuitDue"
+        },
+        {
+            "NoticeAttributes": [
+             {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "next_week"
+             },
+             {
+                "Name": "Begin",
+                "DataType": "date",
+                "Value": "week"
+             },
+             {
+                "Name": "End",
+                "DataType": "date",
+                "Value": "next_week"
+              }
+            ],
+            "NoticeCategory": "StudentGEN",
+            "NoticeContent": "<a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>Tuition Account Balance</A>:  $32611.00 CR <a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>details</a><br/><i>UW Professional & Continuing Education fees may show in both the Tuition Account Balance and the UW Professnal & Continuing Education Account Balance</i>.",
+            "NoticeType": "AcctBalance"
         }
-
     ],
     "Person": {
         "Href": "",

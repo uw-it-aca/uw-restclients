@@ -17,13 +17,24 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "future"
+                    "Value": "future_end"
                 },
                 {
                     "Name": "Quarter",
                     "DataType": "string",
                     "Value": "Summer"
-                }
+                },
+                {
+                    "Name": "Begin",
+                    "DataType": "date",
+                    "Value": "future"
+                },
+                {
+                    "Name": "End",
+                    "DataType": "date",
+                    "Value": "future_end"
+                } 
+
             ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "Summer quarter begins <b>June 23, 2014<b>",
@@ -32,7 +43,7 @@
         {
             "NoticeAttributes": [],
             "NoticeCategory": "StudentDAD",
-            "NoticeContent": "Your estimated <a href='http://www.washington.edu/students/reg/2014cal.html#Q3'>Period I Priority Registration Date</a> for winter quarter is <b></b>. Registration begins at <b>6:00 a.m.</b>",
+            "NoticeContent": "Your estimated <a href='http://www.washington.edu/students/reg/2014cal.html#Q3'>Period I Priority Registration Date</a> for winter quarter is <b>May 15, 2014</b>. Registration begins at <b>6:00 a.m.</b>",
             "NoticeType": "EstPd1RegDate"
         },
         {
@@ -45,7 +56,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "past"
+                    "Value": "yesterday"
                 }
 
             ],
@@ -60,7 +71,18 @@
             "NoticeType": "IntendedMajors"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+                {
+                    "Name": "Begin",
+                    "DataType": "date",
+                    "Value": "future"
+                },
+                {
+                    "Name": "End",
+                    "DataType": "date",
+                    "Value": "future_end"
+                }
+            ],
             "NoticeCategory": "StudentGEN",
             "NoticeContent": "Annual Family Educational Rights and Privacy Act Notification<br>The Family Educational Rights and Privacy Act (FERPA) of 1974 protects the privacy of your education records. However, the \"directory\" information may be released unless you inform the Registrar's Office. For further details check the <a href='http://www.washington.edu/students/reg/ferpa.html'>Family Educational Rights and Privacy Act</a>web site",
             "NoticeType": "FERPA"
@@ -71,7 +93,34 @@
             "NoticeContent": "Peer-to-Peer File-Sharing and Copyright Infringement<br>Under copyright law it is illegal to download or share copyrighted mater ials such as music or movies without the permission of the copyright owner. Your actions when downloading or sharing files are traceable and could result in a significant financial penalty to you. For more information, go to the <a href='http://www.washington.edu/students/gencat/policy/p2pshare.html'>Peer-to-Peer File-Sharing and Copyright Infringement</a> page in the Student Guide.",
             "NoticeType": "RIAA"
         }
-
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentGEN",
+            "NoticeContent": "The Office of the Registrar has received payment for the following fees: New Student Enrollment & Orientation Fee",
+            "NoticeType": "FeesPaid"
+        },
+       {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentGEN",
+            "NoticeContent": "Thank you for confirming your intention to enroll at the Uni
+versity of Washington for autumn quarter 2014. Your new Student Enrollment and Orientation
+ Fee has been accepted and recorded.",
+            "NoticeType": "ThankYouRemark"
+        },
+        {
+            "NoticeAttributes": [
+            {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "future"
+             }
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Payment of tuition and tuition-related fees for fall quart
+er is due <b></b>. For details, check your <a href='https://sdb.admin.washington.edu/stude
+nts/UWNetID/tuition.asp'>Tuition Statement</a>",
+            "NoticeType": "TuitDue"
+        }
     ],
     "Person": {
         "Href": "",
