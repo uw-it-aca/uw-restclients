@@ -25,12 +25,12 @@
                     "Value": "future_end"
                 },
                 {
-                    "Name": "DisplayBegin",
+                    "Name": "Begin",
                     "DataType": "date",
                     "Value": "future"
                 },
                 {
-                    "Name": "DisplayEnd",
+                    "Name": "End",
                     "DataType": "date",
                     "Value": "future_end"
                 },
@@ -153,12 +153,12 @@
                  "Value": "future_end"
              },
              {
-                 "Name": "DisplayBegin",
+                 "Name": "Begin",
                  "DataType": "date",
                  "Value": "future"
              },
              {
-                 "Name": "DisplayEnd",
+                 "Name": "End",
                  "DataType": "date",
                  "Value": "future_end"
              }

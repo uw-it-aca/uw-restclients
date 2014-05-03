@@ -193,7 +193,69 @@
             "NoticeCategory": "NewStudentGEN",
             "NoticeContent": "Here is a summary of your expected status at the University:<br/>Campus: SEATTLE <br/>Class Standing: FRESHMAN <br/>School/College: Arts and Sciences <br/> Department: PRE MAJOR (A&S) <br/>Student Number: 1033333 <br/>Residency Status: RESIDENT<br/><a href='http://www.washington.edu/students/reg/whatsthis.html'><small>Notes and Definitions</small></a>",
             "NoticeType": "StatusSummary"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "future_end"
+                },
+                {
+                    "Name": "Begin",
+                    "DataType": "date",
+                    "Value": "future"
+                },
+                {
+                    "Name": "End",
+                    "DataType": "date",
+                    "Value": "future_end"
+                },
+                {
+                    "Name": "Quarter",
+                    "DataType": "string",
+                    "Value": "Summer"
+                },
+                {
+                    "Name": "Link",
+                    "DataType": "url",
+                    "Value": "http://www.uw.edu"
+                },
+                {
+                    "Name": "Bogus",
+                    "DataType": "unknown",
+                    "Value": "42"
+                }
+
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Summer quarter begins <b>June 23, 2014</b>",
+            "NoticeType": "QtrBegin"
+        },
+        {
+            "NoticeAttributes": [
+             {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "future_end"
+             },
+             {
+                 "Name": "Begin",
+                 "DataType": "date",
+                 "Value": "future"
+             },
+             {
+                 "Name": "End",
+                 "DataType": "date",
+                 "Value": "future_end"
+             }
+
+           ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Spring quarter ends <b>June 13, 2014<b>",
+            "NoticeType": "QtrEnd"
         }
+
     ],
     "Person": {
         "Href": "",

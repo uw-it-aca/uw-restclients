@@ -180,7 +180,69 @@
             "NoticeCategory": "StudentGEN",
             "NoticeContent": "<a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>Tuition Account Balance</A>:  $32611.00 CR <a href='https://sdb.admin.washington.edu/students/uwnetid/tuition.asp'>details</a><br/><i>UW Professional & Continuing Education fees may show in both the Tuition Account Balance and the UW Professnal & Continuing Education Account Balance</i>.",
             "NoticeType": "AcctBalance"
+        },
+        {
+            "NoticeAttributes": [
+                {
+                    "Name": "Date",
+                    "DataType": "date",
+                    "Value": "future_end"
+                },
+                {
+                    "Name": "Begin",
+                    "DataType": "date",
+                    "Value": "future"
+                },
+                {
+                    "Name": "End",
+                    "DataType": "date",
+                    "Value": "future_end"
+                },
+                {
+                    "Name": "Quarter",
+                    "DataType": "string",
+                    "Value": "Summer"
+                },
+                {
+                    "Name": "Link",
+                    "DataType": "url",
+                    "Value": "http://www.uw.edu"
+                },
+                {
+                    "Name": "Bogus",
+                    "DataType": "unknown",
+                    "Value": "42"
+                }
+
+            ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Summer quarter begins <b>June 23, 2014</b>",
+            "NoticeType": "QtrBegin"
+        },
+        {
+            "NoticeAttributes": [
+             {
+                 "Name": "Date",
+                 "DataType": "date",
+                 "Value": "future_end"
+             },
+             {
+                 "Name": "Begin",
+                 "DataType": "date",
+                 "Value": "future"
+             },
+             {
+                 "Name": "End",
+                 "DataType": "date",
+                 "Value": "future_end"
+             }
+
+           ],
+            "NoticeCategory": "StudentDAD",
+            "NoticeContent": "Spring quarter ends <b>June 13, 2014<b>",
+            "NoticeType": "QtrEnd"
         }
+
     ],
     "Person": {
         "Href": "",
