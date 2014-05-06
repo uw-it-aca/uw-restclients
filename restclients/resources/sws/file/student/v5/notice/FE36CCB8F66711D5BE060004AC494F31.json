@@ -248,12 +248,27 @@
                  "Name": "End",
                  "DataType": "date",
                  "Value": "future_end"
+             },
+             {
+                 "Name": "Quarter",
+                 "DataType": "string",
+                 "Value": "Spring"
+             },
+             {
+                 "Name": "Link",
+                 "DataType": "url",
+                 "Value": "http://www.uw.edu"
              }
-
            ],
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "Spring quarter ends <b>June 13, 2014<b>",
             "NoticeType": "QtrEnd"
+        },
+       {
+            "NoticeAttributes": [],
+            "NoticeCategory": "NewStudentCLIST",
+            "NoticeContent": "You can <a href=\"https://sdb.admin.washington.edu/students/uwnetid/finaidstatus.asp\">review the status</a> of your financial aid application online.",
+            "NoticeType": "FinAid"
         }
 
     ],

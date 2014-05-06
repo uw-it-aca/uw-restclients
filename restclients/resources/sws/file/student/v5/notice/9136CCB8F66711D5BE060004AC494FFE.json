@@ -73,6 +73,21 @@
                     "Name": "Date",
                     "DataType": "date",
                     "Value": "week"
+                },
+                {
+                    "Name": "Begin",
+                    "DataType": "date",
+                    "Value": "yesterday"
+                },
+                {
+                    "Name": "End",
+                    "DataType": "date",
+                    "Value": "week"
+                },
+                {
+                    "Name": "Quarter",
+                    "DataType": "string",
+                    "Value": "Summer"
                 }
             ],
             "NoticeCategory": "StudentALR",
