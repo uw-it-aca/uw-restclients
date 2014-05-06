@@ -620,3 +620,17 @@ class Notice(models.Model):
             'attributes': attrib_data
         }
         return data
+
+class Finance(models.Model):
+    tuition_accbalance = models.FloatField()
+    pce_accbalance = models.FloatField()
+
+    def json_data(self):
+        return {
+            'tuition_accbalance': self.tuition_accbalance,
+            'pce_accbalance': self.pce_accbalance
+            }
+
+    def __str__(self):
+        return "{tuition_accbalance: %f, pce_accbalance: %f}" % (
+            self.tuition_accbalance, self.pce_accbalance)
