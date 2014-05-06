@@ -125,6 +125,7 @@ class SWSTestTerm(TestCase):
 
             self.assertEquals(term.is_grading_period_open(), False, "Grading period is not open")
             self.assertEquals(term.is_grading_period_past(), True, "Grading period is past")
+            self.assertEquals(term.term_label(), "2013,winter", "Term label")
 
     #Expected values will have to change when the json files are updated
     def test_next_quarter(self):
@@ -201,6 +202,7 @@ class SWSTestTerm(TestCase):
 
             self.assertEquals(term.is_grading_period_open(), False, "Grading period is not open")
             self.assertEquals(term.is_grading_period_past(), True, "Grading period is past")
+            self.assertEquals(term.term_label(), "2013,summer", "Term label")
 
     def test_quarter_before(self):
         with self.settings(

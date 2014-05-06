@@ -144,6 +144,8 @@ class Term(models.Model):
 
         return (days / 7)
 
+    def term_label(self):
+        return "%s,%s" % (self.year, self.quarter)
 
     def json_data(self):
         data = {
