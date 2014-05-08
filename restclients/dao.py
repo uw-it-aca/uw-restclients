@@ -6,6 +6,7 @@ from restclients.dao_implementation.sws import File as SWSFile
 from restclients.dao_implementation.gws import File as GWSFile
 from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.canvas import File as CanvasFile
+from restclients.dao_implementation.catalyst import File as CatalystFile
 from restclients.dao_implementation.nws import File as NWSFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
@@ -132,6 +133,14 @@ class Canvas_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_CANVAS_DAO_CLASS', CanvasFile)
+
+
+class Catalyst_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('catalyst', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_CATALYST_DAO_CLASS', CatalystFile)
 
 
 class AmazonSQS_DAO(MY_DAO):

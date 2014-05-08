@@ -1,6 +1,20 @@
 from django.db import models
 from restclients.models.sws import Section
 
+
+class Gradebook(models.Model):
+    gradebook_id = models.IntegerField(max_length=10)
+    name = models.CharField(max_length=250)
+    url = models.CharField(max_length=250)
+
+
+class GradebookParticipant(models.Model):
+    participant_id = models.IntegerField(max_length=10)
+    person_id = models.CharField(max_length=100)
+    class_grade = models.CharField(max_length=250)
+    notes = models.CharField(max_length=5000)
+
+
 class CourseGradeData(models.Model):
     section = models.ForeignKey(Section)
     name = models.CharField(max_length=250)
@@ -22,6 +36,7 @@ class CourseGradeData(models.Model):
 
         return data
 
+
 class CourseGradeItem(models.Model):
     name = models.CharField(max_length=250)
     score = models.CharField(max_length=200)
@@ -35,4 +50,3 @@ class CourseGradeItem(models.Model):
             "url": self.url,
             "max_points": self.max_points,
         }
-

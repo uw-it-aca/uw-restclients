@@ -66,6 +66,8 @@ from restclients.test.canvas.submissions import CanvasTestSubmissions
 from restclients.test.canvas.assignments import CanvasTestAssignments
 from restclients.test.canvas.quizzes import CanvasTestQuizzes
 
+from restclients.test.catalyst.gradebook import CatalystTestGradebook
+
 from restclients.test.trumba.accounts import TrumbaTestAccounts
 from restclients.test.trumba.calendars import TrumbaTestCalendars
 from restclients.test.gws.trumba_group import TestGwsTrumbaGroup
