@@ -10,7 +10,7 @@ class SWSNotice(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
             notices = get_notices_by_regid("9136CCB8F66711D5BE060004AC494FFE")
-            self.assertEquals(len(notices), 8)
+            self.assertEquals(len(notices), 13)
 
             notice = notices[1]
             self.assertEquals(notice.notice_category, "StudentDAD")
@@ -23,19 +23,19 @@ class SWSNotice(TestCase):
             self.assertEquals(attribute.data_type, "date")
 
             #String Attribute
-            attribute = notice.attributes[1]
+            attribute = notice.attributes[3]
             self.assertEquals(attribute.name, "Quarter")
             self.assertEquals(attribute.data_type, "string")
             self.assertEquals(attribute.get_value(), "Summer")
 
             #URL Attribute
-            attribute = notice.attributes[2]
+            attribute = notice.attributes[4]
             self.assertEquals(attribute.name, "Link")
             self.assertEquals(attribute.data_type, "url")
             self.assertEquals(attribute.get_value(), "http://www.uw.edu")
 
             #Ensure unknown attributes aren't included
-            self.assertEquals(len(notice.attributes), 3)
+            self.assertEquals(len(notice.attributes), 5)
 
             #Default custom category
             self.assertEquals(notice.custom_category, "Uncategorized")
