@@ -65,19 +65,24 @@ class Courses(Canvas):
         return self.get_published_courses_in_account(
             self._sis_id(sis_account_id, sis_field="account"), params)
 
-    def get_courses_for_regid(self, regid):
+    def get_courses_for_regid(self, regid, params={}):
         """
         Return a list of courses for the passed regid.
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.index
         """
-        url = "/api/v1/courses.json?as_user_id=%s" % (self._sis_id(regid,
-                                                      sis_field="user"))
+        params["as_user_id"] = self._sis_id(regid, sis_field="user")
+
+        url = "/api/v1/courses%s" % self._params(params)
+        data = self._get_resource(url)
+        del params["as_user_id"]
 
         courses = []
-        for datum in self._get_resource(url):
-            course = self.get_course(datum["id"])
-            courses.append(course)
+        for datum in data:
+            if "sis_course_id" in datum:
+                courses.append(self._course_from_json(datum))
+            else:
+                courses.append(self.get_course(datum["id"], params))
 
         return courses
 
@@ -99,6 +104,7 @@ class Courses(Canvas):
         course.course_id = data["id"]
         course.sis_course_id = data["sis_course_id"] if "sis_course_id" in data else None
         course.account_id = data["account_id"]
+        course.code = data["course_code"]
         course.name = data["name"]
         course.workflow_state = data["workflow_state"]
         course.public_syllabus = data["public_syllabus"]
