@@ -107,6 +107,19 @@ class Enrollment(models.Model):
 
         return sws_id
 
+    def json_data(self):
+        return {"user_id": self.user_id,
+                "course_id": self.course_id,
+                "section_id": self.section_id,
+                "login_id": self.login_id,
+                "sis_user_id": self.sis_user_id,
+                "role": self.role,
+                "status": self.status,
+                "current_score": self.current_score,
+                "final_score": self.final_score,
+                "current_grade": self.current_grade,
+                "final_grade": self.final_grade}
+
     class Meta:
         db_table = "restclients_canvas_enrollment"
 

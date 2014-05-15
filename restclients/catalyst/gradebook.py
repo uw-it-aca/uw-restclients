@@ -41,4 +41,3 @@ def get_participants_for_section(section, person=None):
         participants.append(participant)
 
     return participants
-

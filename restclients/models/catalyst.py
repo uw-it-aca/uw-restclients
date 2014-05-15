@@ -7,12 +7,24 @@ class Gradebook(models.Model):
     name = models.CharField(max_length=250)
     url = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = "restclients_catalyst_gradebook"
+
 
 class GradebookParticipant(models.Model):
     participant_id = models.IntegerField(max_length=10)
     person_id = models.CharField(max_length=100)
     class_grade = models.CharField(max_length=250)
     notes = models.CharField(max_length=5000)
+
+    def json_data(self):
+        return {"participant_id": self.participant_id,
+                "person_id": self.person_id,
+                "class_grade": self.class_grade,
+                "notes": self.notes}
+
+    class Meta:
+        db_table = "restclients_catalyst_gradebookparticipant"
 
 
 class CourseGradeData(models.Model):
