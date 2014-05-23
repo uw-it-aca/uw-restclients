@@ -76,6 +76,6 @@ from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock
 
-from restclients.test.libraries.account_info import LibrariesAccountInfo
+from restclients.test.library.mylibinfo import MyLibInfoTest
 
 from restclients.test.sws.notice import SWSNotice
