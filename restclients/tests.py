@@ -1,6 +1,9 @@
 from django.utils import unittest
 
-#from restclients.test.sws.compatible import SWSTest
+from restclients.test.library.mylibinfo import MyLibInfoTest
+from restclients.test.sws.compatible import SWSTest
+from restclients.test.sws.financial import SWSFinance
+from restclients.test.sws.notice import SWSNotice
 from restclients.test.sws.term import SWSTestTerm
 from restclients.test.sws.err404.dao import SWSTestDAO404
 from restclients.test.sws.err500.dao import SWSTestDAO500
@@ -76,6 +79,4 @@ from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock
 
-from restclients.test.library.mylibinfo import MyLibInfoTest
 
-from restclients.test.sws.notice import SWSNotice
