@@ -4,7 +4,7 @@ This is the interface for interacting with the UW Libraries Web Service.
 
 import logging
 import json
-from restclients.models.libraries import Account
+from restclients.models.library import MyLibAccount
 from restclients.library import get_resource
 
 
@@ -45,7 +45,7 @@ def _get_resource(netid, timestamp=None, style=None):
 
 def _account_from_json(body):
     account_data = json.loads(body)
-    account = Account()
+    account = MyLibAccount()
     account.fines = account_data["fines"]
     account.holds_ready = account_data["holds_ready"]
     account.items_loaned = account_data["items_loaned"]

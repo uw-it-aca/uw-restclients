@@ -11,11 +11,16 @@ class MyLibInfoTest(TestCase):
             'restclients.dao_implementation.libraries.File'):
 
             account = get_account("javerage")
-
             self.assertEquals(account.next_due, "2014-05-27")
             self.assertEquals(account.holds_ready, 1)
             self.assertEquals(account.fines, 5.35)
             self.assertEquals(account.items_loaned, 3)
+
+            account = get_account("jnewstudent")
+            self.assertIsNone(account.next_due)
+            self.assertEquals(account.holds_ready, 0)
+            self.assertEquals(account.fines, 0.0)
+            self.assertEquals(account.items_loaned, 0)
 
 
     def test_html_response(self):
