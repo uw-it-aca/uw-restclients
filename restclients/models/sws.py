@@ -632,5 +632,5 @@ class Finance(models.Model):
             }
 
     def __str__(self):
-        return "{tuition_accbalance: %f, pce_accbalance: %f}" % (
+        return "{tuition_accbalance: %s, pce_accbalance: %s}" % (
             self.tuition_accbalance, self.pce_accbalance)
