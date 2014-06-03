@@ -14,6 +14,7 @@ from restclients.dao_implementation.trumba import FileSea
 from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.libraries import File as LibrariesFile
+from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.cache_implementation import NoCache
 
 
@@ -186,12 +187,22 @@ class NWS_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_NWS_DAO_CLASS', NWSFile)
 
+
+class Hfs_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('hfs', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_HFS_DAO_CLASS', HfsFile)
+
+
 class Libraries_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('libraries', url, headers)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_LIBRARIES_DAO_CLASS', LibrariesFile)
+
 
 class TrumbaBot_DAO(MY_DAO):
     service_id = FileBot().get_path_prefix()

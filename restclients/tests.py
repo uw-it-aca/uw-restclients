@@ -1,6 +1,8 @@
 from django.utils import unittest
 
+from restclients.test.hfs.idcard import HfsTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
+
 from restclients.test.sws.compatible import SWSTest
 from restclients.test.sws.financial import SWSFinance
 from restclients.test.sws.notice import SWSNotice
