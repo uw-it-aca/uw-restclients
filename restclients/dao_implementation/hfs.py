@@ -37,4 +37,8 @@ class Live(object):
                             service_name='hfs')
 
     def _get_pool(self):
-        pass
+        return get_con_pool(settings.RESTCLIENTS_HFS_HOST,
+                            settings.RESTCLIENTS_HFS_KEY_FILE,
+                            settings.RESTCLIENTS_HFS_CERT_FILE,
+                            max_pool_size=HFS_MAX_POOL_SIZE,
+                            socket_timeout=HFS_SOCKET_TIMEOUT)
