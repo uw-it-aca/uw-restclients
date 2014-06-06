@@ -2,6 +2,7 @@
 This is the interface for interacting with the UW Libraries Web Service.
 """
 
+from datetime import datetime
 import logging
 import json
 from restclients.models.library import MyLibAccount
@@ -49,6 +50,10 @@ def _account_from_json(body):
     account.fines = account_data["fines"]
     account.holds_ready = account_data["holds_ready"]
     account.items_loaned = account_data["items_loaned"]
-    account.next_due = account_data["next_due"]
+    if account_data.get("next_due") is None:
+        account.next_due = None
+    else:
+        account.next_due = datetime.strptime(account_data["next_due"],
+                                             "%Y-%m-%d").date()
     return account
 

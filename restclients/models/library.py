@@ -1,4 +1,5 @@
 from django.db import models
+from restclients.util.formator import standard_date_str
 
 
 class MyLibAccount(models.Model):
@@ -7,13 +8,21 @@ class MyLibAccount(models.Model):
     items_loaned = models.IntegerField(max_length=8)
     next_due = models.DateField(null=True)
 
+    
+    def next_due_date_str(self):
+        if self.next_due is None:
+            return self.next_due
+        else:
+            return standard_date_str(self.next_due)
+#            return unicode(standard_date_str(self.next_due))
+
 
     def json_data(self):
         return {
             'holds_ready': self.holds_ready,
             'fines': self.fines,
             'items_loaned': self.items_loaned,
-            'next_due': self.next_due
+            'next_due': self.next_due_date_str()
             }
 
 

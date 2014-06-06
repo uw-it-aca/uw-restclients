@@ -1,3 +1,4 @@
+from datetime import date
 from django.test import TestCase
 from django.conf import settings
 from restclients.library.mylibinfo import get_account, get_account_html
@@ -11,7 +12,7 @@ class MyLibInfoTest(TestCase):
             'restclients.dao_implementation.libraries.File'):
 
             account = get_account("javerage")
-            self.assertEquals(account.next_due, "2014-05-27")
+            self.assertEquals(account.next_due, date(2014, 5, 27))
             self.assertEquals(account.holds_ready, 1)
             self.assertEquals(account.fines, 5.35)
             self.assertEquals(account.items_loaned, 3)
