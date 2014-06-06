@@ -1,10 +1,12 @@
 from django.db import models
+from restclients.util.formator import truncate_time_str
 
 
-def hfs_account_json_data(account):
+def hfs_account_json_data(account, older_than_days_to_omit_time=0):
     return {
         'balance': account.balance,
-        'last_updated': account.last_updated,
+        'last_updated': truncate_time_str(account.last_updated,
+                                          older_than_days_to_omit_time),
         'add_funds_url': account.add_funds_url
         }
 
@@ -20,8 +22,8 @@ class StudentHuskyCardAccout(models.Model):
     add_funds_url = models.CharField(max_length=80)
 
 
-    def json_data(self):
-        return hfs_account_json_data(self)
+    def json_data(self, older_than_days_to_omit_time=0):
+        return hfs_account_json_data(self, older_than_days_to_omit_time)
 
 
     def __str__(self):
@@ -34,8 +36,8 @@ class EmployeeHuskyCardAccount(models.Model):
     add_funds_url = models.CharField(max_length=80)
 
 
-    def json_data(self):
-        return hfs_account_json_data(self)
+    def json_data(self, older_than_days_to_omit_time=0):
+        return hfs_account_json_data(self, older_than_days_to_omit_time)
 
 
     def __str__(self):
@@ -48,8 +50,8 @@ class ResidentDiningAccount(models.Model):
     add_funds_url = models.CharField(max_length=80)
 
 
-    def json_data(self):
-        return hfs_account_json_data(self)
+    def json_data(self, older_than_days_to_omit_time=0):
+        return hfs_account_json_data(self, older_than_days_to_omit_time)
 
 
     def __str__(self):
@@ -68,7 +70,7 @@ class HfsAccouts(models.Model):
                                         null=True, default=None)
 
 
-    def json_data(self):
+    def json_data(self, older_than_days_to_omit_time=0):
         return_value = {
             'student_husky_card': None,
             'employee_husky_card': None,
@@ -76,13 +78,16 @@ class HfsAccouts(models.Model):
             }
 
         if self.student_husky_card is not None:
-            return_value['student_husky_card'] = self.student_husky_card.json_data()
+            return_value['student_husky_card'] = self.student_husky_card.json_data(
+                older_than_days_to_omit_time)
 
         if self.employee_husky_card is not None:
-            return_value['employee_husky_card'] = self.employee_husky_card.json_data()
+            return_value['employee_husky_card'] = self.employee_husky_card.json_data(
+                older_than_days_to_omit_time)
 
         if self.resident_dining is not None:
-            return_value['resident_dining'] = self.resident_dining.json_data()
+            return_value['resident_dining'] = self.resident_dining.json_data(
+                older_than_days_to_omit_time)
 
         return return_value
 
