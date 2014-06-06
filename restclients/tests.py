@@ -1,5 +1,6 @@
 from django.utils import unittest
 
+from restclients.test.util.formator import formatorTest
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
 
