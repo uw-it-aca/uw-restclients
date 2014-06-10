@@ -4,10 +4,8 @@ Contains UW Libraries DAO implementations.
 
 from django.conf import settings
 from restclients.dao_implementation.live import get_con_pool, get_live_url
-from restclients.dao_implementation.mock import get_mockdata_url, post_mockdata_url
-from restclients.dao_implementation.mock import delete_mockdata_url, put_mockdata_url
+from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.mock_http import MockHTTP
-import re
 
 
 class File(object):
@@ -21,24 +19,30 @@ class File(object):
         return get_mockdata_url("hfs", "file", url, headers)
 
 
+
+HFS_MAX_POOL_SIZE = 10 #default values
+HFS_SOCKET_TIMEOUT = 15 #default values
+
 class Live(object):
     """
     This DAO provides real data.  It requires further configuration, e.g.
-    RESTCLIENTS_LIBRARIES_HOST=''
+    RESTCLIENTS_HFS_HOST=''
+    RESTCLIENTS_HFS_CERT_FILE='.../cert.cert',
+    RESTCLIENTS_HFS_KEY_FILE='.../certs_key.key',
     """
     pool = None
 
     def getURL(self, url, headers):
         if Live.pool == None:
-            Live.pool = self._get_pool()
-        return get_live_url(Live.pool, 'GET',
+            Live.pool = get_con_pool(settings.RESTCLIENTS_HFS_HOST,
+                                     settings.RESTCLIENTS_HFS_KEY_FILE,
+                                     settings.RESTCLIENTS_HFS_CERT_FILE,
+                                     max_pool_size=HFS_MAX_POOL_SIZE,
+                                     socket_timeout=HFS_SOCKET_TIMEOUT)
+        return get_live_url(Live.pool, 
+                            'GET',
                             settings.RESTCLIENTS_HFS_HOST,
-                            url, headers=headers,
+                            url, 
+                            headers=headers,
                             service_name='hfs')
 
-    def _get_pool(self):
-        return get_con_pool(settings.RESTCLIENTS_HFS_HOST,
-                            settings.RESTCLIENTS_HFS_KEY_FILE,
-                            settings.RESTCLIENTS_HFS_CERT_FILE,
-                            max_pool_size=HFS_MAX_POOL_SIZE,
-                            socket_timeout=HFS_SOCKET_TIMEOUT)
