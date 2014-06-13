@@ -3,14 +3,10 @@ Interfaceing with the Student Web Service,
  for notice resource
 """
 import logging
-import re
-from datetime import datetime
-from urllib import urlencode
-from restclients.exceptions import DataFailureException
-from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.models.sws import Notice, NoticeAttribute
 from restclients.sws import get_resource
-import datetime
+from dateutil import parser
+import pytz
 
 notice_res_url_prefix = "/student/v5/notice/"
 
@@ -46,8 +42,13 @@ def _notices_from_json(notice_data):
                 if attribute.data_type == "url":
                     attribute._url_value = notice_attrib.get("Value")
                 elif attribute.data_type == "date":
-                    conv = datetime.datetime.strptime(notice_attrib.get("Value"), "%Y%m%d")
-                    attribute._date_value = conv.date()
+                    #Convert to UTC datetime
+                    date =  parser.parse(notice_attrib.get("Value"))
+                    localtz = pytz.timezone('America/Los_Angeles')
+                    local_dt = localtz.localize(date)
+                    utc_dt = local_dt.astimezone(pytz.utc)
+
+                    attribute._date_value = utc_dt
                 elif attribute.data_type == "string":
                     attribute._string_value = notice_attrib.get("Value")
                 else:
