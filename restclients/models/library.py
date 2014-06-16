@@ -14,15 +14,24 @@ class MyLibAccount(models.Model):
             return self.next_due
         else:
             return standard_date_str(self.next_due)
-#            return unicode(standard_date_str(self.next_due))
 
 
-    def json_data(self):
+    def json_data(self, full_name_format=False):
+        """
+        The default format for next due date is the uncode of 
+        the isoformat (yyyy-mm-dd). 
+        If full_name_format is True, the format for 
+        next due date will be:  "month-full-name dd, yyyy".
+        """
+        next_due = str(self.next_due)
+        if full_name_format:
+            next_due = self.next_due_date_str()
+            
         return {
             'holds_ready': self.holds_ready,
             'fines': self.fines,
             'items_loaned': self.items_loaned,
-            'next_due': self.next_due_date_str()
+            'next_due': unicode(next_due)
             }
 
 

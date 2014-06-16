@@ -17,6 +17,12 @@ class MyLibInfoTest(TestCase):
             self.assertEquals(account.fines, 5.35)
             self.assertEquals(account.items_loaned, 3)
 
+            json_result = account.json_data(full_name_format=True)
+            self.assertEquals(json_result.get('next_due'), u'May 27, 2014')
+            json_result = account.json_data()
+            self.assertEquals(json_result.get('next_due'), u'2014-05-27')
+
+
             account = get_account("jnewstudent")
             self.assertIsNone(account.next_due)
             self.assertEquals(account.holds_ready, 0)
