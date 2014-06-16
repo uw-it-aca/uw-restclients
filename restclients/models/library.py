@@ -9,29 +9,30 @@ class MyLibAccount(models.Model):
     next_due = models.DateField(null=True)
 
     
-    def next_due_date_str(self):
-        if self.next_due is None:
-            return self.next_due
-        else:
-            return standard_date_str(self.next_due)
+    def get_next_due_date_uncode_str(self, full_name_format):
+        """
+        If full_name_format is False, return next due date in 
+        the uncode of the ISO format (yyyy-mm-dd). 
+        If full_name_format is True, return the uncode of 
+        format: "month-full-name dd, yyyy".
+        If the next_due is None, return None.
+        """
+        if self.next_due is not None:
+            if full_name_format:
+                next_due = standard_date_str(self.next_due)
+            else:
+                next_due = str(self.next_due)
+            return unicode(next_due)
+
+        return None
 
 
     def json_data(self, full_name_format=False):
-        """
-        The default format for next due date is the uncode of 
-        the isoformat (yyyy-mm-dd). 
-        If full_name_format is True, the format for 
-        next due date will be:  "month-full-name dd, yyyy".
-        """
-        next_due = str(self.next_due)
-        if full_name_format:
-            next_due = self.next_due_date_str()
-            
         return {
             'holds_ready': self.holds_ready,
             'fines': self.fines,
             'items_loaned': self.items_loaned,
-            'next_due': unicode(next_due)
+            'next_due': self.get_next_due_date_uncode_str(full_name_format)
             }
 
 
