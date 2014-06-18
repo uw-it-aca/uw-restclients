@@ -1,12 +1,19 @@
 from django.db import models
-from restclients.util.formator import truncate_time_str
+from restclients.util.date_formator import past_datetime_str
 
 
-def hfs_account_json_data(account, older_than_days_to_omit_time=0):
+def get_timestamp_str(last_updated_datetime, use_custom_date_format):
+    if use_custom_date_format:
+        return past_datetime_str(last_updated_datetime)
+    else:
+        return str(last_updated_datetime)
+
+
+def hfs_account_json_data(account, use_custom_date_format):
     return {
         'balance': account.balance,
-        'last_updated': truncate_time_str(account.last_updated,
-                                          older_than_days_to_omit_time),
+        'last_updated': get_timestamp_str(account.last_updated,
+                                          use_custom_date_format),
         'add_funds_url': account.add_funds_url
         }
 
@@ -22,8 +29,8 @@ class StudentHuskyCardAccout(models.Model):
     add_funds_url = models.CharField(max_length=80)
 
 
-    def json_data(self, older_than_days_to_omit_time=0):
-        return hfs_account_json_data(self, older_than_days_to_omit_time)
+    def json_data(self, use_custom_date_format=False):
+        return hfs_account_json_data(self, use_custom_date_format)
 
 
     def __str__(self):
@@ -36,8 +43,8 @@ class EmployeeHuskyCardAccount(models.Model):
     add_funds_url = models.CharField(max_length=80)
 
 
-    def json_data(self, older_than_days_to_omit_time=0):
-        return hfs_account_json_data(self, older_than_days_to_omit_time)
+    def json_data(self, use_custom_date_format=False):
+        return hfs_account_json_data(self, use_custom_date_format)
 
 
     def __str__(self):
@@ -50,8 +57,8 @@ class ResidentDiningAccount(models.Model):
     add_funds_url = models.CharField(max_length=80)
 
 
-    def json_data(self, older_than_days_to_omit_time=0):
-        return hfs_account_json_data(self, older_than_days_to_omit_time)
+    def json_data(self, use_custom_date_format=False):
+        return hfs_account_json_data(self, use_custom_date_format)
 
 
     def __str__(self):
@@ -70,7 +77,7 @@ class HfsAccouts(models.Model):
                                         null=True, default=None)
 
 
-    def json_data(self, older_than_days_to_omit_time=0):
+    def json_data(self, use_custom_date_format=False):
         return_value = {
             'student_husky_card': None,
             'employee_husky_card': None,
@@ -79,15 +86,15 @@ class HfsAccouts(models.Model):
 
         if self.student_husky_card is not None:
             return_value['student_husky_card'] = self.student_husky_card.json_data(
-                older_than_days_to_omit_time)
+                use_custom_date_format)
 
         if self.employee_husky_card is not None:
             return_value['employee_husky_card'] = self.employee_husky_card.json_data(
-                older_than_days_to_omit_time)
+                use_custom_date_format)
 
         if self.resident_dining is not None:
             return_value['resident_dining'] = self.resident_dining.json_data(
-                older_than_days_to_omit_time)
+                use_custom_date_format)
 
         return return_value
 
