@@ -1,7 +1,8 @@
 from django.test import TestCase
 from datetime import date, datetime, timedelta
-from restclients.util.date_formator import month_full_name_date_str
-from restclients.util.date_formator import month_full_name_datetime_str
+from restclients.util.date_formator import full_month_date_str
+from restclients.util.date_formator import abbr_month_date_time_str
+from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.date_formator import last_midnight, time_str, is_today
 from restclients.util.date_formator import is_days_ago, is_over_weeks_ago
 from restclients.util.date_formator import is_over_years_ago, is_over_months_ago
@@ -11,12 +12,12 @@ from restclients.util.date_formator import past_datetime_str
 class formatorTest(TestCase):
 
 
-    def test_month_full_name_date_str(self):
+    def test_full_month_date_str(self):
         
-        self.assertEquals(month_full_name_date_str(date(2014, 7, 4)),
+        self.assertEquals(full_month_date_str(date(2014, 7, 4)),
                           'July 4, 2014')
         
-        self.assertEquals(month_full_name_date_str(date(2014, 6, 12)),
+        self.assertEquals(full_month_date_str(date(2014, 6, 12)),
                           'June 12, 2014')
                                             
 
@@ -28,12 +29,20 @@ class formatorTest(TestCase):
         self.assertEquals(time_str(datetime(2014, 7, 4, 23, 59)), '11:59 PM')
 
 
-    def test_month_full_name_datetime_str(self):
-        self.assertEquals(month_full_name_datetime_str(datetime(2014, 7, 4, 3, 3)),
-                          'July 4, 2014 at 3:03 AM')
+    def test_abbr_month_date_time_str(self):
+        self.assertEquals(abbr_month_date_time_str(datetime(2014, 7, 4, 3, 3)),
+                          'Jul 4, 2014 at 3:03 AM')
         
-        self.assertEquals(month_full_name_datetime_str(datetime(2014, 6, 12, 17, 55)),
-                          'June 12, 2014 at 5:55 PM')
+        self.assertEquals(abbr_month_date_time_str(datetime(2014, 6, 12, 17, 55)),
+                          'Jun 12, 2014 at 5:55 PM')
+                                            
+
+    def test_abbr_week_month_day_str(self):
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 7, 4)),
+                          'Fri, Jul 4')
+        
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 12)),
+                          'Thu, Jun 12')
                                             
 
     def test_last_midnight(self):

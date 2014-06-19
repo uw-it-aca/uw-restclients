@@ -1,5 +1,5 @@
 from django.db import models
-from restclients.util.date_formator import month_full_name_date_str
+from restclients.util.date_formator import abbr_week_month_day_str
 
 
 class MyLibAccount(models.Model):
@@ -9,29 +9,29 @@ class MyLibAccount(models.Model):
     next_due = models.DateField(null=True)
 
     
-    def get_next_due_date_str(self, full_name_format):
+    def get_next_due_date_str(self, use_abbr_week_month_day_format):
         """
-        If full_name_format is False, return next due date in 
+        If use_abbr_week_month_day_format is False, return next due date in 
         the ISO format (yyyy-mm-dd). 
-        If full_name_format is True, return the format of: 
-        "month-full-name dd, yyyy".
+        If use_abbr_week_month_day_format is True, return the format of: 
+        "abbreviated weekday, abbr month name day".
         If the next_due is None, return None.
         """
         if self.next_due is not None:
-            if full_name_format:
-                return month_full_name_date_str(self.next_due)
+            if use_abbr_week_month_day_format:
+                return abbr_week_month_day_str(self.next_due)
             else:
                 return str(self.next_due)
 
         return None
 
 
-    def json_data(self, full_name_format=False):
+    def json_data(self, use_abbr_week_month_day_format=False):
         return {
             'holds_ready': self.holds_ready,
             'fines': self.fines,
             'items_loaned': self.items_loaned,
-            'next_due': self.get_next_due_date_str(full_name_format)
+            'next_due': self.get_next_due_date_str(use_abbr_week_month_day_format)
             }
 
 

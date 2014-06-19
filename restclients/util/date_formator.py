@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timedelta
 
 
-def month_full_name_date_str(adate):
+def full_month_date_str(adate):
     """
     Return a string value in the format of 
     "Month(full name) day, 4-digit-year" for the given date
@@ -20,15 +20,26 @@ def time_str(adatetime):
     return re.sub(r'^0', '', adatetime.strftime("%I:%M %p"))
 
 
-def month_full_name_datetime_str(adatetime):
+def abbr_month_date_time_str(adatetime):
     """
     Return a date value in the format of 
-    "Month(full name) day, 4-digit-year at hour:minute [AP]M"
+    "Month(abbreviated name) day, 4-digit-year at hour:minute [AP]M"
     """
-    return "%s %d, %d at %s" % (adatetime.strftime("%B"),
+    return "%s %d, %d at %s" % (adatetime.strftime("%b"),
                                 adatetime.day,
                                 adatetime.year,
                                 time_str(adatetime))
+
+
+def abbr_week_month_day_str(adatetime):
+    """
+    Return a string consists of abbreviated weekday, abbreviated month, 
+    date with no leading zero, and without a year
+    e.g., Mon, Jun 2. No punctuation is shown for 
+    the abbreviated weekday and month. 
+    """
+    return "%s %d" % (adatetime.strftime("%a, %b"), adatetime.day)
+
 
 
 def past_datetime_str(adatetime):
