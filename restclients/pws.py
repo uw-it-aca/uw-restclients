@@ -3,11 +3,12 @@ This is the interface for interacting with the Person Web Service.
 """
 
 from restclients.dao import PWS_DAO
-from restclients.exceptions import InvalidRegID, InvalidNetID
+from restclients.exceptions import InvalidRegID, InvalidNetID, InvalidEmployeeID
 from restclients.exceptions import InvalidIdCardPhotoSize
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import Person, Entity
 from StringIO import StringIO
+from urllib import urlencode
 import json
 import re
 
@@ -20,6 +21,7 @@ class PWS(object):
         self.actas = actas
         self._re_regid = re.compile(r'^[A-F0-9]{32}$', re.I)
         self._re_netid = re.compile(r'^([a-z]adm_)?[a-z][a-z0-9]{0,7}$', re.I)
+        self._re_employee_id = re.compile(r'^\d{9}$')
 
     def get_person_by_regid(self, regid):
         """
@@ -56,6 +58,27 @@ class PWS(object):
             raise DataFailureException(url, response.status, response.data)
 
         return self._person_from_json(response.data)
+
+    def get_person_by_employee_id(self, employee_id):
+        """
+        Returns a restclients.Person object for the given employee id.  If the
+        employee id isn't found, nothing will be returned. If there is an error
+        communicating with the PWS, a DataFailureException will be thrown.
+        """
+        if not self.valid_employee_id(employee_id):
+            raise InvalidEmployeeID(employee_id)
+
+        url = "/identity/v1/person.json?%s" % urlencode({"employee_id": employee_id})
+        response = PWS_DAO().getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        # Search does not return a full person resource
+        data = json.loads(response.data)
+        if len(data["Persons"]):
+            regid = data["Persons"][0]["PersonURI"]["UWRegID"]
+            return self.get_person_by_regid(regid)
 
     def get_entity_by_regid(self, regid):
         """
@@ -149,6 +172,9 @@ class PWS(object):
 
     def valid_uwregid(self, regid):
         return True if self._re_regid.match(str(regid)) else False
+
+    def valid_employee_id(self, employee_id):
+        return True if self._re_employee_id.match(str(employee_id)) else False
 
     def _person_from_json(self, data):
         """

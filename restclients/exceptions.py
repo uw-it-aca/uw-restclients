@@ -19,6 +19,10 @@ class InvalidRegID(Exception):
     """Exception for invalid regid."""
     pass
 
+class InvalidEmployeeID(Exception):
+    """Exception for invalid employee id."""
+    pass
+
 class InvalidUUID(Exception):
     """Exception for invalid UUID."""
     pass
