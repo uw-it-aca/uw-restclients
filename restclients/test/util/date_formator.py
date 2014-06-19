@@ -40,9 +40,18 @@ class formatorTest(TestCase):
     def test_abbr_week_month_day_str(self):
         self.assertEquals(abbr_week_month_day_str(datetime(2014, 7, 4)),
                           'Fri, Jul 4')
-        
         self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 12)),
                           'Thu, Jun 12')
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 14)),
+                          'Sat, Jun 14')
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 15)),
+                          'Sun, Jun 15')
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 16)),
+                          'Mon, Jun 16')
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 17)),
+                          'Tue, Jun 17')
+        self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 18)),
+                          'Wed, Jun 18')
                                             
 
     def test_last_midnight(self):
