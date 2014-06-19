@@ -1,8 +1,9 @@
+import pickle
 from django.db import models
 from django.template import Context, loader
 from base64 import b64encode, b64decode
 from datetime import datetime
-import pickle
+from restclients.util.date_formator import abbr_week_month_day_str
 
 
 class Person(models.Model):
@@ -598,6 +599,11 @@ class NoticeAttribute(models.Model):
         if self.data_type == "url":
             return self._url_value
 
+    def get_formatted_date_value(self):
+        if self._date_value:
+            return abbr_week_month_day_str(self._date_value)
+        return None
+
 
 class Notice(models.Model):
     notice_category = models.CharField(max_length=100)
@@ -605,21 +611,31 @@ class Notice(models.Model):
     notice_type = models.CharField(max_length=100)
     custom_category = models.CharField(max_length=100, default="Uncategorized")
 
-    def json_data(self):
+    def json_data(self, include_abbr_week_month_day_format=False):
 
         attrib_data = []
 
         for attrib in self.attributes:
-            attrib_data.append({
-                'name': attrib.name,
-                'data_type': attrib.data_type,
-                'value': attrib.get_value()
-                })
+            if attrib.data_type == "date" and include_abbr_week_month_day_format:
+                attrib_data.append({
+                        'name': attrib.name,
+                        'data_type': attrib.data_type,
+                        'value': attrib.get_value(),
+                        'formatted_value': attrib.get_formatted_date_value()
+                        })
+            else:
+                attrib_data.append({
+                        'name': attrib.name,
+                        'data_type': attrib.data_type,
+                        'value': attrib.get_value()
+                        })
+
         data = {
             'notice_content': self.notice_content,
             'attributes': attrib_data
         }
         return data
+
 
 class Finance(models.Model):
     tuition_accbalance = models.FloatField()
