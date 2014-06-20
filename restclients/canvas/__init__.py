@@ -1,9 +1,9 @@
 """
 This is the interface for interacting with Instructure's Canvas web services.
 """
-
+from django.conf import settings
 from restclients.dao import Canvas_DAO
-from restclients.models.canvas import Course
+from restclients.models.canvas import Course, Term
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
 import warnings
@@ -48,12 +48,17 @@ class Canvas(object):
         """
         Return a term resource for the passed SIS ID.
         """
-        # There is not an actual term resource in the Canvas API, so we have
-        # to fake it
-        from restclients.canvas.courses import Courses
-        sis_course_id = "-".join([sis_term_id, "TRAIN-102-A"])
-        course = Courses().get_course_by_sis_id(sis_course_id)
-        return course.term
+        params = {"workflow_state": "all", "per_page": 500}
+        url = "/api/v1/accounts/%s/terms%s" % (
+            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, self._params(params))
+        data = self._get_resource(url)
+
+        for term in data["enrollment_terms"]:
+            if term["sis_term_id"] == sis_term_id:
+                term = Term(term_id=term["id"],
+                            sis_term_id=term["sis_term_id"],
+                            name=term["name"])
+                return term
 
     def valid_canvas_id(self, canvas_id):
         return self._re_canvas_id.match(str(canvas_id)) is not None
@@ -139,7 +144,7 @@ class Canvas(object):
         """
         if(self._as_user is not None):
             url = url + "?as_user_id=" + self.sis_user_id(self._as_user)
-        
+
         response = Canvas_DAO().getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
