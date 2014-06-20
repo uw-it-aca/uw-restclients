@@ -61,7 +61,7 @@ def past_datetime_str(adatetime):
     if is_today(adatetime):
         return "today at %s" % time_str(adatetime)
 
-    if last_midnight() - adatetime < timedelta(days=8):
+    if last_midnight() - adatetime <= timedelta(days=7):
         for day in xrange (1,8):
             if is_days_ago(adatetime, day):
                 if day == 1:
@@ -70,30 +70,25 @@ def past_datetime_str(adatetime):
                     return "1 week ago"
                 return "%d days ago" % day
 
-    if last_midnight() - adatetime < timedelta(days=29):
-        for week in xrange (1,4):
-            if is_over_weeks_ago(adatetime, week):
-                if week == 1:
-                    return "over %d week ago" % week
-                else:
-                    return "over %d weeks ago" % week
+    if last_midnight() - adatetime <= timedelta(days=28):
+        week = get_past_weeks_count(adatetime)
+        if week == 1:
+            return "over %d week ago" % week
+        else:
+            return "over %d weeks ago" % week
 
-    if last_midnight() - adatetime < timedelta(days=366):
-        for month in xrange (1,12):
-            if is_over_months_ago(adatetime, month):
-                if month == 1:
-                    return "over %d month ago" % month
-                else:
-                    return "over %d months ago" % month
+    if last_midnight() - adatetime <= timedelta(days=365):
+        month = get_past_months_count(adatetime)
+        if month == 1:
+            return "over %d month ago" % month
+        else:
+            return "over %d months ago" % month
 
-    for year in xrange (1,100):
-        if is_over_years_ago(adatetime, year):
-            if year == 1:
-                return "over %d year ago" % year
-            else:
-                return "over %d years ago" % year
-
-    return "over a hundred years ago"
+    year = get_past_years_count(adatetime)
+    if year == 1:
+        return "over %d year ago" % year
+    else:
+        return "over %d years ago" % year
     
 
 def last_midnight():
@@ -125,32 +120,27 @@ def is_days_ago(adatetime, days):
     return start_time <= adatetime and adatetime <= end_time
 
 
-def is_over_weeks_ago(adatetime, weeks):
+def get_past_weeks_count(adatetime):
     """
-    :param weeks: a positive integer.
-    Return true if the adatetime is over (more than) the specified weeks ago
+    Return the number of weeks that the adatetime is over in the past
+    7 days are counted as one week.
     """
-    end_time = last_midnight() - timedelta(weeks=weeks)
-    start_time = end_time - timedelta(weeks=1)
-    return start_time <= adatetime and adatetime <= end_time
+    duration = last_midnight() - adatetime
+    return duration.total_seconds() // 604800
 
-
-def is_over_months_ago(adatetime, months):
+def get_past_months_count(adatetime):
     """
-    :param months: a positive integer.
+    Return the number of months that the adatetime is over in the past
     28 days are counted as one month.
-    Return true if the adatetime is in the specified months ago
     """
-    end_time = last_midnight() - timedelta(weeks=(months*4))
-    start_time = end_time - timedelta(weeks=4)
-    return start_time <= adatetime and adatetime <= end_time
+    duration = last_midnight() - adatetime
+    return duration.total_seconds() // 2419200
 
 
-def is_over_years_ago(adatetime, years):
+def get_past_years_count(adatetime):
     """
-    :param years: a positive integer.
-    Return true if the adatetime is in the specified years ago
+    Return the number of years that the adatetime is over in the past
+    365 days are counted as one year.
     """
-    end_time = last_midnight() - timedelta(days=(years*365))
-    start_time = end_time - timedelta(days=365)
-    return start_time <= adatetime and adatetime <= end_time
+    duration = last_midnight() - adatetime
+    return duration.total_seconds() // 31536000

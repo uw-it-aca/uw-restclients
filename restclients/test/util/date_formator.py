@@ -4,8 +4,9 @@ from restclients.util.date_formator import full_month_date_str
 from restclients.util.date_formator import abbr_month_date_time_str
 from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.date_formator import last_midnight, time_str, is_today
-from restclients.util.date_formator import is_days_ago, is_over_weeks_ago
-from restclients.util.date_formator import is_over_years_ago, is_over_months_ago
+from restclients.util.date_formator import is_days_ago, get_past_weeks_count
+from restclients.util.date_formator import get_past_months_count
+from restclients.util.date_formator import get_past_years_count
 from restclients.util.date_formator import past_datetime_str
 
 
@@ -115,104 +116,117 @@ class formatorTest(TestCase):
     def test_is_over_1_week_ago(self):
         now = datetime.now() 
         self.assertFalse(
-            is_over_weeks_ago(now-timedelta(days=7), 1))
+            get_past_weeks_count(now-timedelta(days=7))==1)
         self.assertFalse(
-            is_over_weeks_ago(last_midnight()-timedelta(days=7)+timedelta(seconds=1), 1))
+            get_past_weeks_count(
+                last_midnight()-timedelta(days=7)+timedelta(seconds=1))==1)
         self.assertTrue(
-            is_over_weeks_ago(last_midnight()-timedelta(days=7), 1))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=8), 1))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=14), 1))
+            get_past_weeks_count(last_midnight()-timedelta(days=7))==1)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=8))==1)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=14))==1)
         self.assertTrue(
-            is_over_weeks_ago(last_midnight()-timedelta(days=14), 1))
+            get_past_weeks_count(
+                last_midnight()-timedelta(days=14)+timedelta(seconds=1))==1)
         self.assertFalse(
-            is_over_weeks_ago(last_midnight()-timedelta(days=14)-timedelta(seconds=1), 1))
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=15), 1))
+            get_past_weeks_count(last_midnight()-timedelta(days=14))==1)
+        self.assertFalse(get_past_weeks_count(now-timedelta(days=15))==1)
 
 
     def test_is_over_2_weeks_ago(self):
         now = datetime.now() 
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=14), 2))
-        self.assertTrue(is_over_weeks_ago(last_midnight()-timedelta(days=14), 2))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=15), 2))
+        self.assertFalse(get_past_weeks_count(now-timedelta(days=14))==2)
+        self.assertTrue(get_past_weeks_count(last_midnight()-timedelta(days=14))==2)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=15))==2)
         self.assertTrue(
-            is_over_weeks_ago(last_midnight()-timedelta(days=21)+timedelta(seconds=1), 2))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=21), 2))
-        self.assertTrue(is_over_weeks_ago(last_midnight()-timedelta(days=21), 2))
+            get_past_weeks_count(
+                last_midnight()-timedelta(days=21)+timedelta(seconds=1))==2)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=21))==2)
+        self.assertTrue(
+            get_past_weeks_count(
+                last_midnight()-timedelta(days=21)+timedelta(seconds=1))==2)
         self.assertFalse(
-            is_over_weeks_ago(last_midnight()-timedelta(days=21)-timedelta(seconds=1), 2))
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=22), 2))
+            get_past_weeks_count(last_midnight()-timedelta(days=21))==2)
+        self.assertFalse(get_past_weeks_count(now-timedelta(days=22))==2)
 
     def test_is_over_3_weeks_ago(self):
         now = datetime.now() 
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=21), 3))
-        self.assertTrue(is_over_weeks_ago(last_midnight()-timedelta(days=21), 3))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=22), 3))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=27), 3))
-        self.assertTrue(is_over_weeks_ago(now-timedelta(days=28), 3))
-        self.assertTrue(is_over_weeks_ago(last_midnight()-timedelta(days=28), 3))
+        self.assertFalse(get_past_weeks_count(now-timedelta(days=21))==3)
+        self.assertTrue(get_past_weeks_count(last_midnight()-timedelta(days=21))==3)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=22))==3)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=27))==3)
+        self.assertTrue(get_past_weeks_count(now-timedelta(days=28))==3)
+        self.assertTrue(
+            get_past_weeks_count(
+                last_midnight()-timedelta(days=28)+timedelta(seconds=1))==3)
         self.assertFalse(
-            is_over_weeks_ago(last_midnight()-timedelta(days=28)-timedelta(seconds=1), 3))
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=29), 3))
+            get_past_weeks_count(last_midnight()-timedelta(days=28))==3)
+        self.assertFalse(get_past_weeks_count(now-timedelta(days=29))==3)
 
 
     def test_is_over_1_month_ago(self):
         now = datetime.now()
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=28), 1))
         self.assertFalse(
-            is_over_months_ago(last_midnight()-timedelta(days=28)+timedelta(seconds=1), 1))
-        self.assertTrue(is_over_months_ago(last_midnight()-timedelta(days=28), 1))
-        self.assertTrue(is_over_months_ago(now-timedelta(days=29), 1))
-        self.assertTrue(is_over_months_ago(now-timedelta(days=56), 1))
-        self.assertTrue(is_over_months_ago(last_midnight()-timedelta(days=56), 1))
+            get_past_months_count(
+                last_midnight()-timedelta(days=28)+timedelta(seconds=1))==1)
+        self.assertTrue(get_past_months_count(last_midnight()-timedelta(days=28))==1)
+        self.assertTrue(get_past_months_count(now-timedelta(days=29))==1)
+        self.assertTrue(get_past_months_count(now-timedelta(days=56))==1)
+        self.assertTrue(
+            get_past_months_count(
+                    last_midnight()-timedelta(days=56)+timedelta(seconds=1))==1)
         self.assertFalse(
-            is_over_months_ago(last_midnight()-timedelta(days=56)-timedelta(seconds=1), 1))
-        self.assertFalse(is_over_months_ago(now-timedelta(days=57), 1))
+            get_past_months_count(last_midnight()-timedelta(days=56))==1)
+        self.assertFalse(get_past_months_count(now-timedelta(days=57))==1)
 
     def test_is_over_2_months_ago(self):
         now = datetime.now()
-        self.assertFalse(is_over_weeks_ago(now-timedelta(days=56), 2))
         self.assertFalse(
-            is_over_months_ago(last_midnight()-timedelta(days=56)+timedelta(seconds=1), 2))
+            get_past_months_count(
+                        last_midnight()-timedelta(days=56)+timedelta(seconds=1))==2)
         self.assertTrue(
-            is_over_months_ago(last_midnight()-timedelta(days=56), 2))
-        self.assertTrue(is_over_months_ago(now-timedelta(days=57), 2))
-        self.assertTrue(is_over_months_ago(now-timedelta(days=84), 2))
-        self.assertTrue(is_over_months_ago(last_midnight()-timedelta(weeks=12), 2))
+            get_past_months_count(last_midnight()-timedelta(days=56))==2)
+        self.assertTrue(get_past_months_count(now-timedelta(days=57))==2)
+        self.assertTrue(get_past_months_count(now-timedelta(days=84))==2)
+        self.assertTrue(
+            get_past_months_count(
+                        last_midnight()-timedelta(days=84)+timedelta(seconds=1))==2)
         self.assertFalse(
-            is_over_months_ago(last_midnight()-timedelta(days=84)-timedelta(seconds=1), 2))
-        self.assertFalse(is_over_months_ago(now-timedelta(days=85), 2))
+            get_past_months_count(last_midnight()-timedelta(weeks=12))==2)
+        self.assertFalse(get_past_months_count(now-timedelta(days=85))==2)
 
     def test_is_over_3_months_ago(self):
         now = datetime.now()
-        self.assertFalse(is_over_months_ago(now-timedelta(days=84), 3))
+        self.assertFalse(get_past_months_count(now-timedelta(days=84))==3)
         self.assertFalse(
-            is_over_months_ago(last_midnight()-timedelta(days=84)+timedelta(seconds=1), 3))
-        self.assertTrue(is_over_months_ago(last_midnight()-timedelta(days=84), 3))
-        self.assertTrue(is_over_months_ago(now-timedelta(days=85), 3))
-        self.assertTrue(is_over_months_ago(now-timedelta(days=112), 3))
-        self.assertTrue(is_over_months_ago(last_midnight()-timedelta(days=112), 3))
-        self.assertFalse(
-            is_over_months_ago(last_midnight()-timedelta(days=112)-timedelta(seconds=1), 3))
-        self.assertFalse(is_over_months_ago(now-timedelta(days=113), 3))
+            get_past_months_count(
+                        last_midnight()-timedelta(days=84)+timedelta(seconds=1))==3)
+        self.assertTrue(get_past_months_count(last_midnight()-timedelta(days=84))==3)
+        self.assertTrue(get_past_months_count(now-timedelta(days=85))==3)
+        self.assertTrue(get_past_months_count(now-timedelta(days=112))==3)
+        self.assertTrue(
+            get_past_months_count(
+                        last_midnight()-timedelta(days=112)+timedelta(seconds=1))==3)
+        self.assertFalse(get_past_months_count(last_midnight()-timedelta(days=112))==3)
+        self.assertFalse(get_past_months_count(now-timedelta(days=113))==3)
 
 
     def test_is_over_1_year_ago(self):
         now = datetime.now()
-        self.assertFalse(is_over_years_ago(now-timedelta(days=365), 1))
-        self.assertTrue(is_over_years_ago(last_midnight()-timedelta(days=365), 1))
-        self.assertTrue(is_over_years_ago(now-timedelta(days=366), 1))
-        self.assertTrue(is_over_years_ago(now-timedelta(days=365*2), 1))
-        self.assertTrue(is_over_years_ago(last_midnight()-timedelta(days=365*2), 2))
-        self.assertFalse(is_over_years_ago(now-timedelta(days=731), 1))
+        self.assertFalse(get_past_years_count(now-timedelta(days=365))==1)
+        self.assertTrue(get_past_years_count(last_midnight()-timedelta(days=365))==1)
+        self.assertTrue(get_past_years_count(now-timedelta(days=366))==1)
+        self.assertTrue(get_past_years_count(now-timedelta(days=365*2))==1)
+        self.assertTrue(get_past_years_count(last_midnight()-timedelta(days=365*2))==2)
+        self.assertFalse(get_past_years_count(now-timedelta(days=731))==1)
 
     def test_is_over_2_years_ago(self):
         now = datetime.now()
-        self.assertFalse(is_over_years_ago(now-timedelta(days=365*2), 2))
-        self.assertTrue(is_over_years_ago(last_midnight()-timedelta(days=365*2), 2))
-        self.assertTrue(is_over_years_ago(now-timedelta(days=731), 2))
-        self.assertTrue(is_over_years_ago(now-timedelta(days=1095), 2))
-        self.assertTrue(is_over_years_ago(last_midnight()-timedelta(days=365*3), 2))
-        self.assertFalse(is_over_years_ago(now-timedelta(days=1096), 2))
+        self.assertFalse(get_past_years_count(now-timedelta(days=365*2))==2)
+        self.assertTrue(get_past_years_count(last_midnight()-timedelta(days=365*2))==2)
+        self.assertTrue(get_past_years_count(now-timedelta(days=731))==2)
+        self.assertTrue(get_past_years_count(now-timedelta(days=365*3))==2)
+        self.assertFalse(get_past_years_count(last_midnight()-timedelta(days=365*3))==2)
+        self.assertFalse(get_past_years_count(now-timedelta(days=1096))==2)
 
             
     def test_past_datetime_str_today(self):
@@ -263,16 +277,16 @@ class formatorTest(TestCase):
         self.assertEquals(past_datetime_str(day), 'over 1 week ago') 
         day = datetime.now() - timedelta(days=14) 
         self.assertEquals(past_datetime_str(day), 'over 1 week ago') 
-        day = last_midnight() - timedelta(days=14) 
-        self.assertEquals(past_datetime_str(day), 'over 1 week ago') 
 
+        day = last_midnight() - timedelta(days=14) 
+        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
         day = datetime.now() - timedelta(days=15) 
         self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
         day = datetime.now() - timedelta(days=21) 
         self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
-        day = last_midnight() - timedelta(days=21)
-        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
 
+        day = last_midnight() - timedelta(days=21)
+        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago') 
         day = datetime.now() - timedelta(days=22)
         self.assertEquals(past_datetime_str(day), 'over 3 weeks ago') 
         day = datetime.now() - timedelta(days=28)
