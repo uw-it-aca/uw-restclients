@@ -12,12 +12,11 @@ def get_timestamp_str(last_updated_datetime,
 
 def hfs_account_json_data(account,
                           use_custom_date_format):
-    return {
-        'balance': account.balance,
-        'last_updated': get_timestamp_str(account.last_updated,
-                                          use_custom_date_format),
-        'add_funds_url': account.add_funds_url
-        }
+    return {'balance': account.balance,
+            'last_updated': get_timestamp_str(account.last_updated,
+                                              use_custom_date_format),
+            'add_funds_url': account.add_funds_url
+            }
 
 
 def hfs_account_str(account):
