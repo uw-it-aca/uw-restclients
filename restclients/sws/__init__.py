@@ -10,14 +10,18 @@ from restclients.thread import Thread
 from restclients.dao import SWS_DAO
 from restclients.exceptions import DataFailureException
 
+
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
 logger = logging.getLogger(__name__)
+
 
 def deprecation(message):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
+
 def encode_section_label(label):
     return quote(label, safe="/,") 
+
 
 def get_resource(url):
     """
@@ -29,6 +33,7 @@ def get_resource(url):
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
     return json.loads(response.data)
+
 
 class SWSThread(Thread):
     url = None

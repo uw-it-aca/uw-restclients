@@ -12,7 +12,9 @@ from restclients.thread import Thread
 from restclients.sws import get_resource, SWSThread
 from restclients.sws.section import _json_to_section
 
+
 registration_res_url_prefix = "/student/v4/registration.json"
+
 
 class SWSPersonByRegIDThread(Thread):
     regid = None
@@ -49,9 +51,11 @@ def _registrations_for_section_with_active_flag(section, is_active):
              "course_number": section.course_number,
              "section_id": section.section_id,
              "instructor_reg_id": instructor_reg_id,
-             "is_active": activity_flag}))
+             "is_active": activity_flag
+             }))
 
     return _json_to_registrations(get_resource(url), section, is_active)
+
 
 def _json_to_registrations(data, section, is_active):
     """
@@ -92,6 +96,7 @@ def _json_to_registrations(data, section, is_active):
 
     return registrations
 
+
 def get_active_registrations_by_section(section):
     """
     Returns a list of restclients.Registration objects, representing
@@ -100,6 +105,7 @@ def get_active_registrations_by_section(section):
     registrations to that instructor.
     """
     return _registrations_for_section_with_active_flag(section, True)
+
 
 def get_all_registrations_by_section(section):
     """
@@ -130,6 +136,7 @@ def get_all_registrations_by_section(section):
 
     return registrations
 
+
 def get_schedule_by_regid_and_term(regid, term, 
                                    include_instructor_not_on_time_schedule=True):
     """
@@ -141,9 +148,11 @@ def get_schedule_by_regid_and_term(regid, term,
         urlencode([('reg_id', regid),
                    ('quarter', term.quarter),
                    ('is_active', 'on'),
-                   ('year', term.year)]))
+                   ('year', term.year)
+                   ]))
     return _json_to_schedule(get_resource(url), term, 
                              include_instructor_not_on_time_schedule)
+
 
 def _json_to_schedule(term_data, term,
                       include_instructor_not_on_time_schedule=True):

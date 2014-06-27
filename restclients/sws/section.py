@@ -15,19 +15,19 @@ from restclients.pws import PWS
 from restclients.sws import get_resource, encode_section_label
 from restclients.sws.term import get_term_by_year_and_quarter
 
+
 course_url_pattern = re.compile(r'^\/student\/v4\/course\/')
 course_res_url_prefix = "/student/v4/course"
 section_res_url_prefix = "/student/v4/section.json"
-
-section_label_pattern = re.compile(
-    '^\d{4},'                           # year
-    '(?:winter|spring|summer|autumn),'  # quarter
-    '[\w& ]+,'                          # curriculum
-    '\d{3}\/'                           # course number
-    '[A-Z][A-Z0-9]?$',                  # section id
-    re.VERBOSE)
-
+section_label_pattern = re.compile('^\d{4},'                           # year
+                                   '(?:winter|spring|summer|autumn),'  # quarter
+                                   '[\w& ]+,'                          # curriculum
+                                   '\d{3}\/'                           # course number
+                                   '[A-Z][A-Z0-9]?$',                  # section id
+                                   re.VERBOSE
+                                   )
 logger = logging.getLogger(__name__)
+
 
 def get_sections_by_instructor_and_term(person, term):
     """
@@ -37,6 +37,7 @@ def get_sections_by_instructor_and_term(person, term):
     return _get_sections_by_person_and_term(
         person, term, course_role="Instructor")
 
+
 def get_sections_by_delegate_and_term(person, term):
     """
     Returns a list of restclients.models.sws.SectionReference objects
@@ -44,6 +45,7 @@ def get_sections_by_delegate_and_term(person, term):
     """
     return _get_sections_by_person_and_term(
         person, term, course_role="GradeSubmissionDelegate")
+
 
 def get_sections_by_curriculum_and_term(curriculum, term):
     """
@@ -54,9 +56,10 @@ def get_sections_by_curriculum_and_term(curriculum, term):
                      urlencode(
             {"year": term.year,
              "quarter": term.quarter.lower(),
-             "curriculum_abbreviation": curriculum.label}))
-
+             "curriculum_abbreviation": curriculum.label
+             }))
     return _json_to_sectionref(get_resource(url), term)
+
 
 def _json_to_sectionref(data, aterm):
     """
@@ -74,6 +77,7 @@ def _json_to_sectionref(data, aterm):
         sections.append(section)
     return sections
 
+
 def _get_sections_by_person_and_term(person, term, course_role, 
                                      include_secondaries="on"):
     """
@@ -82,14 +86,15 @@ def _get_sections_by_person_and_term(person, term, course_role,
     """
     url = "%s?%s" % (
         section_res_url_prefix, 
-        urlencode({
-                "year": term.year,
-                "quarter": term.quarter.lower(),
-                "reg_id": person.uwregid,
-                "search_by": course_role,
-                "include_secondaries": include_secondaries}))
+        urlencode({"year": term.year,
+                   "quarter": term.quarter.lower(),
+                   "reg_id": person.uwregid,
+                   "search_by": course_role,
+                   "include_secondaries": include_secondaries
+                   }))
 
     return _json_to_sectionref(get_resource(url), term)
+
 
 def get_section_by_url(url,
                        include_instructor_not_on_time_schedule=True):
@@ -103,6 +108,7 @@ def get_section_by_url(url,
     return _json_to_section(
         get_resource(url),
         include_instructor_not_on_time_schedule=include_instructor_not_on_time_schedule)
+
 
 def get_section_by_label(label,
                          include_instructor_not_on_time_schedule=True):
@@ -120,6 +126,7 @@ def get_section_by_label(label,
     return get_section_by_url(url,
                               include_instructor_not_on_time_schedule)
 
+
 def get_linked_sections(section,
                         include_instructor_not_on_time_schedule=True):
     """
@@ -135,6 +142,7 @@ def get_linked_sections(section,
 
     return linked_sections
 
+
 def get_joint_sections(section,
                        include_instructor_not_on_time_schedule=True):
     """
@@ -149,6 +157,7 @@ def get_joint_sections(section,
         joint_sections.append(section)
 
     return joint_sections
+
 
 def _json_to_section(section_data, 
                      term=None,

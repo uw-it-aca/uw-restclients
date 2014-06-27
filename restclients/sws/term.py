@@ -8,8 +8,10 @@ from restclients.models.sws import Term as TermModel
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import TimeScheduleConstruction
 
+
 term_res_url_prefix = "/student/v4/term"
 logger = logging.getLogger(__name__)
+
 
 def get_term_by_year_and_quarter(year, quarter):
     """
@@ -18,6 +20,7 @@ def get_term_by_year_and_quarter(year, quarter):
     """
     url = "%s/%s,%s.json" % (term_res_url_prefix, str(year), quarter.lower())
     return _json_to_term_model(get_resource(url))
+
 
 def get_current_term():
     """
@@ -35,6 +38,7 @@ def get_current_term():
 
     return term
 
+
 def get_next_term():
     """
     Returns a restclients.models.sws.Term object, 
@@ -43,6 +47,7 @@ def get_next_term():
     url = "%s/next.json" % term_res_url_prefix
     return _json_to_term_model(get_resource(url))
 
+
 def get_previous_term():
     """
     Returns a restclients.models.sws.Term object, 
@@ -50,6 +55,7 @@ def get_previous_term():
     """
     url = "%s/previous.json" % term_res_url_prefix
     return _json_to_term_model(get_resource(url))
+
 
 def get_term_before(aterm):
     """
@@ -60,9 +66,10 @@ def get_term_before(aterm):
     prev_quarter = QUARTER_SEQ[QUARTER_SEQ.index(aterm.quarter) - 1]
 
     if prev_quarter == "autumn":
-        prev_year = prev_year - 1
+        prev_year -= 1
 
     return get_term_by_year_and_quarter(prev_year, prev_quarter)
+
 
 def get_term_after(aterm):
     """
@@ -76,9 +83,10 @@ def get_term_after(aterm):
         next_quarter = QUARTER_SEQ[QUARTER_SEQ.index(aterm.quarter) + 1]
 
     if next_quarter == "winter":
-        next_year = next_year + 1
+        next_year += 1
 
     return get_term_by_year_and_quarter(next_year, next_quarter)
+
 
 def _json_to_term_model(term_data):
     """
@@ -142,8 +150,7 @@ def _json_to_term_model(term_data):
     for campus in term_data["TimeScheduleConstructionOn"]:
         tsc = TimeScheduleConstruction(
             campus=campus.lower(),
-            is_on=(term_data["TimeScheduleConstructionOn"][campus] is True)
-            )
+            is_on=(term_data["TimeScheduleConstructionOn"][campus] is True))
         term.time_schedule_construction.append(tsc)
     
     term.clean_fields()

@@ -8,8 +8,10 @@ from restclients.models.sws import SectionStatus
 from restclients.sws import get_resource, encode_section_label
 from restclients.sws.section import section_label_pattern
 
+
 logger = logging.getLogger(__name__)
 course_res_url_prefix = "/student/v4/course"
+
 
 def get_section_status_by_label(label):
     """
@@ -23,6 +25,7 @@ def get_section_status_by_label(label):
                                  encode_section_label(label))
 
     return _json_to_sectionstatus(get_resource(url))
+
 
 def _json_to_sectionstatus(section_data):
     """

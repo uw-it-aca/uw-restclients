@@ -6,8 +6,10 @@ from urllib import urlencode
 from restclients.models.sws import Curriculum
 from restclients.sws import get_resource
 
+
 logger = logging.getLogger(__name__)
 curriculum_search_url_prefix = "/student/v4/curriculum.json"
+
 
 def get_curricula_by_department(department, future_terms=0):
     """
@@ -23,6 +25,7 @@ def get_curricula_by_department(department, future_terms=0):
                    "future_terms": future_terms}))
     return _json_to_curricula(get_resource(url))
 
+
 def get_curricula_by_term(term):
     """
     Returns a list of restclients.Curriculum models, for the passed
@@ -33,6 +36,7 @@ def get_curricula_by_term(term):
         urlencode({"year": term.year,
                    "quarter": term.quarter.lower()}))
     return _json_to_curricula(get_resource(url))
+
 
 def _json_to_curricula(data):
     curricula = []

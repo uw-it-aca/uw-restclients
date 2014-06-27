@@ -5,8 +5,10 @@ import logging
 from restclients.models.sws import College
 from restclients.sws import get_resource
 
+
 logger = logging.getLogger(__name__)
 college_search_url = "/student/v4/college.json"
+
 
 def get_all_colleges():
     """
@@ -14,6 +16,7 @@ def get_all_colleges():
     colleges.
     """
     return _json_to_colleges(get_resource(college_search_url))
+
 
 def _json_to_colleges(data):
     colleges = []

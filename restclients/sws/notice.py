@@ -7,11 +7,11 @@ from restclients.models.sws import Notice, NoticeAttribute
 from restclients.sws import get_resource
 from dateutil import parser
 import pytz
+ 
 
 notice_res_url_prefix = "/student/v5/notice/"
-
-
 logger = logging.getLogger(__name__)
+
 
 def get_notices_by_regid(regid):
     """
@@ -20,7 +20,8 @@ def get_notices_by_regid(regid):
     """
     url = notice_res_url_prefix + regid + ".json"
 
-    return _notices_from_json( get_resource(url))
+    return _notices_from_json(get_resource(url))
+
 
 def _notices_from_json(notice_data):
     notices = []
@@ -43,7 +44,7 @@ def _notices_from_json(notice_data):
                     attribute._url_value = notice_attrib.get("Value")
                 elif attribute.data_type == "date":
                     #Convert to UTC datetime
-                    date =  parser.parse(notice_attrib.get("Value"))
+                    date = parser.parse(notice_attrib.get("Value"))
                     localtz = pytz.timezone('America/Los_Angeles')
                     local_dt = localtz.localize(date)
                     utc_dt = local_dt.astimezone(pytz.utc)
@@ -60,7 +61,4 @@ def _notices_from_json(notice_data):
             notice_obj.attributes = notice_attribs
             notices.append(notice_obj)
         return notices
-
-
-
 

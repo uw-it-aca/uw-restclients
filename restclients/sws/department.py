@@ -6,8 +6,10 @@ from urllib import urlencode
 from restclients.models.sws import Department
 from restclients.sws import get_resource
 
+
 logger = logging.getLogger(__name__)
 dept_search_url_prefix = "/student/v4/department.json"
+
 
 def get_departments_by_college(college):
     """
@@ -18,6 +20,7 @@ def get_departments_by_college(college):
         dept_search_url_prefix,
         urlencode({"college_abbreviation": college.label}))
     return _json_to_departments(get_resource(url), college)
+
 
 def _json_to_departments(data, college):
     departments = []

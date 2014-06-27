@@ -5,9 +5,11 @@ import logging
 from restclients.models.sws import Finance
 from restclients.sws import get_resource
 
+
 logger = logging.getLogger(__name__)
 sws_url_prefix = "/student/v5/person/"
 sws_url_suffix = "/financial.json"
+
 
 def get_account_balances_by_regid(regid):
     """
@@ -15,6 +17,7 @@ def get_account_balances_by_regid(regid):
     """
     url = sws_url_prefix + regid + sws_url_suffix
     return _process_json_data(get_resource(url))
+
 
 def _process_json_data(jdata):
     fina = Finance()

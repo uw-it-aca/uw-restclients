@@ -8,8 +8,10 @@ from restclients.models.sws import StudentGrades, StudentCourseGrade
 from restclients.sws import get_resource
 from restclients.sws.section import get_section_by_url
 
+
 logger = logging.getLogger(__name__)
 enrollment_res_url_prefix = "/student/v4/enrollment"
+
 
 def get_grades_by_regid_and_term(regid, term):
     """
@@ -20,6 +22,7 @@ def get_grades_by_regid_and_term(regid, term):
                                 term.quarter, 
                                 regid)
     return _json_to_grades(get_resource(url), regid, term)
+
 
 def _json_to_grades(data, regid, term): 
     grades = StudentGrades()
