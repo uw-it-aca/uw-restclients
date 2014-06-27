@@ -50,6 +50,7 @@ def get_bot_resource(url):
     :returns: http response with content in xml
     """
     retry = 0
+    response = None
     while True:
         timer = Timer()
         response = TrumbaBot_DAO().getURL(url, 
@@ -69,6 +70,7 @@ def get_sea_resource(url):
     :returns: http response with content in xml
     """
     retry = 0
+    response = None
     while True:
         timer = Timer()
         response = TrumbaSea_DAO().getURL(url,
@@ -88,6 +90,7 @@ def get_tac_resource(url):
     :returns: http response with content in xml
     """
     retry = 0
+    response = None
     while True:
         timer = Timer()
         response = TrumbaTac_DAO().getURL(url,
@@ -107,6 +110,7 @@ def post_bot_resource(url, body):
     :returns: http response with content in json
     """
     retry = 0
+    response = None
     while True:
         timer = Timer()
         response = TrumbaBot_DAO().postURL(url,
@@ -127,6 +131,7 @@ def post_sea_resource(url, body):
     :returns: http response with content in json
     """
     retry = 0
+    response = None
     while True:
         timer = Timer()
         response = TrumbaSea_DAO().postURL(url,
@@ -147,6 +152,7 @@ def post_tac_resource(url, body):
     :returns: http response with content in json
     """
     retry = 0
+    response = None
     while True:
         timer = Timer()
         response = TrumbaTac_DAO().postURL(url,
