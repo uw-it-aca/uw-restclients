@@ -1,6 +1,7 @@
 import logging
 from restclients.util.timer import Timer
 
+
 def log_info(logger, action_desc, timer):
     """
     :param action_desc: the string description of the action

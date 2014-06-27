@@ -41,7 +41,6 @@ def abbr_week_month_day_str(adatetime):
     return "%s %d" % (adatetime.strftime("%a, %b"), adatetime.day)
 
 
-
 def past_datetime_str(adatetime):
     """
     For adatetime is since 12:00AM, return: "Today at H:MM [A]PM"
@@ -62,7 +61,7 @@ def past_datetime_str(adatetime):
         return "today at %s" % time_str(adatetime)
 
     if last_midnight() - adatetime <= timedelta(days=7):
-        for day in xrange (1,8):
+        for day in xrange(1, 8):
             if is_days_ago(adatetime, day):
                 if day == 1:
                     return "yesterday at %s" % time_str(adatetime)
@@ -117,7 +116,7 @@ def is_days_ago(adatetime, days):
     else:
         start_time = last_midnight() - timedelta(days=days)
         end_time = start_time + timedelta(days=1)
-    return start_time <= adatetime and adatetime <= end_time
+    return start_time <= adatetime <= end_time
 
 
 def get_past_weeks_count(adatetime):
@@ -127,6 +126,7 @@ def get_past_weeks_count(adatetime):
     """
     duration = last_midnight() - adatetime
     return duration.total_seconds() // timedelta(7).total_seconds()
+
 
 def get_past_months_count(adatetime):
     """

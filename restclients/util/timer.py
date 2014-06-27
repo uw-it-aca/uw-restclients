@@ -1,18 +1,21 @@
 import datetime
 
+
+def uctnow(self):
+    return datetime.datetime.utcnow()
+
+
 class Timer:
     def __init__(self):
         """ 
         Start the timer
         """
-        self.start = self._now()
+        self.start = uctnow()
 
-    def _now(self):
-        return datetime.datetime.utcnow()
 
-    def get_elapsed (self):
+    def get_elapsed(self):
         """
         Return the time spent in milliseconds
         """
-        delta = self._now() - self.start
+        delta = uctnow - self.start
         return delta.microseconds / 1000.0
