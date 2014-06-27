@@ -7,6 +7,7 @@ from django.conf import settings
 from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 
+
 class FileSea(object):
     """
     Return the url for accessing the Seattle calendars' 
@@ -23,8 +24,9 @@ class FileSea(object):
     
     def getURL(self, url, headers):
         #FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))    
-        return get_mockdata_url(self.get_path_prefix(), "file",
-                                url, headers)
+        return get_mockdata_url(
+            self.get_path_prefix(), "file",
+            url, headers)
 
     def postURL(self, url, headers, body):
         """
@@ -48,6 +50,7 @@ class FileSea(object):
                                     re.sub(' ', '%20', 
                                            str(params[key])))
         return new_url
+
 
 class LiveSea(object):
     """
@@ -76,7 +79,7 @@ class LiveSea(object):
 
     @staticmethod
     def set_pool():
-        if LiveSea.pool == None:
+        if LiveSea.pool is None:
             LiveSea.pool = get_con_pool(settings.RESTCLIENTS_TRUMBA_HOST,
                                         None, None)
 
@@ -95,6 +98,7 @@ class LiveSea(object):
                             body=body,
                             service_name='trumba')
 
+
 class FileBot(FileSea):
     """
     Return the url for accessing the bothell mock data in local file
@@ -103,8 +107,10 @@ class FileBot(FileSea):
     RESTCLIENTS_TRUMBA_BOT_DAO_CLASS =
     'restclients.dao_implementation.trumba.FileBot'
     """
+
     def get_path_prefix(self):
         return "trumba_bot"
+
 
 class LiveBot(LiveSea):
     """
@@ -123,6 +129,7 @@ class LiveBot(LiveSea):
     def get_basic_auth(self):
         return "%s:%s" % (settings.RESTCLIENTS_TRUMBA_BOT_ID,
                           settings.RESTCLIENTS_TRUMBA_BOT_PSWD)
+
     
 class FileTac(FileSea):
     """
@@ -132,8 +139,10 @@ class FileTac(FileSea):
     RESTCLIENTS_TRUMBA_TAC_DAO_CLASS =
     'restclients.dao_implementation.trumba.FileTac'
     """
+
     def get_path_prefix(self):
         return "trumba_tac"
+
 
 class LiveTac(LiveSea):
     """

@@ -34,11 +34,12 @@ class Live(object):
 
     def getURL(self, url, headers):
         if Live.pool is None:
-            Live.pool = get_con_pool(settings.RESTCLIENTS_HFS_HOST,
-                                     settings.RESTCLIENTS_HFS_KEY_FILE,
-                                     settings.RESTCLIENTS_HFS_CERT_FILE,
-                                     max_pool_size=HFS_MAX_POOL_SIZE,
-                                     socket_timeout=HFS_SOCKET_TIMEOUT)
+            Live.pool = get_con_pool(
+                settings.RESTCLIENTS_HFS_HOST,
+                settings.RESTCLIENTS_HFS_KEY_FILE,
+                settings.RESTCLIENTS_HFS_CERT_FILE,
+                max_pool_size=HFS_MAX_POOL_SIZE,
+                socket_timeout=HFS_SOCKET_TIMEOUT)
         return get_live_url(Live.pool, 
                             'GET',
                             settings.RESTCLIENTS_HFS_HOST,

@@ -5,16 +5,17 @@ Contains SWS DAO implementations.
 import json
 import time
 from datetime import date, datetime, timedelta
+from lxml import etree
 from django.conf import settings
 from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 
-from lxml import etree
 
 # XXX - this is arbitrary.  I didn't have a handy multi-threaded sws test
 # case that went over 4 concurrent connections.  Just took the PWS number
 SWS_MAX_POOL_SIZE = 10
+
 
 class File(object):
     """
@@ -25,7 +26,6 @@ class File(object):
     """
 
     grade_roster_document = None
-
     
     def _make_notice_date(self, response):
         """
@@ -52,7 +52,7 @@ class File(object):
                             attr["Value"] = tomorrow.strftime("%Y%m%d")
                         elif attr["Value"] == "future":
                             attr["Value"] = future.strftime("%Y%m%d")
-                        elif attr["Value"] == "future_end" :
+                        elif attr["Value"] == "future_end":
                             attr["Value"] = future_end.strftime("%Y%m%d")
                         elif attr["Value"] == "next_week":
                             attr["Value"] = next_week.strftime("%Y%m%d")
@@ -63,7 +63,6 @@ class File(object):
 
         response.data = json.dumps(json_data)
 
-            
     def getURL(self, url, headers):
         response = get_mockdata_url("sws", "file", url, headers)
 
@@ -107,7 +106,6 @@ class File(object):
             response.status = 404
             return response
 
-
         # To support the grading workflow - there's a GET after the PUT
         # stash the PUT graderoster away, with submitted dates/grader values
         if url.startswith('/student/v4/graderoster/2013,spring'):
@@ -136,6 +134,7 @@ class File(object):
             grade_submitter_source.text = 'CGB'
 
         return etree.tostring(root)
+
 
 class Live(object):
     """
