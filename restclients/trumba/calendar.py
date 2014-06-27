@@ -13,12 +13,14 @@ import re
 from restclients.models.trumba import TrumbaCalendar, Permission, is_bot, is_sea, is_tac
 from restclients.exceptions import DataFailureException
 import restclients.trumba as Trumba
-from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
+from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist
+from restclients.trumba.exceptions import NoDataReturned, UnknownError, UnexpectedError
 
 logger = logging.getLogger(__name__)
 
 get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
 get_permissions_url = "/service/calendars.asmx/GetPermissions"
+
 
 def get_campus_calendars(campus_code):
     """
@@ -39,6 +41,7 @@ def get_campus_calendars(campus_code):
             % campus_code)
         return None
 
+
 def get_bot_calendars():
     """
     :return: a dictionary of {calenderid, TrumbaCalendar}
@@ -48,8 +51,9 @@ def get_bot_calendars():
     """
     return _process_get_cal_resp(
         get_calendarlist_url,
-        Trumba.post_bot_resource(get_calendarlist_url,"{}"),
+        Trumba.post_bot_resource(get_calendarlist_url, "{}"),
         TrumbaCalendar.BOT_CAMPUS_CODE)
+
 
 def get_sea_calendars():
     """
@@ -60,8 +64,9 @@ def get_sea_calendars():
     """
     return _process_get_cal_resp(
         get_calendarlist_url,
-        Trumba.post_sea_resource(get_calendarlist_url,"{}"),
+        Trumba.post_sea_resource(get_calendarlist_url, "{}"),
         TrumbaCalendar.SEA_CAMPUS_CODE)
+
 
 def get_tac_calendars():
     """
@@ -72,8 +77,9 @@ def get_tac_calendars():
     """
     return _process_get_cal_resp(
         get_calendarlist_url,
-        Trumba.post_tac_resource(get_calendarlist_url,"{}"),
+        Trumba.post_tac_resource(get_calendarlist_url, "{}"),
         TrumbaCalendar.TAC_CAMPUS_CODE)
+
 
 def get_campus_permissions(calendar_id, campus_code):
     """
@@ -94,8 +100,10 @@ def get_campus_permissions(calendar_id, campus_code):
             % campus_code)
         return None
 
+
 def _create_get_perm_body(calendar_id):
     return json.dumps({'CalendarID': calendar_id})
+
 
 def get_bot_permissions(calendar_id):
     """
@@ -115,6 +123,7 @@ def get_bot_permissions(calendar_id):
         TrumbaCalendar.BOT_CAMPUS_CODE,
         calendar_id)
 
+
 def get_sea_permissions(calendar_id):
     """
     Return a list of Permission objects representing
@@ -131,6 +140,7 @@ def get_sea_permissions(calendar_id):
                                  _create_get_perm_body(calendar_id)),
         TrumbaCalendar.SEA_CAMPUS_CODE,
         calendar_id)
+
 
 def get_tac_permissions(calendar_id):
     """
@@ -149,10 +159,13 @@ def get_tac_permissions(calendar_id):
         TrumbaCalendar.TAC_CAMPUS_CODE,
         calendar_id)
 
+
 re_cal_id = re.compile(r'[1-9]\d*')
+
 
 def _is_valid_calendarid(calendarid):
     return re_cal_id.match(str(calendarid)) is not None
+
 
 def _load_calendar(campus, resp_fragment, calendar_dict, parent):
     """
@@ -160,7 +173,7 @@ def _load_calendar(campus, resp_fragment, calendar_dict, parent):
              None if error, {} if not exists
     """
     for record in resp_fragment:
-        if re.match('Internal Event Actions', record['Name']) or re.match('Migrated .*', record['Name']) :
+        if re.match('Internal Event Actions', record['Name']) or re.match('Migrated .*', record['Name']):
             continue
         trumba_cal = TrumbaCalendar()
         trumba_cal.calendarid = record['ID']
@@ -182,6 +195,7 @@ def _load_calendar(campus, resp_fragment, calendar_dict, parent):
                            calendar_dict,
                            trumba_cal.name)
 
+
 def _process_get_cal_resp(url, post_response, campus):
     """
     :return: a dictionary of {calenderid, TrumbaCalendar}
@@ -197,13 +211,17 @@ def _process_get_cal_resp(url, post_response, campus):
                        calendar_dict, None)
     return calendar_dict
 
+
 re_email = re.compile(r'[a-z][a-z0-9]+@washington.edu')
+
 
 def _is_valid_email(email):
     return re_email.match(email) is not None
 
+
 def _extract_uwnetid(email):
     return re.sub("@washington.edu", "", email)
+
 
 def _load_permissions(campus, calendarid, resp_fragment, permission_list):
     """
@@ -222,6 +240,7 @@ def _load_permissions(campus, calendarid, resp_fragment, permission_list):
         perm.name = unicode(record['Name'])
         permission_list.append(perm)
 
+
 def _process_get_perm_resp(url, post_response, campus, calendarid):
     """
     :return: a list of trumba.Permission objects
@@ -239,13 +258,13 @@ def _process_get_perm_resp(url, post_response, campus, calendarid):
                           permission_list)
     return permission_list
 
+
 def _check_err(data):
     """
     :param data: response json data object (must be not None).
     Check possible error code returned in the response body
     raise the coresponding exceptions
     """
-    logger = logging.getLogger(__name__)
     if data['d'] is None:
         raise NoDataReturned()
     if data['d']['Messages'] is None:
@@ -265,6 +284,7 @@ def _check_err(data):
             "Unexpected Error Code: %s %s" % (
                 code, msg[0]['Description']))
         raise UnexpectedError()
+
 
 def _load_json(request_id, post_response):
     if post_response.status != 200:

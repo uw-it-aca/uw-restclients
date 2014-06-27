@@ -16,12 +16,14 @@ class AccountNameEmpty(TrumbaException):
     """
     pass
 
+
 class AccountNotExist(TrumbaException):
     """
     Exception when the account has not been created
     Coresponding to Trumba error code: 3008
     """
     pass
+
 
 class AccountUsedByDiffUser(TrumbaException):
     """
@@ -30,12 +32,14 @@ class AccountUsedByDiffUser(TrumbaException):
     """
     pass
 
+
 class CalendarNotExist(TrumbaException):
     """
     Exception when the given calendar ID doesn't exist.
     Coresponding to Trumba error code: 3006
     """
     pass
+
 
 class CalendarOwnByDiffAccount(TrumbaException):
     """
@@ -44,11 +48,13 @@ class CalendarOwnByDiffAccount(TrumbaException):
     """
     pass
 
+
 class ErrorCreatingEditor(TrumbaException):
     """
     Exception when other errors occur on a creating editor request 
     """
     pass
+
 
 class FailedToClosePublisher(TrumbaException):
     """
@@ -57,12 +63,14 @@ class FailedToClosePublisher(TrumbaException):
     """
     pass
 
+
 class InvalidEmail(TrumbaException):
     """
     Exception when creating an account with an invalid email address
     Coresponding to Trumba error code: 3014
     """
     pass
+
 
 class InvalidPermissionLevel(TrumbaException):
     """
@@ -71,6 +79,7 @@ class InvalidPermissionLevel(TrumbaException):
     """
     pass
 
+
 class NoAllowedPermission(TrumbaException):
     """
     Exception when the permission level is not allowed for this account
@@ -78,17 +87,20 @@ class NoAllowedPermission(TrumbaException):
     """
     pass
 
+
 class NoDataReturned(TrumbaException):
     """
     Exception when there is empty data in the response
     """
     pass
 
+
 class UnknownError(TrumbaException):
     """
     Exception when no ResponseMessage or no error code presents
     """
     pass
+
 
 class UnexpectedError(TrumbaException):
     """

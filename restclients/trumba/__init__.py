@@ -14,6 +14,7 @@ from restclients.util.log import log_info, log_err
 
 logger = logging.getLogger(__name__)
 
+
 def _log_xml_resp(campus, url, response, timer):
     if response.status == 200 and response.data is not None:
         log_info(logger,
@@ -30,19 +31,18 @@ def _log_xml_resp(campus, url, response, timer):
                 campus, url, response.status, response.reason),
                 timer)
 
+
 def _log_json_resp(campus, url, body, response, timer):
     if response.status == 200 and response.data is not None:
         log_info(logger,
-                 "%s %s %s ==status==> %s" % (
-                campus, url, body, response.status),
+                 "%s %s %s ==status==> %s" % (campus, url, body, response.status),
                  timer)
-        logger.debug("%s %s %s ==data==> %s" % (
-                campus, url, body, response.data))
+        logger.debug("%s %s %s ==data==> %s" % (campus, url, body, response.data))
     else:
         log_err(logger,
-                "%s %s %s ==error==> %s %s" % (
-                campus, url, body, response.status, response.reason),
+                "%s %s %s ==error==> %s %s" % (campus, url, body, response.status, response.reason),
                 timer)
+
 
 def get_bot_resource(url):
     """
@@ -53,7 +53,7 @@ def get_bot_resource(url):
     while True:
         timer = Timer()
         response = TrumbaBot_DAO().getURL(url, 
-                                          {"Content-Type":"application/xml"})
+                                          {"Content-Type": "application/xml"})
         _log_xml_resp("Bothell", url, response, timer)
         if response.status != 500 or retry == 1:
             break
@@ -61,6 +61,7 @@ def get_bot_resource(url):
         retry = retry + 1
         time.sleep(1)
     return response
+
 
 def get_sea_resource(url):
     """
@@ -98,6 +99,7 @@ def get_tac_resource(url):
         time.sleep(1)
     return response
 
+
 def post_bot_resource(url, body):
     """
     Get the requested resource of Bothell calendars
@@ -117,6 +119,7 @@ def post_bot_resource(url, body):
         time.sleep(1)
     return response
 
+
 def post_sea_resource(url, body):
     """
     Get the requested resource using the Seattle account
@@ -135,6 +138,7 @@ def post_sea_resource(url, body):
         retry = retry + 1
         time.sleep(1)
     return response
+
 
 def post_tac_resource(url, body):
     """

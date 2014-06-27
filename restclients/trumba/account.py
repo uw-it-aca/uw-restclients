@@ -13,14 +13,27 @@ from lxml import etree, objectify
 from urllib import quote, unquote
 from restclients.exceptions import DataFailureException
 import restclients.trumba as Trumba
-from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist, AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount, InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher, NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnexpectedError, UnknownError
+from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist
+from restclients.trumba.exceptions import AccountUsedByDiffUser, CalendarNotExist
+from restclients.trumba.exceptions import CalendarOwnByDiffAccount, InvalidEmail
+from restclients.trumba.exceptions import InvalidPermissionLevel, FailedToClosePublisher
+from restclients.trumba.exceptions import NoAllowedPermission, ErrorCreatingEditor
+from restclients.trumba.exceptions import NoDataReturned, UnexpectedError, UnknownError
+
+
+add_editor_url_prefix = "/service/accounts.asmx/CreateEditor"
+del_editor_url_prefix = "/service/accounts.asmx/CloseEditor"
+set_permission_url_prefix = "/service/calendars.asmx/SetPermissions"
+
 
 def _make_add_editor_url(name, userid):
     """
     :return: the URL string for the GET request call to 
     Trumba CreateEditor method
     """
-    return "/service/accounts.asmx/CreateEditor?Name=%s&Email=%s@washington.edu&Password=" % (re.sub(' ', '%20', name), userid) 
+    return "%s?Name=%s&Email=%s@washington.edu&Password=" % (
+        add_editor_url_prefix, re.sub(' ', '%20', name), userid) 
+
 
 def add_editor(name, userid):
     """
@@ -31,17 +44,19 @@ def add_editor(name, userid):
     if the request failed or an error code has been returned.
     """
     url = _make_add_editor_url(name, userid)
-    return _process_resp(
-        url,
-        Trumba.get_sea_resource(url),
-        _is_editor_added)
+    return _process_resp(url,
+                         Trumba.get_sea_resource(url),
+                         _is_editor_added
+                         )
+
 
 def _make_del_editor_url(userid):
     """
     :return: the URL string for GET request call to 
     Trumba CloseEditor method
     """
-    return "/service/accounts.asmx/CloseEditor?Email=%s@washington.edu" % userid
+    return "%s?Email=%s@washington.edu" % (del_editor_url_prefix, userid)
+
 
 def delete_editor(userid):
     """
@@ -51,17 +66,20 @@ def delete_editor(userid):
     if the request failed or an error code has been returned.
     """
     url = _make_del_editor_url(userid)
-    return _process_resp(
-        url,
-        Trumba.get_sea_resource(url),
-        _is_editor_deleted)
+    return _process_resp(url,
+                         Trumba.get_sea_resource(url),
+                         _is_editor_deleted
+                         )
+
 
 def _make_set_permissions_url(calendar_id, userid, level):
     """
     :return: the URL string for GET request call 
     to Trumba SetPermissions method
     """
-    return "/service/calendars.asmx/SetPermissions?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (calendar_id, userid, level) 
+    return "%s?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (
+        set_permission_url_prefix, calendar_id, userid, level) 
+
 
 def set_bot_permissions(calendar_id, userid, level):
     """
@@ -74,10 +92,11 @@ def set_bot_permissions(calendar_id, userid, level):
     """
     url = _make_set_permissions_url(
         calendar_id, userid, level)
-    return _process_resp(
-        url,
-        Trumba.get_bot_resource(url),
-        _is_permission_set)
+    return _process_resp(url,
+                         Trumba.get_bot_resource(url),
+                         _is_permission_set
+                         )
+
 
 def set_sea_permissions(calendar_id, userid, level):
     """
@@ -90,10 +109,11 @@ def set_sea_permissions(calendar_id, userid, level):
     """
     url = _make_set_permissions_url(
         calendar_id, userid, level)
-    return _process_resp(
-        url,
-        Trumba.get_sea_resource(url),
-        _is_permission_set)
+    return _process_resp(url,
+                         Trumba.get_sea_resource(url),
+                         _is_permission_set
+                         )
+
 
 def set_tac_permissions(calendar_id, userid, level):
     """
@@ -106,10 +126,11 @@ def set_tac_permissions(calendar_id, userid, level):
     """
     url = _make_set_permissions_url(
         calendar_id, userid, level)
-    return _process_resp(
-        url,
-        Trumba.get_tac_resource(url),
-        _is_permission_set)
+    return _process_resp(url,
+                         Trumba.get_tac_resource(url),
+                         _is_permission_set
+                         )
+
 
 def _process_resp(request_id, response, is_success_func):
     """
@@ -123,7 +144,8 @@ def _process_resp(request_id, response, is_success_func):
     if response.status != 200:
         raise DataFailureException(request_id,
                                    response.status,
-                                   response.reason)
+                                   response.reason
+                                   )
     if response.data is None:
         raise NoDataReturned()
     root = objectify.fromstring(response.data)
@@ -135,12 +157,14 @@ def _process_resp(request_id, response, is_success_func):
         return True
     _check_err(resp_code, request_id)
 
+
 def _is_editor_added(code):
     """
     :param code: an integer value  
     :return: True if the code means successful, False otherwise.
     """
     return code == 1001 or code == 3012
+
 
 def _is_editor_deleted(code):
     """
@@ -149,12 +173,14 @@ def _is_editor_deleted(code):
     """
     return code == 1002
 
+
 def _is_permission_set(code):
     """
     :param code: an integer value  
     :return: True if the code means successful, False otherwise.
     """
     return code == 1003
+
 
 def _check_err(code, request_id):
     """
@@ -185,6 +211,6 @@ def _check_err(code, request_id):
         raise ErrorCreatingEditor()
     else:
         logging.getLogger(__name__).warn(
-             "Unexpected Error Code: %s with %s" % (
-                 code, request_id))
+            "Unexpected Error Code: %s with %s" % (
+                code, request_id))
         raise UnexpectedError()
