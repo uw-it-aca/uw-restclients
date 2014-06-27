@@ -173,7 +173,7 @@ class Permission(models.Model):
                              default=VIEW)
 
     def get_trumba_userid(self):
-        return "%s@washington.edu" % uwnetid
+        return "%s@washington.edu" % self.uwnetid
 
     def is_edit(self):
         return is_edit_permission(self.level) or is_publish_permission(self.level)
