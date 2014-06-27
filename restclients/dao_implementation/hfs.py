@@ -19,9 +19,9 @@ class File(object):
         return get_mockdata_url("hfs", "file", url, headers)
 
 
+HFS_MAX_POOL_SIZE = 10
+HFS_SOCKET_TIMEOUT = 15
 
-HFS_MAX_POOL_SIZE = 10 #default values
-HFS_SOCKET_TIMEOUT = 15 #default values
 
 class Live(object):
     """
@@ -33,7 +33,7 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = get_con_pool(settings.RESTCLIENTS_HFS_HOST,
                                      settings.RESTCLIENTS_HFS_KEY_FILE,
                                      settings.RESTCLIENTS_HFS_CERT_FILE,
