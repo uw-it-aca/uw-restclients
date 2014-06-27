@@ -609,7 +609,9 @@ class Notice(models.Model):
     notice_category = models.CharField(max_length=100)
     notice_content = models.TextField()
     notice_type = models.CharField(max_length=100)
-    custom_category = models.CharField(max_length=100, default="Uncategorized")
+    custom_category = models.CharField(max_length=100,
+                                       default="Uncategorized"
+                                       )
 
     def json_data(self, include_abbr_week_month_day_format=False):
 
@@ -617,18 +619,16 @@ class Notice(models.Model):
 
         for attrib in self.attributes:
             if attrib.data_type == "date" and include_abbr_week_month_day_format:
-                attrib_data.append({
-                        'name': attrib.name,
-                        'data_type': attrib.data_type,
-                        'value': attrib.get_value(),
-                        'formatted_value': attrib.get_formatted_date_value()
-                        })
+                attrib_data.append({'name': attrib.name,
+                                    'data_type': attrib.data_type,
+                                    'value': attrib.get_value(),
+                                    'formatted_value': attrib.get_formatted_date_value()
+                                    })
             else:
-                attrib_data.append({
-                        'name': attrib.name,
-                        'data_type': attrib.data_type,
-                        'value': attrib.get_value()
-                        })
+                attrib_data.append({'name': attrib.name,
+                                    'data_type': attrib.data_type,
+                                    'value': attrib.get_value()
+                                    })
 
         data = {
             'notice_content': self.notice_content,
@@ -642,10 +642,9 @@ class Finance(models.Model):
     pce_accbalance = models.FloatField()
 
     def json_data(self):
-        return {
-            'tuition_accbalance': self.tuition_accbalance,
-            'pce_accbalance': self.pce_accbalance
-            }
+        return {'tuition_accbalance': self.tuition_accbalance,
+                'pce_accbalance': self.pce_accbalance
+                }
 
     def __str__(self):
         return "{tuition_accbalance: %s, pce_accbalance: %s}" % (
