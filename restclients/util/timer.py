@@ -1,7 +1,7 @@
 import datetime
 
 
-def uctnow(self):
+def uctnow():
     return datetime.datetime.utcnow()
 
 
