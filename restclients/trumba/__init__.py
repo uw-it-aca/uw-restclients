@@ -81,6 +81,7 @@ def get_sea_resource(url):
         time.sleep(1)
     return response
 
+
 def get_tac_resource(url):
     """
     Get the requested resource or update resource using Tacoma account

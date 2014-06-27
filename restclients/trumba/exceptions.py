@@ -3,6 +3,7 @@ Exceptions when Trumba's Web services returns an error in
 a successful request.
 """
 
+
 class TrumbaException(Exception):
 
     def __str__(self):
