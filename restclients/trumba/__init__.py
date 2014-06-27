@@ -23,7 +23,7 @@ def _log_xml_resp(campus, url, response, timer):
         root = etree.fromstring(response.data)
         resp_msg = ''
         for el in root.iterchildren():
-            resp_msg = resp_msg + str(el.attrib)
+            resp_msg += str(el.attrib)
         logger.info("%s %s ==message==> %s" % (campus, url, resp_msg))
     else:
         log_err(logger,
@@ -59,7 +59,7 @@ def get_bot_resource(url):
         if response.status != 500 or retry == 1:
             break
         logger.warn("RETRY %s" % url)
-        retry = retry + 1
+        retry += 1
         time.sleep(1)
     return response
 
@@ -79,7 +79,7 @@ def get_sea_resource(url):
         if response.status != 500 or retry == 1:
             break
         logger.warn("RETRY %s" % url)
-        retry = retry + 1
+        retry += 1
         time.sleep(1)
     return response
 
@@ -99,7 +99,7 @@ def get_tac_resource(url):
         if response.status != 500 or retry == 1:
             break
         logger.warn("RETRY %s" % url)
-        retry = retry + 1
+        retry += 1
         time.sleep(1)
     return response
 
@@ -120,7 +120,7 @@ def post_bot_resource(url, body):
         if response.status != 500 or retry == 1:
             break
         logger.warn("RETRY %s %s" % (url, body))
-        retry = retry + 1
+        retry += 1
         time.sleep(1)
     return response
 
@@ -141,7 +141,7 @@ def post_sea_resource(url, body):
         if response.status != 500 or retry == 1:
             break
         logger.warn("RETRY %s %s" % (url, body))
-        retry = retry + 1
+        retry += 1
         time.sleep(1)
     return response
 
@@ -162,7 +162,7 @@ def post_tac_resource(url, body):
         if response.status != 500 or retry == 1:
             break
         logger.warn("RETRY %s %s" % (url, body))
-        retry = retry + 1
+        retry += 1
         time.sleep(1)
     return response
 
