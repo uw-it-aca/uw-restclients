@@ -96,6 +96,18 @@ class Analytics(Canvas):
             sis_course_id, sis_user_id)
         return self._get_resource(url)
 
+    def get_student_assignments_for_sis_course_id_and_canvas_user_id(self, sis_course_id, user_id):
+        """
+        Returns student assignment data for the given user_id and course_id.
+
+        https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_assignments
+        """
+
+        url = "/api/v1/courses/sis_course_id:%s/analytics/users/%s/assignments.json" % (
+            sis_course_id, user_id)
+        return self._get_resource(url)
+
+
     def get_student_messaging_for_course(self, user_id, course_id):
         return self.get_student_messaging_for_sis_course_id_and_sis_user_id(user_id, course_id)
 
