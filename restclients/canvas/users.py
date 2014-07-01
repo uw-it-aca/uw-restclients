@@ -19,6 +19,18 @@ class Users(Canvas):
         """
         return self.get_user(self._sis_id(sis_user_id, sis_field="user"))
 
+    def get_users_for_sis_course_id(self, sis_course_id):
+        """
+        Returns a list of users for the given sis course id.
+        """
+        url = "/api/v1/courses/sis_course_id:%s/users" % (sis_course_id)
+        data = self._get_resource(url)
+        users = []
+        for entry in data:
+            users.append(self._user_from_json(entry))
+
+        return users
+
     def create_user(self, user, account_id=None):
         """
         Create and return a new user and pseudonym for an account.
