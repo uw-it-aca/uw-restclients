@@ -38,3 +38,9 @@ class Quizzes(Canvas):
         quiz.points_possible = data['points_possible']
 
         return quiz
+
+    def get_submissions_for_sis_course_id_and_quiz_id(self, sis_course_id, quiz_id):
+        url = "/api/v1/courses/sis_course_id:%s/quizzes/%s/submissions" % (sis_course_id, quiz_id)
+        submissions = Canvas()._get_resource(url, data_key="quiz_submissions")
+
+        return submissions
