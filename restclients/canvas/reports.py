@@ -133,8 +133,9 @@ class Reports(Canvas):
         # workaround for Canvas bug help.instructure.com/tickets/362386
         url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
 
+        timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", 15.0)
         response = PoolManager().request("GET", url, retries=5,
-                                         timeout=settings.RESTCLIENTS_TIMEOUT)
+                                         timeout=timeout)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
