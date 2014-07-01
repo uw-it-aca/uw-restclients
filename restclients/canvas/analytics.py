@@ -34,59 +34,77 @@ class Analytics(Canvas):
             account_id, term_id)
         return self._get_resource(url)
 
-    def get_activity_by_course(self, course_id):
+    def get_activity_by_course(self, sis_course_id):
+        return self.get_activity_by_sis_course_id(course_id)
+
+    def get_activity_by_sis_course_id(self, sis_course_id):
         """
-        Returns participation data for the given course_id.
+        Returns participation data for the given sis_course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_participation
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/activity.json" % course_id
+        url = "/api/v1/courses/sis_course_id:%s/analytics/activity.json" % sis_course_id
         return self._get_resource(url)
 
     def get_assignments_by_course(self, course_id):
+        return self.get_assignments_by_sis_course_id(course_id)
+
+    def get_assignments_by_sis_course_id(self, sis_course_id):
         """
         Returns assignment data for the given course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_assignments
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/assignments.json" % course_id
+        url = "/api/v1/courses/sis_course_id:%s/analytics/assignments.json" % sis_course_id
         return self._get_resource(url)
 
     def get_student_summaries_by_course(self, course_id):
+        return self.get_student_summaries_by_sis_course_id(course_id)
+
+    def get_student_summaries_by_sis_course_id(self, sis_course_id):
         """
         Returns per-student data for the given course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_student_summaries
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/student_summaries.json" % course_id
+        url = "/api/v1/courses/sis_course_id:%s/analytics/student_summaries.json" % sis_course_id
         return self._get_resource(url)
 
     def get_student_activity_for_course(self, user_id, course_id):
+        return self.get_student_activity_for_sis_course_id_and_sis_user_id(self, user_id, course_id)
+
+    def get_student_activity_for_sis_course_id_and_sis_user_id(self, sis_user_id, sis_course_id):
         """
         Returns student activity data for the given user_id and course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_participation
         """
         url = "/api/v1/sis_course_id:courses/%s/analytics/users/sis_user_id:%s/activity.json" % (
-            course_id, user_id)
+            sis_course_id, sis_user_id)
         return self._get_resource(url)
 
     def get_student_assignments_for_course(self, user_id, course_id):
+        return self.get_student_assignments_for_sis_course_id_and_sis_user_id(user_id, course_id)
+
+    def get_student_assignments_for_sis_course_id_and_sis_user_id(self, sis_user_id, sis_course_id):
         """
         Returns student assignment data for the given user_id and course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_assignments
         """
         url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/assignments.json" % (
-            course_id, user_id)
+            sis_course_id, sis_user_id)
         return self._get_resource(url)
 
     def get_student_messaging_for_course(self, user_id, course_id):
+        return self.get_student_messaging_for_sis_course_id_and_sis_user_id(user_id, course_id)
+
+    def get_student_messaging_for_sis_course_id_and_sis_user_id(self, sis_user_id, sis_course_id):
         """
         Returns student messaging data for the given user_id and course_id.
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_messaging
         """
         url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/communication.json" % (
-            course_id, user_id)
+            sis_course_id, sis_user_id)
         return self._get_resource(url)
