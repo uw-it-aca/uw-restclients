@@ -137,7 +137,7 @@ class Canvas(object):
             except:
                 return
 
-    def _get_resource(self, url):
+    def _get_resource(self, url, data_key=None):
         """
         Canvas GET method. Return representation of the requested resource,
         chasing pagination links to coalesce resources.
@@ -156,6 +156,11 @@ class Canvas(object):
             next_page = self._next_page(response)
             if next_page:
                 data.extend(self._get_resource(next_page))
+
+        elif isinstance(data, dict) and data_key is not None:
+            next_page = self._next_page(response)
+            if next_page:
+                data[data_key].extend(self._get_resource(next_page, data_key=data_key)[data_key])
 
         return data
 
