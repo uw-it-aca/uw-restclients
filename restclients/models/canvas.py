@@ -84,6 +84,7 @@ class Enrollment(models.Model):
     role = models.CharField(max_length=80, choices=ROLE_CHOICES)
     status = models.CharField(max_length=100)
     html_url = models.CharField(max_length=1000)
+    sis_section_id = models.CharField(max_length=100, null=True)
     sis_course_id = models.CharField(max_length=100, null=True)
     course_url = models.CharField(max_length=2000, null=True)
     course_name = models.CharField(max_length=100, null=True)

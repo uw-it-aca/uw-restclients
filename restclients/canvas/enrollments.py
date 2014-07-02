@@ -99,6 +99,8 @@ class Enrollments(Canvas):
         enrollment.role = data["type"]
         enrollment.status = data["enrollment_state"]
         enrollment.html_url = data["html_url"]
+        if "sis_section_id" in data:
+            enrollment.sis_section_id = data["sis_section_id"]
         if "user" in data:
             if "login_id" in data["user"]:
                 enrollment.login_id = data["user"]["login_id"]
