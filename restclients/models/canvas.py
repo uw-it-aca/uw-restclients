@@ -261,3 +261,11 @@ class Quiz(models.Model):
     class Meta:
         db_table ="restclients_canvas_quiz"
 
+class DiscussionTopic(models.Model):
+    topic_id = models.IntegerField(max_length=20)
+    html_url = models.CharField(max_length=500, null=True)
+    course_id = models.IntegerField()
+
+class DiscussionEntry(models.Model):
+    user_id = models.IntegerField()
+
