@@ -267,5 +267,6 @@ class DiscussionTopic(models.Model):
     course_id = models.IntegerField()
 
 class DiscussionEntry(models.Model):
+    entry_id = models.IntegerField()
     user_id = models.IntegerField()
 

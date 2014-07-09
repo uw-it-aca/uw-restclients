@@ -25,8 +25,18 @@ class Discussions(Canvas):
         entries = []
         for entry_data in data:
             entry = DiscussionEntry()
+            entry.entry_id = entry_data["id"]
             entry.user_id = entry_data["user_id"]
             entries.append(entry)
+
+            replies_url = "/api/v1/courses/%s/discussion_topics/%s/entries/%s/replies" % (topic.course_id, topic.topic_id, entry.entry_id)
+
+            reply_data = self._get_resource(replies_url)
+            for reply_values in reply_data:
+                entry = DiscussionEntry()
+                entry.entry_id = reply_values["id"]
+                entry.user_id = reply_values["user_id"]
+                entries.append(entry)
 
         return entries
 
