@@ -272,12 +272,29 @@ class Quiz(models.Model):
     class Meta:
         db_table ="restclients_canvas_quiz"
 
+
+class GradingStandard(models.Model):
+    COURSE_CONTEXT = "Course"
+    ACCOUNT_CONTEXT = "Account"
+
+    CONTEXT_CHOICES = (
+        (COURSE_CONTEXT, COURSE_CONTEXT),
+        (ACCOUNT_CONTEXT, ACCOUNT_CONTEXT)
+    )
+
+    grading_standard_id = models.IntegerField(max_length=20)
+    title = models.CharField(max_length=500)
+    context_id = models.IntegerField(max_length=20)
+    context_type = models.CharField(max_length=20, choices=CONTEXT_CHOICES)
+    grading_scheme = models.TextField()
+
+
 class DiscussionTopic(models.Model):
     topic_id = models.IntegerField(max_length=20)
     html_url = models.CharField(max_length=500, null=True)
     course_id = models.IntegerField()
 
+
 class DiscussionEntry(models.Model):
     entry_id = models.IntegerField()
     user_id = models.IntegerField()
-
