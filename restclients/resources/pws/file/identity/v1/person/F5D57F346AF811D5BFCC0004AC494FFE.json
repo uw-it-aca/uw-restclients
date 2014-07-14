@@ -1,1 +1,19 @@
-{"DisplayName":"EIGHT CLASS INSTRUCTOR","EduPersonAffiliations":["member","student","alum","staff","employee"],"IsTestEntity":true,"PriorUWNetIDs":[],"PriorUWRegIDs":[],"RegisteredFirstMiddleName":"EIGHT CLASS","RegisteredName":"EIGHT CLASS STUDENT","RegisteredSurname":"INSTRUCTOR","UIDNumber":"97802","UWNetID":"javerage","UWRegID":"7718EB38AE3411D689DA0004AC494FFE","WhitepagesPublish":false,"PersonAffiliations":{"AlumPersonAffiliation":{"DevelopmentID":"0000773877"},"EmployeePersonAffiliation":{"EmployeeID":"903456789","EmployeeWhitePages":{"Address1":null,"Address2":null,"Department1":null,"Department2":null,"Email1":null,"Email2":null,"Fax":null,"Name":null,"Phone1":null,"Phone2":null,"PublishInDirectory":false,"Title1":null,"Title2":null,"TouchDial":null,"VoiceMail":null},"HomeDepartment":"C&C TEST BUDGET","MailStop":null},"StudentPersonAffiliation":{"StudentNumber":"1443336","StudentSystemKey":"000083857","StudentWhitePages":{"Class":null,"Department1":null,"Department2":null,"Department3":null,"Email":null,"Name":null,"Phone":null,"PublishInDirectory":false}}}}
+{"DisplayName":"EIGHT CLASS INSTRUCTOR","EduPersonAffiliations":["member","student","alum","staff","employee"],"IsTestEntity":true,"PriorUWNetIDs":[],"PriorUWRegIDs":[],"RegisteredFirstMiddleName":"EIGHT CLASS","RegisteredName":"EIGHT CLASS STUDENT","RegisteredSurname":"INSTRUCTOR","UIDNumber":"97802","UWNetID":"javerage","UWRegID":"F5D57F346AF811D5BFCC0004AC494FFE","WhitepagesPublish":true,
+"PersonAffiliations":{
+"AlumPersonAffiliation":{"DevelopmentID":"0000773877"},
+"EmployeePersonAffiliation":{
+"EmployeeID":"903456789",
+"EmployeeWhitePages":{
+"Address1": "750 Republican St Bldg E room E691A Seattle, WA 98109",
+"Address2":null,"Department1":null,"Department2":null,
+"Email1":"eight@uw.edu",
+"Email2":null,
+"Fax":null,
+"Name":null,
+"Phone1":"206 685-1234",
+"Phone2":null,
+"PublishInDirectory":true,
+"Title1":"Acting Assistant Professor",
+"Title2":null,
+"TouchDial":null,"VoiceMail":null},
+"HomeDepartment":"C&C TEST BUDGET","MailStop":null},"StudentPersonAffiliation":{"StudentNumber":"1443336","StudentSystemKey":"000083857","StudentWhitePages":{"Class":null,"Department1":null,"Department2":null,"Department3":null,"Email":null,"Name":null,"Phone":null,"PublishInDirectory":true}}}}
