@@ -17,7 +17,7 @@ class MyLibInfoTest(TestCase):
             self.assertEquals(account.fines, 5.35)
             self.assertEquals(account.items_loaned, 3)
 
-            self.assertEquals(account.get_next_due_date_str(True), "May 27, 2014")
+            self.assertEquals(account.get_next_due_date_str(True), "Tue, May 27")
             self.assertEquals(account.get_next_due_date_str(False), "2014-05-27")
 
 
