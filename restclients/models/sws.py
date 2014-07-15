@@ -37,6 +37,8 @@ class Person(models.Model):
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(max_length=255)
     mailstop = models.CharField(max_length=255)
+    title1 = models.CharField(max_length=255)
+    title2 = models.CharField(max_length=255)
 
     def json_data(self):
         data = {
@@ -50,6 +52,8 @@ class Person(models.Model):
             'email2': self.email2,
             'phone1': self.phone1,
             'phone2': self.phone2,
+            'title1': self.title1,
+            'title2': self.title2,
             'voicemail': self.voicemail,
             'fax': self.fax,
             'touchdial': self.touchdial,

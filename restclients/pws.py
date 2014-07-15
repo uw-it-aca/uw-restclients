@@ -213,6 +213,8 @@ class PWS(object):
                         person.email2 = white_pages["Email2"]
                         person.phone1 = white_pages["Phone1"]
                         person.phone2 = white_pages["Phone2"]
+                        person.title1 = white_pages["Title1"]
+                        person.title2 = white_pages["Title2"]
                         person.voicemail = white_pages["VoiceMail"]
                         person.fax = white_pages["Fax"]
                         person.touchdial = white_pages["TouchDial"]
