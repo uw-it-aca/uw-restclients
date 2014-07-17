@@ -7,6 +7,7 @@ import logging
 import ssl
 import time
 import socket
+from urlparse import urlparse
 from urllib3 import connection_from_url
 from django.conf import settings
 from restclients.signals.rest_request import rest_request
@@ -17,7 +18,8 @@ def get_con_pool(host,
                  key_file=None,
                  cert_file=None,
                  socket_timeout=15.0,
-                 max_pool_size=3):
+                 max_pool_size=3,
+                 verify_https=True):
     """
     Return a ConnectionPool instance of given host
     :param socket_timeout:
@@ -33,6 +35,11 @@ def get_con_pool(host,
     if key_file is not None and cert_file is not None:
         kwargs["key_file"] = key_file
         kwargs["cert_file"] = cert_file
+
+    if verify_https and urlparse(host).scheme == "https":
+        kwargs["cert_reqs"] = "CERT_REQUIRED"
+        kwargs["ca_certs"] = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
+                                     "/etc/ssl/certs/ca-bundle.crt")
 
     return connection_from_url(host, **kwargs)
 
