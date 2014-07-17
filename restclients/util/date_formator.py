@@ -125,7 +125,7 @@ def get_past_weeks_count(adatetime):
     7 days are counted as one week.
     """
     duration = last_midnight() - adatetime
-    return duration.total_seconds() // timedelta(7).total_seconds()
+    return get_total_seconds(duration) // get_total_seconds(timedelta(7))
 
 
 def get_past_months_count(adatetime):
@@ -134,7 +134,7 @@ def get_past_months_count(adatetime):
     28 days are counted as one month.
     """
     duration = last_midnight() - adatetime
-    return duration.total_seconds() // timedelta(28).total_seconds()
+    return get_total_seconds(duration) // get_total_seconds(timedelta(28))
 
 
 def get_past_years_count(adatetime):
@@ -143,4 +143,12 @@ def get_past_years_count(adatetime):
     365 days are counted as one year.
     """
     duration = last_midnight() - adatetime
-    return duration.total_seconds() // timedelta(365).total_seconds()
+    return get_total_seconds(duration) // get_total_seconds(timedelta(365))
+
+
+def get_total_seconds(time_delta):
+    """
+    Returns the total number of seconds in a passed timedelta
+    """
+    return (time_delta.microseconds + (time_delta.seconds + time_delta.days * 24 * 3600) * 10**6) / 10**6
+
