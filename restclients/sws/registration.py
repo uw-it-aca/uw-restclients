@@ -5,6 +5,7 @@ import logging
 import json
 import re
 from urllib import urlencode
+from decimal import *
 from restclients.models.sws import Registration, ClassSchedule
 from restclients.exceptions import DataFailureException
 from restclients.pws import PWS
@@ -136,6 +137,26 @@ def get_all_registrations_by_section(section):
 
     return registrations
 
+def get_credits_by_section_and_regid(section, regid):
+    """
+    Returns a restclients.models.sws.Registration object
+    for the section and regid passed in.
+    """
+    url = "/student/v4/registration/%s,%s,%s,%s,%s,%s.json" % (
+        section.term.year,
+        section.term.quarter,
+        section.curriculum_abbr,
+        section.course_number,
+        section.section_id,
+        regid
+    )
+
+    reg_data = get_resource(url)
+
+    try:
+        return Decimal(reg_data['Credits'].strip())
+    except InvalidOperation:
+        pass
 
 def get_schedule_by_regid_and_term(regid, term, 
                                    include_instructor_not_on_time_schedule=True):
@@ -150,14 +171,16 @@ def get_schedule_by_regid_and_term(regid, term,
                    ('is_active', 'on'),
                    ('year', term.year)
                    ]))
-    return _json_to_schedule(get_resource(url), term, 
+
+    return _json_to_schedule(get_resource(url), term, regid,
                              include_instructor_not_on_time_schedule)
 
-
-def _json_to_schedule(term_data, term,
+def _json_to_schedule(term_data, term, regid,
                       include_instructor_not_on_time_schedule=True):
     sections = []
     sws_threads = []
+    term_credit_hours = Decimal(0.0)
+
     for registration in term_data["Registrations"]:
         reg_url = registration["Href"]
 
@@ -177,7 +200,6 @@ def _json_to_schedule(term_data, term,
 
     for thread in sws_threads:
         response = thread.response
-
         if response.status != 200:
             raise DataFailureException(reg_url,
                                        response.status,
@@ -186,6 +208,9 @@ def _json_to_schedule(term_data, term,
         section = _json_to_section(json.loads(response.data), term,
                                    include_instructor_not_on_time_schedule)
 
+        reg_credits = get_credits_by_section_and_regid(section, regid)
+        if reg_credits is not None:
+            term_credit_hours += reg_credits
         # For independent study courses, only include the one relevant
         # instructor
         if registration["Instructor"]:
@@ -203,6 +228,8 @@ def _json_to_schedule(term_data, term,
             section.independent_study_instructor_regid = registration["Instructor"]
         sections.append(section)
 
+    term.credits = term_credit_hours
+    term.section_count = len(sections)
     schedule = ClassSchedule()
     schedule.sections = sections
     schedule.term = term
