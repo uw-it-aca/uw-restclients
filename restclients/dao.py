@@ -15,6 +15,7 @@ from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.libraries import File as LibrariesFile
 from restclients.dao_implementation.hfs import File as HfsFile
+from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.cache_implementation import NoCache
 
 
@@ -202,6 +203,13 @@ class Libraries_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_LIBRARIES_DAO_CLASS', LibrariesFile)
+
+class Uwnetid_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('uwnetid', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_UWNETID_DAO_CLASS', UwnetidFile)
 
 
 class TrumbaBot_DAO(MY_DAO):
