@@ -11,6 +11,7 @@ class UwEmailForwarding(models.Model):
     def json_data(self):
         return {'fwd': self.fwd,
                 'status': self.status,
+                'is_active': self.is_active(),
                 'permitted': self.permitted
                 }
 
