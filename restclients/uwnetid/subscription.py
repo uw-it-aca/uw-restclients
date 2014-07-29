@@ -1,5 +1,5 @@
 """
-This is the interface for interacting with the UW Libraries Web Service.
+This is the interface for interacting with the UWNetID Subscription Web Service.
 """
 
 from datetime import datetime
@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 def get_email_forwarding(netid):
     """
-    Return a restclients.models.uwnetid.UwEmail object on the given uwnetid
+    Return a restclients.models.uwnetid.UwEmailForwarding object 
+    on the given uwnetid
     """
     url = "%s%s%s" % (url_prefix, netid, url_suffix)
     response = get_resource(url)
