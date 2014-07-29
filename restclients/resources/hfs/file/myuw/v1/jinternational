@@ -4,6 +4,7 @@
     "last_updated": "2014-01-15T15:17:16.789",
     "add_funds_url": "https://www.hfs.washington.edu/olco"
   },
+  "employee_husky_card":null,
   "resident_dining": {
     "balance": 77.89,
     "last_updated": "2014-05-17T13:15:36.573",

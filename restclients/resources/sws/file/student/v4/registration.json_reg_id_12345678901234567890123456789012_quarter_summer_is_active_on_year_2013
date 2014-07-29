@@ -114,16 +114,6 @@
         "SectionID" : "T",
         "Year" : "2013"
       }, 
-      { "CourseNumber" : "310",
-        "CurriculumAbbreviation" : "T BUS",
-        "DuplicateCode" : "1",
-        "Href" : "\/student\/v4\/registration\/2013,summer,T%20BUS,310,A,12345678901234567890123456789012,1.json",
-        "Instructor" : null,
-        "Quarter" : "summer",
-        "RegID" : "12345678901234567890123456789012",
-        "SectionID" : "A",
-        "Year" : "2013"
-      }, 
       { "CourseNumber" : "461",
         "CurriculumAbbreviation" : "EDC&I",
         "DuplicateCode" : "1",
@@ -135,5 +125,5 @@
         "Year" : "2013"
       }
     ],
-  "TotalCount" : 12
+  "TotalCount" : 11
 }
