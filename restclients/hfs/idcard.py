@@ -10,7 +10,7 @@ from restclients.models.hfs import ResidentDiningAccount, HfsAccouts
 from restclients.hfs import get_resource
 
 
-url_prefix = "/v1/hfs/" 
+url_prefix = "/myuw/v1/" 
 logger = logging.getLogger(__name__)
 
 

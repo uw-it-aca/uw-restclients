@@ -36,7 +36,7 @@ class HfsTest(TestCase):
             RESTCLIENTS_HFS_DAO_CLASS =
             'restclients.dao_implementation.hfs.File'):
 
-            hfs_acc = get_hfs_accounts("none")
+            hfs_acc = get_hfs_accounts("eight")
             self.assertIsNone(hfs_acc.student_husky_card)
             self.assertIsNone(hfs_acc.employee_husky_card)
             self.assertIsNone(hfs_acc.resident_dining)
@@ -71,11 +71,16 @@ class HfsTest(TestCase):
 
             #Testing error message in a 200 response
             self.assertRaises(DataFailureException, get_hfs_accounts, "invalidnetid")
-            #Testing non-200 response
             self.assertRaises(DataFailureException, get_hfs_accounts, "invalidnetid123")
+
+            try:
+                get_hfs_accounts("none")
+            except DataFailureException as ex:
+                self.assertEquals(ex.msg, "UWNetID none not found in IDCard Database.")
+
 
             try:
                 get_hfs_accounts("invalidnetid")
             except DataFailureException as ex:
-                self.assertEquals(ex.msg, "An error has occurred.")
+                self.assertEquals(ex.msg, "Input for this method must be either a valid UWNetID or two nine-digit Student and Faculty/Staff/Employee ID numbers, comma-separated.")
 
