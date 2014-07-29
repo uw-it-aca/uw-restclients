@@ -1,5 +1,5 @@
 """
-This is the interface for interacting with the UW Libraries Web Service.
+This is the interface for interacting with the HFS Web Service.
 """
 
 from datetime import datetime
