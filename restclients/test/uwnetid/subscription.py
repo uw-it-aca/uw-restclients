@@ -16,9 +16,9 @@ class EmailForwardingTest(TestCase):
             self.assertTrue(uw_email.is_active())
             self.assertTrue(uw_email.permitted)
             self.assertFalse(uw_email.is_uwgmail())
-            self.assertFalse(uw_email.is_uwlive())
+            self.assertTrue(uw_email.is_uwlive())
             self.assertEquals(uw_email.fwd, 
-                              "javerage@gmail.com")
+                              "javerage@ol.uw.edu")
 
             uw_email = get_email_forwarding("none")
             self.assertTrue(uw_email.permitted)
