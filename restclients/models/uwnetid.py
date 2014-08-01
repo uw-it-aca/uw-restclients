@@ -9,10 +9,10 @@ class UwEmailForwarding(models.Model):
         return self.status == "Active"
 
     def is_uwgmail(self):
-        return self.fwd and "@gamail.uw.edu" in self.fwd
+        return self.fwd is not None and "@gamail.uw.edu" in self.fwd
 
     def is_uwlive(self):
-        return self.fwd and "@ol.uw.edu" in self.fwd
+        return self.fwd is not None and "@ol.uw.edu" in self.fwd
 
     def json_data(self):
         return {'fwd': self.fwd,
