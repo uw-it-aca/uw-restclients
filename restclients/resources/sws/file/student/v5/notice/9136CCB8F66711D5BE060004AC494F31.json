@@ -13,7 +13,13 @@
             "NoticeType": "IntlStuCheckIn"
         },
         {
-            "NoticeAttributes": [],
+            "NoticeAttributes": [
+                {
+                    "Name": "Holds",
+                    "DataType": "String",
+                    "Value": "3"
+                }
+            ],
             "NoticeCategory": "StudentALR",
             "NoticeContent": "The following offices have placed <a href='http://www.washington.edu/students/reg/regrest.html#Q2'>administrative holds</a> on your academic record which will prevent further registration and/or ordering official transcripts: <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Library Account Services, Suzzallo, 1st Floor 206-543-1174 <br/><b>Type:</b> Registration/Transcript <b>Office:</b> Student Fiscal Services, 129 Schmitz, 206-543-4694 <br/><b>Type:</b> Registration  <b>Office:</b> Financial Aid Office, 105 Schmitz Hall, 206-543-6101",
             "NoticeType": "AdminHolds"
