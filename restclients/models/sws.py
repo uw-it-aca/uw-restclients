@@ -188,7 +188,7 @@ class FinalExam(models.Model):
 
 
 class Section(models.Model):
-    SUMMER_A_TERM = "a-term"
+    SUMMER_A_TERM = "A-term"
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
     final_exam = models.ForeignKey(FinalExam,
