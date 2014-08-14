@@ -116,7 +116,7 @@
             "NoticeAttributes": [
                 {
                     "Name": "Holds",
-                    "DataType": "String",
+                    "DataType": "string",
                     "Value": "2"
                 }
             ],
