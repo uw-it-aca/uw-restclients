@@ -24,7 +24,6 @@ def get_notices_by_regid(regid):
 
 
 def _notices_from_json(notice_data):
-    print notice_data
     notices = []
     notices_list = notice_data.get("Notices")
     if notices_list is not None:
