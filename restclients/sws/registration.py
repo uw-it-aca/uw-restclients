@@ -179,7 +179,7 @@ def _json_to_schedule(term_data, term, regid,
                       include_instructor_not_on_time_schedule=True):
     sections = []
     sws_threads = []
-    term_credit_hours = Decimal(0.0)
+    term_credit_hours = Decimal("0.0")
 
     for registration in term_data["Registrations"]:
         reg_url = registration["Href"]
