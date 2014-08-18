@@ -24,6 +24,7 @@ def get_notices_by_regid(regid):
 
 
 def _notices_from_json(notice_data):
+    print notice_data
     notices = []
     notices_list = notice_data.get("Notices")
     if notices_list is not None:
@@ -34,30 +35,33 @@ def _notices_from_json(notice_data):
             notice_obj.notice_type = notice.get("NoticeType")
 
             notice_attribs = []
-            for notice_attrib in notice.get("NoticeAttributes"):
-                attribute = NoticeAttribute()
-                attribute.data_type = notice_attrib.get("DataType")
-                attribute.name = notice_attrib.get("Name")
+            try:
+                for notice_attrib in notice.get("NoticeAttributes"):
+                    attribute = NoticeAttribute()
+                    attribute.data_type = notice_attrib.get("DataType")
+                    attribute.name = notice_attrib.get("Name")
 
-                #Currently known data types
-                if attribute.data_type == "url":
-                    attribute._url_value = notice_attrib.get("Value")
-                elif attribute.data_type == "date":
-                    #Convert to UTC datetime
-                    date = parser.parse(notice_attrib.get("Value"))
-                    localtz = pytz.timezone('America/Los_Angeles')
-                    local_dt = localtz.localize(date)
-                    utc_dt = local_dt.astimezone(pytz.utc)
+                    #Currently known data types
+                    if attribute.data_type == "url":
+                        attribute._url_value = notice_attrib.get("Value")
+                    elif attribute.data_type == "date":
+                        #Convert to UTC datetime
+                        date = parser.parse(notice_attrib.get("Value"))
+                        localtz = pytz.timezone('America/Los_Angeles')
+                        local_dt = localtz.localize(date)
+                        utc_dt = local_dt.astimezone(pytz.utc)
 
-                    attribute._date_value = utc_dt
-                elif attribute.data_type == "string":
-                    attribute._string_value = notice_attrib.get("Value")
-                else:
-                    logger.warn("Unkown attribute type: %s\nWith Value:%s" %
-                                (attribute.data_type,
-                                notice_attrib.get("value")))
-                    continue
-                notice_attribs.append(attribute)
+                        attribute._date_value = utc_dt
+                    elif attribute.data_type == "string":
+                        attribute._string_value = notice_attrib.get("Value")
+                    else:
+                        logger.warn("Unkown attribute type: %s\nWith Value:%s" %
+                                    (attribute.data_type,
+                                    notice_attrib.get("value")))
+                        continue
+                    notice_attribs.append(attribute)
+            except TypeError:
+                pass
             notice_obj.attributes = notice_attribs
             notices.append(notice_obj)
         return notices
