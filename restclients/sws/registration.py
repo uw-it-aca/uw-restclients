@@ -142,7 +142,8 @@ def get_credits_by_section_and_regid(section, regid):
     Returns a restclients.models.sws.Registration object
     for the section and regid passed in.
     """
-    url = "/student/v4/registration/%s,%s,%s,%s,%s,%s.json" % (
+    #note trailing comma in URL, it's required for the optional dup_code param
+    url = "/student/v4/registration/%s,%s,%s,%s,%s,%s,.json" % (
         section.term.year,
         section.term.quarter,
         section.curriculum_abbr,
