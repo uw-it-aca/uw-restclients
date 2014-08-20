@@ -11,7 +11,7 @@ class GradingStandards(Canvas):
         """
         url = "/api/v1/courses/%s/grading_standards" % course_id
         body = {"title": name,
-                "grading_scheme": grading_scheme}
+                "grading_scheme_entry": grading_scheme}
 
         data = self._post_resource(url, body)
 
