@@ -47,7 +47,7 @@ def _object_from_json(response_body):
 
 def _load_acc_obj(account_data, account_obj):
     account_obj.balance = account_data['balance']
-    account_obj.last_updated = get_last_updated(account_data['last_updated'])
+    account_obj.last_updated = get_last_updated(account_data['last_transaction_date'])
     account_obj.add_funds_url = account_data['add_funds_url']
     return account_obj
 
