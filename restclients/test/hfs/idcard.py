@@ -48,18 +48,14 @@ class HfsTest(TestCase):
             'restclients.dao_implementation.hfs.File'):
 
             hfs_acc = get_hfs_accounts("jnewstudent")
-            self.assertEquals(hfs_acc.student_husky_card.balance, 0.00)
-            self.assertEquals(hfs_acc.student_husky_card.last_updated,
-                              datetime(2014, 1, 15, 15, 17, 16))
-            self.assertEquals(hfs_acc.student_husky_card.add_funds_url, 
-                              "https://www.hfs.washington.edu/olco")
+            self.assertIsNone(hfs_acc.student_husky_card)
 
             self.assertIsNone(hfs_acc.employee_husky_card)
 
             self.assertEquals(hfs_acc.resident_dining.balance, 777.89)
             self.assertEquals(hfs_acc.resident_dining.last_updated,
                               datetime(2014, 5, 17, 13, 15, 36))
-            self.assertEquals(hfs_acc.resident_dining.add_funds_url, 
+            self.assertEquals(hfs_acc.resident_dining.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
 
