@@ -597,7 +597,7 @@ class NoticeAttribute(models.Model):
 
     def get_value(self):
         if self.data_type == "date":
-            return str(self._date_value)
+            return self._date_value.strftime("%Y-%m-%d")
         if self.data_type == "string":
             return self._string_value
         if self.data_type == "url":

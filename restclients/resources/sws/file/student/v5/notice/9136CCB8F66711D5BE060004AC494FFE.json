@@ -72,7 +72,7 @@
                 {
                     "Name": "Date",
                     "DataType": "date",
-                    "Value": "today"
+                    "Value": "week"
                 },
                 {
                     "Name": "Begin",
