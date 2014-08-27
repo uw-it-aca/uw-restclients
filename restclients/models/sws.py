@@ -653,3 +653,19 @@ class Finance(models.Model):
     def __str__(self):
         return "{tuition_accbalance: %s, pce_accbalance: %s}" % (
             self.tuition_accbalance, self.pce_accbalance)
+
+
+class Enrollment(models.Model):
+    is_honors = models.BooleanField()
+    class_level = models.CharField(max_length=100)
+    regid = models.CharField(max_length=32,
+                               db_index=True,
+                               unique=True)
+
+
+class Major(models.Model):
+    degree_name = models.CharField(max_length=100)
+    degree_abbr = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100)
+    major_name = models.CharField(max_length=100)
+    campus = models.CharField(max_length=8)

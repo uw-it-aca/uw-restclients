@@ -58,7 +58,7 @@ class Bookstore(object):
                 for author_data in book_data["authors"]:
                     author = BookAuthor()
                     author.name = author_data["name"]
-                    book.authors.append(author);
+                    book.authors.append(author)
 
                 response[section.sln].append(book)
 

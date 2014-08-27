@@ -4,7 +4,7 @@ Interfacing with the Student Web Service, Enrollment resource.
 import logging
 from restclients.pws import PWS
 from restclients.models.sws import Term
-from restclients.models.sws import StudentGrades, StudentCourseGrade
+from restclients.models.sws import StudentGrades, StudentCourseGrade, Enrollment, Major
 from restclients.sws import get_resource
 from restclients.sws.section import get_section_by_url
 
@@ -42,4 +42,30 @@ def _json_to_grades(data, regid, term):
         grades.grades.append(grade)
 
     return grades
+
+def get_enrollment_by_regid_and_term(regid, term):
+    url = "%s/%s,%s,%s.json" % (enrollment_res_url_prefix,
+                                term.year,
+                                term.quarter,
+                                regid)
+    return _json_to_enrollment(get_resource(url))
+
+def _json_to_enrollment(json_data):
+    enrollment = Enrollment()
+    enrollment.regid = json_data['RegID']
+    enrollment.class_level = json_data['ClassLevel']
+    enrollment.is_honors = json_data['HonorsProgram']
+    enrollment.majors = []
+    for major in json_data['Majors']:
+        enrollment.majors.append(_json_to_major(major))
+    return enrollment
+
+def _json_to_major(json_data):
+    major = Major()
+    major.degree_abbr = json_data['Abbreviation']
+    major.degree_name = json_data['DegreeName']
+    major.full_name = json_data['FullName']
+    major.major_name = json_data['MajorName']
+    major.campus = json_data['Campus']
+    return major
 
