@@ -96,10 +96,20 @@ class Reports(Canvas):
     def create_user_provisioning_report(self, account_id, term_id=None,
                                         params={}):
         """
-        Convenience method for create_report, for creating an user
+        Convenience method for create_report, for creating a user
         provisioning report.
         """
         params["users"] = True
+        return self.create_report(ReportType.PROVISIONING, account_id, term_id,
+                                  params)
+
+    def create_xlist_provisioning_report(self, account_id, term_id=None,
+                                        params={}):
+        """
+        Convenience method for create_report, for creating a crosslist
+        provisioning report.
+        """
+        params["xlist"] = True
         return self.create_report(ReportType.PROVISIONING, account_id, term_id,
                                   params)
 
