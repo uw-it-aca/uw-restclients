@@ -170,10 +170,11 @@ class PWS(object):
         return StringIO(response.data)
 
     def valid_uwnetid(self, netid):
+        import pdb; pdb.set_trace()
         uwnetid = str(netid)
-        return (self._re_personal_netid.match(uwnetid)
-                or self._re_admin_netid.match(uwnetid)
-                or self._re_application_netid.match(uwnetid))
+        return (self._re_personal_netid.match(uwnetid) != None
+                or self._re_admin_netid.match(uwnetid) != None
+                or self._re_application_netid.match(uwnetid) != None)
 
     def valid_uwregid(self, regid):
         return True if self._re_regid.match(str(regid)) else False
