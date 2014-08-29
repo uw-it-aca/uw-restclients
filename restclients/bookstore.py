@@ -43,24 +43,28 @@ class Bookstore(object):
 
         for section in schedule.sections:
             response[section.sln] = []
-            sln_data = data[section.sln]
-            for book_data in sln_data:
-                book = Book()
-                book.isbn = book_data["isbn"]
-                book.title = book_data["title"]
-                book.price = book_data["price"]
-                book.used_price = book_data["used_price"]
-                book.is_required = book_data["required"]
-                book.notes = book_data["notes"]
-                book.cover_image_url = book_data["cover_image"]
-                book.authors = []
+            try:
+                sln_data = data[section.sln]
+                for book_data in sln_data:
+                    book = Book()
+                    book.isbn = book_data["isbn"]
+                    book.title = book_data["title"]
+                    book.price = book_data["price"]
+                    book.used_price = book_data["used_price"]
+                    book.is_required = book_data["required"]
+                    book.notes = book_data["notes"]
+                    book.cover_image_url = book_data["cover_image"]
+                    book.authors = []
 
-                for author_data in book_data["authors"]:
-                    author = BookAuthor()
-                    author.name = author_data["name"]
-                    book.authors.append(author)
+                    for author_data in book_data["authors"]:
+                        author = BookAuthor()
+                        author.name = author_data["name"]
+                        book.authors.append(author)
 
-                response[section.sln].append(book)
+                    response[section.sln].append(book)
+            except KeyError as err:
+                #do nothing if bookstore has no record of book
+                pass
 
         return response
 
