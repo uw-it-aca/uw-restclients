@@ -35,11 +35,12 @@ def get_con_pool(host,
         kwargs["key_file"] = key_file
         kwargs["cert_file"] = cert_file
 
-    if verify_https and urlparse(host).scheme == "https":
-        kwargs["cert_reqs"] = "CERT_REQUIRED"
-        kwargs["ca_certs"] = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
-                                     "/etc/ssl/certs/ca-bundle.crt")
+    if urlparse(host).scheme == "https":
         kwargs["ssl_version"] = ssl.PROTOCOL_SSLv3
+        if verify_https:
+            kwargs["cert_reqs"] = "CERT_REQUIRED"
+            kwargs["ca_certs"] = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
+                                         "/etc/ssl/certs/ca-bundle.crt")
 
     return connection_from_url(host, **kwargs)
 
