@@ -19,8 +19,7 @@ def get_con_pool(host,
                  cert_file=None,
                  socket_timeout=15.0,
                  max_pool_size=3,
-                 verify_https=True,
-                 is_ssl=True):
+                 verify_https=True):
     """
     Return a ConnectionPool instance of given host
     :param socket_timeout:
@@ -31,8 +30,6 @@ def get_con_pool(host,
         "maxsize": max_pool_size,
         "block": True,
         }
-    if is_ssl:
-        kwargs["ssl_version"] = ssl.PROTOCOL_SSLv3
 
     if key_file is not None and cert_file is not None:
         kwargs["key_file"] = key_file
@@ -42,6 +39,7 @@ def get_con_pool(host,
         kwargs["cert_reqs"] = "CERT_REQUIRED"
         kwargs["ca_certs"] = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
                                      "/etc/ssl/certs/ca-bundle.crt")
+        kwargs["ssl_version"] = ssl.PROTOCOL_SSLv3
 
     return connection_from_url(host, **kwargs)
 
