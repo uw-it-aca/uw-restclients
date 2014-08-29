@@ -170,7 +170,6 @@ class PWS(object):
         return StringIO(response.data)
 
     def valid_uwnetid(self, netid):
-        import pdb; pdb.set_trace()
         uwnetid = str(netid)
         return (self._re_personal_netid.match(uwnetid) != None
                 or self._re_admin_netid.match(uwnetid) != None
