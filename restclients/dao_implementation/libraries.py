@@ -38,8 +38,7 @@ class Live(object):
                 settings.RESTCLIENTS_LIBRARIES_HOST,
                 settings.RESTCLIENTS_LIBRARIES_KEY_FILE,
                 settings.RESTCLIENTS_LIBRARIES_CERT_FILE,
-                max_pool_size=LIB_MAX_POOL_SIZE,
-                SOCKET_TIMEOUT=LIB_SOCKET_TIMEOUT)
+                max_pool_size=LIB_MAX_POOL_SIZE)
         return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_LIBRARIES_HOST,
