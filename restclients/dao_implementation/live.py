@@ -19,7 +19,8 @@ def get_con_pool(host,
                  cert_file=None,
                  socket_timeout=15.0,
                  max_pool_size=3,
-                 verify_https=True):
+                 verify_https=True,
+                 is_ssl=True):
     """
     Return a ConnectionPool instance of given host
     :param socket_timeout:
@@ -29,8 +30,9 @@ def get_con_pool(host,
         "timeout": socket_timeout,
         "maxsize": max_pool_size,
         "block": True,
-        "ssl_version": ssl.PROTOCOL_SSLv3,
         }
+    if is_ssl:
+        kwargs["ssl_version"] = ssl.PROTOCOL_SSLv3
 
     if key_file is not None and cert_file is not None:
         kwargs["key_file"] = key_file
