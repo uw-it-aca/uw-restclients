@@ -662,6 +662,8 @@ class Enrollment(models.Model):
                                db_index=True,
                                unique=True)
 
+    class Meta:
+        app_label = "restclients"
 
 class Major(models.Model):
     degree_name = models.CharField(max_length=100)
