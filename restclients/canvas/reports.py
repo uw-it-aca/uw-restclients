@@ -11,7 +11,7 @@ import re
 
 class ReportFailureException(Exception):
     """
-    This exception means there was an error fetching reprt data.
+    This exception means there was an error fetching report data.
     """
     def __init__(self, report):
         self.report = report
@@ -104,7 +104,7 @@ class Reports(Canvas):
                                   params)
 
     def create_xlist_provisioning_report(self, account_id, term_id=None,
-                                        params={}):
+                                         params={}):
         """
         Convenience method for create_report, for creating a crosslist
         provisioning report.
@@ -159,7 +159,7 @@ class Reports(Canvas):
         https://canvas.instructure.com/doc/api/account_reports.html#method.account_reports.show
         """
         if (report.account_id is None or report.type is None or
-            report.report_id is None):
+                report.report_id is None):
             raise ReportFailureException(report)
 
         url = "/api/v1/accounts/%s/reports/%s/%s" % (
