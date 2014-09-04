@@ -12,6 +12,15 @@ class Account(models.Model):
         db_table = "restclients_canvas_account"
 
 
+class Role(models.Model):
+    role = models.CharField(max_length=200)
+    base_role_type = models.CharField(max_length=200)
+    workflow_state = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = "restclients_canvas_role"
+
+
 class Term(models.Model):
     term_id = models.IntegerField(max_length=20)
     sis_term_id = models.CharField(max_length=100, null=True)
@@ -177,6 +186,17 @@ class ReportType(models.Model):
 
     class Meta:
         db_table = "restclients_canvas_reporttype"
+
+
+class SISImport(models.Model):
+    CSV_IMPORT_TYPE = "instructure_csv"
+
+    import_id = models.IntegerField(max_length=20)
+    workflow_state = models.CharField(max_length=100)
+    progress = models.CharField(max_length=3)
+
+    class Meta:
+        db_table = "restclients_canvas_sisimport"
 
 
 class User(models.Model):
