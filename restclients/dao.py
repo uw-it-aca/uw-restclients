@@ -16,6 +16,7 @@ from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.libraries import File as LibrariesFile
 from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
+from restclients.dao_implementation.r25 import File as R25File
 from restclients.cache_implementation import NoCache
 
 
@@ -145,6 +146,14 @@ class Catalyst_DAO(MY_DAO):
         return self._getModule('RESTCLIENTS_CATALYST_DAO_CLASS', CatalystFile)
 
 
+class R25_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('r25', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_R25_DAO_CLASS', R25File)
+
+
 class AmazonSQS_DAO(MY_DAO):
     def create_queue(self, queue_name):
         dao = self._getDAO()
@@ -204,6 +213,7 @@ class Libraries_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_LIBRARIES_DAO_CLASS', LibrariesFile)
 
+
 class Uwnetid_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('uwnetid', url, headers)
@@ -235,7 +245,7 @@ class TrumbaSea_DAO(MY_DAO):
         return self._postURL(TrumbaSea_DAO.service_id, url, headers, body)
 
     def _getDAO(self):
-        return self._getModule('RESTCLIENTS_TRUMBA_SEA_DAO_CLASS', 
+        return self._getModule('RESTCLIENTS_TRUMBA_SEA_DAO_CLASS',
                                FileSea)
 
 class TrumbaTac_DAO(MY_DAO):
