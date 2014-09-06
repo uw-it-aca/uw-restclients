@@ -15,7 +15,8 @@ from restclients.sws.section import _json_to_section
 
 
 registration_res_url_prefix = "/student/v4/registration.json"
-
+reg_credits_url_prefix = "/student/v4/registration/"
+logger = logging.getLogger(__name__)
 
 class SWSPersonByRegIDThread(Thread):
     regid = None
@@ -54,6 +55,7 @@ def _registrations_for_section_with_active_flag(section, is_active):
              "instructor_reg_id": instructor_reg_id,
              "is_active": activity_flag
              }))
+    logger.debug("Registration URL=%s", url)
 
     return _json_to_registrations(get_resource(url), section, is_active)
 
@@ -143,15 +145,16 @@ def get_credits_by_section_and_regid(section, regid):
     for the section and regid passed in.
     """
     #note trailing comma in URL, it's required for the optional dup_code param
-    url = "/student/v4/registration/%s,%s,%s,%s,%s,%s,.json" % (
+    url = "%s%s,%s,%s,%s,%s,%s,.json" % (
+        reg_credits_url_prefix,
         section.term.year,
         section.term.quarter,
-        section.curriculum_abbr,
+        re.sub(' ', '%20', section.curriculum_abbr),
         section.course_number,
         section.section_id,
         regid
     )
-
+    logger.debug("RegCredits URL=%s", url)
     reg_data = get_resource(url)
 
     try:
@@ -172,6 +175,7 @@ def get_schedule_by_regid_and_term(regid, term,
                    ('is_active', 'on'),
                    ('year', term.year)
                    ]))
+    logger.debug("RegSchedule URL=%s", url)
 
     return _json_to_schedule(get_resource(url), term, regid,
                              include_instructor_not_on_time_schedule)
