@@ -4,6 +4,8 @@ from django.template import Context, loader
 from base64 import b64encode, b64decode
 from datetime import datetime
 from restclients.util.date_formator import abbr_week_month_day_str
+from restclients.exceptions import InvalidCanvasIndependentStudyCourse
+from restclients.exceptions import InvalidCanvasSection
 
 
 class Person(models.Model):
@@ -152,6 +154,9 @@ class Term(models.Model):
     def term_label(self):
         return "%s,%s" % (self.year, self.quarter)
 
+    def canvas_sis_id(self):
+        return "%s-%s" % (self.year, self.quarter.lower())
+
     def json_data(self):
         data = {
             'quarter': self.get_quarter_display(),
@@ -289,6 +294,35 @@ class Section(models.Model):
             open_date = self.term.grading_period_open
 
         return (open_date <= now <= self.term.grade_submission_deadline)
+
+    def canvas_course_sis_id(self):
+        if not self.is_primary_section:
+            return "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
+                self.primary_section_curriculum_abbr,
+                self.primary_section_course_number,
+                self.primary_section_id)
+
+        sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
+            self.curriculum_abbr, self.course_number, self.section_id)
+
+        if self.is_independent_study:
+            if self.independent_study_instructor_regid is None:
+                raise InvalidCanvasIndependentStudyCourse("Undefined " +
+                    "instructor for independent study section: %s" % sis_id)
+            sis_id += "-%s" % self.independent_study_instructor_regid
+
+        return sis_id
+
+    def canvas_section_sis_id(self):
+        sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
+            self.curriculum_abbr, self.course_number, self.section_id)
+
+        if self.is_primary_section:
+            if self.is_independent_study or len(self.linked_section_urls):
+                raise InvalidCanvasSection(sis_id)
+            sis_id += "--"
+
+        return sis_id
 
     def json_data(self):
         data = {

@@ -3,6 +3,7 @@ from django.conf import settings
 from restclients.models.sws import Term, Curriculum, Person
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
+from restclients.exceptions import InvalidCanvasIndependentStudyCourse, InvalidCanvasSection
 import restclients.sws.section as SectionSws
 
 class SWSTestSectionData(TestCase):
@@ -145,11 +146,11 @@ class SWSTestSectionData(TestCase):
             self.assertEquals(len(section2.get_instructors()), 2, "Correct number of instructors")
 
             section3 = SectionSws.get_section_by_label('2013,spring,PHYS,121/A')
-            self.assertEquals(len(section3.get_instructors()), 5, 
+            self.assertEquals(len(section3.get_instructors()), 5,
                               "Correct number of all instructors")
 
             section3 = SectionSws.get_section_by_label('2013,spring,PHYS,121/A', False)
-            self.assertEquals(len(section3.get_instructors()), 4, 
+            self.assertEquals(len(section3.get_instructors()), 4,
                               "Correct number of TSPrinted instructors")
 
     def test_delegates_in_section(self):
@@ -322,3 +323,44 @@ class SWSTestSectionData(TestCase):
             section = SectionSws.get_section_by_label('2013,spring,MATH,125/G')
 
             self.assertEquals(section.is_grading_period_open(), True, "Grading window is open")
+
+    def test_canvas_sis_ids(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+
+            # Primary section containing linked secondary sections
+            section = SectionSws.get_section_by_label('2012,summer,PHYS,121/A')
+            self.assertEquals(section.canvas_course_sis_id(),
+                '2012-summer-PHYS-121-A', 'Canvas course SIS ID')
+            self.assertRaises(InvalidCanvasSection,
+                              section.canvas_section_sis_id)
+
+            # Primary section with no linked sections
+            section = SectionSws.get_section_by_label('2013,autumn,REHAB,585/A')
+            self.assertEquals(section.canvas_course_sis_id(),
+                '2013-autumn-REHAB-585-A', 'Canvas course SIS ID')
+            self.assertEquals(section.canvas_section_sis_id(),
+                '2013-autumn-REHAB-585-A--', 'Canvas section SIS ID')
+
+            # Secondary (linked) section
+            section = SectionSws.get_section_by_label('2013,autumn,PHYS,121/AB')
+            self.assertEquals(section.canvas_course_sis_id(),
+                '2013-autumn-PHYS-121-A', 'Canvas course SIS ID')
+            self.assertEquals(section.canvas_section_sis_id(),
+                '2013-autumn-PHYS-121-AB', 'Canvas section SIS ID')
+
+            # Independent study section
+            section = SectionSws.get_section_by_label('2013,summer,PHIL,600/A')
+
+            # ..missing instructor regid
+            self.assertRaises(InvalidCanvasIndependentStudyCourse,
+                              section.canvas_course_sis_id)
+
+            section.independent_study_instructor_regid = 'A9D2DDFA6A7D11D5A4AE0004AC494FFE'
+            self.assertEquals(section.canvas_course_sis_id(),
+                '2013-summer-PHIL-600-A-A9D2DDFA6A7D11D5A4AE0004AC494FFE',
+                'Canvas course SIS ID')
+            self.assertRaises(InvalidCanvasSection,
+                              section.canvas_section_sis_id)
+

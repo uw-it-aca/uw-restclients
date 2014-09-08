@@ -351,3 +351,13 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.get_week_of_term(), -3, "-15 days")
             self.assertEquals(term.get_week_of_term_for_date(now), -3, "-15 days")
 
+    def test_canvas_sis_id(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+
+            term = get_term_by_year_and_quarter(2013, 'spring')
+            self.assertEquals(term.canvas_sis_id(), '2013-spring', 'Canvas SIS ID')
+
+            term = get_previous_term()
+            self.assertEquals(term.canvas_sis_id(), '2013-winter', 'Canvas SIS ID')

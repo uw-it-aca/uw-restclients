@@ -47,6 +47,14 @@ class InvalidEndpointProtocol(Exception):
     """Exception for invalid endpoint protocol."""
     pass
 
+class InvalidCanvasIndependentStudyCourse(Exception):
+    """Exception for invalid Canvas course."""
+    pass
+
+class InvalidCanvasSection(Exception):
+    """Exception for invalid Canvas section."""
+    pass
+
 class DataFailureException(Exception):
     """
     This exception means there was an error fetching content
