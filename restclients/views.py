@@ -4,7 +4,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
-from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO
+from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO
+from restclients.dao import Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO
 from authz_group import Group
 from userservice.user import UserService
 from time import time
@@ -40,6 +41,16 @@ def proxy(request, service, url):
         dao = GWS_DAO()
     elif service == "nws":
         dao = NWS_DAO()
+    elif service == "hfs":
+        dao = Hfs_DAO()
+    elif service == "book":
+        dao = Book_DAO()
+    elif service == "canvas":
+        dao = Canvas_DAO()
+    elif service == "uwnetid":
+        dao = Uwnetid_DAO()
+    elif service == "libraries":
+        dao = Libraries_DAO()
     else:
         return HttpResponseNotFound("Unknown service: %s" % service)
 
