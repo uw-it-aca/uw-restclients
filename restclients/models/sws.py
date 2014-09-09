@@ -298,12 +298,14 @@ class Section(models.Model):
     def canvas_course_sis_id(self):
         if not self.is_primary_section:
             return "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
-                self.primary_section_curriculum_abbr,
+                self.primary_section_curriculum_abbr.upper(),
                 self.primary_section_course_number,
-                self.primary_section_id)
+                self.primary_section_id.upper())
 
         sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
-            self.curriculum_abbr, self.course_number, self.section_id)
+            self.curriculum_abbr.upper(),
+            self.course_number,
+            self.section_id.upper())
 
         if self.is_independent_study:
             if self.independent_study_instructor_regid is None:
@@ -315,7 +317,9 @@ class Section(models.Model):
 
     def canvas_section_sis_id(self):
         sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
-            self.curriculum_abbr, self.course_number, self.section_id)
+            self.curriculum_abbr.upper(),
+            self.course_number,
+            self.section_id.upper())
 
         if self.is_primary_section:
             if self.is_independent_study or len(self.linked_section_urls):
