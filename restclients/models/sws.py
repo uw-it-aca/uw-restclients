@@ -296,35 +296,38 @@ class Section(models.Model):
         return (open_date <= now <= self.term.grade_submission_deadline)
 
     def canvas_course_sis_id(self):
-        if not self.is_primary_section:
-            return "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
+        if self.is_primary_section:
+            sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
+                self.curriculum_abbr.upper(),
+                self.course_number,
+                self.section_id.upper())
+
+            if self.is_independent_study:
+                if self.independent_study_instructor_regid is None:
+                    raise InvalidCanvasIndependentStudyCourse("Undefined " +
+                        "instructor for independent study section: %s" % sis_id)
+                sis_id += "-%s" % self.independent_study_instructor_regid
+        else:
+            sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
                 self.primary_section_curriculum_abbr.upper(),
                 self.primary_section_course_number,
                 self.primary_section_id.upper())
 
-        sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
-            self.curriculum_abbr.upper(),
-            self.course_number,
-            self.section_id.upper())
-
-        if self.is_independent_study:
-            if self.independent_study_instructor_regid is None:
-                raise InvalidCanvasIndependentStudyCourse("Undefined " +
-                    "instructor for independent study section: %s" % sis_id)
-            sis_id += "-%s" % self.independent_study_instructor_regid
-
         return sis_id
 
     def canvas_section_sis_id(self):
-        sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
-            self.curriculum_abbr.upper(),
-            self.course_number,
-            self.section_id.upper())
-
         if self.is_primary_section:
-            if self.is_independent_study or len(self.linked_section_urls):
+            sis_id = self.canvas_course_sis_id()
+
+            if len(self.linked_section_urls):
                 raise InvalidCanvasSection(sis_id)
+
             sis_id += "--"
+        else:
+            sis_id = "%s-%s-%s-%s" % (self.term.canvas_sis_id(),
+                self.curriculum_abbr.upper(),
+                self.course_number,
+                self.section_id.upper())
 
         return sis_id
 
