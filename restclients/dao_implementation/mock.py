@@ -85,7 +85,7 @@ def get_mockdata_url(service_name, implementation_name,
 
     # If no response has been found in any installed app, return a 404
     logger = logging.getLogger(__name__)
-    logger.info("404 for url %s", url)
+    logger.info("404 for url %s, path: %s" % (url, "resources/%s/%s/%s" %(service_name, implementation_name, url)))
     rest_request_passfail.send(sender='restclients',
                                url=url,
                                success=False,
