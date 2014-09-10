@@ -75,36 +75,11 @@ class Canvas(object):
     def sis_user_id(self, sis_id):
         return self._sis_id(sis_id, sis_field="user")
 
-    def get_roles_by_canvas_id(self, canvas_id):
-        return self._get_roles(canvas_id)
-
-    def get_roles_by_sis_id(self, sis_id):
-        return self._get_roles(self._sis_id(sis_id))
-
-    def _get_roles(self, id):
-        """
-        return list of users and associated roles in given account
-        """
-        return self._get_resource("/api/v1/accounts/%s/roles" % id)
-
-    def get_role_by_canvas_id(self, canvas_id, role):
-        return self._get_role(canvas_id, role)
-
-    def get_role_by_sis_id(self, sis_id, role):
-        return self._get_role(self._sis_id(sis_id), role)
-
-    def _get_role(self, id, role):
-        """
-        return list of roles defined in given account id
-        """
-        return self._get_resource("/api/v1/accounts/%s/roles/%s"
-                                  % (id, quote(role)))
-
-    def _sis_id(self, id, sis_field='account'):
+    def _sis_id(self, sis_id, sis_field='account'):
         """
         generate sis_id object reference
         """
-        return quote('sis_%s_id:%s' % (sis_field, id))
+        return quote('sis_%s_id:%s' % (sis_field, sis_id))
 
     def _params(self, params):
         if params and len(params):
@@ -189,65 +164,3 @@ class Canvas(object):
             raise DataFailureException(url, response.status, response.data)
 
         return json.loads(response.data)
-
-    def sis_import(self, root_account, csv_data):
-        """
-        Submits raw CSV SIS data
-        """
-        url = "/api/v1/accounts/%s/sis_imports.json?import_type=instructure_csv" % root_account
-        dao = Canvas_DAO()
-        post_response = dao.postURL(url, {"Content-Type": "text/csv"},
-                                    csv_data)
-        if not (post_response.status == 200 or post_response.status == 204):
-            raise DataFailureException(url, post_response.status,
-                                       post_response.data)
-        return json.loads(post_response.data)
-
-    def get_import_status(self, root_account, import_id):
-        """
-        Submits raw CSV SIS data
-        """
-        url = "/api/v1/accounts/%s/sis_imports/%s" % (root_account, import_id)
-        dao = Canvas_DAO()
-        get_response = dao.getURL(url, {"Content-Type": "application/json"})
-        if not (get_response.status == 200 or get_response.status == 204):
-            raise DataFailureException(url, get_response.status,
-                                       get_response.data)
-
-        return json.loads(get_response.data)
-
-    def generate_section_id(self, section):
-        """
-        Generates the unique identifier for a course in the form of
-        year-quarter-curriculum-coursenum-sectionid[-regid]
-        Ex. 2012-summer-ESS-101-AB[-85AEF8566A7C11D5A4AE0004AC494FFE]
-        """
-        parts = [
-            self.generate_term_id(section.term),
-            section.curriculum_abbr,
-            section.course_number,
-            section.section_id
-        ]
-
-        if section.is_independent_study:
-            if section.independent_study_instructor_regid is None:
-                raise Exception("Undefined instructor regid for independent " +
-                                "study section: %s" % "-".join(parts))
-
-            parts.append(section.independent_study_instructor_regid)
-
-        try:
-            if section.is_dummy:
-                parts.append("-")
-        except AttributeError:
-            pass
-
-        return "-".join(parts)
-
-    def generate_term_id(self, term):
-        """
-        Generates the unique identifier for a term in the form of year-quarter
-        Ex. 2012-summer
-        """
-        return "-".join([str(term.year), term.quarter.lower()])
-
