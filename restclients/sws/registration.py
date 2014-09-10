@@ -214,6 +214,7 @@ def _json_to_schedule(term_data, term, regid,
                                    include_instructor_not_on_time_schedule)
 
         reg_credits = get_credits_by_section_and_regid(section, regid)
+        section.student_credits = reg_credits
         if reg_credits is not None:
             term_credit_hours += reg_credits
         # For independent study courses, only include the one relevant
