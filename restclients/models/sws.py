@@ -319,7 +319,7 @@ class Section(models.Model):
         if self.is_primary_section:
             sis_id = self.canvas_course_sis_id()
 
-            if len(self.linked_section_urls):
+            if not self.is_independent_study and len(self.linked_section_urls):
                 raise InvalidCanvasSection(sis_id)
 
             sis_id += "--"
