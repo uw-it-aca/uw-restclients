@@ -6,6 +6,7 @@ from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO
 from restclients.dao import Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO
+from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
 from time import time
@@ -60,7 +61,13 @@ def proxy(request, service, url):
         url = "%s?%s" % (url, urlencode(request.GET))
 
     start = time()
-    response = dao.getURL(url, headers)
+    try:
+        response = dao.getURL(url, headers)
+    except Exception as ex:
+        response = MockHTTP()
+        response.status = 500
+        response.data = str(ex)
+
     end = time()
 
     # Assume json, and try to format it.
