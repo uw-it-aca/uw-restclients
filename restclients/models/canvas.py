@@ -271,12 +271,20 @@ class Submission(models.Model):
 
 class Assignment(models.Model):
     assignment_id = models.IntegerField(max_length=20)
+    course_id = models.IntegerField(max_length=20)
+    integration_id = models.CharField(max_length=200)
+    integration_data = models.CharField(max_length=1500)
     due_at = models.DateTimeField(null=True)
     points_possible = models.IntegerField(max_length=8)
     position = models.IntegerField(max_length=8)
     name = models.CharField(max_length=500)
     muted = models.BooleanField()
     html_url = models.CharField(max_length=500, null=True)
+
+    def json_data(self):
+        return {"assignment": {
+                "integration_id": self.integration_id,
+                "integration_data": self.integration_data}}
 
     class Meta:
         db_table = "restclients_canvas_assignment"

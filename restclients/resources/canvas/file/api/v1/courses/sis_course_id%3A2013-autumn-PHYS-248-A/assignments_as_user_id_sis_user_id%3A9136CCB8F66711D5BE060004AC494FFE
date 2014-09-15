@@ -60,6 +60,8 @@
             "points_possible": 5,
             "free_form_criterion_comments": false
         },
+        "integration_id": "",
+        "integration_data": "",
         "locked_for_user": false
     },
     {
@@ -96,6 +98,8 @@
         "muted": false,
         "html_url": "https://uw.test.instructure.com/courses/862539/assignments/2367794",
         "needs_grading_count": 0,
+        "integration_id": "",
+        "integration_data": "",
         "locked_for_user": false
     }
 ]

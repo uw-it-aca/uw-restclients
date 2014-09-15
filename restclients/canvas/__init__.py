@@ -147,7 +147,8 @@ class Canvas(object):
                    "Accept": "application/json"}
         response = Canvas_DAO().putURL(url, headers, json.dumps(body))
 
-        if not (response.status == 200 or response.status == 204):
+        if not (response.status == 200 or response.status == 201 or
+                response.status == 204):
             raise DataFailureException(url, response.status, response.data)
 
         return json.loads(response.data)
