@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<r25:events xmlns:r25="http://www.collegenet.com/r25" xmlns:xl="http://www.w3.org/1999/xlink" pubdate="2014-09-15T15:53:31-07:00">
+    <r25:event xl:href="event.xml?event_id=100000" id="CBJDNjE2NzQz" crc="00000022" status="est">
+        <r25:event_id>100000</r25:event_id>
+        <r25:event_name>BOTHELL WINTER 2013 CABINET</r25:event_name>
+        <r25:alien_uid/>
+        <r25:event_title>BOTHELL WINTER 2013 CABINET</r25:event_title>
+        <r25:favorite>F</r25:favorite>
+        <r25:node_type>C</r25:node_type>
+        <r25:node_type_name>cabinet</r25:node_type_name>
+        <r25:start_date>2013-01-01</r25:start_date>
+        <r25:end_date>2013-03-28</r25:end_date>
+        <r25:event_type_id>48</r25:event_type_id>
+        <r25:event_type_name>Branch/Quarter Cabinet</r25:event_type_name>
+        <r25:state>1</r25:state>
+        <r25:state_name>Tentative</r25:state_name>
+        <r25:version_number>1</r25:version_number>
+        <r25:event_locator>2014-ABJCIX</r25:event_locator>
+        <r25:parent_id/>
+        <r25:cabinet_id xl:href="event.xml?event_id=100000">200000</r25:cabinet_id>
+        <r25:cabinet_name>BOTHELL WINTER 2013 CABINET</r25:cabinet_name>
+    </r25:event>
+    <r25:event xl:href="event.xml?event_id=100002" id="CBJDNjE2NzQz" crc="00000023" status="est">
+        <r25:event_id>100002</r25:event_id>
+        <r25:event_name>SEATTLE WINTER 2013 CABINET</r25:event_name>
+        <r25:alien_uid/>
+        <r25:event_title>SEATTLE WINTER 2013 CABINET</r25:event_title>
+        <r25:favorite>F</r25:favorite>
+        <r25:node_type>C</r25:node_type>
+        <r25:node_type_name>cabinet</r25:node_type_name>
+        <r25:start_date>2013-01-01</r25:start_date>
+        <r25:end_date>2013-03-28</r25:end_date>
+        <r25:event_type_id>48</r25:event_type_id>
+        <r25:event_type_name>Branch/Quarter Cabinet</r25:event_type_name>
+        <r25:state>2</r25:state>
+        <r25:state_name>Confirmed</r25:state_name>
+        <r25:version_number>1</r25:version_number>
+        <r25:event_locator>2014-ABJCIX</r25:event_locator>
+        <r25:parent_id/>
+        <r25:cabinet_id xl:href="event.xml?event_id=100002">200000</r25:cabinet_id>
+        <r25:cabinet_name>SEATTLE WINTER 2013 CABINET</r25:cabinet_name>
+    </r25:event>
+    <r25:event xl:href="event.xml?event_id=100003" id="CBJDNjE2NzQz" crc="00000027" status="est">
+        <r25:event_id>100003</r25:event_id>
+        <r25:event_name>TACOMA WINTER 2013 CABINET</r25:event_name>
+        <r25:alien_uid/>
+        <r25:event_title>TACOMA WINTER 2013 CABINET</r25:event_title>
+        <r25:favorite>F</r25:favorite>
+        <r25:node_type>C</r25:node_type>
+        <r25:node_type_name>cabinet</r25:node_type_name>
+        <r25:start_date>2013-01-01</r25:start_date>
+        <r25:end_date>2013-03-28</r25:end_date>
+        <r25:event_type_id>48</r25:event_type_id>
+        <r25:event_type_name>Branch/Quarter Cabinet</r25:event_type_name>
+        <r25:state>4</r25:state>
+        <r25:state_name>Denied</r25:state_name>
+        <r25:version_number>1</r25:version_number>
+        <r25:event_locator>2014-ABJCIX</r25:event_locator>
+        <r25:parent_id/>
+        <r25:cabinet_id xl:href="event.xml?event_id=100003">200003</r25:cabinet_id>
+        <r25:cabinet_name>TACOMA WINTER 2013 CABINET</r25:cabinet_name>
+    </r25:event>
+
+</r25:events>
