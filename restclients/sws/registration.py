@@ -55,7 +55,6 @@ def _registrations_for_section_with_active_flag(section, is_active):
              "instructor_reg_id": instructor_reg_id,
              "is_active": activity_flag
              }))
-    logger.debug("Registration URL=%s", url)
 
     return _json_to_registrations(get_resource(url), section, is_active)
 
@@ -139,6 +138,8 @@ def get_all_registrations_by_section(section):
 
     return registrations
 
+
+# This function won't work when the dup_code is not empty
 def get_credits_by_section_and_regid(section, regid):
     """
     Returns a restclients.models.sws.Registration object
@@ -154,13 +155,14 @@ def get_credits_by_section_and_regid(section, regid):
         section.section_id,
         regid
     )
-    logger.debug("RegCredits URL=%s", url)
+
     reg_data = get_resource(url)
 
     try:
         return Decimal(reg_data['Credits'].strip())
     except InvalidOperation:
         pass
+
 
 def get_schedule_by_regid_and_term(regid, term, 
                                    include_instructor_not_on_time_schedule=True):
@@ -175,10 +177,10 @@ def get_schedule_by_regid_and_term(regid, term,
                    ('is_active', 'on'),
                    ('year', term.year)
                    ]))
-    logger.debug("RegSchedule URL=%s", url)
 
     return _json_to_schedule(get_resource(url), term, regid,
                              include_instructor_not_on_time_schedule)
+
 
 def _json_to_schedule(term_data, term, regid,
                       include_instructor_not_on_time_schedule=True):
@@ -190,12 +192,12 @@ def _json_to_schedule(term_data, term, regid,
         reg_url = registration["Href"]
 
         # Skip a step here, and go right to the course section resource
-        reg_url = re.sub('registration', 'course', reg_url)
-        reg_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', reg_url)
-        reg_url = re.sub(',([^,]*).json', '/\\1.json', reg_url)
+        course_url = re.sub('registration', 'course', reg_url)
+        course_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', course_url)
+        course_url = re.sub(',([^,]*).json', '/\\1.json', course_url)
 
         thread = SWSThread()
-        thread.url = reg_url
+        thread.url = course_url
         thread.headers = {"Accept": "application/json"}
         thread.start()
         sws_threads.append(thread)
@@ -206,14 +208,14 @@ def _json_to_schedule(term_data, term, regid,
     for thread in sws_threads:
         response = thread.response
         if response.status != 200:
-            raise DataFailureException(reg_url,
+            raise DataFailureException(course_url,
                                        response.status,
                                        response.data)
 
         section = _json_to_section(json.loads(response.data), term,
                                    include_instructor_not_on_time_schedule)
 
-        reg_credits = get_credits_by_section_and_regid(section, regid)
+        reg_credits = _get_registration_credits(reg_url)
         section.student_credits = reg_credits
         if reg_credits is not None:
             term_credit_hours += reg_credits
@@ -241,4 +243,17 @@ def _json_to_schedule(term_data, term, regid,
     schedule.term = term
 
     return schedule
+
+
+def _get_registration_credits(url):
+    """
+    Returns a restclients.models.sws.Registration object
+    for the url passed in.
+    """
+    reg_data = get_resource(url)
+
+    try:
+        return Decimal(reg_data['Credits'].strip())
+    except InvalidOperation:
+        pass
 
