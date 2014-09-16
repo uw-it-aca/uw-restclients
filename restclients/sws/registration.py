@@ -221,10 +221,10 @@ def _json_to_schedule(term_data, term, regid,
         # instructor
         if registration["Instructor"]:
             actual_instructor = None
-            regid = registration["Instructor"]["RegID"]
+            instructor_regid = registration["Instructor"]["RegID"]
 
             for instructor in section.meetings[0].instructors:
-                if instructor.uwregid == regid:
+                if instructor.uwregid == instructor_regid:
                     actual_instructor = instructor
 
             if actual_instructor:
