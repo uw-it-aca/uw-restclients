@@ -32,6 +32,28 @@ class Event(models.Model):
     def state_name(self):
         return dict(self.STATE_CHOICES)[self.state]
 
+    def parent(self):
+        if not hasattr(self, "_parent"):
+            self._parent = None
+            if self.parent_id is not None:
+                from restclients.r25.events import get_event_by_id
+                self._parent = get_event_by_id(self.parent_id)
+        return self._parent
+
+    def children(self):
+        if not hasattr(self, "_children"):
+            from restclients.r25.events import get_events
+            self._children = get_events(parent_id=self.event_id)
+        return self._children
+
+    def cabinet(self):
+        if self.cabinet_id is not None:
+            if self.cabinet_id == self.event_id:
+                return self
+            else:
+                from restclients.r25.events import get_event_by_id
+                return get_event_by_id(self.cabinet_id)
+
     class Meta:
         db_table = "restclients_r25_event"
 
@@ -70,3 +92,13 @@ class Reservation(models.Model):
 
     class Meta:
         db_table = "restclients_r25_reservation"
+
+
+class BindingReservation(models.Model):
+    bound_reservation_id = models.IntegerField(max_length=10)
+    primary_reservation = models.IntegerField(max_length=10)
+    name = models.CharField(max_length=200)
+    bound_event_id = models.IntegerField(max_length=10)
+
+    class Meta:
+        db_table = "restclients_r25_binding_reservation"

@@ -24,6 +24,10 @@ def get_reservations(params={}):
 
     return reservations_from_xml(get_resource(url))
 
+#def get_reservations_by_space_id(space_id):
+#    url = "/r25ws/servlet/wrd/run/rm_reservations.xml?space_id=%s" % space_id
+#    return reservations_from_xml(get_resource(url))
+
 def reservations_from_xml(tree):
     reservations = []
     for node in tree.xpath("//r25:reservation", namespaces=nsmap):
@@ -36,6 +40,7 @@ def reservations_from_xml(tree):
                                               namespaces=nsmap)[0].text
         reservation.state = node.xpath("r25:reservation_state",
                                        namespaces=nsmap)[0].text
+        #TODO: add Event model
         reservations.append(reservation)
 
     return reservations

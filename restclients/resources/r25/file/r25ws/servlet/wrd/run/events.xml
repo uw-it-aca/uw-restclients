@@ -17,7 +17,7 @@
         <r25:version_number>1</r25:version_number>
         <r25:event_locator>2014-ABJCIX</r25:event_locator>
         <r25:parent_id/>
-        <r25:cabinet_id xl:href="event.xml?event_id=100000">200000</r25:cabinet_id>
+        <r25:cabinet_id xl:href="event.xml?event_id=100000">100000</r25:cabinet_id>
         <r25:cabinet_name>BOTHELL WINTER 2013 CABINET</r25:cabinet_name>
     </r25:event>
     <r25:event xl:href="event.xml?event_id=100002" id="CBJDNjE2NzQz" crc="00000023" status="est">
@@ -36,9 +36,9 @@
         <r25:state_name>Confirmed</r25:state_name>
         <r25:version_number>1</r25:version_number>
         <r25:event_locator>2014-ABJCIX</r25:event_locator>
-        <r25:parent_id/>
-        <r25:cabinet_id xl:href="event.xml?event_id=100002">200000</r25:cabinet_id>
-        <r25:cabinet_name>SEATTLE WINTER 2013 CABINET</r25:cabinet_name>
+        <r25:parent_id xl:href="event.xml?event_id=100000">100000</r25:parent_id>
+        <r25:cabinet_id xl:href="event.xml?event_id=100000">100000</r25:cabinet_id>
+        <r25:cabinet_name>BOTHELL WINTER 2013 CABINET</r25:cabinet_name>
     </r25:event>
     <r25:event xl:href="event.xml?event_id=100003" id="CBJDNjE2NzQz" crc="00000027" status="est">
         <r25:event_id>100003</r25:event_id>
@@ -56,9 +56,8 @@
         <r25:state_name>Denied</r25:state_name>
         <r25:version_number>1</r25:version_number>
         <r25:event_locator>2014-ABJCIX</r25:event_locator>
-        <r25:parent_id/>
-        <r25:cabinet_id xl:href="event.xml?event_id=100003">200003</r25:cabinet_id>
-        <r25:cabinet_name>TACOMA WINTER 2013 CABINET</r25:cabinet_name>
+        <r25:parent_id xl:href="event.xml?event_id=100000">100000</r25:parent_id>
+        <r25:cabinet_id xl:href="event.xml?event_id=100000">100000</r25:cabinet_id>
+        <r25:cabinet_name>BOTHELL WINTER 2013 CABINET</r25:cabinet_name>
     </r25:event>
-
 </r25:events>

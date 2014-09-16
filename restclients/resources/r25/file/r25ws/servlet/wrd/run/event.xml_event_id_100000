@@ -17,7 +17,21 @@
         <r25:version_number>1</r25:version_number>
         <r25:event_locator>2014-ABJCIX</r25:event_locator>
         <r25:parent_id/>
-        <r25:cabinet_id xl:href="event.xml?event_id=100000">200000</r25:cabinet_id>
+        <r25:cabinet_id xl:href="event.xml?event_id=100000">100000</r25:cabinet_id>
         <r25:cabinet_name>BOTHELL WINTER 2013 CABINET</r25:cabinet_name>
+        <r25:profile id="ByJDMTA2NTEHEkMxMDkzOQ==" crc="00000023" status="est">
+            <r25:reservation xl:href="reservation.xml?rsrv_id=431304" id="CBJDNDMxMzA0" crc="00000021" status="est">
+                <r25:reservation_id>431304</r25:reservation_id>
+                <r25:reservation_state>1</r25:reservation_state>
+                <r25:reservation_start_dt>2012-01-02T17:00:00-08:00</r25:reservation_start_dt>
+                <r25:reservation_end_dt>2012-01-02T19:00:00-08:00</r25:reservation_end_dt>
+            </r25:reservation>
+            <r25:binding_reservation>
+                <r25:primary_reservation>500000</r25:primary_reservation>
+                <r25:bound_name>TEST</r25:bound_name>
+                <r25:bound_event_id>100000</r25:bound_event_id>
+                <r25:bound_reservation_id>500001</r25:bound_reservation_id>
+            </r25:binding_reservation>
+        </r25:profile>
     </r25:event>
 </r25:events>
