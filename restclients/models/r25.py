@@ -86,6 +86,7 @@ class Reservation(models.Model):
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
+    event_id = models.IntegerField(max_length=10)
 
     def state_name(self):
         return dict(self.STATE_CHOICES)[self.state]

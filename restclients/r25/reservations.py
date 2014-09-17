@@ -1,4 +1,4 @@
-from restclients.models.r25 import Reservation, Event
+from restclients.models.r25 import Reservation
 from restclients.r25 import nsmap, get_resource
 from urllib import urlencode
 
@@ -7,26 +7,20 @@ def get_reservation_by_id(reservation_id):
     url = "/r25ws/servlet/wrd/run/reservation.xml?rsrv_id=%s" % reservation_id
     return reservations_from_xml(get_resource(url))[0]
 
-def get_reservations(params={}):
+
+def get_reservations(**kwargs):
     """
-    Return a list of reservations matching the passed filter. Supported params
-    are:
-        
-        event_id (integer)
-        space_id (integer)
-        start_dt (datetime)
-        end_dt (datetime)
+    Return a list of reservations matching the passed filter.
+    Supported kwargs are listed at
+    http://knowledge25.collegenet.com/display/WSW/reservations.xml
     """
-    params["scope"] = "extended"
+    kwargs["scope"] = "extended"
     url = "/r25ws/servlet/wrd/run/reservations.xml"
-    if len(params):
-        url += "?%s" % urlencode(params)
+    if len(kwargs):
+        url += "?%s" % urlencode(kwargs)
 
     return reservations_from_xml(get_resource(url))
 
-#def get_reservations_by_space_id(space_id):
-#    url = "/r25ws/servlet/wrd/run/rm_reservations.xml?space_id=%s" % space_id
-#    return reservations_from_xml(get_resource(url))
 
 def reservations_from_xml(tree):
     reservations = []
@@ -40,7 +34,16 @@ def reservations_from_xml(tree):
                                               namespaces=nsmap)[0].text
         reservation.state = node.xpath("r25:reservation_state",
                                        namespaces=nsmap)[0].text
-        #TODO: add Event model
+
+        try:
+            enode = node.xpath("r25:event", namespaces=nsmap)[0]
+            reservation.event_id = enode.xpath("r25:event_id",
+                                               namespaces=nsmap)[0].text
+        except IndexError:
+            enode = tree.getparent()
+            reservation.event_id = enode.xpath("r25:event_id",
+                                               namespaces=nsmap)[0].text
+
         reservations.append(reservation)
 
     return reservations
