@@ -31,7 +31,8 @@ class MyLibAccount(models.Model):
                 'fines': self.fines,
                 'items_loaned': self.items_loaned,
                 'next_due': self.get_next_due_date_str(
-                use_abbr_week_month_day_format)
+                use_abbr_week_month_day_format),
+                'next_due_date': self.get_next_due_date_str(False)
                 }
 
     def __str__(self):
