@@ -20,13 +20,13 @@ class HfsTest(TestCase):
 
             self.assertEquals(hfs_acc.employee_husky_card.last_updated,
                               datetime(2014, 5, 19, 14, 16, 26))
-            self.assertEquals(hfs_acc.employee_husky_card.balance, 0.56)
+            self.assertEquals(hfs_acc.employee_husky_card.balance, 1)
             self.assertEquals(hfs_acc.employee_husky_card.add_funds_url, 
                               "https://www.hfs.washington.edu/olco")
 
             self.assertEquals(hfs_acc.resident_dining.last_updated,
                               datetime(2014, 6, 1, 13, 15, 36))
-            self.assertEquals(hfs_acc.resident_dining.balance, 7.89)
+            self.assertEquals(hfs_acc.resident_dining.balance, 5.1)
             self.assertEquals(hfs_acc.resident_dining.add_funds_url, 
                               "https://www.hfs.washington.edu/olco")
 
@@ -37,9 +37,9 @@ class HfsTest(TestCase):
             'restclients.dao_implementation.hfs.File'):
 
             hfs_acc = get_hfs_accounts("eight")
-            self.assertIsNone(hfs_acc.student_husky_card)
+            self.assertIsNotNone(hfs_acc.student_husky_card)
             self.assertIsNone(hfs_acc.employee_husky_card)
-            self.assertIsNone(hfs_acc.resident_dining)
+            self.assertIsNotNone(hfs_acc.resident_dining)
 
 
     def test_get_hfs_partially_empty_account(self):
@@ -47,14 +47,16 @@ class HfsTest(TestCase):
             RESTCLIENTS_HFS_DAO_CLASS =
             'restclients.dao_implementation.hfs.File'):
 
-            hfs_acc = get_hfs_accounts("jnewstudent")
-            self.assertIsNone(hfs_acc.student_husky_card)
+            hfs_acc = get_hfs_accounts("jnew")
+            self.assertIsNotNone(hfs_acc.student_husky_card)
+            self.assertIsNone(hfs_acc.student_husky_card.last_updated)
+            self.assertEquals(hfs_acc.student_husky_card.balance, 0.0)
 
             self.assertIsNone(hfs_acc.employee_husky_card)
 
-            self.assertEquals(hfs_acc.resident_dining.balance, 777.89)
+            self.assertEquals(hfs_acc.resident_dining.balance, 105.1)
             self.assertEquals(hfs_acc.resident_dining.last_updated,
-                              datetime(2014, 5, 17, 13, 15, 36))
+                              datetime(2014, 6, 1, 13, 15, 36))
             self.assertEquals(hfs_acc.resident_dining.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 

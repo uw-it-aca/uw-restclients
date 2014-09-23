@@ -4,6 +4,8 @@ from restclients.util.date_formator import past_datetime_str
 
 def get_timestamp_str(last_updated_datetime,
                       use_custom_date_format):
+    if last_updated_datetime is None:
+        return None
     if use_custom_date_format:
         return past_datetime_str(last_updated_datetime)
     else:
@@ -28,7 +30,8 @@ class StudentHuskyCardAccout(models.Model):
     balance = models.DecimalField(max_digits=8,
                                   decimal_places=2
                                   )
-    last_updated = models.DateTimeField()
+    last_updated = models.DateTimeField(null=True,
+                                        default=None)
     add_funds_url = models.CharField(max_length=80)
 
     def json_data(self, use_custom_date_format=False):
@@ -43,7 +46,8 @@ class EmployeeHuskyCardAccount(models.Model):
     balance = models.DecimalField(max_digits=8,
                                   decimal_places=2
                                   )
-    last_updated = models.DateTimeField()
+    last_updated = models.DateTimeField(null=True,
+                                        default=None)
     add_funds_url = models.CharField(max_length=80)
 
     def json_data(self, use_custom_date_format=False):
@@ -58,7 +62,8 @@ class ResidentDiningAccount(models.Model):
     balance = models.DecimalField(max_digits=8,
                                   decimal_places=2
                                   )
-    last_updated = models.DateTimeField()
+    last_updated = models.DateTimeField(null=True,
+                                        default=None)
     add_funds_url = models.CharField(max_length=80)
 
     def json_data(self, use_custom_date_format=False):
