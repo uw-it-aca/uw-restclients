@@ -118,7 +118,7 @@ class Live(object):
         host = settings.RESTCLIENTS_CANVAS_HOST
         socket_timeout = 15  # default values
         if hasattr(settings, "RESTCLIENTS_CANVAS_SOCKET_TIMEOUT"):
-            socket_timeout = settings.RESTCLIENTS_NWS_SOCKET_TIMEOUT
+            socket_timeout = settings.RESTCLIENTS_CANVAS_SOCKET_TIMEOUT
         return get_con_pool(host,
                             verify_https=Live.verify_https,
                             socket_timeout=socket_timeout)
