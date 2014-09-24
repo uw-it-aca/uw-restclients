@@ -14,11 +14,9 @@ class MyLibInfoTest(TestCase):
             account = get_account("javerage")
             self.assertEquals(account.next_due, date(2014, 5, 27))
             self.assertEquals(account.holds_ready, 1)
-            self.assertEquals(account.fines, 5.35)
-            self.assertEquals(account.items_loaned, 3)
-
-            self.assertEquals(account.get_next_due_date_str(True), "Tue, May 27")
-            self.assertEquals(account.get_next_due_date_str(False), "2014-05-27")
+            self.assertEquals(account.fines, 0)
+            self.assertEquals(account.items_loaned, 1)
+            self.assertEquals(account.get_next_due_date_str(), "2014-05-27")
 
 
             account = get_account("jnewstudent")
