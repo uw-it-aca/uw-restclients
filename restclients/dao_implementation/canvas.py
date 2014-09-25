@@ -64,7 +64,11 @@ class Live(object):
     RESTCLIENTS_CANVAS_OAUTH_BEARER="..."
     """
     pool = None
-    verify_https = False
+    ignore_security = getattr(settings, 'RESTCLIENTS_CANVAS_IGNORE_CA_SECURITY', False)
+
+    verify_https = True
+    if ignore_security:
+        verify_https = False
 
     def getURL(self, url, headers):
         host = settings.RESTCLIENTS_CANVAS_HOST
