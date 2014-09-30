@@ -123,10 +123,14 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_previous_term(), v5_get_previous_term()))
 
     def test_get_term_before(self):
-        self.assertTrue(is_obj_list_eq(v4_get_term_before(), v5_get_term_before()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        self.assertTrue(is_obj_list_eq(v4_get_term_before(t1), v5_get_term_before(t2)))
 
     def test_get_term_after(self):
-        self.assertTrue(is_obj_list_eq(v4_get_term_after(), v5_get_term_after()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        self.assertTrue(is_obj_list_eq(v4_get_term_after(t1), v5_get_term_after(t2)))
 
     def test_get_account_balances_by_regid(self):
         self.assertTrue(is_obj_list_eq(v4_get_account_balances_by_regid(), v5_get_account_balances_by_regid()))
