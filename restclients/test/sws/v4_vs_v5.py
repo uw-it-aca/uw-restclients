@@ -158,13 +158,16 @@ class SWSv4VSv5Test(TestCase):
 
 # Helper to test list of objects for equality
 
+import warnings
+from django.db import models
 def is_obj_list_eq(a, b):
     if type(a) != type(b):
+        warnings.warn("Typeof %s doesn't equal type of %s" % (a, b))
         return False
 
-    from django.db import models
     if type(a) == type([]):
         if len(a) != len(b):
+            warnings.warn("Length of a != b")
             return False
 
         for i in range(len(a)):
@@ -176,6 +179,7 @@ def is_obj_list_eq(a, b):
     elif type(a) == type("") or type(a) == type(u""):
         if a == b:
             return True
+        warnings.warn("Not equal: %s, %s" % (a, b))
         return False
 
     elif type(a) == type({}):
