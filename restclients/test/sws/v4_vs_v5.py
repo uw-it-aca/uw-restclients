@@ -63,92 +63,137 @@ from django.test import TestCase
 
 class SWSv4VSv5Test(TestCase):
     def test_get_sections_by_instructor_and_term(self):
-        self.assertEquals(v4_get_sections_by_instructor_and_term(), v5_get_sections_by_instructor_and_term())
+        self.assertTrue(is_obj_list_eq(v4_get_sections_by_instructor_and_term(), v5_get_sections_by_instructor_and_term()))
 
     def test_get_sections_by_delegate_and_term(self):
-        self.assertEquals(v4_get_sections_by_delegate_and_term(), v5_get_sections_by_delegate_and_term())
+        self.assertTrue(is_obj_list_eq(v4_get_sections_by_delegate_and_term(), v5_get_sections_by_delegate_and_term()))
 
     def test_get_sections_by_curriculum_and_term(self):
-        self.assertEquals(v4_get_sections_by_curriculum_and_term(), v5_get_sections_by_curriculum_and_term())
+        self.assertTrue(is_obj_list_eq(v4_get_sections_by_curriculum_and_term(), v5_get_sections_by_curriculum_and_term()))
 
     def test_get_section_by_url(self):
-        self.assertEquals(v4_get_section_by_url(), v5_get_section_by_url())
+        self.assertTrue(is_obj_list_eq(v4_get_section_by_url(), v5_get_section_by_url()))
 
     def test_get_section_by_label(self):
-        self.assertEquals(v4_get_section_by_label(), v5_get_section_by_label())
+        self.assertTrue(is_obj_list_eq(v4_get_section_by_label(), v5_get_section_by_label()))
 
     def test_get_linked_sections(self):
-        self.assertEquals(v4_get_linked_sections(), v5_get_linked_sections())
+        self.assertTrue(is_obj_list_eq(v4_get_linked_sections(), v5_get_linked_sections()))
 
     def test_get_joint_sections(self):
-        self.assertEquals(v4_get_joint_sections(), v5_get_joint_sections())
+        self.assertTrue(is_obj_list_eq(v4_get_joint_sections(), v5_get_joint_sections()))
 
     def test_get_notices_by_regid(self):
-        self.assertEquals(v4_get_notices_by_regid(), v5_get_notices_by_regid())
+        self.assertTrue(is_obj_list_eq(v4_get_notices_by_regid(), v5_get_notices_by_regid()))
 
     def test_get_graderoster(self):
-        self.assertEquals(v4_get_graderoster(), v5_get_graderoster())
+        self.assertTrue(is_obj_list_eq(v4_get_graderoster(), v5_get_graderoster()))
 
     def test_update_graderoster(self):
-        self.assertEquals(v4_update_graderoster(), v5_update_graderoster())
+        self.assertTrue(is_obj_list_eq(v4_update_graderoster(), v5_update_graderoster()))
 
     def test_graderoster_from_xhtml(self):
-        self.assertEquals(v4_graderoster_from_xhtml(), v5_graderoster_from_xhtml())
+        self.assertTrue(is_obj_list_eq(v4_graderoster_from_xhtml(), v5_graderoster_from_xhtml()))
 
     def test_get_all_campuses(self):
-        self.assertEquals(v4_get_all_campuses(), v5_get_all_campuses())
+        self.assertTrue(is_obj_list_eq(v4_get_all_campuses(), v5_get_all_campuses()))
 
     def test_get_all_colleges(self):
-        self.assertEquals(v4_get_all_colleges(), v5_get_all_colleges())
+        self.assertTrue(is_obj_list_eq(v4_get_all_colleges(), v5_get_all_colleges()))
 
     def test_get_curricula_by_department(self):
-        self.assertEquals(v4_get_curricula_by_department(), v5_get_curricula_by_department())
+        self.assertTrue(is_obj_list_eq(v4_get_curricula_by_department(), v5_get_curricula_by_department()))
 
     def test_get_curricula_by_term(self):
-        self.assertEquals(v4_get_curricula_by_term(), v5_get_curricula_by_term())
+        self.assertTrue(is_obj_list_eq(v4_get_curricula_by_term(), v5_get_curricula_by_term()))
 
     def test_get_departments_by_college(self):
-        self.assertEquals(v4_get_departments_by_college(), v5_get_departments_by_college())
+        self.assertTrue(is_obj_list_eq(v4_get_departments_by_college(), v5_get_departments_by_college()))
 
     def test_get_term_by_year_and_quarter(self):
-        self.assertEquals(v4_get_term_by_year_and_quarter(), v5_get_term_by_year_and_quarter())
+        self.assertTrue(is_obj_list_eq(v4_get_term_by_year_and_quarter(), v5_get_term_by_year_and_quarter()))
 
     def test_get_current_term(self):
-        self.assertEquals(v4_get_current_term(), v5_get_current_term())
+        self.assertTrue(is_obj_list_eq(v4_get_current_term(), v5_get_current_term()))
 
     def test_get_next_term(self):
-        self.assertEquals(v4_get_next_term(), v5_get_next_term())
+        self.assertTrue(is_obj_list_eq(v4_get_next_term(), v5_get_next_term()))
 
     def test_get_previous_term(self):
-        self.assertEquals(v4_get_previous_term(), v5_get_previous_term())
+        self.assertTrue(is_obj_list_eq(v4_get_previous_term(), v5_get_previous_term()))
 
     def test_get_term_before(self):
-        self.assertEquals(v4_get_term_before(), v5_get_term_before())
+        self.assertTrue(is_obj_list_eq(v4_get_term_before(), v5_get_term_before()))
 
     def test_get_term_after(self):
-        self.assertEquals(v4_get_term_after(), v5_get_term_after())
+        self.assertTrue(is_obj_list_eq(v4_get_term_after(), v5_get_term_after()))
 
     def test_get_account_balances_by_regid(self):
-        self.assertEquals(v4_get_account_balances_by_regid(), v5_get_account_balances_by_regid())
+        self.assertTrue(is_obj_list_eq(v4_get_account_balances_by_regid(), v5_get_account_balances_by_regid()))
 
     def test_get_grades_by_regid_and_term(self):
-        self.assertEquals(v4_get_grades_by_regid_and_term(), v5_get_grades_by_regid_and_term())
+        self.assertTrue(is_obj_list_eq(v4_get_grades_by_regid_and_term(), v5_get_grades_by_regid_and_term()))
 
     def test_get_enrollment_by_regid_and_term(self):
-        self.assertEquals(v4_get_enrollment_by_regid_and_term(), v5_get_enrollment_by_regid_and_term())
+        self.assertTrue(is_obj_list_eq(v4_get_enrollment_by_regid_and_term(), v5_get_enrollment_by_regid_and_term()))
 
     def test_get_section_status_by_label(self):
-        self.assertEquals(v4_get_section_status_by_label(), v5_get_section_status_by_label())
+        self.assertTrue(is_obj_list_eq(v4_get_section_status_by_label(), v5_get_section_status_by_label()))
 
     def test_get_active_registrations_by_section(self):
-        self.assertEquals(v4_get_active_registrations_by_section(), v5_get_active_registrations_by_section())
+        self.assertTrue(is_obj_list_eq(v4_get_active_registrations_by_section(), v5_get_active_registrations_by_section()))
 
     def test_get_all_registrations_by_section(self):
-        self.assertEquals(v4_get_all_registrations_by_section(), v5_get_all_registrations_by_section())
+        self.assertTrue(is_obj_list_eq(v4_get_all_registrations_by_section(), v5_get_all_registrations_by_section()))
 
     def test_get_credits_by_section_and_regid(self):
-        self.assertEquals(v4_get_credits_by_section_and_regid(), v5_get_credits_by_section_and_regid())
+        self.assertTrue(is_obj_list_eq(v4_get_credits_by_section_and_regid(), v5_get_credits_by_section_and_regid()))
 
     def test_get_schedule_by_regid_and_term(self):
-        self.assertEquals(v4_get_schedule_by_regid_and_term(), v5_get_schedule_by_regid_and_term())
+        self.assertTrue(is_obj_list_eq(v4_get_schedule_by_regid_and_term(), v5_get_schedule_by_regid_and_term()))
+
+# Helper to test list of objects for equality
+
+def is_obj_list_eq(a, b):
+    if type(a) != type(b):
+        return False
+
+    from django.db import models
+    if type(a) == type([]):
+        if len(a) != len(b):
+            return False
+
+        for i in range(len(a)):
+            if not is_obj_list_eq(a[i], b[i]):
+                return False
+
+        return True
+
+    elif type(a) == type("") or type(a) == type(u""):
+        if a == b:
+            return True
+        return False
+
+    elif type(a) == type({}):
+        for key in a:
+            if not is_obj_list_eq(a[key], b[key]):
+                return False
+        return True
+
+    elif type(a) == type(None):
+        return True
+
+
+    else:
+        try:
+            for k in [f.name for f in a._meta.fields]:
+                if not is_obj_list_eq(getattr(a, k), getattr(b, k)):
+                    return False
+
+            return True
+        except Exception as ex:
+            print "Err: ", ex
+
+    return True
+    
 
