@@ -113,7 +113,7 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_departments_by_college(), v5_get_departments_by_college()))
 
     def test_get_term_by_year_and_quarter(self):
-        self.assertTrue(is_obj_list_eq(v4_get_term_by_year_and_quarter(), v5_get_term_by_year_and_quarter()))
+        self.assertTrue(is_obj_list_eq(v4_get_term_by_year_and_quarter(2013, "spring"), v5_get_term_by_year_and_quarter(2013, "spring")))
 
     def test_get_current_term(self):
         self.assertTrue(is_obj_list_eq(v4_get_current_term(), v5_get_current_term()))
@@ -162,6 +162,7 @@ class SWSv4VSv5Test(TestCase):
 
 import warnings
 from django.db import models
+from datetime import date, datetime
 def is_obj_list_eq(a, b):
     if type(a) != type(b):
         warnings.warn("Typeof %s doesn't equal type of %s" % (a, b))
@@ -193,6 +194,16 @@ def is_obj_list_eq(a, b):
     elif type(a) == type(None):
         return True
 
+    elif type(a) == type(0):
+        if a == b:
+            return True
+        return False
+
+    elif type(a) == type(date(2014, 1, 1)):
+        return a == b
+
+    elif type(a) == type(datetime(2014, 1, 1)):
+        return a == b
 
     else:
         try:
