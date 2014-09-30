@@ -162,13 +162,20 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_section_status_by_label(), v5_get_section_status_by_label()))
 
     def test_get_active_registrations_by_section(self):
-        self.assertTrue(is_obj_list_eq(v4_get_active_registrations_by_section(), v5_get_active_registrations_by_section()))
+        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
+        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        self.assertTrue(is_obj_list_eq(v4_get_active_registrations_by_section(s1), v5_get_active_registrations_by_section(s2)))
 
     def test_get_all_registrations_by_section(self):
-        self.assertTrue(is_obj_list_eq(v4_get_all_registrations_by_section(), v5_get_all_registrations_by_section()))
+        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
+        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        self.assertTrue(is_obj_list_eq(v4_get_all_registrations_by_section(s1), v5_get_all_registrations_by_section(s2)))
 
     def test_get_credits_by_section_and_regid(self):
-        self.assertTrue(is_obj_list_eq(v4_get_credits_by_section_and_regid(), v5_get_credits_by_section_and_regid()))
+        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
+        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        r = "A9BA9722453A11D9AC47000629C31437"
+        self.assertTrue(is_obj_list_eq(v4_get_credits_by_section_and_regid(s1, r), v5_get_credits_by_section_and_regid(s2, r)))
 
     def test_get_schedule_by_regid_and_term(self):
         t1 = v4_get_current_term()
@@ -182,6 +189,7 @@ class SWSv4VSv5Test(TestCase):
 import warnings
 from django.db import models
 from datetime import date, datetime
+from decimal import Decimal
 def is_obj_list_eq(a, b):
     if type(a) != type(b):
         warnings.warn("Typeof %s doesn't equal type of %s" % (a, b))
@@ -231,6 +239,9 @@ def is_obj_list_eq(a, b):
         return a == b
 
     elif type(a) == type(datetime(2014, 1, 1)):
+        return a == b
+
+    elif type(a) == type(Decimal(0)):
         return a == b
 
     else:
