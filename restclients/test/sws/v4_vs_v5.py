@@ -59,29 +59,47 @@ from restclients.sws.v5.registration import get_credits_by_section_and_regid as 
 from restclients.sws.v4.registration import get_schedule_by_regid_and_term as v4_get_schedule_by_regid_and_term
 from restclients.sws.v5.registration import get_schedule_by_regid_and_term as v5_get_schedule_by_regid_and_term
 from django.test import TestCase
+from restclients.models.sws import Person, Curriculum
 
 
 class SWSv4VSv5Test(TestCase):
     def test_get_sections_by_instructor_and_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_sections_by_instructor_and_term(), v5_get_sections_by_instructor_and_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        i = Person(uwregid="620BE4CC6A7C11D5A4AE0004AC494FFE")
+
+        self.assertTrue(is_obj_list_eq(v4_get_sections_by_instructor_and_term(i, t1), v5_get_sections_by_instructor_and_term(i, t2)))
 
     def test_get_sections_by_delegate_and_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_sections_by_delegate_and_term(), v5_get_sections_by_delegate_and_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        d = Person(uwregid="433CB692C99411D7A3E4000629C31437")
+        self.assertTrue(is_obj_list_eq(v4_get_sections_by_delegate_and_term(d, t1), v5_get_sections_by_delegate_and_term(d, t2)))
 
     def test_get_sections_by_curriculum_and_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_sections_by_curriculum_and_term(), v5_get_sections_by_curriculum_and_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        c = Curriculum(label="ENGL")
+        self.assertTrue(is_obj_list_eq(v4_get_sections_by_curriculum_and_term(c, t1), v5_get_sections_by_curriculum_and_term(c, t2)))
 
     def test_get_section_by_url(self):
-        self.assertTrue(is_obj_list_eq(v4_get_section_by_url(), v5_get_section_by_url()))
+        u1 = "/student/v4/course/2014,autumn,ENGL,102/A.json"
+        u2 = "/student/v5/course/2014,autumn,ENGL,102/A.json"
+        self.assertTrue(is_obj_list_eq(v4_get_section_by_url(u1), v5_get_section_by_url(u2)))
 
     def test_get_section_by_label(self):
-        self.assertTrue(is_obj_list_eq(v4_get_section_by_label(), v5_get_section_by_label()))
+        label = "2014,autumn,ENGL,102/A"
+        self.assertTrue(is_obj_list_eq(v4_get_section_by_label(label), v5_get_section_by_label(label)))
 
     def test_get_linked_sections(self):
-        self.assertTrue(is_obj_list_eq(v4_get_linked_sections(), v5_get_linked_sections()))
+        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
+        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        self.assertTrue(is_obj_list_eq(v4_get_linked_sections(s1), v5_get_linked_sections(s2)))
 
     def test_get_joint_sections(self):
-        self.assertTrue(is_obj_list_eq(v4_get_joint_sections(), v5_get_joint_sections()))
+        s1 = v4_get_section_by_label("2013,winter,ASIAN,203/A")
+        s2 = v5_get_section_by_label("2013,winter,ASIAN,203/A")
+        self.assertTrue(is_obj_list_eq(v4_get_joint_sections(s1), v5_get_joint_sections(s2)))
 
     def test_get_notices_by_regid(self):
         self.assertTrue(is_obj_list_eq(v4_get_notices_by_regid(), v5_get_notices_by_regid()))
@@ -180,8 +198,14 @@ def is_obj_list_eq(a, b):
         return True
 
     elif type(a) == type("") or type(a) == type(u""):
+        # Some attributes have the url fragment in them :(
+        a = a.replace("v4", "__version__")
+        b = b.replace("v4", "__version__")
+        a = a.replace("v5", "__version__")
+        b = b.replace("v5", "__version__")
         if a == b:
             return True
+
         warnings.warn("Not equal: %s, %s" % (a, b))
         return False
 
@@ -193,6 +217,9 @@ def is_obj_list_eq(a, b):
 
     elif type(a) == type(None):
         return True
+
+    elif type(a) == type(True):
+        return a == b
 
     elif type(a) == type(0):
         if a == b:
