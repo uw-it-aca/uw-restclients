@@ -101,9 +101,6 @@ class SWSv4VSv5Test(TestCase):
         s2 = v5_get_section_by_label("2013,winter,ASIAN,203/A")
         self.assertTrue(is_obj_list_eq(v4_get_joint_sections(s1), v5_get_joint_sections(s2)))
 
-    def test_get_notices_by_regid(self):
-        self.assertTrue(is_obj_list_eq(v4_get_notices_by_regid(), v5_get_notices_by_regid()))
-
     def test_get_graderoster(self):
         self.assertTrue(is_obj_list_eq(v4_get_graderoster(), v5_get_graderoster()))
 
@@ -174,7 +171,11 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_credits_by_section_and_regid(), v5_get_credits_by_section_and_regid()))
 
     def test_get_schedule_by_regid_and_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_schedule_by_regid_and_term(), v5_get_schedule_by_regid_and_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        r = "1E4D20C2C47E455E93FB3A16F3105337"
+
+        self.assertTrue(is_obj_list_eq(v4_get_schedule_by_regid_and_term(r, t1), v5_get_schedule_by_regid_and_term(r, t2)))
 
 # Helper to test list of objects for equality
 
@@ -235,12 +236,15 @@ def is_obj_list_eq(a, b):
     else:
         try:
             for k in [f.name for f in a._meta.fields]:
-                if not is_obj_list_eq(getattr(a, k), getattr(b, k)):
+                if not hasattr(a, k) and not hasattr(b, k):
+                    pass
+                elif not is_obj_list_eq(getattr(a, k), getattr(b, k)):
                     return False
 
             return True
         except Exception as ex:
-            print "Err: ", ex
+            warnings.warn("Err: %s" % ex)
+            return False
 
     return True
     
