@@ -105,7 +105,9 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_curricula_by_department(), v5_get_curricula_by_department()))
 
     def test_get_curricula_by_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_curricula_by_term(), v5_get_curricula_by_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        self.assertTrue(is_obj_list_eq(v4_get_curricula_by_term(t1), v5_get_curricula_by_term(t2)))
 
     def test_get_departments_by_college(self):
         self.assertTrue(is_obj_list_eq(v4_get_departments_by_college(), v5_get_departments_by_college()))
