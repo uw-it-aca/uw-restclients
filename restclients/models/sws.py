@@ -8,6 +8,7 @@ from restclients.exceptions import InvalidCanvasIndependentStudyCourse
 from restclients.exceptions import InvalidCanvasSection
 
 
+# PWS Person
 class Person(models.Model):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
@@ -72,6 +73,7 @@ class Person(models.Model):
         app_label = "restclients"
 
 
+# PWS Person
 class Entity(models.Model):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
@@ -91,6 +93,56 @@ class Entity(models.Model):
 
     def __eq__(self, other):
         return self.uwregid == other.uwregid
+
+
+class LastEnrolled(models.Model):
+    href = models.CharField(max_length=200)
+    quarter = models.CharField(max_length=16)
+    year = models.PositiveSmallIntegerField()
+
+class StudentAddress(models.Model):
+    city = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    street_line1 = models.CharField(max_length=255)
+    street_line2 = models.CharField(max_length=255)
+    postal_code = models.CharField(max_length=32)
+    state = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=32)
+    
+class SwsPerson(models.Model):
+    uwregid = models.CharField(max_length=32,
+                               db_index=True,
+                               unique=True)
+
+    uwnetid = models.SlugField(max_length=16,
+                               db_index=True,
+                               unique=True)
+
+    employee_id = models.SlugField(max_length=16, null=True, blank=True)
+    student_number = models.SlugField(max_length=16, null=True, blank=True)
+    student_system_key = models.SlugField(max_length=16, null=True, blank=True)
+
+    directory_release = models.BooleanField(null=True)
+    email = models.CharField(max_length=255, null=True, blank=True)
+    gender = models.CharField(max_length=1, null=True, blank=True)
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    student_name = models.CharField(max_length=255)
+
+    last_enrolled = models.ForeignKey(LastEnrolled,
+                                      on_delete=models.PROTECT,
+                                      null=True)
+    local_address = models.ForeignKey(StudentAddress,
+                                      on_delete=models.PROTECT,
+                                      null=True)
+    local_phone = models.CharField(max_length=64, null=True, blank=True)
+    permanent_address = models.ForeignKey(StudentAddress,
+                                      on_delete=models.PROTECT,
+                                      null=True)
+    permanent_phone = models.CharField(max_length=64, null=True, blank=True)
+    visa_type = models.CharField(max_length=2, null=True, blank=True)
+
 
 
 class Term(models.Model):
