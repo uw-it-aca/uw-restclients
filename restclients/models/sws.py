@@ -100,6 +100,15 @@ class LastEnrolled(models.Model):
     quarter = models.CharField(max_length=16)
     year = models.PositiveSmallIntegerField()
 
+    def json_data(self):
+        data = {
+            'href': self.href,
+            'quarter': self.quarter,
+            'year': self.year
+            }
+        return data
+
+
 class StudentAddress(models.Model):
     city = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
@@ -108,28 +117,41 @@ class StudentAddress(models.Model):
     postal_code = models.CharField(max_length=32)
     state = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=32)
+    def json_data(self):
+        data = {
+            'city': self.city,
+            'country': self.country,
+            'street_line1': self.street_line1,
+            'street_line2': self.street_line2,
+            'postal_code': self.postal_code,
+            'state': self.state,
+            'zip_code': self.zip_code
+            }
+        return data
+
+
+def get_student_address_json(address):
+    if address is not None:
+        return address.json_data()
+    return None
     
+
 class SwsPerson(models.Model):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
                                unique=True)
-
     uwnetid = models.SlugField(max_length=16,
                                db_index=True,
                                unique=True)
-
-    employee_id = models.SlugField(max_length=16, null=True, blank=True)
-    student_number = models.SlugField(max_length=16, null=True, blank=True)
-    student_system_key = models.SlugField(max_length=16, null=True, blank=True)
-
     directory_release = models.BooleanField(null=True)
+    employee_id = models.SlugField(max_length=16, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=1, null=True, blank=True)
-
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     student_name = models.CharField(max_length=255)
-
+    student_number = models.SlugField(max_length=16, null=True, blank=True)
+    student_system_key = models.SlugField(max_length=16, null=True, blank=True)
     last_enrolled = models.ForeignKey(LastEnrolled,
                                       on_delete=models.PROTECT,
                                       null=True)
@@ -143,6 +165,23 @@ class SwsPerson(models.Model):
     permanent_phone = models.CharField(max_length=64, null=True, blank=True)
     visa_type = models.CharField(max_length=2, null=True, blank=True)
 
+    def json_data(self):
+        data = {
+            'uwnetid': self.uwnetid,
+            'uwregid': self.uwregid,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'student_name': self.student_name,
+            'student_number': self.student_number,
+            'employee_id': self.employee_id,
+            'directory_release': self.directory_release,
+            'local_address': get_student_address_json(self.local_address),
+            'local_phone': self.local_phone,
+            'permanent_address': get_student_address_json(self.permanent_address),
+            'permanent_phone': self.permanent_phone,
+            'visa_type': self.visa_type
+            }
+        return data
 
 
 class Term(models.Model):
