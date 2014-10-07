@@ -78,9 +78,9 @@ class PersonTest(TestCase):
             self.assertEquals(data.permanent_address.country, "India")
             self.assertEquals(data.permanent_address.street_line1, "Veer Nariman Road")
             self.assertEquals(data.permanent_address.street_line2, "")
-            self.assertEquals(data.permanent_address.postal_code, "")
+            self.assertEquals(data.permanent_address.postal_code, "400001")
             self.assertEquals(data.permanent_address.state, "Mumbai")
-            self.assertEquals(data.permanent_address.zip_code, "400001")
+            self.assertEquals(data.permanent_address.zip_code, "")
 
 
     def test_person_none(self):
