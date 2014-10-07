@@ -59,7 +59,7 @@ from restclients.sws.v5.registration import get_credits_by_section_and_regid as 
 from restclients.sws.v4.registration import get_schedule_by_regid_and_term as v4_get_schedule_by_regid_and_term
 from restclients.sws.v5.registration import get_schedule_by_regid_and_term as v5_get_schedule_by_regid_and_term
 from django.test import TestCase
-from restclients.models.sws import Person, Curriculum
+from restclients.models.sws import Person, Curriculum, Department, College
 
 
 class SWSv4VSv5Test(TestCase):
@@ -101,14 +101,15 @@ class SWSv4VSv5Test(TestCase):
         s2 = v5_get_section_by_label("2013,winter,ASIAN,203/A")
         self.assertTrue(is_obj_list_eq(v4_get_joint_sections(s1), v5_get_joint_sections(s2)))
 
-    def test_get_graderoster(self):
-        self.assertTrue(is_obj_list_eq(v4_get_graderoster(), v5_get_graderoster()))
-
-    def test_update_graderoster(self):
-        self.assertTrue(is_obj_list_eq(v4_update_graderoster(), v5_update_graderoster()))
-
-    def test_graderoster_from_xhtml(self):
-        self.assertTrue(is_obj_list_eq(v4_graderoster_from_xhtml(), v5_graderoster_from_xhtml()))
+# XXX - no access to the graderoster resource
+#    def test_get_graderoster(self):
+#        self.assertTrue(is_obj_list_eq(v4_get_graderoster(), v5_get_graderoster()))
+#
+#    def test_update_graderoster(self):
+#        self.assertTrue(is_obj_list_eq(v4_update_graderoster(), v5_update_graderoster()))
+#
+#    def test_graderoster_from_xhtml(self):
+#        self.assertTrue(is_obj_list_eq(v4_graderoster_from_xhtml(), v5_graderoster_from_xhtml()))
 
     def test_get_all_campuses(self):
         self.assertTrue(is_obj_list_eq(v4_get_all_campuses(), v5_get_all_campuses()))
@@ -117,7 +118,8 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_all_colleges(), v5_get_all_colleges()))
 
     def test_get_curricula_by_department(self):
-        self.assertTrue(is_obj_list_eq(v4_get_curricula_by_department(), v5_get_curricula_by_department()))
+        d = Department(label="EDUC")
+        self.assertTrue(is_obj_list_eq(v4_get_curricula_by_department(d), v5_get_curricula_by_department(d)))
 
     def test_get_curricula_by_term(self):
         t1 = v4_get_current_term()
@@ -125,7 +127,8 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_curricula_by_term(t1), v5_get_curricula_by_term(t2)))
 
     def test_get_departments_by_college(self):
-        self.assertTrue(is_obj_list_eq(v4_get_departments_by_college(), v5_get_departments_by_college()))
+        c = College(label="MED")
+        self.assertTrue(is_obj_list_eq(v4_get_departments_by_college(c), v5_get_departments_by_college(c)))
 
     def test_get_term_by_year_and_quarter(self):
         self.assertTrue(is_obj_list_eq(v4_get_term_by_year_and_quarter(2013, "spring"), v5_get_term_by_year_and_quarter(2013, "spring")))
@@ -149,27 +152,35 @@ class SWSv4VSv5Test(TestCase):
         t2 = v5_get_current_term()
         self.assertTrue(is_obj_list_eq(v4_get_term_after(t1), v5_get_term_after(t2)))
 
-    def test_get_account_balances_by_regid(self):
-        self.assertTrue(is_obj_list_eq(v4_get_account_balances_by_regid(), v5_get_account_balances_by_regid()))
+    # No v4 resource!
+#    def test_get_account_balances_by_regid(self):
+#        self.assertTrue(is_obj_list_eq(v4_get_account_balances_by_regid(), v5_get_account_balances_by_regid()))
 
     def test_get_grades_by_regid_and_term(self):
         self.assertTrue(is_obj_list_eq(v4_get_grades_by_regid_and_term(), v5_get_grades_by_regid_and_term()))
 
     def test_get_enrollment_by_regid_and_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_enrollment_by_regid_and_term(), v5_get_enrollment_by_regid_and_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        r = "1E4D20C2C47E455E93FB3A16F3105337"
+        self.assertTrue(is_obj_list_eq(v4_get_enrollment_by_regid_and_term(r, t1), v5_get_enrollment_by_regid_and_term(r, t2)))
 
     def test_get_section_status_by_label(self):
-        self.assertTrue(is_obj_list_eq(v4_get_section_status_by_label(), v5_get_section_status_by_label()))
+        l = '2014,autumn,PHYS,121/A'
+        print v5_get_section_status_by_label(l)
+        self.assertTrue(is_obj_list_eq(v4_get_section_status_by_label(l), v5_get_section_status_by_label(l)))
 
     def test_get_active_registrations_by_section(self):
         s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
         s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
-        self.assertTrue(is_obj_list_eq(v4_get_active_registrations_by_section(s1), v5_get_active_registrations_by_section(s2)))
+
+        rs = v4_get_active_registrations_by_section(s1)
+        self.assertTrue(is_obj_list_eq(v4_get_active_registrations_by_section(s1), v5_get_active_registrations_by_section(s2), order_list_by="person", nested_order_by="uwregid"))
 
     def test_get_all_registrations_by_section(self):
         s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
         s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
-        self.assertTrue(is_obj_list_eq(v4_get_all_registrations_by_section(s1), v5_get_all_registrations_by_section(s2)))
+        self.assertTrue(is_obj_list_eq(v4_get_all_registrations_by_section(s1), v5_get_all_registrations_by_section(s2), order_list_by="person", nested_order_by="uwregid"))
 
     def test_get_credits_by_section_and_regid(self):
         s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
@@ -190,15 +201,26 @@ import warnings
 from django.db import models
 from datetime import date, datetime
 from decimal import Decimal
-def is_obj_list_eq(a, b):
+def is_obj_list_eq(a, b, order_list_by=None, nested_order_by=None):
     if type(a) != type(b):
         warnings.warn("Typeof %s doesn't equal type of %s" % (a, b))
         return False
 
     if type(a) == type([]):
         if len(a) != len(b):
+            print "Len A: ", len(a), " Len b: ", len(b)
             warnings.warn("Length of a != b")
             return False
+
+        if order_list_by is not None:
+            if nested_order_by is not None:
+                if len(a) > 0 and hasattr(a[0], order_list_by) and hasattr(getattr(a[0], order_list_by), nested_order_by):
+                        a.sort(key=lambda x: getattr(getattr(x, order_list_by), nested_order_by))
+                        b.sort(key=lambda x: getattr(getattr(x, order_list_by), nested_order_by))
+            else:
+                if len(a) > 0 and hasattr(a[0], order_list_by):
+                    a.sort(key=lambda x: getattr(x, order_list_by))
+                    b.sort(key=lambda x: getattr(x, order_list_by))
 
         for i in range(len(a)):
             if not is_obj_list_eq(a[i], b[i]):
@@ -258,5 +280,3 @@ def is_obj_list_eq(a, b):
             return False
 
     return True
-    
-

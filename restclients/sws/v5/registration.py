@@ -43,7 +43,7 @@ def _registrations_for_section_with_active_flag(section, is_active):
 
     activity_flag = ""
     if is_active:
-        activity_flag = "on"
+        activity_flag = "true"
 
     url = "%s?%s" % (registration_res_url_prefix,
                      urlencode(
