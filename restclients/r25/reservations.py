@@ -1,5 +1,6 @@
 from restclients.models.r25 import Reservation
 from restclients.r25 import nsmap, get_resource
+from restclients.r25.spaces import space_reservation_from_xml
 from urllib import urlencode
 
 
@@ -34,6 +35,12 @@ def reservations_from_xml(tree):
                                               namespaces=nsmap)[0].text
         reservation.state = node.xpath("r25:reservation_state",
                                        namespaces=nsmap)[0].text
+
+        try:
+            pnode = node.xpath("r25:space_reservation", namespaces=nsmap)[0]
+            reservation.space_reservation = space_reservation_from_xml(pnode)
+        except IndexError:
+            reservation.space_reservation = None
 
         try:
             enode = node.xpath("r25:event", namespaces=nsmap)[0]
