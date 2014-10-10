@@ -54,7 +54,6 @@ def get_enrollment_by_regid_and_term(regid, term):
 
 
 def _json_to_enrollment(json_data):
-    print json_data
     enrollment = Enrollment()
     enrollment.regid = json_data['RegID']
     enrollment.class_level = json_data['ClassLevel']
