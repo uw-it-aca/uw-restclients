@@ -8,6 +8,9 @@ from urllib import urlencode
 from decimal import *
 from restclients.models.sws import Registration, ClassSchedule
 from restclients.exceptions import DataFailureException
+from restclients.cache_manager import enable_cache_entry_queueing
+from restclients.cache_manager import disable_cache_entry_queueing
+from restclients.cache_manager import save_all_queued_entries
 from restclients.pws import PWS
 from restclients.thread import Thread
 from restclients.sws import get_resource, SWSThread
@@ -188,6 +191,7 @@ def _json_to_schedule(term_data, term, regid,
     sws_threads = []
     term_credit_hours = Decimal("0.0")
 
+    enable_cache_entry_queueing()
     for registration in term_data["Registrations"]:
         reg_url = registration["Href"]
 
@@ -242,6 +246,8 @@ def _json_to_schedule(term_data, term, regid,
     schedule.sections = sections
     schedule.term = term
 
+    save_all_queued_entries()
+    disable_cache_entry_queueing()
     return schedule
 
 

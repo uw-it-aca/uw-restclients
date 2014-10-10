@@ -64,7 +64,11 @@ class Live(object):
     RESTCLIENTS_CANVAS_OAUTH_BEARER="..."
     """
     pool = None
-    verify_https = False
+    ignore_security = getattr(settings, 'RESTCLIENTS_CANVAS_IGNORE_CA_SECURITY', False)
+
+    verify_https = True
+    if ignore_security:
+        verify_https = False
 
     def getURL(self, url, headers):
         host = settings.RESTCLIENTS_CANVAS_HOST
@@ -73,7 +77,7 @@ class Live(object):
         headers["Authorization"] = "Bearer %s" % bearer_key
 
         if Live.pool == None:
-            Live.pool = get_con_pool(host, verify_https=Live.verify_https)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'GET',
                             host, url, headers=headers,
                             service_name='canvas')
@@ -85,7 +89,7 @@ class Live(object):
         headers["Authorization"] = "Bearer %s" % bearer_key
 
         if Live.pool == None:
-            Live.pool = get_con_pool(host, verify_https=Live.verify_https)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'PUT',
                             host, url, headers=headers, body=body,
                             service_name='canvas')
@@ -97,7 +101,7 @@ class Live(object):
         headers["Authorization"] = "Bearer %s" % bearer_key
 
         if Live.pool == None:
-            Live.pool = get_con_pool(host, verify_https=Live.verify_https)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'POST',
                             host, url, headers=headers, body=body,
                             service_name='canvas')
@@ -109,7 +113,16 @@ class Live(object):
         headers["Authorization"] = "Bearer %s" % bearer_key
 
         if Live.pool == None:
-            Live.pool = get_con_pool(host, verify_https=Live.verify_https)
+            Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'DELETE',
                             host, url, headers=headers,
                             service_name='canvas')
+
+    def _get_pool(self):
+        host = settings.RESTCLIENTS_CANVAS_HOST
+        socket_timeout = 15  # default values
+        if hasattr(settings, "RESTCLIENTS_CANVAS_SOCKET_TIMEOUT"):
+            socket_timeout = settings.RESTCLIENTS_CANVAS_SOCKET_TIMEOUT
+        return get_con_pool(host,
+                            verify_https=Live.verify_https,
+                            socket_timeout=socket_timeout)

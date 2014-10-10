@@ -3,9 +3,11 @@ Contains DAO Cache implementations
 """
 from restclients.mock_http import MockHTTP
 from restclients.models import CacheEntry, CacheEntryTimed
+from restclients.cache_manager import store_cache_entry
 from datetime import datetime, timedelta
-from django.db import IntegrityError
+from django.db import connection, IntegrityError
 from django.utils.timezone import make_aware, get_current_timezone
+from django.conf import settings
 
 
 class NoCache(object):
@@ -87,11 +89,12 @@ class TimedCache(object):
         cache_entry.time_saved = now
 
         try:
-            cache_entry.save()
+            store_cache_entry(cache_entry)
         except IntegrityError as ex:
             # If someone beat us in to saving a cache entry, that's ok.
             # We just need a very recent entry.
             return
+
         return
 
 
@@ -170,6 +173,6 @@ class ETagCache(object):
 
             cache_entry.headers = response.headers
             cache_entry.time_saved = now
-            cache_entry.save()
+            store_cache_entry(cache_entry)
 
         return

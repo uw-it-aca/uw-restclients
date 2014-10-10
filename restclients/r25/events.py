@@ -1,7 +1,7 @@
 from restclients.models.r25 import Event, BindingReservation
 from restclients.r25 import nsmap, get_resource
 from restclients.r25.reservations import reservations_from_xml
-from urllib import urlencode
+from urllib import urlencode, quote
 
 
 def get_event_by_id(event_id):
@@ -10,8 +10,9 @@ def get_event_by_id(event_id):
 
 
 def get_event_by_alien_id(alien_id):
-    url = "/r25ws/servlet/wrd/run/event.xml?alien_uid=%s" % urlencode(alien_id)
-    return events_from_xml(get_resource(url))[0]
+    url = "/r25ws/servlet/wrd/run/event.xml?alien_uid=%s" % quote(alien_id)
+    event = events_from_xml(get_resource(url))
+    return event[0] if event else None
 
 
 def get_events(**kwargs):
