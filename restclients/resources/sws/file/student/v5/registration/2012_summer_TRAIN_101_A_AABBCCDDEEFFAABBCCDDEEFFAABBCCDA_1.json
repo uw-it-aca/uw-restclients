@@ -1,0 +1,32 @@
+{
+   "AddAccessCode":"",
+   "Auditor":false,
+   "Credits":" 1.0",
+   "DropAccessCode":"",
+   "DuplicateCode":"1",
+   "FacultySequenceNumber":"",
+   "FeeBaseType":"",
+   "Grade":"X",
+   "GradeDate":"",
+   "GradeDocumentID":"000000000",
+   "HonorsCourse":false,
+   "IsActive":true,
+   "Person":{
+      "Href":"\/student\/v5\/person\/AABBCCDDEEFFAABBCCDDEEFFAABBCCDA.json",
+      "Name":"Student,Early Class",
+      "RegID":"AABBCCDDEEFFAABBCCDDEEFFAABBCCDA"
+   },
+   "RepeatCourse":false,
+   "RequestDate":"",
+   "RequestStatus":"",
+   "Section":{
+      "Href":"\/student\/v5\/course\/2012,summer,TRAIN,101\/A.json",
+      "CourseNumber":"101",
+      "CurriculumAbbreviation":"TRAIN",
+      "Quarter":"summer",
+      "SectionID":"A",
+      "Year":"2012"
+   },
+   "VariableCredit":false,
+   "WritingCourse":false
+}

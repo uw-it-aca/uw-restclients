@@ -59,41 +59,39 @@ from restclients.sws.v5.registration import get_credits_by_section_and_regid as 
 from restclients.sws.v4.registration import get_schedule_by_regid_and_term as v4_get_schedule_by_regid_and_term
 from restclients.sws.v5.registration import get_schedule_by_regid_and_term as v5_get_schedule_by_regid_and_term
 from django.test import TestCase
-from restclients.models.sws import Person, Curriculum, Department, College
+from restclients.models.sws import Person, Curriculum, Department, College, Term
 
 
 class SWSv4VSv5Test(TestCase):
     def test_get_sections_by_instructor_and_term(self):
-        t1 = v4_get_current_term()
-        t2 = v5_get_current_term()
-        i = Person(uwregid="620BE4CC6A7C11D5A4AE0004AC494FFE")
+        t1 = t2 = Term(quarter="summer", year=2013)
+        i = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
 
         self.assertTrue(is_obj_list_eq(v4_get_sections_by_instructor_and_term(i, t1), v5_get_sections_by_instructor_and_term(i, t2)))
 
     def test_get_sections_by_delegate_and_term(self):
-        t1 = v4_get_current_term()
-        t2 = v5_get_current_term()
-        d = Person(uwregid="433CB692C99411D7A3E4000629C31437")
+        t1 = t2 = Term(quarter="summer", year=2013)
+        d = Person(uwregid="FBB38FE46A7C11D5A4AE0004AC494FFE")
+
         self.assertTrue(is_obj_list_eq(v4_get_sections_by_delegate_and_term(d, t1), v5_get_sections_by_delegate_and_term(d, t2)))
 
     def test_get_sections_by_curriculum_and_term(self):
-        t1 = v4_get_current_term()
-        t2 = v5_get_current_term()
-        c = Curriculum(label="ENGL")
+        t1 = t2 = Term(quarter="winter", year=2013)
+        c = Curriculum(label="ENDO")
         self.assertTrue(is_obj_list_eq(v4_get_sections_by_curriculum_and_term(c, t1), v5_get_sections_by_curriculum_and_term(c, t2)))
 
     def test_get_section_by_url(self):
-        u1 = "/student/v4/course/2014,autumn,ENGL,102/A.json"
-        u2 = "/student/v5/course/2014,autumn,ENGL,102/A.json"
+        u1 = "/student/v4/course/2013,summer,MATH,125/G.json"
+        u2 = "/student/v5/course/2013,summer,MATH,125/G.json"
         self.assertTrue(is_obj_list_eq(v4_get_section_by_url(u1), v5_get_section_by_url(u2)))
 
     def test_get_section_by_label(self):
-        label = "2014,autumn,ENGL,102/A"
+        label = "2013,summer,B BIO,180/A"
         self.assertTrue(is_obj_list_eq(v4_get_section_by_label(label), v5_get_section_by_label(label)))
 
     def test_get_linked_sections(self):
-        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
-        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        s1 = v4_get_section_by_label("2013,summer,TRAIN,100/A")
+        s2 = v5_get_section_by_label("2013,summer,TRAIN,100/A")
         self.assertTrue(is_obj_list_eq(v4_get_linked_sections(s1), v5_get_linked_sections(s2)))
 
     def test_get_joint_sections(self):
@@ -122,8 +120,7 @@ class SWSv4VSv5Test(TestCase):
         self.assertTrue(is_obj_list_eq(v4_get_curricula_by_department(d), v5_get_curricula_by_department(d)))
 
     def test_get_curricula_by_term(self):
-        t1 = v4_get_current_term()
-        t2 = v5_get_current_term()
+        t1 = t2 = Term(quarter='winter', year=2013)
         self.assertTrue(is_obj_list_eq(v4_get_curricula_by_term(t1), v5_get_curricula_by_term(t2)))
 
     def test_get_departments_by_college(self):
@@ -162,36 +159,35 @@ class SWSv4VSv5Test(TestCase):
     def test_get_enrollment_by_regid_and_term(self):
         t1 = v4_get_current_term()
         t2 = v5_get_current_term()
-        r = "1E4D20C2C47E455E93FB3A16F3105337"
+        r = "9136CCB8F66711D5BE060004AC494FFE"
         self.assertTrue(is_obj_list_eq(v4_get_enrollment_by_regid_and_term(r, t1), v5_get_enrollment_by_regid_and_term(r, t2)))
 
     def test_get_section_status_by_label(self):
-        l = '2014,autumn,PHYS,121/A'
+        l = '2012,autumn,CSE,100/W'
         print v5_get_section_status_by_label(l)
         self.assertTrue(is_obj_list_eq(v4_get_section_status_by_label(l), v5_get_section_status_by_label(l)))
 
     def test_get_active_registrations_by_section(self):
-        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
-        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        s1 = v4_get_section_by_label("2013,winter,DROP_T,100/A")
+        s2 = v5_get_section_by_label("2013,winter,DROP_T,100/A")
 
-        rs = v4_get_active_registrations_by_section(s1)
         self.assertTrue(is_obj_list_eq(v4_get_active_registrations_by_section(s1), v5_get_active_registrations_by_section(s2), order_list_by="person", nested_order_by="uwregid"))
 
     def test_get_all_registrations_by_section(self):
-        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
-        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
+        s1 = v4_get_section_by_label("2013,winter,DROP_T,100/A")
+        s2 = v5_get_section_by_label("2013,winter,DROP_T,100/A")
         self.assertTrue(is_obj_list_eq(v4_get_all_registrations_by_section(s1), v5_get_all_registrations_by_section(s2), order_list_by="person", nested_order_by="uwregid"))
 
     def test_get_credits_by_section_and_regid(self):
-        s1 = v4_get_section_by_label("2014,autumn,PHYS,121/A")
-        s2 = v5_get_section_by_label("2014,autumn,PHYS,121/A")
-        r = "A9BA9722453A11D9AC47000629C31437"
+        s1 = v4_get_section_by_label("2012,summer,PHYS,121/A")
+        s2 = v5_get_section_by_label("2012,summer,PHYS,121/A")
+        r = "9136CCB8F66711D5BE060004AC494FFE"
         self.assertTrue(is_obj_list_eq(v4_get_credits_by_section_and_regid(s1, r), v5_get_credits_by_section_and_regid(s2, r)))
 
     def test_get_schedule_by_regid_and_term(self):
         t1 = v4_get_current_term()
         t2 = v5_get_current_term()
-        r = "1E4D20C2C47E455E93FB3A16F3105337"
+        r = "9136CCB8F66711D5BE060004AC494FFE"
 
         self.assertTrue(is_obj_list_eq(v4_get_schedule_by_regid_and_term(r, t1), v5_get_schedule_by_regid_and_term(r, t2)))
 

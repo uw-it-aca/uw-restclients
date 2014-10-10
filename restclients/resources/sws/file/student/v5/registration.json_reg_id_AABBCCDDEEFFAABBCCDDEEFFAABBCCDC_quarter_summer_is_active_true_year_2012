@@ -1,0 +1,29 @@
+{ "Current" : { "CourseNumber" : null,
+      "CurriculumAbbreviation" : null,
+      "Href" : "\/student\/v5\/registration.json?year=2012&quarter=summer&curriculum_abbreviation=&course_number=§ion_id=®_id=AABBCCDDEEFFAABBCCDDEEFFAABBCCDC&is_active=&instructor_reg_id=",
+      "InstructorRegID" : null,
+      "IsActive" : null,
+      "PageSize" : null,
+      "PageStart" : null,
+      "Quarter" : "summer",
+      "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDC",
+      "SectionID" : null,
+      "Year" : "2012"
+    },
+  "Next" : null,
+  "PageSize" : "10",
+  "PageStart" : "1",
+  "Previous" : null,
+  "Registrations" : [ { "CourseNumber" : "104",
+        "CurriculumAbbreviation" : "TRAIN",
+        "DuplicateCode" : "1",
+        "Href" : "\/student\/v5\/registration\/2012,summer,TRAIN,104,A,AABBCCDDEEFFAABBCCDDEEFFAABBCCDC,1.json",
+        "Instructor" : null,
+        "Quarter" : "summer",
+        "RegID" : "AABBCCDDEEFFAABBCCDDEEFFAABBCCDC",
+        "SectionID" : "A",
+        "Year" : "2012"
+      }
+    ],
+  "TotalCount" : 1
+}

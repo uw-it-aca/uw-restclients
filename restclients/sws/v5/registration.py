@@ -174,7 +174,7 @@ def get_schedule_by_regid_and_term(regid, term,
         registration_res_url_prefix,
         urlencode([('reg_id', regid),
                    ('quarter', term.quarter),
-                   ('is_active', 'on'),
+                   ('is_active', 'true'),
                    ('year', term.year)
                    ]))
 
