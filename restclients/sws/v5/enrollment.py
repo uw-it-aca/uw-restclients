@@ -4,7 +4,8 @@ Interfacing with the Student Web Service, Enrollment resource.
 import logging
 from restclients.pws import PWS
 from restclients.models.sws import Term
-from restclients.models.sws import StudentGrades, StudentCourseGrade, Enrollment, Major
+from restclients.models.sws import StudentGrades, StudentCourseGrade
+from restclients.models.sws import Enrollment, Major, Minor
 from restclients.sws import get_resource
 from restclients.sws.section import get_section_by_url
 
@@ -43,6 +44,7 @@ def _json_to_grades(data, regid, term):
 
     return grades
 
+
 def get_enrollment_by_regid_and_term(regid, term):
     url = "%s/%s,%s,%s.json" % (enrollment_res_url_prefix,
                                 term.year,
@@ -50,15 +52,25 @@ def get_enrollment_by_regid_and_term(regid, term):
                                 regid)
     return _json_to_enrollment(get_resource(url))
 
+
 def _json_to_enrollment(json_data):
+    print json_data
     enrollment = Enrollment()
     enrollment.regid = json_data['RegID']
     enrollment.class_level = json_data['ClassLevel']
     enrollment.is_honors = json_data['HonorsProgram']
+
     enrollment.majors = []
-    for major in json_data['Majors']:
-        enrollment.majors.append(_json_to_major(major))
+    if json_data.get('Majors') is not None and len(json_data['Majors']) > 0:
+        for major in json_data['Majors']:
+            enrollment.majors.append(_json_to_major(major))
+
+    enrollment.minors = []
+    if json_data.get('Minors') is not None and len(json_data['Minors']) > 0:
+        for minor in json_data['Minors']:
+            enrollment.minors.append(_json_to_minor(minor))
     return enrollment
+
 
 def _json_to_major(json_data):
     major = Major()
@@ -68,4 +80,14 @@ def _json_to_major(json_data):
     major.major_name = json_data['MajorName']
     major.campus = json_data['Campus']
     return major
+
+
+def _json_to_minor(json_data):
+   minor = Minor()
+   minor.abbr = json_data['Abbreviation']
+   minor.campus = json_data['CampusName']
+   minor.name = json_data['Name']
+   minor.full_name = json_data['FullName']
+   minor.short_name = json_data['ShortName']
+   return minor
 

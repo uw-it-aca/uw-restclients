@@ -37,3 +37,5 @@ class SWSTestEnrollments(TestCase):
             self.assertEquals(len(enrollement.majors), 1)
             self.assertEquals(enrollement.majors[0].campus, "Seattle")
             self.assertEquals(enrollement.majors[0].degree_name, "BACHELOR OF SCIENCE (APPLIED & COMPUTATIONAL MATH SCIENCES)")
+            self.assertEquals(enrollement.minors[0].campus, "Seattle")
+            self.assertEquals(enrollement.minors[0].name, "AMERICAN SIGN LANGUAGE")
