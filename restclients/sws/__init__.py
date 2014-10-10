@@ -41,6 +41,10 @@ def get_current_sws_version():
         return 5
     return 4
 
+def use_v5_resources():
+    if get_current_sws_version() == 5:
+        return True
+    return False
 
 class SWSThread(Thread):
     url = None
