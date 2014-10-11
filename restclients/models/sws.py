@@ -794,7 +794,17 @@ class Major(models.Model):
     degree_abbr = models.CharField(max_length=100)
     full_name = models.CharField(max_length=100)
     major_name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=50)
     campus = models.CharField(max_length=8)
+
+    def json_data(self):
+        return {'degree_abbr': self.degree_abbr,
+                'degree_name': self.degree_name,
+                'campus': self.campus,
+                'name': self.major_name,
+                'full_name': self.full_name,
+                'short_name': self.short_name
+                }
 
 
 class Minor(models.Model):
@@ -804,3 +814,10 @@ class Minor(models.Model):
     full_name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=50)
 
+    def json_data(self):
+        return {'abbr': self.abbr,
+                'campus': self.campus,
+                'name': self.name,
+                'full_name': self.full_name,
+                'short_name': self.short_name
+                }

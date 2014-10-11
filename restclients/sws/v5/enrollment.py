@@ -77,6 +77,7 @@ def _json_to_major(json_data):
     major.degree_name = json_data['DegreeName']
     major.full_name = json_data['FullName']
     major.major_name = json_data['MajorName']
+    major.short_name = json_data['ShortName']
     major.campus = json_data['Campus']
     return major
 
