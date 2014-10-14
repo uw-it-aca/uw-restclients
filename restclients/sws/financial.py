@@ -21,8 +21,8 @@ def get_account_balances_by_regid(regid):
 
 def _process_json_data(jdata):
     fina = Finance()
-    fina.tuition_accbalance = jdata["AccountBalance"]
+    fina.tuition_accbalance = jdata["AccountBalance"].replace("$", "")
     if "PCEAccountBalance" in jdata:
-        fina.pce_accbalance = jdata["PCEAccountBalance"]
+        fina.pce_accbalance = jdata["PCEAccountBalance"].replace("$", "")
     return fina
 
