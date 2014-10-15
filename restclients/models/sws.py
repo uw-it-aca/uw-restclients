@@ -205,6 +205,7 @@ class Term(models.Model):
     aterm_grading_period_open = models.DateTimeField(blank=True)
     grading_period_close = models.DateTimeField()
     grade_submission_deadline = models.DateTimeField()
+    registration_services_start = models.DateTimeField()
 
     class Meta:
         app_label = "restclients"
