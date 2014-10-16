@@ -146,6 +146,10 @@ def _json_to_term_model(term_data):
     term.grade_submission_deadline = strptime(
         term_data["GradeSubmissionDeadline"], datetime_format)
 
+
+    term.registration_services_start = strptime(
+        term_data["RegistrationServicesStart"], day_format)
+
     term.time_schedule_construction = []
     for campus in term_data["TimeScheduleConstructionOn"]:
         tsc = TimeScheduleConstruction(
