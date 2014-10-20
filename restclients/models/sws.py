@@ -441,7 +441,7 @@ class Section(models.Model):
             'current_enrollment' : self.current_enrollment,
             'auditors' : self.auditors,
             'meetings': [],
-            'credits': self.student_credits,
+            'credits': str(self.student_credits),
             'grade': self.student_grade,
             'grade_date': self.get_grade_date_str()
         }
