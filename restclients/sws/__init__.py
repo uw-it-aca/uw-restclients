@@ -47,7 +47,8 @@ def use_v5_resources():
     return False
 
 class SWSThread(Thread):
-    url = None
+    url = None # the course url to send a request 
+    reg_url = None 
     headers = None
     response = None
 
