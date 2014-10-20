@@ -65,14 +65,24 @@ class SWSTestRegistrations(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             term = Term(quarter="spring", year=2013)
-            class_schedule = get_schedule_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
-                                                            term)
+            class_schedule = get_schedule_by_regid_and_term(
+                '9136CCB8F66711D5BE060004AC494FFE',
+                term)
             for section in class_schedule.sections:
                 if section.section_label() == '2013,spring,TRAIN,100/A':
                     self.assertEquals(len(section.get_instructors()), 1)
+                    self.assertEquals(section.student_credits, 1.5)
+                    self.assertEquals(section.student_grade, "P")
+                    self.assertEquals(section.get_grade_date_str(), "2013-06-10")
 
-            class_schedule = get_schedule_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
-                                                            term, False)
+                if section.section_label() == '2013,spring,PHYS,121/AC':
+                    self.assertEquals(section.student_credits, 3.0)
+                    self.assertEquals(section.student_grade, "4.0")
+                    self.assertEquals(section.get_grade_date_str(), "2013-06-11")
+
+            class_schedule = get_schedule_by_regid_and_term(
+                '9136CCB8F66711D5BE060004AC494FFE',
+                term, False)
             for section in class_schedule.sections:
                 if section.section_label() == '2013,spring,TRAIN,100/A':
                     self.assertEquals(len(section.get_instructors()), 0)

@@ -333,6 +333,9 @@ class Section(models.Model):
     primary_section_id = models.CharField(max_length=2, null=True, blank=True)
     is_primary_section = models.BooleanField()
     allows_secondary_grading = models.BooleanField()
+    student_credits = models.DecimalField(max_digits=3, decimal_places=1)
+    student_grade = models.CharField(max_length=6, null=True, blank=True)
+    grade_date = models.DateField(null=True, blank=True, default=None)
 
     class Meta:
         app_label = "restclients"
@@ -414,6 +417,15 @@ class Section(models.Model):
 
         return sis_id
 
+    def get_grade_date_str(self):
+        """
+        return next due date in the ISO format (yyyy-mm-dd).
+        If the next_due is None, return None.
+        """
+        if self.grade_date is not None:
+            return str(self.grade_date)
+        return None
+
     def json_data(self):
         data = {
             'curriculum_abbr': self.curriculum_abbr,
@@ -429,6 +441,9 @@ class Section(models.Model):
             'current_enrollment' : self.current_enrollment,
             'auditors' : self.auditors,
             'meetings': [],
+            'credits': self.student_credits,
+            'grade': self.student_grade,
+            'grade_date': self.get_grade_date_str()
         }
 
         if self.final_exam is not None:
@@ -785,7 +800,8 @@ class Enrollment(models.Model):
     regid = models.CharField(max_length=32,
                                db_index=True,
                                unique=True)
-
+    # majors
+    # minors
     class Meta:
         app_label = "restclients"
 

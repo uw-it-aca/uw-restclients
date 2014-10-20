@@ -6,6 +6,7 @@ import json
 import re
 from urllib import urlencode
 from decimal import *
+from datetime import datetime
 from restclients.models.sws import Registration, ClassSchedule
 from restclients.exceptions import DataFailureException
 from restclients.cache_manager import enable_cache_entry_queueing
@@ -148,6 +149,7 @@ def get_credits_by_section_and_regid(section, regid):
     Returns a restclients.models.sws.Registration object
     for the section and regid passed in.
     """
+    deprecation("Use get_credits_by_reg_url")
     #note trailing comma in URL, it's required for the optional dup_code param
     url = "%s%s,%s,%s,%s,%s,%s,.json" % (
         reg_credits_url_prefix,
@@ -159,6 +161,18 @@ def get_credits_by_section_and_regid(section, regid):
         regid
     )
 
+    reg_data = get_resource(url)
+
+    try:
+        return Decimal(reg_data['Credits'].strip())
+    except InvalidOperation:
+        pass
+
+
+def get_credits_by_reg_url(url):
+    """
+    Returns a decimal value of the course credits
+    """
     reg_data = get_resource(url)
 
     try:
@@ -202,6 +216,7 @@ def _json_to_schedule(term_data, term, regid,
 
         thread = SWSThread()
         thread.url = course_url
+        thread.reg_url = reg_url
         thread.headers = {"Accept": "application/json"}
         thread.start()
         sws_threads.append(thread)
@@ -212,17 +227,15 @@ def _json_to_schedule(term_data, term, regid,
     for thread in sws_threads:
         response = thread.response
         if response.status != 200:
-            raise DataFailureException(course_url,
+            raise DataFailureException(thread.url,
                                        response.status,
                                        response.data)
 
         section = _json_to_section(json.loads(response.data), term,
                                    include_instructor_not_on_time_schedule)
-
-        reg_credits = _get_registration_credits(reg_url)
-        section.student_credits = reg_credits
-        if reg_credits is not None:
-            term_credit_hours += reg_credits
+        _add_credits_grade_to_section(thread.reg_url, section)
+        if section.student_credits is not None:
+            term_credit_hours += section.student_credits
         # For independent study courses, only include the one relevant
         # instructor
         if registration["Instructor"]:
@@ -251,15 +264,20 @@ def _json_to_schedule(term_data, term, regid,
     return schedule
 
 
-def _get_registration_credits(url):
+def _add_credits_grade_to_section(url, section):
     """
-    Returns a restclients.models.sws.Registration object
-    for the url passed in.
+    Given the registration url passed in,
+    add credits, grade, grade date in the section object
     """
-    reg_data = get_resource(url)
+    section_reg_data = get_resource(url)
+    if section_reg_data is not None:
+        section.student_grade = section_reg_data['Grade']
 
-    try:
-        return Decimal(reg_data['Credits'].strip())
-    except InvalidOperation:
-        pass
+        if len(section_reg_data['GradeDate']) > 0:
+            section.grade_date = datetime.strptime(section_reg_data['GradeDate'],
+                                                   "%Y-%m-%d").date()
+        try:
+            section.student_credits = Decimal(section_reg_data['Credits'].strip())
+        except InvalidOperation:
+            pass
 
