@@ -1,10 +1,24 @@
-from restclients.sws.v4.financial import get_account_balances_by_regid as v4_get_account_balances_by_regid
-from restclients.sws.v5.financial import get_account_balances_by_regid as v5_get_account_balances_by_regid
-from restclients.sws import use_v5_resources
+import logging
+from restclients.models.sws import Finance
+from restclients.sws import get_resource
 
-def get_account_balances_by_regid(*args, **kwargs):
-    if use_v5_resources():
-        return v5_get_account_balances_by_regid(*args, **kwargs)
-    else:
-        return v4_get_account_balances_by_regid(*args, **kwargs)
 
+logger = logging.getLogger(__name__)
+sws_url_prefix = "/student/v5/person/"
+sws_url_suffix = "/financial.json"
+
+
+def get_account_balances_by_regid(regid):
+    """
+    Returns a restclients.models.sws.Finance object
+    """
+    url = sws_url_prefix + regid + sws_url_suffix
+    return _process_json_data(get_resource(url))
+
+
+def _process_json_data(jdata):
+    fina = Finance()
+    fina.tuition_accbalance = jdata["AccountBalance"].replace("$", "")
+    if "PCEAccountBalance" in jdata:
+        fina.pce_accbalance = jdata["PCEAccountBalance"].replace("$", "")
+    return fina

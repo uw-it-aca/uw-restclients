@@ -36,7 +36,7 @@ def get_con_pool(host,
         kwargs["cert_file"] = cert_file
 
     if urlparse(host).scheme == "https":
-        kwargs["ssl_version"] = ssl.PROTOCOL_SSLv3
+        kwargs["ssl_version"] = ssl.PROTOCOL_TLSv1
         if verify_https:
             kwargs["cert_reqs"] = "CERT_REQUIRED"
             kwargs["ca_certs"] = getattr(settings, "RESTCLIENTS_CA_BUNDLE",

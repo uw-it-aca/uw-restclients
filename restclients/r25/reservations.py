@@ -24,8 +24,13 @@ def get_reservations(**kwargs):
 
 
 def reservations_from_xml(tree):
+    try:
+        profile_name = tree.xpath("r25:profile_name", namespaces=nsmap)[0].text
+    except:
+        profile_name = 'NONE'
+
     reservations = []
-    for node in tree.xpath("//r25:reservation", namespaces=nsmap):
+    for node in tree.xpath("r25:reservation", namespaces=nsmap):
         reservation = Reservation()
         reservation.reservation_id = node.xpath("r25:reservation_id",
                                                 namespaces=nsmap)[0].text
@@ -35,6 +40,7 @@ def reservations_from_xml(tree):
                                               namespaces=nsmap)[0].text
         reservation.state = node.xpath("r25:reservation_state",
                                        namespaces=nsmap)[0].text
+        reservation.profile_name = profile_name
 
         try:
             pnode = node.xpath("r25:space_reservation", namespaces=nsmap)[0]

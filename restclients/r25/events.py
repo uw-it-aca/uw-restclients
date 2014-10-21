@@ -30,7 +30,7 @@ def get_events(**kwargs):
 
 def events_from_xml(tree):
     events = []
-    for node in tree.xpath("//r25:event", namespaces=nsmap):
+    for node in tree.xpath("r25:event", namespaces=nsmap):
         event = Event()
         event.event_id = node.xpath("r25:event_id", namespaces=nsmap)[0].text
         event.alien_uid = node.xpath("r25:alien_uid", namespaces=nsmap)[0].text
@@ -46,15 +46,12 @@ def events_from_xml(tree):
         event.cabinet_name = node.xpath("r25:cabinet_name",
                                         namespaces=nsmap)[0].text
 
-        try:
-            pnode = node.xpath("r25:profile", namespaces=nsmap)[0]
-            event.binding_reservations = binding_reservations_from_xml(pnode)
-            event.reservations = reservations_from_xml(pnode)
-        except IndexError:
-            event.binding_reservations = []
-            event.reservations = []
-
-        events.append(event)
+        event.binding_reservations = []
+        event.reservations = []
+        for pnode in node.xpath("r25:profile", namespaces=nsmap):
+            event.binding_reservations += binding_reservations_from_xml(pnode)
+            event.reservations += reservations_from_xml(pnode)
+            events.append(event)
 
     return events
 
