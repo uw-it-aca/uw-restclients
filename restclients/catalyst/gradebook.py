@@ -5,6 +5,8 @@ Interface for interacting with Catalyst GradeBook
 from restclients.sws import encode_section_label
 from restclients.models.catalyst import GradebookParticipant
 from restclients.catalyst import get_resource
+from restclients.exceptions import InvalidGradebookID
+import re
 
 
 def get_participants_for_gradebook(gradebook_id, person=None):
@@ -12,6 +14,9 @@ def get_participants_for_gradebook(gradebook_id, person=None):
     Returns a list of gradebook participants for the passed gradebook_id and
     person.
     """
+    if not valid_gradebook_id(gradebook_id):
+        raise InvalidGradebookID(regid)
+
     url = "/rest/gradebook/v1/book/%s/participants" % gradebook_id
     headers = {}
 
@@ -45,6 +50,10 @@ def get_participants_for_section(section, person=None):
         participants.append(_participant_from_json(pt))
 
     return participants
+
+
+def valid_gradebook_id(gradebook_id):
+    return True if re.match(r"^[1-9][0-9]{,9}$", str(gradebook_id)) else False
 
 
 def _participant_from_json(data):
