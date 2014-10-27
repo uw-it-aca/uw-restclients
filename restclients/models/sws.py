@@ -252,6 +252,7 @@ class Term(models.Model):
             'quarter': self.get_quarter_display(),
             'year': self.year,
             'last_final_exam_date': self.last_final_exam_date.strftime("%Y-%m-%d 23:59:59"),
+            'grade_submission_deadline': self.grade_submission_deadline.strftime("%Y-%m-%d 23:59:59")
         }
 
 
