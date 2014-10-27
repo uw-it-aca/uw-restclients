@@ -150,6 +150,22 @@ def _json_to_term_model(term_data):
     term.registration_services_start = strptime(
         term_data["RegistrationServicesStart"], day_format)
 
+
+    term.registration_period1_start = strptime(
+        term_data["RegistrationPeriods"][0]["StartDate"], day_format)
+    term.registration_period1_end= strptime(
+        term_data["RegistrationPeriods"][0]["EndDate"], day_format)
+
+    term.registration_period2_start = strptime(
+        term_data["RegistrationPeriods"][1]["StartDate"], day_format)
+    term.registration_period2_end= strptime(
+        term_data["RegistrationPeriods"][1]["EndDate"], day_format)
+
+    term.registration_period3_start = strptime(
+        term_data["RegistrationPeriods"][2]["StartDate"], day_format)
+    term.registration_period3_end= strptime(
+        term_data["RegistrationPeriods"][2]["EndDate"], day_format)
+
     term.time_schedule_construction = []
     for campus in term_data["TimeScheduleConstructionOn"]:
         tsc = TimeScheduleConstruction(
