@@ -1,0 +1,325 @@
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Grade Roster 2013 summer CSS 161 A</title>
+  </head>
+  <body>
+    <div class="graderoster">
+      <div>
+            Section:
+            <a class="section" rel="section" href="/student/v5/course/2013,summer,CSS,161/A"><span class="year">2013</span> <span class="quarter">summer</span> <span class="curriculum_abbreviation">CSS</span> <span class="course_number">161</span> <span class="section_id">A</span></a></div>
+      <div>
+            Instructor:
+            <a class="person" rel="instructor" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+      <div>
+            SLN:
+            <span class="sln">12637</span></div>
+      <div>
+            Summer Term Code:
+            <span class="summer_term_code">Full-term</span></div>
+      <div>
+            Section Credits:
+            <span class="section_credits"> 5.0</span></div>
+      <div>
+        <label for="">Writing Credit Display:</label>
+        <input type="checkbox" class="writing_credit_display" id="" name="" checked="checked" disabled="disabled"/>
+      </div>
+      <div>
+          Authorized Grade Submitters:
+          <ul class="authorized_grade_submitters">
+                <li><a class="person" rel="authorized_grade_submitter" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></li>
+          </ul>
+          <ul class="grade_submission_delegates">
+                <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v5/person/6DF0A9206A7D11D5A4AE0004AC494FFE"><span class="name">TEACHER,FRED AVERAGE</span> - <span class="reg_id">6DF0A9206A7D11D5A4AE0004AC494FFE</span></a> <span class="delegate_level">department</span></li>
+                <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v5/person/260A0DEC95CB11D78BAA000629C31437"><span class="name">TEACHER,JAMES AVERAGE</span> - <span class="reg_id">260A0DEC95CB11D78BAA000629C31437</span></a> <span class="delegate_level">curriculum</span></li>
+          </ul>
+      </div>
+      <ul class="graderoster_items">
+          <li class="graderoster_item">
+          <h1>AVERAGE,CHARLIE</h1>
+          <div>
+            <a class="person" rel="student" href="/student/v5/person/1914B1B26A7D11D5A4AE0004AC494FFE"><span class="name">AVERAGE,CHARLIE</span> - <span class="reg_id">1914B1B26A7D11D5A4AE0004AC494FFE</span></a>
+          </div>
+          <div>
+          Duplicate code:
+          <span class="duplicate_code"> </span></div>
+          <div>
+          Student Former Name:
+          <span class="student_former_name"></span></div>
+          <div>
+          Student Number:
+          <span class="student_number">1250822</span></div>
+          <div>
+          Student Type:
+          <span class="student_type"></span></div>
+          <div>
+          Student Credits:
+          <span class="student_credits"> 5.0</span></div>
+          <div>
+          Date Withdrawn:
+          <span class="date_withdrawn date"></span></div>
+          <div>
+            <label for="incomplete_1914B1B26A7D11D5A4AE0004AC494FFE_ ">Incomplete:
+    </label>
+            <input type="checkbox" class="incomplete" id="incomplete_1914B1B26A7D11D5A4AE0004AC494FFE_ " name="incomplete_1914B1B26A7D11D5A4AE0004AC494FFE_ " checked="checked" disabled="disabled"/>
+          </div>
+          <div>
+            <label for="writing_course_1914B1B26A7D11D5A4AE0004AC494FFE_ ">Writing course:
+    </label>
+            <input type="checkbox" class="writing_course" id="writing_course_1914B1B26A7D11D5A4AE0004AC494FFE_ " name="writing_course_1914B1B26A7D11D5A4AE0004AC494FFE_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="auditor_1914B1B26A7D11D5A4AE0004AC494FFE_ ">Auditor:
+    </label>
+            <input type="checkbox" class="auditor" id="auditor_1914B1B26A7D11D5A4AE0004AC494FFE_ " name="auditor_1914B1B26A7D11D5A4AE0004AC494FFE_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="no_grade_now_1914B1B26A7D11D5A4AE0004AC494FFE_ ">No grade now:
+    </label>
+            <input type="checkbox" class="no_grade_now" id="no_grade_now_1914B1B26A7D11D5A4AE0004AC494FFE_ " name="no_grade_now_1914B1B26A7D11D5A4AE0004AC494FFE_ " disabled="disabled"/>
+          </div>
+          <div>
+          Grade:
+          <select class="grades"><option value="" class="grade"></option><option class="grade" value="4.0">4.0</option><option class="grade" value="3.9">3.9</option><option class="grade" value="3.8">3.8</option><option class="grade" value="3.7">3.7</option><option class="grade" value="3.6">3.6</option><option class="grade" value="3.5">3.5</option><option class="grade" value="3.4">3.4</option><option class="grade" value="3.3">3.3</option><option class="grade" value="3.2">3.2</option><option class="grade" value="3.1">3.1</option><option class="grade" value="3.0">3.0</option><option class="grade" value="2.9">2.9</option><option class="grade" value="2.8">2.8</option><option class="grade" value="2.7">2.7</option><option class="grade" value="2.6">2.6</option><option class="grade" value="2.5">2.5</option><option class="grade" value="2.4">2.4</option><option class="grade" value="2.3">2.3</option><option class="grade" value="2.2">2.2</option><option class="grade" value="2.1">2.1</option><option class="grade" value="2.0">2.0</option><option class="grade" value="1.9">1.9</option><option class="grade" value="1.8">1.8</option><option class="grade" value="1.7">1.7</option><option class="grade" value="1.6">1.6</option><option class="grade" value="1.5">1.5</option><option class="grade" value="1.4">1.4</option><option class="grade" value="1.3">1.3</option><option class="grade" value="1.2">1.2</option><option class="grade" value="1.1">1.1</option><option class="grade" value="1.0">1.0</option><option class="grade" value="0.9">0.9</option><option class="grade" value="0.8">0.8</option><option class="grade" value="0.7" selected="selected">0.7</option><option class="grade" value="0.0">0.0</option></select></div>
+          <div>
+          Grade document ID: <span class="grade_document_id">08261300000</span></div>
+          <div>
+          Date Graded: <span class="date_graded date">2013-08-26</span></div>
+          <div>
+          Grade submitter person:
+          <a class="person" rel="grade_submitter_person" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <div>
+          Grade submitter source:
+          <span class="grade_submitter_source">WEBCGB</span></div>
+        </li>
+        <li class="graderoster_item">
+          <h1>AVERAGE,JASON A</h1>
+          <div>
+            <a class="person" rel="student" href="/student/v5/person/511FC8241DC611DB9943F9D03AACCE31"><span class="name">AVERAGE,JASON A</span> - <span class="reg_id">511FC8241DC611DB9943F9D03AACCE31</span></a>
+          </div>
+          <div>
+          Duplicate code:
+          <span class="duplicate_code"> </span></div>
+          <div>
+          Student Former Name:
+          <span class="student_former_name">Mr. T</span></div>
+          <div>
+          Student Number:
+          <span class="student_number">1264830</span></div>
+          <div>
+          Student Type:
+          <span class="student_type"></span></div>
+          <div>
+          Student Credits:
+          <span class="student_credits"> 5.0</span></div>
+          <div>
+          Date Withdrawn:
+          <span class="date_withdrawn date"></span></div>
+          <div>
+            <label for="incomplete_511FC8241DC611DB9943F9D03AACCE31_ ">Incomplete:
+    </label>
+            <input type="checkbox" class="incomplete" id="incomplete_511FC8241DC611DB9943F9D03AACCE31_ " name="incomplete_511FC8241DC611DB9943F9D03AACCE31_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="writing_course_511FC8241DC611DB9943F9D03AACCE31_ ">Writing course:
+    </label>
+            <input type="checkbox" class="writing_course" id="writing_course_511FC8241DC611DB9943F9D03AACCE31_ " name="writing_course_511FC8241DC611DB9943F9D03AACCE31_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="auditor_511FC8241DC611DB9943F9D03AACCE31_ ">Auditor:
+    </label>
+            <input type="checkbox" class="auditor" id="auditor_511FC8241DC611DB9943F9D03AACCE31_ " name="auditor_511FC8241DC611DB9943F9D03AACCE31_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="no_grade_now_511FC8241DC611DB9943F9D03AACCE31_ ">No grade now:
+    </label>
+            <input type="checkbox" class="no_grade_now" id="no_grade_now_511FC8241DC611DB9943F9D03AACCE31_ " name="no_grade_now_511FC8241DC611DB9943F9D03AACCE31_ " checked="checked" disabled="disabled"/>
+          </div>
+          <div>
+          Grade:
+          <select class="grades" disabled="disabled"><option value="" class="grade"></option><option class="grade" value="4.0">4.0</option><option class="grade" value="3.9">3.9</option><option class="grade" value="3.8">3.8</option><option class="grade" value="3.7">3.7</option><option class="grade" value="3.6">3.6</option><option class="grade" value="3.5">3.5</option><option class="grade" value="3.4">3.4</option><option class="grade" value="3.3">3.3</option><option class="grade" value="3.2">3.2</option><option class="grade" value="3.1">3.1</option><option class="grade" value="3.0">3.0</option><option class="grade" value="2.9">2.9</option><option class="grade" value="2.8">2.8</option><option class="grade" value="2.7">2.7</option><option class="grade" value="2.6">2.6</option><option class="grade" value="2.5">2.5</option><option class="grade" value="2.4">2.4</option><option class="grade" value="2.3">2.3</option><option class="grade" value="2.2">2.2</option><option class="grade" value="2.1">2.1</option><option class="grade" value="2.0">2.0</option><option class="grade" value="1.9">1.9</option><option class="grade" value="1.8">1.8</option><option class="grade" value="1.7">1.7</option><option class="grade" value="1.6">1.6</option><option class="grade" value="1.5">1.5</option><option class="grade" value="1.4">1.4</option><option class="grade" value="1.3">1.3</option><option class="grade" value="1.2">1.2</option><option class="grade" value="1.1">1.1</option><option class="grade" value="1.0">1.0</option><option class="grade" value="0.9">0.9</option><option class="grade" value="0.8">0.8</option><option class="grade" value="0.7">0.7</option><option class="grade" value="0.0">0.0</option></select></div>
+          <div>
+          Grade document ID: <span class="grade_document_id">08261300000</span></div>
+          <div>
+          Date Graded: <span class="date_graded date">2013-08-26</span></div>
+          <div>
+          Grade submitter person:
+          <a class="person" rel="grade_submitter_person" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <div>
+          Grade submitter source:
+          <span class="grade_submitter_source">WEBCGB</span></div>
+        </li>
+        <li class="graderoster_item">
+          <h1>AVERAGE,STEPHEN J</h1>
+          <div>
+            <a class="person" rel="student" href="/student/v5/person/F00E253C634211DA9755000629C31437"><span class="name">AVERAGE,STEPHEN J</span> - <span class="reg_id">F00E253C634211DA9755000629C31437</span></a>
+          </div>
+          <div>
+          Duplicate code:
+          <span class="duplicate_code"> </span></div>
+          <div>
+          Student Former Name:
+          <span class="student_former_name"></span></div>
+          <div>
+          Student Number:
+          <span class="student_number">1310071</span></div>
+          <div>
+          Student Type:
+          <span class="student_type"></span></div>
+          <div>
+          Student Credits:
+          <span class="student_credits"> 5.0</span></div>
+          <div>
+          Date Withdrawn:
+          <span class="date_withdrawn date"></span></div>
+          <div>
+            <label for="incomplete_F00E253C634211DA9755000629C31437_ ">Incomplete:
+    </label>
+            <input type="checkbox" class="incomplete" id="incomplete_F00E253C634211DA9755000629C31437_ " name="incomplete_F00E253C634211DA9755000629C31437_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="writing_course_F00E253C634211DA9755000629C31437_ ">Writing course:
+    </label>
+            <input type="checkbox" class="writing_course" id="writing_course_F00E253C634211DA9755000629C31437_ " name="writing_course_F00E253C634211DA9755000629C31437_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="auditor_F00E253C634211DA9755000629C31437_ ">Auditor:
+    </label>
+            <input type="checkbox" class="auditor" id="auditor_F00E253C634211DA9755000629C31437_ " name="auditor_F00E253C634211DA9755000629C31437_ " checked="checked" disabled="disabled"/>
+          </div>
+          <div>
+            <label for="no_grade_now_F00E253C634211DA9755000629C31437_ ">No grade now:
+    </label>
+            <input type="checkbox" class="no_grade_now" id="no_grade_now_F00E253C634211DA9755000629C31437_ " name="no_grade_now_F00E253C634211DA9755000629C31437_ " disabled="disabled"/>
+          </div>
+          <div>
+          Grade:
+          <select class="grades"><option value="" class="grade"></option><option class="grade" value="4.0">4.0</option><option class="grade" value="3.9">3.9</option><option class="grade" value="3.8">3.8</option><option class="grade" value="3.7">3.7</option><option class="grade" value="3.6">3.6</option><option class="grade" value="3.5">3.5</option><option class="grade" value="3.4">3.4</option><option class="grade" value="3.3">3.3</option><option class="grade" value="3.2">3.2</option><option class="grade" value="3.1" selected="selected">3.1</option><option class="grade" value="3.0">3.0</option><option class="grade" value="2.9">2.9</option><option class="grade" value="2.8">2.8</option><option class="grade" value="2.7">2.7</option><option class="grade" value="2.6">2.6</option><option class="grade" value="2.5">2.5</option><option class="grade" value="2.4">2.4</option><option class="grade" value="2.3">2.3</option><option class="grade" value="2.2">2.2</option><option class="grade" value="2.1">2.1</option><option class="grade" value="2.0">2.0</option><option class="grade" value="1.9">1.9</option><option class="grade" value="1.8">1.8</option><option class="grade" value="1.7">1.7</option><option class="grade" value="1.6">1.6</option><option class="grade" value="1.5">1.5</option><option class="grade" value="1.4">1.4</option><option class="grade" value="1.3">1.3</option><option class="grade" value="1.2">1.2</option><option class="grade" value="1.1">1.1</option><option class="grade" value="1.0">1.0</option><option class="grade" value="0.9">0.9</option><option class="grade" value="0.8">0.8</option><option class="grade" value="0.7">0.7</option><option class="grade" value="0.0">0.0</option></select></div>
+          <div>
+          Grade document ID: <span class="grade_document_id">08261300000</span></div>
+          <div>
+          Date Graded: <span class="date_graded date">2013-08-26</span></div>
+          <div>
+          Grade submitter person:
+          <a class="person" rel="grade_submitter_person" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <div>
+          Grade submitter source:
+          <span class="grade_submitter_source">WEBCGB</span></div>
+        </li>
+        <li class="graderoster_item">
+          <h1>AVERAGE,MICHAEL S.</h1>
+          <div>
+            <a class="person" rel="student" href="/student/v5/person/C7EED7406A7C11D5A4AE0004AC494FFE"><span class="name">AVERAGE,MICHAEL S.</span> - <span class="reg_id">C7EED7406A7C11D5A4AE0004AC494FFE</span></a>
+          </div>
+          <div>
+          Duplicate code:
+          <span class="duplicate_code"> </span></div>
+          <div>
+          Student Former Name:
+          <span class="student_former_name"></span></div>
+          <div>
+          Student Number:
+          <span class="student_number">1311656</span></div>
+          <div>
+          Student Type:
+          <span class="student_type"></span></div>
+          <div>
+          Student Credits:
+          <span class="student_credits"> 5.0</span></div>
+          <div>
+          Date Withdrawn:
+          <span class="date_withdrawn date"></span></div>
+          <div>
+            <label for="incomplete_C7EED7406A7C11D5A4AE0004AC494FFE_ ">Incomplete:
+    </label>
+            <input type="checkbox" class="incomplete" id="incomplete_C7EED7406A7C11D5A4AE0004AC494FFE_ " name="incomplete_C7EED7406A7C11D5A4AE0004AC494FFE_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="writing_course_C7EED7406A7C11D5A4AE0004AC494FFE_ ">Writing course:
+    </label>
+            <input type="checkbox" class="writing_course" id="writing_course_C7EED7406A7C11D5A4AE0004AC494FFE_ " name="writing_course_C7EED7406A7C11D5A4AE0004AC494FFE_ " checked="checked" disabled="disabled"/>
+          </div>
+          <div>
+            <label for="auditor_C7EED7406A7C11D5A4AE0004AC494FFE_ ">Auditor:
+    </label>
+            <input type="checkbox" class="auditor" id="auditor_C7EED7406A7C11D5A4AE0004AC494FFE_ " name="auditor_C7EED7406A7C11D5A4AE0004AC494FFE_ " disabled="disabled"/>
+          </div>
+          <div>
+            <label for="no_grade_now_C7EED7406A7C11D5A4AE0004AC494FFE_ ">No grade now:
+    </label>
+            <input type="checkbox" class="no_grade_now" id="no_grade_now_C7EED7406A7C11D5A4AE0004AC494FFE_ " name="no_grade_now_C7EED7406A7C11D5A4AE0004AC494FFE_ " disabled="disabled"/>
+          </div>
+          <div>
+          Grade:
+          <select class="grades" disabled="disabled"><option value="" class="grade"></option><option class="grade" value="4.0">4.0</option><option class="grade" value="3.9">3.9</option><option class="grade" value="3.8">3.8</option><option class="grade" value="3.7">3.7</option><option class="grade" value="3.6">3.6</option><option class="grade" value="3.5">3.5</option><option class="grade" value="3.4">3.4</option><option class="grade" value="3.3">3.3</option><option class="grade" value="3.2">3.2</option><option class="grade" value="3.1">3.1</option><option class="grade" value="3.0">3.0</option><option class="grade" value="2.9">2.9</option><option class="grade" value="2.8">2.8</option><option class="grade" value="2.7">2.7</option><option class="grade" value="2.6">2.6</option><option class="grade" value="2.5">2.5</option><option class="grade" value="2.4">2.4</option><option class="grade" value="2.3">2.3</option><option class="grade" value="2.2">2.2</option><option class="grade" value="2.1">2.1</option><option class="grade" value="2.0">2.0</option><option class="grade" value="1.9">1.9</option><option class="grade" value="1.8">1.8</option><option class="grade" value="1.7">1.7</option><option class="grade" value="1.6">1.6</option><option class="grade" value="1.5" selected="selected">1.5</option><option class="grade" value="1.4">1.4</option><option class="grade" value="1.3">1.3</option><option class="grade" value="1.2">1.2</option><option class="grade" value="1.1">1.1</option><option class="grade" value="1.0">1.0</option><option class="grade" value="0.9">0.9</option><option class="grade" value="0.8">0.8</option><option class="grade" value="0.7">0.7</option><option class="grade" value="0.0">0.0</option></select></div>
+          <div>
+          Grade document ID: <span class="grade_document_id">08261300000</span></div>
+          <div>
+          Date Graded: <span class="date_graded date">2013-08-26</span></div>
+          <div>
+          Grade submitter person:
+          <a class="person" rel="grade_submitter_person" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <div>
+          Grade submitter source:
+          <span class="grade_submitter_source">WEBCGB</span></div>
+        </li>
+        <li class="graderoster_item">
+          <h1>TEACHER,PHIL AVERAGE</h1>
+          <div>
+            <a class="person" rel="student" href="/student/v5/person/A9D2DDFA6A7D11D5A4AE0004AC494FFE"><span class="name">TEACHER,PHIL AVERAGE</span> - <span class="reg_id">A9D2DDFA6A7D11D5A4AE0004AC494FFE</span></a>
+          </div>
+          <div>
+          Duplicate code:
+          <span class="duplicate_code">A</span></div>
+          <div>
+          Student Former Name:
+          <span class="student_former_name">HELLO KITTY</span></div>
+          <div>
+          Student Number:
+          <span class="student_number">1311701</span></div>
+          <div>
+          Student Type:
+          <span class="student_type"></span></div>
+          <div>
+          Student Credits:
+          <span class="student_credits"> 5.0</span></div>
+          <div>
+          Date Withdrawn:
+          <span class="date_withdrawn date"></span></div>
+          <div>
+            <label for="incomplete_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A">Incomplete:
+    </label>
+            <input type="checkbox" class="incomplete" id="incomplete_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" name="incomplete_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" disabled="disabled"/>
+          </div>
+          <div>
+            <label for="writing_course_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A">Writing course:
+    </label>
+            <input type="checkbox" class="writing_course" id="writing_course_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" name="writing_course_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" disabled="disabled"/>
+          </div>
+          <div>
+            <label for="auditor_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A">Auditor:
+    </label>
+            <input type="checkbox" class="auditor" id="auditor_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" name="auditor_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" disabled="disabled"/>
+          </div>
+          <div>
+            <label for="no_grade_now_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A">No grade now:
+    </label>
+            <input type="checkbox" class="no_grade_now" id="no_grade_now_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" name="no_grade_now_A9D2DDFA6A7D11D5A4AE0004AC494FFE_A" disabled="disabled"/>
+          </div>
+          <div>
+          Grade:
+          <select class="grades"><option value="" class="grade"></option><option class="grade" value="4.0" selected="selected">4.0</option><option class="grade" value="3.9">3.9</option><option class="grade" value="3.8">3.8</option><option class="grade" value="3.7">3.7</option><option class="grade" value="3.6">3.6</option><option class="grade" value="3.5">3.5</option><option class="grade" value="3.4">3.4</option><option class="grade" value="3.3">3.3</option><option class="grade" value="3.2">3.2</option><option class="grade" value="3.1">3.1</option><option class="grade" value="3.0">3.0</option><option class="grade" value="2.9">2.9</option><option class="grade" value="2.8">2.8</option><option class="grade" value="2.7">2.7</option><option class="grade" value="2.6">2.6</option><option class="grade" value="2.5">2.5</option><option class="grade" value="2.4">2.4</option><option class="grade" value="2.3">2.3</option><option class="grade" value="2.2">2.2</option><option class="grade" value="2.1">2.1</option><option class="grade" value="2.0">2.0</option><option class="grade" value="1.9">1.9</option><option class="grade" value="1.8">1.8</option><option class="grade" value="1.7">1.7</option><option class="grade" value="1.6">1.6</option><option class="grade" value="1.5">1.5</option><option class="grade" value="1.4">1.4</option><option class="grade" value="1.3">1.3</option><option class="grade" value="1.2">1.2</option><option class="grade" value="1.1">1.1</option><option class="grade" value="1.0">1.0</option><option class="grade" value="0.9">0.9</option><option class="grade" value="0.8">0.8</option><option class="grade" value="0.7">0.7</option><option class="grade" value="0.0">0.0</option></select></div>
+          <div>
+          Grade document ID: <span class="grade_document_id">08261300000</span></div>
+          <div>
+          Date Graded: <span class="date_graded date">2013-08-26</span></div>
+          <div>
+          Grade submitter person:
+          <a class="person" rel="grade_submitter_person" href="/student/v5/person/FBB38FE46A7C11D5A4AE0004AC494FFE"><span class="name">TEACHER,BILL AVERAGE</span> - <span class="reg_id">FBB38FE46A7C11D5A4AE0004AC494FFE</span></a></div>
+          <div>
+          Grade submitter source:
+          <span class="grade_submitter_source">WEBCGB</span></div>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

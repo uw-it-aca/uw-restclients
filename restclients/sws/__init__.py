@@ -9,6 +9,7 @@ from datetime import datetime
 from restclients.thread import Thread
 from restclients.dao import SWS_DAO
 from restclients.exceptions import DataFailureException
+from django.conf import settings
 
 
 QUARTER_SEQ = ["winter", "spring", "summer", "autumn"]
@@ -35,8 +36,19 @@ def get_resource(url):
     return json.loads(response.data)
 
 
+def get_current_sws_version():
+    if getattr(settings, 'RESTCLIENTS_SWS_USE_V5', False):
+        return 5
+    return 4
+
+def use_v5_resources():
+    if get_current_sws_version() == 5:
+        return True
+    return False
+
 class SWSThread(Thread):
-    url = None
+    url = None # the course url to send a request 
+    reg_url = None 
     headers = None
     response = None
 

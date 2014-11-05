@@ -12,8 +12,8 @@ class UtilFunctionTest(TestCase):
                           '2013,winter,C%20LIT,396/A')
 
     def test_get_resource(self):
-        self.assertEquals(get_resource('/student/v4/campus.json'),
-                          "{u'PageSize': u'10', u'Campuses': [{u'CampusShortName': u'BOTHELL', u'Href': u'/student/v4/campus/BOTHELL.json', u'CampusName': u'UW Bothell', u'CampusFullName': u'UNIVERSITY OF WASHINGTON BOTHELL'}, {u'CampusShortName': u'SEATTLE', u'Href': u'/student/v4/campus/SEATTLE.json', u'CampusName': u'UW Seattle', u'CampusFullName': u'UNIVERSITY OF WASHINGTON SEATTLE'}, {u'CampusShortName': u'TACOMA', u'Href': u'/student/v4/campus/TACOMA.json', u'CampusName': u'UW Tacoma', u'CampusFullName': u'UNIVERSITY OF WASHINGTON TACOMA'}], u'Next': None, u'Current': {u'Href': u'/student/v4/campus.json&page_start=1&page_size=10'}, u'TotalCount': 3, u'PageStart': u'1', u'Previous': None}")
+        self.assertEquals(get_resource('/student/v5/campus.json'),
+                          "{u'PageSize': u'10', u'Campuses': [{u'CampusShortName': u'BOTHELL', u'Href': u'/student/v5/campus/BOTHELL.json', u'CampusName': u'UW Bothell', u'CampusFullName': u'UNIVERSITY OF WASHINGTON BOTHELL'}, {u'CampusShortName': u'SEATTLE', u'Href': u'/student/v5/campus/SEATTLE.json', u'CampusName': u'UW Seattle', u'CampusFullName': u'UNIVERSITY OF WASHINGTON SEATTLE'}, {u'CampusShortName': u'TACOMA', u'Href': u'/student/v5/campus/TACOMA.json', u'CampusName': u'UW Tacoma', u'CampusFullName': u'UNIVERSITY OF WASHINGTON TACOMA'}], u'Next': None, u'Current': {u'Href': u'/student/v5/campus.json&page_start=1&page_size=10'}, u'TotalCount': 3, u'PageStart': u'1', u'Previous': None}")
 
 class SWSTest(TestCase):
     def test_mock_data_fake_grading_window(self):
@@ -53,7 +53,7 @@ class SWSTest(TestCase):
             joint_sections = sws.get_joint_sections(section)
             self.assertEquals(len(joint_sections), 1)
 
-            section = sws.get_section_by_url('/student/v4/course/2013,summer,TRAIN,100/A.json')
+            section = sws.get_section_by_url('/student/v5/course/2013,summer,TRAIN,100/A.json')
             sws.get_linked_sections(section)
             section.linked_section_urls = ['2012,summer,TRAIN,100/A']
             self.assertRaises(InvalidSectionURL,

@@ -44,27 +44,25 @@ class Person(models.Model):
     title2 = models.CharField(max_length=255)
 
     def json_data(self):
-        data = {
-            'uwnetid': self.uwnetid,
-            'uwregid': self.uwregid,
-            'first_name': self.first_name,
-            'surname': self.surname,
-            'full_name': self.full_name,
-            'whitepages_publish': self.whitepages_publish,
-            'email1': self.email1,
-            'email2': self.email2,
-            'phone1': self.phone1,
-            'phone2': self.phone2,
-            'title1': self.title1,
-            'title2': self.title2,
-            'voicemail': self.voicemail,
-            'fax': self.fax,
-            'touchdial': self.touchdial,
-            'address1': self.address1,
-            'address2': self.address2,
-            'mailstop': self.mailstop,
-        }
-        return data
+        return {'uwnetid': self.uwnetid,
+                'uwregid': self.uwregid,
+                'first_name': self.first_name,
+                'surname': self.surname,
+                'full_name': self.full_name,
+                'whitepages_publish': self.whitepages_publish,
+                'email1': self.email1,
+                'email2': self.email2,
+                'phone1': self.phone1,
+                'phone2': self.phone2,
+                'title1': self.title1,
+                'title2': self.title2,
+                'voicemail': self.voicemail,
+                'fax': self.fax,
+                'touchdial': self.touchdial,
+                'address1': self.address1,
+                'address2': self.address2,
+                'mailstop': self.mailstop,
+                }
 
     def __eq__(self, other):
         return self.uwregid == other.uwregid
@@ -84,12 +82,10 @@ class Entity(models.Model):
     display_name = models.CharField(max_length=250)
 
     def json_data(self):
-        data = {
-            'uwnetid': self.uwnetid,
-            'uwregid': self.uwregid,
-            'display_name': self.display_name,
-        }
-        return data
+        return {'uwnetid': self.uwnetid,
+                'uwregid': self.uwregid,
+                'display_name': self.display_name,
+                }
 
     def __eq__(self, other):
         return self.uwregid == other.uwregid
@@ -101,12 +97,10 @@ class LastEnrolled(models.Model):
     year = models.PositiveSmallIntegerField()
 
     def json_data(self):
-        data = {
-            'href': self.href,
-            'quarter': self.quarter,
-            'year': self.year
-            }
-        return data
+        return {'href': self.href,
+                'quarter': self.quarter,
+                'year': self.year
+                }
 
 
 class StudentAddress(models.Model):
@@ -117,17 +111,16 @@ class StudentAddress(models.Model):
     postal_code = models.CharField(max_length=32)
     state = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=32)
+
     def json_data(self):
-        data = {
-            'city': self.city,
-            'country': self.country,
-            'street_line1': self.street_line1,
-            'street_line2': self.street_line2,
-            'postal_code': self.postal_code,
-            'state': self.state,
-            'zip_code': self.zip_code
-            }
-        return data
+        return {'city': self.city,
+                'country': self.country,
+                'street_line1': self.street_line1,
+                'street_line2': self.street_line2,
+                'postal_code': self.postal_code,
+                'state': self.state,
+                'zip_code': self.zip_code
+                }
 
 
 def get_student_address_json(address):
@@ -166,7 +159,7 @@ class SwsPerson(models.Model):
     visa_type = models.CharField(max_length=2, null=True, blank=True)
 
     def json_data(self):
-        data = {
+        return {
             'uwnetid': self.uwnetid,
             'uwregid': self.uwregid,
             'first_name': self.first_name,
@@ -180,8 +173,7 @@ class SwsPerson(models.Model):
             'permanent_address': get_student_address_json(self.permanent_address),
             'permanent_phone': self.permanent_phone,
             'visa_type': self.visa_type
-            }
-        return data
+                }
 
 
 class Term(models.Model):
@@ -213,6 +205,13 @@ class Term(models.Model):
     aterm_grading_period_open = models.DateTimeField(blank=True)
     grading_period_close = models.DateTimeField()
     grade_submission_deadline = models.DateTimeField()
+    registration_services_start = models.DateTimeField()
+    registration_period1_start = models.DateTimeField()
+    registration_period1_end = models.DateTimeField()
+    registration_period2_start = models.DateTimeField()
+    registration_period2_end = models.DateTimeField()
+    registration_period3_start = models.DateTimeField()
+    registration_period3_end = models.DateTimeField()
 
     class Meta:
         app_label = "restclients"
@@ -249,12 +248,12 @@ class Term(models.Model):
         return "%s-%s" % (self.year, self.quarter.lower())
 
     def json_data(self):
-        data = {
+        return {
             'quarter': self.get_quarter_display(),
             'year': self.year,
             'last_final_exam_date': self.last_final_exam_date.strftime("%Y-%m-%d 23:59:59"),
+            'grade_submission_deadline': self.grade_submission_deadline.strftime("%Y-%m-%d 23:59:59")
         }
-        return data
 
 
 class FinalExam(models.Model):
@@ -341,6 +340,9 @@ class Section(models.Model):
     primary_section_id = models.CharField(max_length=2, null=True, blank=True)
     is_primary_section = models.BooleanField()
     allows_secondary_grading = models.BooleanField()
+    student_credits = models.DecimalField(max_digits=3, decimal_places=1)
+    student_grade = models.CharField(max_length=6, null=True, blank=True)
+    grade_date = models.DateField(null=True, blank=True, default=None)
 
     class Meta:
         app_label = "restclients"
@@ -422,6 +424,15 @@ class Section(models.Model):
 
         return sis_id
 
+    def get_grade_date_str(self):
+        """
+        return next due date in the ISO format (yyyy-mm-dd).
+        If the next_due is None, return None.
+        """
+        if self.grade_date is not None:
+            return str(self.grade_date)
+        return None
+
     def json_data(self):
         data = {
             'curriculum_abbr': self.curriculum_abbr,
@@ -437,6 +448,9 @@ class Section(models.Model):
             'current_enrollment' : self.current_enrollment,
             'auditors' : self.auditors,
             'meetings': [],
+            'credits': str(self.student_credits),
+            'grade': self.student_grade,
+            'grade_date': self.get_grade_date_str()
         }
 
         if self.final_exam is not None:
@@ -793,13 +807,41 @@ class Enrollment(models.Model):
     regid = models.CharField(max_length=32,
                                db_index=True,
                                unique=True)
-
+    # majors
+    # minors
     class Meta:
         app_label = "restclients"
+
 
 class Major(models.Model):
     degree_name = models.CharField(max_length=100)
     degree_abbr = models.CharField(max_length=100)
     full_name = models.CharField(max_length=100)
     major_name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=50)
     campus = models.CharField(max_length=8)
+
+    def json_data(self):
+        return {'degree_abbr': self.degree_abbr,
+                'degree_name': self.degree_name,
+                'campus': self.campus,
+                'name': self.major_name,
+                'full_name': self.full_name,
+                'short_name': self.short_name
+                }
+
+
+class Minor(models.Model):
+    abbr = models.CharField(max_length=50)
+    campus = models.CharField(max_length=8)
+    name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=50)
+
+    def json_data(self):
+        return {'abbr': self.abbr,
+                'campus': self.campus,
+                'name': self.name,
+                'full_name': self.full_name,
+                'short_name': self.short_name
+                }

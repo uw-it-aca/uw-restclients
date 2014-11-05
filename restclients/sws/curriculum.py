@@ -1,52 +1,18 @@
-"""
-Interfacing with the Student Web Service, Curriculum Search Resource.
-"""
-import logging
-from urllib import urlencode
-from restclients.models.sws import Curriculum
-from restclients.sws import get_resource
+from restclients.sws.v4.curriculum import get_curricula_by_department as v4_get_curricula_by_department
+from restclients.sws.v4.curriculum import get_curricula_by_term as v4_get_curricula_by_term
+from restclients.sws.v5.curriculum import get_curricula_by_department as v5_get_curricula_by_department
+from restclients.sws.v5.curriculum import get_curricula_by_term as v5_get_curricula_by_term
+from restclients.sws import use_v5_resources
 
+def get_curricula_by_department(*args, **kwargs):
+    if use_v5_resources():
+        return v5_get_curricula_by_department(*args, **kwargs)
+    else:
+        return v4_get_curricula_by_department(*args, **kwargs)
 
-logger = logging.getLogger(__name__)
-curriculum_search_url_prefix = "/student/v4/curriculum.json"
-
-
-def get_curricula_by_department(department, future_terms=0):
-    """
-    Returns a list of restclients.Curriculum models, for the passed
-    Department model.
-    """
-    if future_terms < 0 or future_terms > 2:
-        raise ValueError(future_terms)
-
-    url = "%s?%s" % (
-        curriculum_search_url_prefix,
-        urlencode({"department_abbreviation": department.label,
-                   "future_terms": future_terms}))
-    return _json_to_curricula(get_resource(url))
-
-
-def get_curricula_by_term(term):
-    """
-    Returns a list of restclients.Curriculum models, for the passed
-    Term model.
-    """
-    url = "%s?%s" % (
-        curriculum_search_url_prefix,
-        urlencode({"year": term.year,
-                   "quarter": term.quarter.lower()}))
-    return _json_to_curricula(get_resource(url))
-
-
-def _json_to_curricula(data):
-    curricula = []
-    for curr_data in data.get("Curricula", []):
-        curriculum = Curriculum()
-        curriculum.label = curr_data["CurriculumAbbreviation"]
-        curriculum.name = curr_data["CurriculumName"]
-        curriculum.full_name = curr_data["CurriculumFullName"]
-        curriculum.clean_fields()
-        curricula.append(curriculum)
-
-    return curricula
+def get_curricula_by_term(*args, **kwargs):
+    if use_v5_resources():
+        return v5_get_curricula_by_term(*args, **kwargs)
+    else:
+        return v4_get_curricula_by_term(*args, **kwargs)
 

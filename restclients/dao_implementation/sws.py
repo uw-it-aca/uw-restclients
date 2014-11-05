@@ -4,6 +4,7 @@ Contains SWS DAO implementations.
 
 import json
 import time
+import re
 from datetime import date, datetime, timedelta
 from lxml import etree
 from django.conf import settings
@@ -70,7 +71,7 @@ class File(object):
             self._make_notice_date(response)
 
         # This is to enable mock data grading.
-        if "/student/v4/term/current.json" == url or "/student/v4/term/2013,spring.json" == url:
+        if re.match("/student/v\d/term/current.json", url) or re.match("/student/v\d/term/2013,spring.json", url):
             now = datetime.now()
             tomorrow = now + timedelta(days=1)
             yesterday = now - timedelta(days=1)
@@ -84,7 +85,7 @@ class File(object):
             response.data = json.dumps(json_data)
 
         # This would come from putURL below - grading workflow
-        if url.startswith('/student/v4/graderoster/2013,spring'):
+        if re.match('/student/v\d/graderoster/2013,spring', url):
             if File.grade_roster_document:
                 response.data = self._make_grade_roster_submitted(File.grade_roster_document)
                 File.grade_roster_document = None
@@ -93,14 +94,14 @@ class File(object):
 
     def putURL(self, url, headers, body):
         # For developing against crashes in grade submission
-        if url.startswith('/student/v4/graderoster/2013,spring,ZERROR,101,S1,'):
+        if re.match('/student/v\d/graderoster/2013,spring,ZERROR,101,S1,', url):
             response = MockHTTP()
             response.data = "No employee found for ID 1234567890"
             response.status = 500
             return response
 
         # Submitted too late, sad.
-        if url.startswith('/student/v4/graderoster/2013,spring,ZERROR,101,S2,'):
+        if re.match('/student/v\d/graderoster/2013,spring,ZERROR,101,S2,', url):
             response = MockHTTP()
             response.data = "grading period not active for year/quarter"
             response.status = 404
@@ -108,7 +109,7 @@ class File(object):
 
         # To support the grading workflow - there's a GET after the PUT
         # stash the PUT graderoster away, with submitted dates/grader values
-        if url.startswith('/student/v4/graderoster/2013,spring'):
+        if re.match('/student/v\d/graderoster/2013,spring', url):
             time.sleep(5)
             File.grade_roster_document = body
 

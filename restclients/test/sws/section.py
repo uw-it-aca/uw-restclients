@@ -5,6 +5,7 @@ from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.exceptions import InvalidCanvasIndependentStudyCourse, InvalidCanvasSection
 import restclients.sws.section as SectionSws
+from restclients.sws import use_v5_resources
 
 class SWSTestSectionData(TestCase):
     def test_final_exams(self):
@@ -207,33 +208,58 @@ class SWSTestSectionData(TestCase):
             self.assertRaises(InvalidSectionURL,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2012,summer,PHYS,121/B.json']
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2012,summer,PHYS,121/B.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2012,summer,PHYS,121/B.json']
             self.assertRaises(DataFailureException,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2010,autumn,CS&SS,221/A.json']
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2010,autumn,CS&SS,221/A.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2010,autumn,CS&SS,221/A.json']
             self.assertRaises(DataFailureException,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2010,autumn,KOREAN,101/A.json']
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2010,autumn,KOREAN,101/A.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2010,autumn,KOREAN,101/A.json']
             self.assertRaises(DataFailureException,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2010,autumn,G H,201/A.json']
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2010,autumn,G H,201/A.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2010,autumn,G H,201/A.json']
             self.assertRaises(DataFailureException,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2010,autumn,CM,101/A.json']
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2010,autumn,CM,101/A.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2010,autumn,CM,101/A.json']
             self.assertRaises(DataFailureException,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2012,autumn,PHYS,121/A.json',
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2012,autumn,PHYS,121/A.json',
+                                           '/student/v5/course/2012,autumn,PHYS,121/AC.json',
+                                           '/student/v5/course/2012,autumn,PHYS,121/BT.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2012,autumn,PHYS,121/A.json',
                                            '/student/v4/course/2012,autumn,PHYS,121/AC.json',
                                            '/student/v4/course/2012,autumn,PHYS,121/BT.json']
             self.assertRaises(DataFailureException,
                               SectionSws.get_linked_sections, section)
 
-            section.linked_section_urls = ['/student/v4/course/2012,autumn,PHYS,121/A.json',
+            if use_v5_resources():
+                section.linked_section_urls = ['/student/v5/course/2012,autumn,PHYS,121/A.json',
+                                           '/student/v5/course/2012,autumn,PHYS,121/AC.json',
+                                           '/student/v5/course/2012,autumn,PHYS,121/AAA.json']
+            else:
+                section.linked_section_urls = ['/student/v4/course/2012,autumn,PHYS,121/A.json',
                                            '/student/v4/course/2012,autumn,PHYS,121/AC.json',
                                            '/student/v4/course/2012,autumn,PHYS,121/AAA.json']
             self.assertRaises(DataFailureException,

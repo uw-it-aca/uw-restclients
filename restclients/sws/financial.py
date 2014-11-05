@@ -1,6 +1,3 @@
-"""
-Interfacing with the Student Web Service, Personal Financial resource
-"""
 import logging
 from restclients.models.sws import Finance
 from restclients.sws import get_resource
@@ -25,4 +22,3 @@ def _process_json_data(jdata):
     if "PCEAccountBalance" in jdata:
         fina.pce_accbalance = jdata["PCEAccountBalance"].replace("$", "")
     return fina
-
