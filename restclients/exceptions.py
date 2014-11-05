@@ -55,6 +55,10 @@ class InvalidCanvasSection(Exception):
     """Exception for invalid Canvas section."""
     pass
 
+class InvalidGradebookID:
+    """Exception for invalid gradebook id."""
+    pass
+
 class DataFailureException(Exception):
     """
     This exception means there was an error fetching content
