@@ -37,9 +37,9 @@ def get_resource(url):
 
 
 def get_current_sws_version():
-    if getattr(settings, 'RESTCLIENTS_SWS_USE_V5', False):
-        return 5
-    return 4
+    if getattr(settings, 'RESTCLIENTS_SWS_USE_V4', False):
+        return 4
+    return 5
 
 def use_v5_resources():
     if get_current_sws_version() == 5:

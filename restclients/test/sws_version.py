@@ -8,7 +8,7 @@ class SWSVersionTest(TestCase):
     """
     def test_defaults(self):
         with self.settings(RESTCLIENTS_SWS_USE_V5 = None):
-            self.assertEquals(get_current_sws_version(), 4)
+            self.assertEquals(get_current_sws_version(), 5)
 
     def test_override(self):
         with self.settings(RESTCLIENTS_SWS_USE_V5 = True):
@@ -16,4 +16,8 @@ class SWSVersionTest(TestCase):
 
     def test_false_override(self):
         with self.settings(RESTCLIENTS_SWS_USE_V5 = False):
+            self.assertEquals(get_current_sws_version(), 5)
+
+    def test_new_override(self):
+        with self.settings(RESTCLIENTS_SWS_USE_V4 = True):
             self.assertEquals(get_current_sws_version(), 4)
