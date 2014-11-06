@@ -35,9 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'nagios_registration',
-    'oauth_provider',
-    'templatetag_handlebars',
+    'restclients',
 )
 
 MIDDLEWARE_CLASSES = (
