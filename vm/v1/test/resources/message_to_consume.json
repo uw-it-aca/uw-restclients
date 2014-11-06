@@ -1,0 +1,10 @@
+{
+	"Message": {
+		"MessageID": "aa53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+		"MessageType": "uw_student_courseavailable1",
+		"Direction": "outbound",
+        "Subject": "FLUENCY IN INFORMATION TECHNOLOGY",
+        "Body": "Section is OPEN for: FLUENCY IN INFORMATION TECHNOLOGY",
+        "Short": "Section is OPEN for: 2012,autumn,cse,100,w"	
+    }
+}

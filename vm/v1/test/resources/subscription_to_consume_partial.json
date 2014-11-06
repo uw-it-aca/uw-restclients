@@ -1,0 +1,12 @@
+{
+	"Subscription": {
+		"SubscriptionID": "6c9cd13c-10df-4f34-9023-d5e7316005c9",
+		"SubscriptionURI": "/notification/v1/subscription/6c9cd13c-10df-4f34-9023-d5e7316005c9",
+		"Channel": {
+			"ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f"
+		},
+		"Endpoint": {
+			"EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670"
+		}
+	}
+}

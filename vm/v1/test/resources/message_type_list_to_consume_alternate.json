@@ -1,0 +1,16 @@
+{
+    "MessageTypes": [
+	    {
+	        "MessageTypeID": "d097a66a-23bb-4b2b-bb44-01fe1d11aab0",
+	        "SurrogateID": "uw_direct_notification",
+	        "ContentType": "application/json",
+	        "DestinationID": "{{ Content.Recipient }}",
+	        "DestinationType": "netid",
+	        "From": "{{ System.DispatcherName }}",
+	        "To": "{{ Endpoint.EndpointAddress }}", 
+	        "Subject": "{{ Content.Subject }}",
+	        "Body": "{{ Content.Body }}",
+	        "Short": "{{ Content.SMSText }}"
+	    }
+    ]
+}

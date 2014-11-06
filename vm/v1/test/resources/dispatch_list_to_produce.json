@@ -1,0 +1,25 @@
+{
+    "Dispatches": [
+        {
+	        "DispatchID": "8b77b7b8-604e-4854-9c8d-872214fe8ae7",
+	        "DispatchURI": "/notification/v1/dispatch/8b77b7b8-604e-4854-9c8d-872214fe8ae7",
+	        "Message": {
+	            "MessageID": "aa53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+	            "MessageURI": "/notification/v1/message/aa53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+	            "MessageType": "uw_student_courseavailable1",
+	            "Direction": "outbound",
+	            "Subject": "FLUENCY IN INFORMATION TECHNOLOGY",
+	            "Body": "Section is OPEN for: FLUENCY IN INFORMATION TECHNOLOGY",
+	            "Short": "Section is OPEN for: 2012,autumn,cse,100,w"
+	        },
+	       	"Content": "{\"Event\": {\"EventID\": \"ASD234232DS1\", \"LastModified\": \"2012-10-28T00:08:01.988Z\", \"Section\": {\"Course\": {\"Quarter\": \"autumn\", \"CurriculumAbbreviation\": \"CSE\", \"CourseNumber\": \"100\", \"Year\": \"2012\"}, \"SLN\": \"12345\", \"Href\": \"/student/v4/course/2012,autumn,CSE,100/W.json\", \"SectionID\": \"W\"}, \"Href\": null, \"SpaceAvailable\": 1}}",
+	        "Directive": "queue",
+	        "NumberOfRecipients": 1
+        }
+    ],
+    "QueryParams": {
+        "first_result": 1,
+        "max_results": 10
+    },
+    "TotalCount": 1
+}

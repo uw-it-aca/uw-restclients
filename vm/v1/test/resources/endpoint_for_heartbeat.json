@@ -1,0 +1,9 @@
+{
+    "Endpoint": {
+        "EndpointID": "00000000-0000-0000-0000-000000000000",
+        "EndpointAddress": "+10000000000",
+        "Protocol": "sms",
+        "SubscriberID": "notifyuw@washington.edu",
+        "OwnerID": "notifyuw@washington.edu"
+    }
+}

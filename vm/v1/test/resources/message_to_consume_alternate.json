@@ -1,0 +1,10 @@
+{
+    "Message": {
+        "MessageID": "aa53f5b8-f7f9-4eae-9d8b-b92717d4b678",
+        "MessageType": "uw_direct_notification",
+        "Direction": "outbound",
+        "Subject": "This is a message for James Average",
+        "Body": "We need you to contact the Registrar immediately. There seems to be a problem with your records.",
+        "SMSText": "Check your email!"
+    }
+}

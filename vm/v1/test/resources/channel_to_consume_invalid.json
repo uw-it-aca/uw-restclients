@@ -1,0 +1,14 @@
+{
+	"Channel": {
+		"ChannelID": "b779df7b-d6f6-4afb-8165-8dbe6232119f",
+		"ChannelURI": "/notification/v1/channel/b779df7b-d6f6-4afb-8165-8dbe6232119f",
+		"SurrogateID": "2012,autumn,cse,100,w",
+		sdf"Name": "FLUENCY IN INFORMATION TECHNOLOGY",
+		"Tags": {
+			"sln": "12345",
+			"quarter": "autumn",
+			"year": "2012"
+		},
+		"Description": "Introduces skills, concepts, and capabilities necessary to effectively use information technology. Includes logical reasoning, managing complexity, operation of computers and networks, and contemporary applications such as effective web searching and database manipulation, ethical aspects, and social impacts of information technology. Offered: jointly with INFO 100.\n"
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"Template": {
+		"TemplateID": "d097a66a-23bb-4b2b-bb44-01fe1d11aab0",
+		"TemplateURI": "/notification/v1/template/d097a66a-23bb-4b2b-bb44-01fe1d11aab0",
+		"SurrogateID": "CourseAvailableNotificationTemplate",
+		"Subject": "Another subject",
+		"Short": "Different short",
+		"Full": "Section is {{ event.status }} for your section. Year: {{ event.year }} Quarter: {{ event.quarter }} Course Title: {{ channel.name }} Curriculum: {{ event.curriculum }} Course Number: {{ event.course_number }} Section ID: {{ event.section_id }} Course Description: {{ channel.description }}",
+		"Created": "2012-11-13 21:49:07.162630+00:00",
+		"LastModified": "2012-11-13 21:49:07.162630+00:00",
+		"ModifiedBy": null
+	}
+}

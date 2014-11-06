@@ -1,0 +1,26 @@
+{
+	"Dispatch": {
+		"DispatchID": "8b77b7b8-604e-4854-9c8d-872214fe8ae7",
+		"MessageType": "uw_student_courseavailable1",
+		"Content": {s
+			"Event": {
+				"EventID":"ASD234232DS1",
+				"Href":null,
+				"LastModified":"2012-10-28T00:08:01.988Z",
+				"Section": {
+					"Course": {
+						"CourseNumber":"100",
+                        "CurriculumAbbreviation":"CSE",
+                        "Quarter":"autumn",
+                        "Year":"2012"
+                    },
+                    "Href":"/student/v4/course/2012,autumn,CSE,100/W.json",
+                    "SLN":"12345",
+                    "SectionID":"W"
+                },
+                "SpaceAvailable":1
+            }
+        },
+        "Directive": "queue"
+    }
+}

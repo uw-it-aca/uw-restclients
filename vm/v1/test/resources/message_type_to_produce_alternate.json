@@ -1,0 +1,17 @@
+{
+    "MessageType": {
+        "MessageTypeID": "d097a66a-23bb-4b2b-bb44-01fe1d11aab0",
+        "MessageTypeURI": "/notification/v1/message-type/d097a66a-23bb-4b2b-bb44-01fe1d11aab0",
+        "SurrogateID": "uw_direct_notification",
+        "ContentType": "application/json",
+        "DestinationID": "{{ Content.Recipient }}",
+        "DestinationType": "netid",
+        "From": "{{ System.DispatcherName }}",
+        "To": "{{ Endpoint.EndpointAddress }}",
+        "Subject": "{{ Content.Subject }}",
+        "Body": "{{ Content.Body }}",
+        "Short": "{{ Content.SMSText }}",
+        "Created": "Wed, 21 Nov 2012 05:10:00 GMT",
+        "LastModified": "Wed, 21 Nov 2012 05:10:00 GMT"
+    }
+}

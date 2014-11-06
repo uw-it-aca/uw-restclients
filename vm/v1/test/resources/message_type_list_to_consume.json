@@ -1,0 +1,16 @@
+{
+    "MessageTypes": [
+	    {
+	        "MessageTypeID": "d097a66a-23bb-4b2b-bb44-01fe1d11aab0",
+	        "SurrogateID": "uw_student_courseavailable1",
+	        "ContentType": "application/json",
+	        "DestinationID": "uw_student_courseavailable1|{{ Content.Event.Section.Course.Year }},{{ Content.Event.Section.Course.Quarter }},{{ Content.Event.Section.Course.CurriculumAbbreviation }},{{ Content.Event.Section.Course.CourseNumber }},{{ Content.Event.Section.SectionID }}",
+	        "DestinationType": "channel",
+	        "From": "{{ System.DispatcherName }}",
+	        "To": "{{ Endpoint.EndpointAddress }}",
+	        "Subject": "{{ Channel.Name }}",
+	        "Body": "Section is OPEN for: {{ Channel.Name }}",
+        	"Short": "Section is OPEN for: {{ Channel.SurrogateID }}"
+        }
+	]
+}

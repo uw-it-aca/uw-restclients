@@ -1,0 +1,13 @@
+{
+	"MessageType": {
+		"SurrogateID": "uw_student_courseavailable1",
+		"ContentType": "application/json",
+		"DestinationID": "uw_student_courseavailable1|{{ Content.Event.Section.Course.Year }},{{ Content.Event.Section.Course.Quarter }},{{ Content.Event.Section.Course.CurriculumAbbreviation }},{{ Content.Event.Section.Course.CourseNumber }},{{ Content.Event.Section.SectionID }}",
+		"DestinationType": "channel",
+		"From": "{{ System.Dispatcher }}",
+		"To": "{{ Endpoint.EndpointAddress }}",
+		"Subject": "{{ System.Dispatcher }}: {{ Content.Event.Section.Course.CurriculumAbbreviation }} {{ Content.Event.Section.Course.CourseNumber }} {{ Content.Event.Section.SectionID }} has{{ Content.Event.NotificationMsg0 }} seats available",
+		"Body": "{{ Content.Event.Section.Course.CurriculumAbbreviation }} {{ Content.Event.Section.Course.CourseNumber }} {{ Content.Event.Section.SectionID }} (SLN: {{ Content.Event.Section.SLN }}) <b>has{{ Content.Event.NotificationMsg0 }}</b> seats available. \\r\\nGo to <a href=\"https://tinyurl.com/uwreg\">UW Registration</a>.\\r\\n\\r\\nDo NOT reply to this email. \\r\\nTo edit your course availability notification subscriptions, visit <a href=\"http://notify.uw.edu\">Notify.UW</a>. \\r\\nFor support, please email <a href=\"mailto:help@uw.edu\">help@uw.edu</a>.",
+		"Short": "{{ Content.Event.Section.Course.CurriculumAbbreviation }} {{ Content.Event.Section.Course.CourseNumber }} {{ Content.Event.Section.SectionID }} (SLN: {{ Content.Event.Section.SLN }}) has{{ Content.Event.NotificationMsg0 }} seats available.  To unsubscribe, reply with the text \"HALT SLN {{ Content.Event.Section.SLN }}\".\\r\\n\\r\\nGo to UW Registration: https://tinyurl.com/uwreg"
+	}
+}

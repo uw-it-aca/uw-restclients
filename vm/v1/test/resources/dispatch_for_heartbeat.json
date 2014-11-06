@@ -1,0 +1,7 @@
+{
+	"Dispatch": {
+		"MessageType": "heartbeat",
+		"Content": { "Event": { "EventID": "heartbeat" } },
+		"Directive": "asynchronous"
+    }
+}

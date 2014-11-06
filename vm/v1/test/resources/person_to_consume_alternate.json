@@ -1,0 +1,10 @@
+{	
+	"Person": {
+		"PersonID": "9136CCB8F66711D5BE060004AC494FFE",
+		"PersonURI": "/notification/v1/person/9136CCB8F66711D5BE060004AC494FFE",
+		"SurrogateID": "jnotaverage@washington.edu",
+		"Attributes": {
+			"AcceptedTermsOfUse": false
+		}
+	}
+}

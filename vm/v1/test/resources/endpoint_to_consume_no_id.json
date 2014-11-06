@@ -1,0 +1,9 @@
+{
+	"Endpoint": {
+		"EndpointAddress": "+12223334444",
+		"Carrier": "AT&T",
+		"Protocol": "sms",
+		"SubscriberID": "javerage@washington.edu",
+		"OwnerID": "javerage@washington.edu"
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"Person": {
+		"PersonID": "9136CCB8F66711D5BE060004AC494FFE",
+		"PersonURI": "/notification/v1/person/9136CCB8F66711D5BE060004AC494FFE",
+		"SurrogateID": "javerage@washington.edu",
+		"Attributes": {
+			"AcceptedTermsOfUse": false,
+			"DispatchedEmailCount": 0,
+			"DispatchedTextMessageCount": 0,
+			"SentTextMessageCount": 0,
+			"SubscriptionCount": 0
+		},
+		"DefaultEndpoint": null,
+		"Endpoints": [],
+		"Created": "2012-11-13T21:49:07.162630+00:00",
+		"LastModified": "2012-11-13T21:49:07.162630+00:00",
+		"ModifiedBy": null
+	}
+}

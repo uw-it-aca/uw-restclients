@@ -1,0 +1,13 @@
+{
+    "MessageType": {
+        "SurrogateID": "heartbeat",
+        "ContentType": "application/json",
+        "DestinationID": "heartbeat|heartbeat",
+        "DestinationType": "channel",
+        "From": "{{ System.DispatcherName }}",
+        "To": "{{ Endpoint.EndpointAddress }}", 
+        "Subject": "{{ Channel.Name }}",
+        "Body": "Still here",
+        "Short": "Still here"
+    }
+}

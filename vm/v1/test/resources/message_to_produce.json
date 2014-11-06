@@ -1,0 +1,38 @@
+{
+    "Message": {
+        "MessageID": "aa53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+        "MessageURI": "/notification/v1/message/aa53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+        "MessageType": "uw_student_courseavailable1",
+        "Direction": "outbound",
+        "Subject": "FLUENCY IN INFORMATION TECHNOLOGY",
+        "Body": "Section is OPEN for: FLUENCY IN INFORMATION TECHNOLOGY",
+        "Short": "Section is OPEN for: 2012,autumn,cse,100,w",
+        "Receipts": [
+            {
+                "ReceiptID": "be13a0c1-9a75-41f9-9ccf-f026e2b84c4d",
+                "SurrogateID": null,
+                "Status": "pending",
+                "DispatchedOn": null,
+                "DispatchedBy": null,
+                "DispatchStatus": null,
+                "NumberOfRetries": 0,
+                "Endpoint": {
+                    "EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+                    "EndpointAddress": "+12223334444",
+                    "Carrier": "AT&T",
+                    "Protocol": "sms",
+                    "SubscriberID": "javerage@washington.edu",
+                    "OwnerID": "javerage@washington.edu",
+                    "Status": "verified",
+                    "Active": true
+                },
+                "Created": "2012-11-13T21:49:07.162630+00:00",
+                "LastModified": "2012-11-13T21:49:07.162630+00:00",
+                "ModifiedBy": null
+            }
+        ],
+        "Created": "2012-11-13T21:49:07.162630+00:00",
+        "LastModified": "2012-11-13T21:49:07.162630+00:00",
+        "ModifiedBy": null
+    }
+}

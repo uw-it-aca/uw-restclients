@@ -1,0 +1,11 @@
+{
+	"Channel": {
+		"ChannelID": "00000000-0000-0000-0000-000000000000",
+		"SurrogateID": "heartbeat",
+		"Type": "heartbeat",
+		"Name": "HEARTBEAT",
+		"Tags": {},
+		"Description": "Channel to consume heartbeat messages\n",
+		"Expires": null
+	}
+}

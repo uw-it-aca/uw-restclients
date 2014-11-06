@@ -1,0 +1,16 @@
+{
+	"Endpoint": {
+		"EndpointID": "ff53f5b8-f7f9-4eae-9d8b-b92717d4b670",
+		"EndpointURI": "/notification/v1/endpoint/b779df7b-d6f6-4afb-8165-8dbe6232119f",
+		"EndpointAddress": "+12223334444",
+		"Carrier": "AT&T",
+		"Protocol": "sms",
+		"SubscriberID": "javerage@washington.edu",
+		"OwnerID": "javerage@washington.edu",
+		"Status": "confirmed",
+		"Active": true,
+		"Created": "2012-11-13 21:49:07.162630+00:00",
+		"LastModified": "2012-11-13 21:49:07.162630+00:00",
+		"ModifiedBy": null
+	}
+}
