@@ -9,7 +9,6 @@ before_script:
   - pip install pep8
   - cp travis-ci/manage.py manage.py
   - python manage.py syncdb --noinput
-  - python manage.py migrate
 script:
   - pep8 --exclude=migrations restclients/
   - coverage run --source=restclients manage.py test restclients
