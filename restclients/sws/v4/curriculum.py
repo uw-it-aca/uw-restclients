@@ -49,4 +49,3 @@ def _json_to_curricula(data):
         curricula.append(curriculum)
 
     return curricula
-

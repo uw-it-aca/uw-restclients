@@ -18,4 +18,3 @@ class SWSIndependentStudy(TestCase):
 
             self.assertEquals(len(instructors), 1, "Only has the 1 instructor for independent study?")
             self.assertEquals(instructors[0].uwregid, 'FBB38FE46A7C11D5A4AE0004AC494FFE', "Only has the 1 instructor for independent study?")
-

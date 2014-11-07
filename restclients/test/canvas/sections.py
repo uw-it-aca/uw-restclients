@@ -32,4 +32,3 @@ class CanvasTestSections(TestCase):
                 n += len(section.students)
 
             self.assertEquals(n, 32, "Too few students")
-

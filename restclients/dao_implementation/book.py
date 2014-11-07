@@ -29,4 +29,3 @@ class Live(object):
         return get_live_url (Live.pool, 'GET',
                              host, url, headers=headers,
                              service_name='book')
-

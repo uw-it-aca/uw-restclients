@@ -23,5 +23,3 @@ class CanvasBadSISIDs(TestCase):
             sws_id = course.sws_course_id()
 
             self.assertEquals(sws_id, None, "Invalid SIS ID leads to an sws_id of None")
-
-

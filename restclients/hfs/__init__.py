@@ -21,7 +21,7 @@ def get_resource(url):
     log_info(logger,
              "%s ==status==> %s" % (url, response.status),
              timer)
-    
+
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
 

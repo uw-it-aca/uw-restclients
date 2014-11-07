@@ -56,4 +56,3 @@ def _account_from_json(body):
         account.next_due = datetime.strptime(account_data["next_due"],
                                              "%Y-%m-%d").date()
     return account
-

@@ -13,5 +13,3 @@ class Conversations(Canvas):
     def get_data_for_conversation_id_as_sis_login_id(self, conversation_id, sis_login_id):
         url = "/api/v1/conversations/%s?as_user_id=sis_login_id:%s" % (conversation_id, sis_login_id)
         return self._get_resource(url)
-
-

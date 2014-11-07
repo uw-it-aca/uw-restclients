@@ -7,7 +7,7 @@ class GroupReference(models.Model):
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=2000)
     url = models.CharField(max_length=200)
-    
+
     def __str__(self):
         return "{uwregid: %s, name: %s, title: %s, description: %s}" % (
             self.uwregid, self.name, self.title, self.description)

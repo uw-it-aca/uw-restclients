@@ -162,4 +162,3 @@ class TrumbaTestCalendars(TestCase):
         Omit for now . To be implemented using httmock
         """
         pass
-

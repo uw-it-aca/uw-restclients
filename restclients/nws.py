@@ -100,7 +100,7 @@ class NWS(object):
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
-            
+
             raise DataFailureException(url, response.status, response.data)
 
         endpoint_list = EndpointList()
@@ -486,12 +486,12 @@ class NWS(object):
             raise DataFailureException(url, delete_response.status, delete_response.data)
 
         return delete_response
-    
+
     def execute_job(self, job):
         url = "/notification/v1/job"
-        
+
         data = Serializer().serialize(job)
-        
+
         dao = NWS_DAO()
         post_response = dao.postURL(url, {"Content-Type": "application/json"}, data)
 

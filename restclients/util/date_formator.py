@@ -151,4 +151,3 @@ def get_total_seconds(time_delta):
     Returns the total number of seconds in a passed timedelta
     """
     return (time_delta.microseconds + (time_delta.seconds + time_delta.days * 24 * 3600) * 10**6) / 10**6
-

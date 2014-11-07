@@ -16,4 +16,3 @@ class SWSMissingRegid(TestCase):
             self.assertEquals(len(schedule.sections), 1, "Has 1 section")
 
             instructors = schedule.sections[0].meetings[0].instructors
-

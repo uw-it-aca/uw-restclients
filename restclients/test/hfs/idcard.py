@@ -81,4 +81,3 @@ class HfsTest(TestCase):
                 get_hfs_accounts("invalidnetid")
             except DataFailureException as ex:
                 self.assertEquals(ex.msg, "Input for this method must be either a valid UWNetID or two nine-digit Student and Faculty/Staff/Employee ID numbers, comma-separated.")
-

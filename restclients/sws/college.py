@@ -7,4 +7,3 @@ def get_all_colleges(*args, **kwargs):
         return v5_get_all_colleges(*args, **kwargs)
     else:
         return v4_get_all_colleges(*args, **kwargs)
-

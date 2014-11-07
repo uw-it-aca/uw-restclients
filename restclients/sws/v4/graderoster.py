@@ -107,7 +107,7 @@ def graderoster_from_xhtml(data, section, instructor):
         for el in item.xpath(".//xhtml:a[@rel='student']/*[@class='reg_id']",
                              namespaces=nsmap):
             gr_item.student_uwregid = el.text.strip()
-        
+
         for el in item.xpath(".//xhtml:a[@rel='student']/*[@class='name']",
                              namespaces=nsmap):
             full_name = el.text.strip()

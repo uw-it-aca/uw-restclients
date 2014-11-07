@@ -260,4 +260,3 @@ class TrumbaTac_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_TRUMBA_TAC_DAO_CLASS',
                                FileTac)
-

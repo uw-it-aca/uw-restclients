@@ -390,4 +390,3 @@ class SWSTestSectionData(TestCase):
             self.assertEquals(section.canvas_section_sis_id(),
                 '2013-summer-PHIL-600-A-A9D2DDFA6A7D11D5A4AE0004AC494FFE--',
                 'Canvas section SIS ID')
-

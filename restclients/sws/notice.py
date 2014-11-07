@@ -7,4 +7,3 @@ def get_notices_by_regid(*args, **kwargs):
         return v5_get_notices_by_regid(*args, **kwargs)
     else:
         return v4_get_notices_by_regid(*args, **kwargs)
-

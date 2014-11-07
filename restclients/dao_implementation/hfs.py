@@ -46,4 +46,3 @@ class Live(object):
                             url,
                             headers=headers,
                             service_name='hfs')
-

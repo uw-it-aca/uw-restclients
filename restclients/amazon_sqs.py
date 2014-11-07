@@ -20,7 +20,7 @@ class AmazonSQS(object):
     def get_queue(self, queue_name):
         dao = AmazonSQS_DAO()
         return dao.get_queue(queue_name)
-    
+
     def read_queue(self):
         """
         This is responsible for reading events off the queue, and sending

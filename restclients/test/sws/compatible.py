@@ -31,7 +31,7 @@ class SWSTest(TestCase):
             term = sws.get_current_term()
             self.assertEquals(term.year, 2013)
             self.assertEquals(term.quarter, 'spring')
-                
+
             prev_term = sws.get_previous_term()
             self.assertEquals(prev_term.year, 2013)
             self.assertEquals(prev_term.quarter, 'winter')

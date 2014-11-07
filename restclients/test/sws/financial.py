@@ -16,6 +16,3 @@ class SWSFinance(TestCase):
             data = get_account_balances_by_regid("FE36CCB8F66711D5BE060004AC494F31")
             self.assertEquals(data.tuition_accbalance, "12345.00")
             self.assertEquals(data.pce_accbalance, "345.00")
-
-
-

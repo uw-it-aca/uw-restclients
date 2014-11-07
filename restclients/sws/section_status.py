@@ -7,4 +7,3 @@ def get_section_status_by_label(*args, **kwargs):
         return v5_get_section_status_by_label(*args, **kwargs)
     else:
         return v4_get_section_status_by_label(*args, **kwargs)
-

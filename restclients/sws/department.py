@@ -7,4 +7,3 @@ def get_departments_by_college(*args, **kwargs):
         return v5_get_departments_by_college(*args, **kwargs)
     else:
         return v4_get_departments_by_college(*args, **kwargs)
-

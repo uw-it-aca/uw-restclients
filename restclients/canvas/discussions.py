@@ -39,5 +39,3 @@ class Discussions(Canvas):
                 entries.append(entry)
 
         return entries
-
-

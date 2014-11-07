@@ -15,4 +15,3 @@ def get_curricula_by_term(*args, **kwargs):
         return v5_get_curricula_by_term(*args, **kwargs)
     else:
         return v4_get_curricula_by_term(*args, **kwargs)
-

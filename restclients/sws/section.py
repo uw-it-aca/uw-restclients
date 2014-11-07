@@ -55,4 +55,3 @@ def get_joint_sections(*args, **kwargs):
         return v5_get_joint_sections(*args, **kwargs)
     else:
         return v4_get_joint_sections(*args, **kwargs)
-

@@ -280,4 +280,3 @@ def _add_credits_grade_to_section(url, section):
             section.student_credits = Decimal(section_reg_data['Credits'].strip())
         except InvalidOperation:
             pass
-

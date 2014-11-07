@@ -47,4 +47,3 @@ def get_term_after(*args, **kwargs):
         return v5_get_term_after(*args, **kwargs)
     else:
         return v4_get_term_after(*args, **kwargs)
-

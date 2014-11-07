@@ -107,4 +107,3 @@ class SWSTestScheduleData(TestCase):
                               get_schedule_by_regid_and_term,
                               "9136CCB8F66711D5BE060004AC494FFE",
                               term)
-

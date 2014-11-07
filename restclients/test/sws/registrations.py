@@ -86,4 +86,3 @@ class SWSTestRegistrations(TestCase):
             for section in class_schedule.sections:
                 if section.section_label() == '2013,spring,TRAIN,100/A':
                     self.assertEquals(len(section.get_instructors()), 0)
-

@@ -31,4 +31,3 @@ def get_schedule_by_regid_and_term(*args, **kwargs):
         return v5_get_schedule_by_regid_and_term(*args, **kwargs)
     else:
         return v4_get_schedule_by_regid_and_term(*args, **kwargs)
-

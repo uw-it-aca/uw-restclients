@@ -13,4 +13,3 @@ class PWSTest404(TestCase):
         with self.settings(RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.errors.Always404'):
             pws = PWS()
             self.assertRaises(DataFailureException, pws.get_person_by_netid, "fake")
-

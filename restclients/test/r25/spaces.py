@@ -4,7 +4,7 @@ from restclients.r25.spaces import get_space_by_id, get_spaces
 from restclients.exceptions import DataFailureException
 
 class R25TestSpaces(TestCase):
-    
+
     def test_space_by_id(self):
         with self.settings(
                 RESTCLIENTS_R25_DAO_CLASS='restclients.dao_implementation.r25.File'):

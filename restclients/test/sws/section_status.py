@@ -42,4 +42,3 @@ class SWSTestSectionStatusData(TestCase):
 #            self.assertEquals(section_status.sln, 12588)
 #            self.assertEquals(section_status.space_available, 40)
 #            self.assertEquals(section_status.is_open, True)
-

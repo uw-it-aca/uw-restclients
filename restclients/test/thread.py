@@ -35,4 +35,3 @@ class ThreadsTest(TestCase):
 
             thread = Thread()
             self.assertEquals(thread._use_thread, False)
-

@@ -196,4 +196,3 @@ class SWS(object):
             "Use restclients.sws.curriculum.get_curricula_by_term")
         from restclients.sws.curriculum import get_curricula_by_term
         return get_curricula_by_term(term)
-

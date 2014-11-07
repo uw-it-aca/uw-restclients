@@ -40,7 +40,7 @@ class PersonTest(TestCase):
             self.assertEquals(data.permanent_address.postal_code, "")
             self.assertEquals(data.permanent_address.state, "WA")
             self.assertEquals(data.permanent_address.zip_code, "98005-1234")
-            
+
             self.assertEquals(data.last_enrolled.href, "/student/v5/term/2013,autumn.json")
             self.assertEquals(data.last_enrolled.quarter, "autumn")
             self.assertEquals(data.last_enrolled.year, 2013)
@@ -105,5 +105,3 @@ class PersonTest(TestCase):
             self.assertEquals(data.local_address, None)
             self.assertEquals(data.permanent_phone, None)
             self.assertEquals(data.permanent_address, None)
-
-

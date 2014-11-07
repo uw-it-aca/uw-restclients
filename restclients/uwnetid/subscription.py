@@ -38,5 +38,3 @@ def _get_forwarding_from_json(response_body):
                 return_obj.status = u_forwarding['statusName']
                 return return_obj
     return None
-
-

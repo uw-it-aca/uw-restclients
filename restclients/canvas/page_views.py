@@ -6,4 +6,3 @@ class PageViews(Canvas):
         data = self._get_resource(url)
 
         return data
-

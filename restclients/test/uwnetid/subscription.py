@@ -64,4 +64,3 @@ class EmailForwardingTest(TestCase):
                 get_email_forwarding("invalidnetid")
             except DataFailureException as ex:
                 self.assertEquals(ex.msg, "No such NetID 'invalidnetid'")
-

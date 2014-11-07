@@ -33,7 +33,7 @@ class NWSTestChannel(TestCase):
             nws = NWS()
             response_status = nws.update_channel(channel)
             self.assertEquals(204, response_status)
-            
+
     def test_channel_channel_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
@@ -115,7 +115,7 @@ class NWSTestChannel(TestCase):
             nws = NWS()
             channel = nws.get_channel_by_channel_id("ce1d46fe-1cdf-4c5a-a316-20f6c99789b7")
             self.assertTrue(channel is not None)
-    
+
     def _delete_channel_live(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.Live'):

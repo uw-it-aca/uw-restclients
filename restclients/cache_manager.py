@@ -42,6 +42,3 @@ def disable_cache_entry_queueing():
     global __manage_bulk_inserts
     __manage_bulk_inserts = False
     save_all_queued_entries()
-
-
-

@@ -38,7 +38,7 @@ def _process_json_data(jdata):
         last_enrolled.quarter = jdata["LastEnrolled"]["Quarter"]
         last_enrolled.year = jdata["LastEnrolled"]["Year"]
         person.last_enrolled = last_enrolled
-    
+
     if jdata["LocalAddress"] is not None:
         local_address = StudentAddress()
         local_address.city = jdata["LocalAddress"]["City"]
@@ -71,4 +71,3 @@ def _process_json_data(jdata):
     person.visa_type = jdata["VisaType"]
 
     return person
-

@@ -10,13 +10,13 @@ class CanvasTestSubmissions(TestCase):
             canvas = Submissions()
             submissions = canvas.get_submissions_multiple_assignments(False, "862539", "all")
             self.assertEquals(len(submissions), 3, "Submission Count")
-            
+
             sub = submissions[0]
             self.assertEquals(sub.submission_id, 12687216, "Has correct submission id")
             self.assertEquals(sub.grade_matches_current_submission, True, "Grades match current submission")
             self.assertEquals(sub.graded_at.day, 13, "Graded at datetime")
             self.assertEquals(sub.url, None, "Submitted url")
-            
+
     def test_submission_by_sis_id(self):
         with self.settings(
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):

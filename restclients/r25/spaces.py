@@ -43,7 +43,7 @@ def space_reservation_from_xml(tree):
     node = tree.xpath("r25:space", namespaces=nsmap)[0]
     space_detail_from_xml(space, node)
     return space
-    
+
 
 def space_detail_from_xml(space, tree):
     space.name = tree.xpath("r25:space_name", namespaces=nsmap)[0].text

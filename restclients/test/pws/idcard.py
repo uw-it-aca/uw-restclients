@@ -72,4 +72,3 @@ class TestIdCardPhoto(TestCase):
                               person.uwregid, -50)
             self.assertRaises(InvalidIdCardPhotoSize, pws.get_idcard_photo,
                               person.uwregid, 20.5)
-

@@ -90,4 +90,3 @@ def _json_to_minor(json_data):
    minor.full_name = json_data['FullName']
    minor.short_name = json_data['ShortName']
    return minor
-

@@ -30,4 +30,3 @@ def _json_to_colleges(data):
         colleges.append(college)
 
     return colleges
-

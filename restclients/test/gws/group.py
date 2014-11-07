@@ -60,7 +60,7 @@ class GWSGroupBasics(TestCase):
                 RESTCLIENTS_GWS_DAO_CLASS='restclients.dao_implementation.gws.File'):
                     gws = GWS()
                     members = gws.get_members('u_acadev_unittest')
-                    
+
                     members.remove(GroupMember(member_type="uwnetid", name="eight"))
                     members.append(GroupMember(member_type="uwnetid", name="seven"))
 

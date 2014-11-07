@@ -35,4 +35,3 @@ class TestGwsTrumbaGroup(TestCase):
             self.assertEquals(len(group.optouts) , 1)
             self.assertEquals(group.optouts[0].user_type, GroupUser.NONE_TYPE)
             self.assertEquals(group.optouts[0].name, "dc=all")
-

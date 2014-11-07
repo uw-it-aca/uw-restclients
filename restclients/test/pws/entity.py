@@ -68,4 +68,3 @@ class PWSTestEntityData(TestCase):
 
             self.assertEquals(entity.uwnetid, netid, netid + "'s netid")
             self.assertEquals(entity.uwregid, regid, netid + "'s regid")
-

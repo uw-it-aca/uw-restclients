@@ -21,4 +21,3 @@ class ViewTest(TestCase):
     def test_div_then_valid_self_closing(self):
         valid = "<div id='test id'></div><br/>"
         self.assertEquals(valid, clean_self_closing_divs(valid))
-

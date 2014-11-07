@@ -174,4 +174,3 @@ def _json_to_term_model(term_data):
 
     term.clean_fields()
     return term
-

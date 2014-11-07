@@ -6,4 +6,3 @@ def update_graderoster(*args, **kwargs):
 
 def graderoster_from_xhtml(*args, **kwargs):
     pass
-

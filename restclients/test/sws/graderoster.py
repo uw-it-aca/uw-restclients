@@ -61,4 +61,3 @@ class SWSTestGradeRoster(TestCase):
 
 def split_xhtml(xhtml):
     return re.split(r'\s*\n\s*', xhtml.strip())
-

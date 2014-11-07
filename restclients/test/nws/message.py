@@ -150,4 +150,3 @@ class NWSTestMessage(TestCase):
             nws = NWS()
             response_status = nws.create_new_message(message)
             self.assertEquals(response_status, 200)
-

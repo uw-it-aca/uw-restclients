@@ -7,7 +7,7 @@ from restclients.models.sws import Notice, NoticeAttribute
 from restclients.sws import get_resource
 from dateutil import parser
 import pytz
- 
+
 
 notice_res_url_prefix = "/student/v5/notice/"
 logger = logging.getLogger(__name__)
@@ -64,4 +64,3 @@ def _notices_from_json(notice_data):
             notice_obj.attributes = notice_attribs
             notices.append(notice_obj)
         return notices
-

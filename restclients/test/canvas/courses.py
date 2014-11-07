@@ -33,7 +33,7 @@ class CanvasTestCourses(TestCase):
 
             self.assertEquals(course2.syllabus_body, "Syllabus", "Course contains syllabus_body")
             self.assertEquals(course2.term, None, "Course doesn't contain term")
-            
+
 
     def test_courses(self):
         with self.settings(

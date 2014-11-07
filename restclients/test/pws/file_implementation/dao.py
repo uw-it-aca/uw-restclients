@@ -9,4 +9,3 @@ class PWSTestFileDAO(TestCase):
             dao = SWS_DAO()
             response = dao.getURL("/file_doesnt_exist", {})
             self.assertEqual(response.status, 404, "File DAO returns a 404 for missing files")
-

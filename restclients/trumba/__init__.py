@@ -165,4 +165,3 @@ def post_tac_resource(url, body):
         retry += 1
         time.sleep(1)
     return response
-

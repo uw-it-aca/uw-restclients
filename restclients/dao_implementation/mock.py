@@ -155,7 +155,7 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
 
         return response
 
-    
+
 
 def post_mockdata_url(service_name, implementation_name,
                      url, headers, body,
@@ -222,5 +222,3 @@ def convert_to_platform_safe(dir_file_name):
     :return: a string with all the reserved characters replaced
     """
     return  re.sub('[\?|<>=:*,;+&"@]', '_', dir_file_name)
-
- 

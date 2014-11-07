@@ -34,4 +34,3 @@ def _json_to_departments(data, college):
         departments.append(department)
 
     return departments
-

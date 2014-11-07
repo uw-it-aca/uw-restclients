@@ -127,7 +127,7 @@ def get_student_address_json(address):
     if address is not None:
         return address.json_data()
     return None
-    
+
 
 class SwsPerson(models.Model):
     uwregid = models.CharField(max_length=32,

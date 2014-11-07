@@ -17,4 +17,3 @@ class CatalystTestGradebook(TestCase):
             participants = get_participants_for_section(section, instructor)
 
             self.assertEquals(len(participants), 3, "Correct participant count")
-

@@ -108,4 +108,3 @@ class UnexpectedError(TrumbaException):
     Exception when the error code is not expected with this request
     """
     pass
-

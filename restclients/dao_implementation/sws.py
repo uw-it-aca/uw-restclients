@@ -27,7 +27,7 @@ class File(object):
     """
 
     grade_roster_document = None
-    
+
     def _make_notice_date(self, response):
         """
         Set the date attribte value in the notice mock data

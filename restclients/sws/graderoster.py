@@ -23,4 +23,3 @@ def graderoster_from_xhtml(*args, **kwargs):
         return v5_graderoster_from_xhtml(*args, **kwargs)
     else:
         return v4_graderoster_from_xhtml(*args, **kwargs)
-

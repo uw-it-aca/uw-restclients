@@ -113,7 +113,7 @@ class NWSTestSubscription(TestCase):
             subscription.endpoint.owner = "javerage"
             subscription.channel = Channel()
             subscription.channel.channel_id = "b779df7b-d6f6-4afb-8165-8dbe6232119f"
-            
+
             #subscription.subscriber_type = "Individual"
 
             nws = NWS()

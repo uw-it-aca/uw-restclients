@@ -120,4 +120,3 @@ class SWSNotice(TestCase):
             self.assertEquals(attribute.name, "Date")
             self.assertEquals(attribute.data_type, "date")
             self.assertEquals(attribute.get_value(), future_end.strftime("%Y-%m-%d"))
-

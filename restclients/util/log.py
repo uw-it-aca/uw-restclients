@@ -18,4 +18,3 @@ def log_err(logger, action_desc, timer):
     """
     logger.error("%s Time=%.3f milliseconds" %
                  (action_desc, timer.get_elapsed()))
-

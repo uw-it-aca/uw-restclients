@@ -33,4 +33,3 @@ class TestMock(TestCase):
         name = "sws/file/student/v4/course/2013,spring,PHIL,600/A"
         self.assertEqual(convert_to_platform_safe(name),
                          "sws/file/student/v4/course/2013_spring_PHIL_600/A")
-
