@@ -19,13 +19,13 @@ def get_grades_by_regid_and_term(regid, term):
     Returns a StudentGrades model for the regid and term.
     """
     url = "%s/%s,%s,%s.json" % (enrollment_res_url_prefix,
-                                term.year, 
-                                term.quarter, 
+                                term.year,
+                                term.quarter,
                                 regid)
     return _json_to_grades(get_resource(url), regid, term)
 
 
-def _json_to_grades(data, regid, term): 
+def _json_to_grades(data, regid, term):
     grades = StudentGrades()
     grades.term = term
     grades.user = PWS().get_person_by_regid(regid)

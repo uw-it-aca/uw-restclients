@@ -43,7 +43,7 @@ class TrumbaCalendar(models.Model):
         return is_tac(self.campus)
 
     def __eq__(self, other):
-        return self.calendarid == other.calendarid 
+        return self.calendarid == other.calendarid
 
     def __str__(self):
         return "{name: %s, campus: %s, calendarid: %s}" % (
@@ -115,7 +115,7 @@ class UwcalGroup(models.Model):
 
     def is_editor_group(self):
         return is_editor_group(self.gtype)
-    
+
     def is_showon_group(self):
         return is_showon_group(self.gtype)
 
@@ -136,11 +136,11 @@ class UwcalGroup(models.Model):
 
 def is_edit_permission(level):
     return level is not None and level == Permission.EDIT
-    
+
 
 def is_showon_permission(level):
     return level is not None and level == Permission.SHOWON
-    
+
 
 def is_publish_permission(level):
     return level is not None and level == Permission.PUBLISH
@@ -177,10 +177,10 @@ class Permission(models.Model):
 
     def is_edit(self):
         return is_edit_permission(self.level) or is_publish_permission(self.level)
-    
+
     def is_showon(self):
         return is_showon_permission(self.level) or is_republish_permission(self.level)
-    
+
     def is_bot(self):
         return is_bot(self.campus)
 
@@ -197,7 +197,7 @@ class Permission(models.Model):
     def __str__(self):
         return "{calendarid: %s, campus: %s, uwnetid: %s, level: %s}" % (
             self.calendarid, self.campus, self.uwnetid, self.level)
-    
+
     def __unicode__(self):
         return u'{calendarid: %s, campus: %s, uwnetid: %s, name: %s, level: %s}' % (
             self.calendarid, self.campus, self.uwnetid, self.name, self.level)

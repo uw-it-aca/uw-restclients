@@ -115,10 +115,10 @@ def get_active_registrations_by_section(section):
 
 def get_all_registrations_by_section(section):
     """
-    Returns a list of restclients.models.sws.Registration objects, 
-    representing all (active and inactive) registrations 
-    for the passed section. 
-    For independent study sections, 
+    Returns a list of restclients.models.sws.Registration objects,
+    representing all (active and inactive) registrations
+    for the passed section.
+    For independent study sections,
     section.independent_study_instructor_regid
     limits registrations to that instructor.
     """
@@ -180,7 +180,7 @@ def get_credits_by_reg_url(url):
         pass
 
 
-def get_schedule_by_regid_and_term(regid, term, 
+def get_schedule_by_regid_and_term(regid, term,
                                    include_instructor_not_on_time_schedule=True):
     """
     Returns a restclients.models.sws.ClassSchedule object

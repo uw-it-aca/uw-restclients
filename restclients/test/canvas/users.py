@@ -65,11 +65,11 @@ class CanvasTestUsers(TestCase):
 
             logins = canvas.get_user_logins_by_sis_id(sis_user_id)
 
-            self.assertEquals(len(logins), 2, "Has correct login count")        
-                                                                                
-            login = logins[0]                                                   
-            self.assertEquals(login.user_id, user_id, "Has correct user id")    
-            self.assertEquals(login.login_id, 100, "Has correct login_id")      
+            self.assertEquals(len(logins), 2, "Has correct login count")
+
+            login = logins[0]
+            self.assertEquals(login.user_id, user_id, "Has correct user id")
+            self.assertEquals(login.login_id, 100, "Has correct login_id")
             self.assertEquals(login.sis_user_id, sis_user_id, "Has correct sis id")
             self.assertEquals(login.unique_id, "testid99", "Has correct unique id")
 

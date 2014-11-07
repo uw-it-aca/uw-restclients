@@ -107,7 +107,7 @@ class Enrollments(Canvas):
             if "sis_user_id" in data["user"]:
                 enrollment.sis_user_id = data["user"]["sis_user_id"]
         if "grades" in data:
-            enrollment.current_score = data["grades"]["current_score"] 
+            enrollment.current_score = data["grades"]["current_score"]
             enrollment.final_score = data["grades"]["final_score"]
             enrollment.current_grade = data["grades"]["current_grade"]
             enrollment.final_grade = data["grades"]["final_grade"]

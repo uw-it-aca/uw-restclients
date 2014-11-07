@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 def get_sections_by_instructor_and_term(person, term):
     """
-    Returns a list of restclients.models.sws.SectionReference objects 
+    Returns a list of restclients.models.sws.SectionReference objects
     for the passed instructor and term.
     """
     return _get_sections_by_person_and_term(
@@ -63,7 +63,7 @@ def get_sections_by_curriculum_and_term(curriculum, term):
 
 def _json_to_sectionref(data, aterm):
     """
-    Returns a list of SectionReference object created from 
+    Returns a list of SectionReference object created from
     the passed json data.
     """
     sections = []
@@ -78,14 +78,14 @@ def _json_to_sectionref(data, aterm):
     return sections
 
 
-def _get_sections_by_person_and_term(person, term, course_role, 
+def _get_sections_by_person_and_term(person, term, course_role,
                                      include_secondaries="on"):
     """
-    Returns a list of restclients.models.sws.SectionReference object 
+    Returns a list of restclients.models.sws.SectionReference object
     for the passed course_role and term (including secondaries).
     """
     url = "%s?%s" % (
-        section_res_url_prefix, 
+        section_res_url_prefix,
         urlencode({"year": term.year,
                    "quarter": term.quarter.lower(),
                    "reg_id": person.uwregid,
@@ -99,7 +99,7 @@ def _get_sections_by_person_and_term(person, term, course_role,
 def get_section_by_url(url,
                        include_instructor_not_on_time_schedule=True):
     """
-    Returns a restclients.models.sws.Section object 
+    Returns a restclients.models.sws.Section object
     for the passed section url.
     """
     if not course_url_pattern.match(url):
@@ -130,7 +130,7 @@ def get_section_by_label(label,
 def get_linked_sections(section,
                         include_instructor_not_on_time_schedule=True):
     """
-    Returns a list of restclients.models.sws.Section objects, 
+    Returns a list of restclients.models.sws.Section objects,
     representing linked sections for the passed section.
     """
     linked_sections = []
@@ -146,7 +146,7 @@ def get_linked_sections(section,
 def get_joint_sections(section,
                        include_instructor_not_on_time_schedule=True):
     """
-    Returns a list of restclients.models.sws.Section objects, 
+    Returns a list of restclients.models.sws.Section objects,
     representing joint sections for the passed section.
     """
     joint_sections = []
@@ -159,7 +159,7 @@ def get_joint_sections(section,
     return joint_sections
 
 
-def _json_to_section(section_data, 
+def _json_to_section(section_data,
                      term=None,
                      include_instructor_not_on_time_schedule=True):
     """
@@ -273,7 +273,7 @@ def _json_to_section(section_data,
 
         meeting.instructors = []
         for instructor_data in meeting_data["Instructors"]:
-            # TSPrint: True 
+            # TSPrint: True
             # Instructor information currently listed on the Time Schedule
             if instructor_data["TSPrint"] or include_instructor_not_on_time_schedule:
                 pdata = instructor_data["Person"]

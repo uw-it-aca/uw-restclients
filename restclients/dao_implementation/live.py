@@ -1,5 +1,5 @@
 """
-Provides access to the http connection pools and 
+Provides access to the http connection pools and
 connections for live data from a web service
 
 """
@@ -45,9 +45,9 @@ def get_con_pool(host,
     return connection_from_url(host, **kwargs)
 
 
-def get_live_url(con_pool, 
-                 method, 
-                 host, 
+def get_live_url(con_pool,
+                 method,
+                 host,
                  url,
                  headers,
                  retries=1,
@@ -56,7 +56,7 @@ def get_live_url(con_pool,
     """
     Return a connection from the pool and perform an HTTP request.
     :param con_pool:
-        is the http connection pool associated with the service 
+        is the http connection pool associated with the service
     :param method:
         HTTP request method (such as GET, POST, PUT, etc.)
     :param host:

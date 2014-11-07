@@ -82,7 +82,7 @@ class TimeCacheTest(TestCase):
             cache_entry = CacheEntryTimed.objects.get(service="sws",
                                                       url="/student")
 
-            # Cached response is returned after 3 hours and 58 minutes 
+            # Cached response is returned after 3 hours and 58 minutes
             orig_time_saved = cache_entry.time_saved
             cache_entry.time_saved = orig_time_saved - timedelta(minutes=238)
             cache_entry.save()
@@ -99,7 +99,7 @@ class TimeCacheTest(TestCase):
 
     def test_errors(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.errors.Always500',
-                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File', 
+                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
                            RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.FourHourCache'):
 
             cache = FourHourCache()

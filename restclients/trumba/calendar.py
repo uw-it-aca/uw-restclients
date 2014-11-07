@@ -37,7 +37,7 @@ def get_campus_calendars(campus_code):
         return get_tac_calendars()
     else:
         logger.warn(
-            "Calling get_campus_calendars with invalid campus code: %s" 
+            "Calling get_campus_calendars with invalid campus code: %s"
             % campus_code)
         return None
 
@@ -45,7 +45,7 @@ def get_campus_calendars(campus_code):
 def get_bot_calendars():
     """
     :return: a dictionary of {calenderid, TrumbaCalendar}
-             corresponding to Bothell calendars. 
+             corresponding to Bothell calendars.
              None if error, {} if not exists
     raise DataFailureException if the request failed.
     """
@@ -58,7 +58,7 @@ def get_bot_calendars():
 def get_sea_calendars():
     """
     :return: a dictionary of {calenderid, TrumbaCalendar}
-             corresponding to Seattle calendars. 
+             corresponding to Seattle calendars.
              None if error, {} if not exists
     raise DataFailureException if the request failed.
     """
@@ -71,7 +71,7 @@ def get_sea_calendars():
 def get_tac_calendars():
     """
     :return: a dictionary of {calenderid, TrumbaCalendar}
-             corresponding to Tacoma calendars. 
+             corresponding to Tacoma calendars.
              None if error, {} if not exists
     raise DataFailureException if the request failed.
     """
@@ -96,7 +96,7 @@ def get_campus_permissions(calendar_id, campus_code):
         return get_tac_permissions(calendar_id)
     else:
         logger.warn(
-            "Calling get_campus_permissions with invalid campus code: %s" 
+            "Calling get_campus_permissions with invalid campus code: %s"
             % campus_code)
         return None
 
@@ -112,7 +112,7 @@ def get_bot_permissions(calendar_id):
              corresponding to the given campus calendar.
              None if error, [] if not exists
     Return a list of Permission objects representing
-    the user permissions of a given Bothell calendar. 
+    the user permissions of a given Bothell calendar.
     raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
@@ -127,7 +127,7 @@ def get_bot_permissions(calendar_id):
 def get_sea_permissions(calendar_id):
     """
     Return a list of Permission objects representing
-    the user permissions of a given Seattle calendar. 
+    the user permissions of a given Seattle calendar.
     :return: a list of trumba.Permission objects
              corresponding to the given campus calendar.
              None if error, [] if not exists
@@ -145,7 +145,7 @@ def get_sea_permissions(calendar_id):
 def get_tac_permissions(calendar_id):
     """
     Return a list of Permission objects representing
-    the user permissions of a given Tacoma calendar. 
+    the user permissions of a given Tacoma calendar.
     :return: a list of trumba.Permission objects
              corresponding to the given campus calendar.
              None if error, [] if not exists
@@ -190,8 +190,8 @@ def _load_calendar(campus, resp_fragment, calendar_dict, parent):
 
         calendar_dict[trumba_cal.calendarid] = trumba_cal
         if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
-            _load_calendar(campus, 
-                           record['ChildCalendars'], 
+            _load_calendar(campus,
+                           record['ChildCalendars'],
                            calendar_dict,
                            trumba_cal.name)
 
@@ -200,7 +200,7 @@ def _process_get_cal_resp(url, post_response, campus):
     """
     :return: a dictionary of {calenderid, TrumbaCalendar}
              None if error, {} if not exists
-    If the request is successful, process the response data 
+    If the request is successful, process the response data
     and load the json data into the return object.
     """
     request_id = "%s %s" % (campus, url)
@@ -245,16 +245,16 @@ def _process_get_perm_resp(url, post_response, campus, calendarid):
     """
     :return: a list of trumba.Permission objects
              None if error, [] if not exists
-    If the response is successful, process the response data 
-    and load into the return objects 
+    If the response is successful, process the response data
+    and load into the return objects
     otherwise raise DataFailureException
     """
     request_id = "%s %s CalendarID:%s" % (campus, url, calendarid)
     data = _load_json(request_id, post_response)
     permission_list = []
     if data['d']['Users'] is not None and len(data['d']['Users']) > 0:
-        _load_permissions(campus, calendarid, 
-                          data['d']['Users'], 
+        _load_permissions(campus, calendarid,
+                          data['d']['Users'],
                           permission_list)
     return permission_list
 

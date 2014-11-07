@@ -28,24 +28,24 @@ class TrumbaTestCalendars(TestCase):
             self.assertTrue(trumba_cal.is_sea())
             self.assertFalse(trumba_cal.is_bot())
             self.assertFalse(trumba_cal.is_tac())
-            
+
             trumba_cal = result[11321]
             self.assertEqual(trumba_cal.calendarid, 11321)
             self.assertEqual(trumba_cal.campus, 'sea')
-            self.assertEqual(trumba_cal.name, 
+            self.assertEqual(trumba_cal.name,
                              'Seattle calendar >> Seattle child calendar3 >> Seattle child-sub-calendar32 >> Seattle child-sub-sub-calendar321')
             self.assertTrue(trumba_cal.is_sea())
             self.assertFalse(trumba_cal.is_bot())
             self.assertFalse(trumba_cal.is_tac())
 
-            
+
     def test_get_tac_calendars_normal_cases(self):
         with self.settings(
             RESTCLIENTS_TRUMBA_TAC_DAO_CLASS='restclients.dao_implementation.trumba.FileTac'
             ):
             self.assertIsNotNone(Calendar.get_tac_calendars())
             self.assertTrue(len(Calendar.get_tac_calendars()) == 1)
-            
+
 
     def test_get_sea_permissions_normal_cases(self):
         with self.settings(
@@ -123,30 +123,30 @@ class TrumbaTestCalendars(TestCase):
         self.assertEqual(Calendar._extract_uwnetid('@washington.edu'), '')
         self.assertEqual(Calendar._extract_uwnetid('bad@uw.edu'), 'bad@uw.edu')
         self.assertEqual(Calendar._extract_uwnetid(''), '')
-        
+
     def test_check_err(self):
         self.assertRaises(UnexpectedError,
-                          Calendar._check_err, 
+                          Calendar._check_err,
                           {"d":{"Messages":[{"Code":3009,
                                              "Description":"..."}]}})
 
         self.assertRaises(CalendarOwnByDiffAccount,
-                          Calendar._check_err, 
+                          Calendar._check_err,
                           {"d":{"Messages":[{"Code":3007}]}})
 
         self.assertRaises(CalendarNotExist,
-                          Calendar._check_err, 
+                          Calendar._check_err,
                           {"d":{"Messages":[{"Code":3006}]}})
 
         self.assertRaises(NoDataReturned,
                           Calendar._check_err, {'d': None})
 
         self.assertRaises(UnknownError,
-                          Calendar._check_err, 
+                          Calendar._check_err,
                           {"d":{"Messages":[]}})
 
         self.assertRaises(UnknownError,
-                          Calendar._check_err, 
+                          Calendar._check_err,
                           {"d":{"Messages":[{"Code": None}]}})
 
         self.assertIsNone(Calendar._check_err({"d":{"Messages":None}}))

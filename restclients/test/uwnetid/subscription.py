@@ -17,7 +17,7 @@ class EmailForwardingTest(TestCase):
             self.assertTrue(uw_email.permitted)
             self.assertFalse(uw_email.is_uwgmail())
             self.assertTrue(uw_email.is_uwlive())
-            self.assertEquals(uw_email.fwd, 
+            self.assertEquals(uw_email.fwd,
                               "javerage@ol.uw.edu")
 
             uw_email = get_email_forwarding("none")
@@ -52,12 +52,12 @@ class EmailForwardingTest(TestCase):
             'restclients.dao_implementation.uwnetid.File'):
 
             #Testing error message in a 200 response
-            self.assertRaises(DataFailureException, 
-                              get_email_forwarding, 
+            self.assertRaises(DataFailureException,
+                              get_email_forwarding,
                               "invalidnetid")
             #Testing non-200 response
             self.assertRaises(DataFailureException,
-                              get_email_forwarding, 
+                              get_email_forwarding,
                               "invalidnetid123")
 
             try:

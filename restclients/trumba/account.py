@@ -1,6 +1,6 @@
 """
-Interfacing Trumba Accounts' Service, the account module provides 
-functions for adding and deleting editors and set their calendar permissions 
+Interfacing Trumba Accounts' Service, the account module provides
+functions for adding and deleting editors and set their calendar permissions
 
 The underline http requests and responses will be logged.
 Be sure to set the logging configuration if you use the LiveDao!
@@ -28,11 +28,11 @@ set_permission_url_prefix = "/service/calendars.asmx/SetPermissions"
 
 def _make_add_editor_url(name, userid):
     """
-    :return: the URL string for the GET request call to 
+    :return: the URL string for the GET request call to
     Trumba CreateEditor method
     """
     return "%s?Name=%s&Email=%s@washington.edu&Password=" % (
-        add_editor_url_prefix, re.sub(' ', '%20', name), userid) 
+        add_editor_url_prefix, re.sub(' ', '%20', name), userid)
 
 
 def add_editor(name, userid):
@@ -40,7 +40,7 @@ def add_editor(name, userid):
     :param name: a string representing the user's name
     :param userid: a string representing the user's UW NetID
     :return: True if request is successful, False otherwise.
-    raise DataFailureException or a corresponding TrumbaException 
+    raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
     url = _make_add_editor_url(name, userid)
@@ -52,7 +52,7 @@ def add_editor(name, userid):
 
 def _make_del_editor_url(userid):
     """
-    :return: the URL string for GET request call to 
+    :return: the URL string for GET request call to
     Trumba CloseEditor method
     """
     return "%s?Email=%s@washington.edu" % (del_editor_url_prefix, userid)
@@ -62,7 +62,7 @@ def delete_editor(userid):
     """
     :param userid: a string representing the user's UW NetID
     :return: True if request is successful, False otherwise.
-    raise DataFailureException or a corresponding TrumbaException 
+    raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
     url = _make_del_editor_url(userid)
@@ -74,11 +74,11 @@ def delete_editor(userid):
 
 def _make_set_permissions_url(calendar_id, userid, level):
     """
-    :return: the URL string for GET request call 
+    :return: the URL string for GET request call
     to Trumba SetPermissions method
     """
     return "%s?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (
-        set_permission_url_prefix, calendar_id, userid, level) 
+        set_permission_url_prefix, calendar_id, userid, level)
 
 
 def set_bot_permissions(calendar_id, userid, level):
@@ -87,7 +87,7 @@ def set_bot_permissions(calendar_id, userid, level):
     :param userid: a string representing the user's UW NetID
     :param level: a string representing the permission level
     :return: True if request is successful, False otherwise.
-    raise DataFailureException or a corresponding TrumbaException 
+    raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
     url = _make_set_permissions_url(
@@ -104,7 +104,7 @@ def set_sea_permissions(calendar_id, userid, level):
     :param userid: a string representing the user's UW NetID
     :param level: a string representing the permission level
     :return: True if request is successful, False otherwise.
-    raise DataFailureException or a corresponding TrumbaException 
+    raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
     url = _make_set_permissions_url(
@@ -121,7 +121,7 @@ def set_tac_permissions(calendar_id, userid, level):
     :param userid: a string representing the user's UW NetID
     :param level: a string representing the permission level
     :return: True if request is successful, False otherwise.
-    raise DataFailureException or a corresponding TrumbaException 
+    raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
     url = _make_set_permissions_url(
@@ -138,7 +138,7 @@ def _process_resp(request_id, response, is_success_func):
     :param response: the GET method response object
     :param is_success_func: the name of the function for verifying a success code
     :return: True if successful, False otherwise.
-    raise DataFailureException or a corresponding TrumbaException 
+    raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
     if response.status != 200:
@@ -160,7 +160,7 @@ def _process_resp(request_id, response, is_success_func):
 
 def _is_editor_added(code):
     """
-    :param code: an integer value  
+    :param code: an integer value
     :return: True if the code means successful, False otherwise.
     """
     return code == 1001 or code == 3012
@@ -168,7 +168,7 @@ def _is_editor_added(code):
 
 def _is_editor_deleted(code):
     """
-    :param code: an integer value  
+    :param code: an integer value
     :return: True if the code means successful, False otherwise.
     """
     return code == 1002
@@ -176,7 +176,7 @@ def _is_editor_deleted(code):
 
 def _is_permission_set(code):
     """
-    :param code: an integer value  
+    :param code: an integer value
     :return: True if the code means successful, False otherwise.
     """
     return code == 1003
@@ -184,7 +184,7 @@ def _is_permission_set(code):
 
 def _check_err(code, request_id):
     """
-    :param code: an integer value  
+    :param code: an integer value
     :param request_id: campus url identifying the request
     Check possible error code returned in the response body
     raise the corresponding TrumbaException

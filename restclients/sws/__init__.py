@@ -21,7 +21,7 @@ def deprecation(message):
 
 
 def encode_section_label(label):
-    return quote(label, safe="/,") 
+    return quote(label, safe="/,")
 
 
 def get_resource(url):
@@ -47,8 +47,8 @@ def use_v5_resources():
     return False
 
 class SWSThread(Thread):
-    url = None # the course url to send a request 
-    reg_url = None 
+    url = None # the course url to send a request
+    reg_url = None
     headers = None
     response = None
 
@@ -158,7 +158,7 @@ class SWS(object):
         deprecation(
             "Use restclients.sws.registration.get_schedule_by_regid_and_term")
         from restclients.sws.registration import get_schedule_by_regid_and_term
-        return get_schedule_by_regid_and_term(regid, term, 
+        return get_schedule_by_regid_and_term(regid, term,
                                               include_instructor_not_on_time_schedule)
 
     def grades_for_regid_and_term(self, regid, term):

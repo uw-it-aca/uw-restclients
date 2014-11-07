@@ -40,10 +40,10 @@ class Live(object):
                 settings.RESTCLIENTS_UWNETID_CERT_FILE,
                 max_pool_size=UWNETID_MAX_POOL_SIZE,
                 socket_timeout=UWNETID_SOCKET_TIMEOUT)
-        return get_live_url(Live.pool, 
+        return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_UWNETID_HOST,
-                            url, 
+                            url,
                             headers=headers,
                             service_name='uwnetid')
 

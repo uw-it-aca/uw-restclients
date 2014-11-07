@@ -10,7 +10,7 @@ from restclients.dao_implementation.live import get_con_pool, get_live_url
 
 class FileSea(object):
     """
-    Return the url for accessing the Seattle calendars' 
+    Return the url for accessing the Seattle calendars'
     mock data in local file.
     Use this DAO with this configuration:
 
@@ -21,9 +21,9 @@ class FileSea(object):
 
     def get_path_prefix(self):
         return "trumba_sea"
-    
+
     def getURL(self, url, headers):
-        #FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))    
+        #FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))
         return get_mockdata_url(
             self.get_path_prefix(), "file",
             url, headers)
@@ -31,7 +31,7 @@ class FileSea(object):
     def postURL(self, url, headers, body):
         """
         Implement post using a get call
-        """    
+        """
         new_url = url
         if body is not None:
             new_url = FileSea.convert_body(url, body)
@@ -40,14 +40,14 @@ class FileSea(object):
     @staticmethod
     def convert_body(url, body):
         """
-        :return: the url string with extra data in the body 
+        :return: the url string with extra data in the body
         Extract the data in the body and convert to URL query string
-        """    
+        """
         new_url = "%s.Post" % url
         params = json.loads(body)
         for key in params:
-            new_url = "%s&%s=%s" % (new_url, key, 
-                                    re.sub(' ', '%20', 
+            new_url = "%s&%s=%s" % (new_url, key,
+                                    re.sub(' ', '%20',
                                            str(params[key])))
         return new_url
 
@@ -86,7 +86,7 @@ class LiveSea(object):
     def getURL(self, url, headers):
         self.set_pool()
         return get_live_url(LiveSea.pool, 'GET',
-                            settings.RESTCLIENTS_TRUMBA_HOST, url, 
+                            settings.RESTCLIENTS_TRUMBA_HOST, url,
                             headers=self.add_basicauth_header(headers),
                             service_name='trumba')
 
@@ -114,7 +114,7 @@ class FileBot(FileSea):
 
 class LiveBot(LiveSea):
     """
-    This DAO provides real data of Bothell campus. 
+    This DAO provides real data of Bothell campus.
     It requires further configuration, e.g.
     RESTCLIENTS_TRUMBA_HOST=
     RESTCLIENTS_TRUMBA_BOT_ID=
@@ -130,10 +130,10 @@ class LiveBot(LiveSea):
         return "%s:%s" % (settings.RESTCLIENTS_TRUMBA_BOT_ID,
                           settings.RESTCLIENTS_TRUMBA_BOT_PSWD)
 
-    
+
 class FileTac(FileSea):
     """
-    Return the url for accessing the Tacoma campus mock data in local file.  
+    Return the url for accessing the Tacoma campus mock data in local file.
     Use this DAO with this configuration:
 
     RESTCLIENTS_TRUMBA_TAC_DAO_CLASS =
@@ -146,7 +146,7 @@ class FileTac(FileSea):
 
 class LiveTac(LiveSea):
     """
-    This DAO provides real data for Tacoma campus. 
+    This DAO provides real data for Tacoma campus.
     It requires further configuration, e.g.
     RESTCLIENTS_TRUMBA_HOST=
     RESTCLIENTS_TRUMBA_TAC_ID=

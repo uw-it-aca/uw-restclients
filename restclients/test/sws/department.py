@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.models.sws import College 
+from restclients.models.sws import College
 from restclients.exceptions import DataFailureException
 from restclients.sws.department import get_departments_by_college
 
@@ -16,7 +16,7 @@ class SWSTestDepartment(TestCase):
 
             self.assertEquals(len(depts), 30)
 
-            # Valid department labels, no files for them                            
-            self.assertRaises(DataFailureException,                             
+            # Valid department labels, no files for them
+            self.assertRaises(DataFailureException,
                               get_departments_by_college,
                               College(label="NURS"))

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 def full_month_date_str(adate):
     """
-    Return a string value in the format of 
+    Return a string value in the format of
     "Month(full name) day, 4-digit-year" for the given date
     """
     return "%s %d, %d" % (adate.strftime("%B"),
@@ -22,7 +22,7 @@ def time_str(adatetime):
 
 def abbr_month_date_time_str(adatetime):
     """
-    Return a date value in the format of 
+    Return a date value in the format of
     "Month(abbreviated name) day, 4-digit-year at hour:minute [AP]M"
     """
     return "%s %d, %d at %s" % (adatetime.strftime("%b"),
@@ -33,10 +33,10 @@ def abbr_month_date_time_str(adatetime):
 
 def abbr_week_month_day_str(adatetime):
     """
-    Return a string consists of abbreviated weekday, abbreviated month, 
+    Return a string consists of abbreviated weekday, abbreviated month,
     date with no leading zero, and without a year
-    e.g., Mon, Jun 2. No punctuation is shown for 
-    the abbreviated weekday and month. 
+    e.g., Mon, Jun 2. No punctuation is shown for
+    the abbreviated weekday and month.
     """
     return "%s %d" % (adatetime.strftime("%a, %b"), adatetime.day)
 
@@ -53,8 +53,8 @@ def past_datetime_str(adatetime):
     For adatetime is 29-56 days ago: "Over 1 month ago"
     For adatetime is 57-84 days ago: "Over 2 months ago"
     For adatetime is 85-112 days ago: "Over 3 months ago"
-    and so on, in increments of 28 days, until T-365, 
-    at which point: "Over 1 year ago", 
+    and so on, in increments of 28 days, until T-365,
+    at which point: "Over 1 year ago",
     then after another 365 days "Over 2 years ago", etc
     """
     if is_today(adatetime):
@@ -88,7 +88,7 @@ def past_datetime_str(adatetime):
         return "over %d year ago" % year
     else:
         return "over %d years ago" % year
-    
+
 
 def last_midnight():
     """
@@ -96,7 +96,7 @@ def last_midnight():
     """
     now = datetime.now()
     return datetime(now.year, now.month, now.day)
-    
+
 
 def is_today(adatetime):
     """

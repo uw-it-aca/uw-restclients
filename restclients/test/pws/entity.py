@@ -4,7 +4,7 @@ from restclients.pws import PWS
 from restclients.exceptions import InvalidRegID, InvalidNetID, DataFailureException
 
 class PWSTestEntityData(TestCase):
-    
+
     def test_by_regid(self):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
@@ -38,22 +38,22 @@ class PWSTestEntityData(TestCase):
             self.assertRaises(InvalidRegID, pws.get_entity_by_regid, " ")
             self.assertRaises(InvalidRegID, pws.get_entity_by_regid, "AAA")
 
-            self.assertRaises(InvalidRegID, 
-                              pws.get_entity_by_regid, 
+            self.assertRaises(InvalidRegID,
+                              pws.get_entity_by_regid,
                               "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
-            self.assertRaises(InvalidRegID, 
-                              pws.get_entity_by_regid, 
+            self.assertRaises(InvalidRegID,
+                              pws.get_entity_by_regid,
                               "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG")
 
-            self.assertNotEquals(None, 
+            self.assertNotEquals(None,
                               pws.get_entity_by_regid,
                               "605764A811A847E690F107D763A4B32A")
-        
+
     def _test_regid(self, netid, regid):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
-            
+
             pws = PWS()
             entity = pws.get_entity_by_regid(regid)
 

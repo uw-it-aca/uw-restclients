@@ -26,7 +26,7 @@ class Live(object):
         host = 'http://www3.bookstore.washington.edu/'
         if Live.pool == None:
             Live.pool = get_con_pool(host, None, None)
-        return get_live_url (Live.pool, 'GET', 
+        return get_live_url (Live.pool, 'GET',
                              host, url, headers=headers,
                              service_name='book')
 

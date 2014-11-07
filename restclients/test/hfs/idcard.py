@@ -15,19 +15,19 @@ class HfsTest(TestCase):
             self.assertEquals(hfs_acc.student_husky_card.last_updated,
                               datetime(2014, 6, 2, 15, 17, 16))
             self.assertEquals(hfs_acc.student_husky_card.balance, 1.23)
-            self.assertEquals(hfs_acc.student_husky_card.add_funds_url, 
+            self.assertEquals(hfs_acc.student_husky_card.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
             self.assertEquals(hfs_acc.employee_husky_card.last_updated,
                               datetime(2014, 5, 19, 14, 16, 26))
             self.assertEquals(hfs_acc.employee_husky_card.balance, 1)
-            self.assertEquals(hfs_acc.employee_husky_card.add_funds_url, 
+            self.assertEquals(hfs_acc.employee_husky_card.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
             self.assertEquals(hfs_acc.resident_dining.last_updated,
                               datetime(2014, 6, 1, 13, 15, 36))
             self.assertEquals(hfs_acc.resident_dining.balance, 5.1)
-            self.assertEquals(hfs_acc.resident_dining.add_funds_url, 
+            self.assertEquals(hfs_acc.resident_dining.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
 

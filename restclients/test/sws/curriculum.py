@@ -16,8 +16,8 @@ class SWSTestCurriculum(TestCase):
 
             self.assertEquals(len(curricula), 7)
 
-            # Valid department labels, no files for them                            
-            self.assertRaises(DataFailureException,                             
+            # Valid department labels, no files for them
+            self.assertRaises(DataFailureException,
                               get_curricula_by_department,
                               Department(label="BIOL"))
 

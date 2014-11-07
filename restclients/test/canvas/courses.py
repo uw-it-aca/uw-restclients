@@ -96,7 +96,7 @@ class CanvasTestCourses(TestCase):
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
             canvas = Courses()
 
-            account_id = 88888 
+            account_id = 88888
             name = "Created Course"
 
             course = canvas.create_course(account_id, name)

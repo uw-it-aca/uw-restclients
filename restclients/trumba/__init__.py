@@ -1,6 +1,6 @@
 """
-This module directly interacts with campus specific web services on 
-It will log the http requests and responses. 
+This module directly interacts with campus specific web services on
+It will log the http requests and responses.
 Be sure to set the logging configuration if you use the LiveDao!
 """
 
@@ -53,7 +53,7 @@ def get_bot_resource(url):
     response = None
     while True:
         timer = Timer()
-        response = TrumbaBot_DAO().getURL(url, 
+        response = TrumbaBot_DAO().getURL(url,
                                           {"Content-Type": "application/xml"})
         _log_xml_resp("Bothell", url, response, timer)
         if response.status != 500 or retry == 1:

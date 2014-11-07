@@ -10,7 +10,7 @@ from restclients.library import get_resource
 
 
 RESPONSE_STYLES = ['html', 'json']
-url_prefix = "/mylibinfo/v1/?id=" 
+url_prefix = "/mylibinfo/v1/?id="
 logger = logging.getLogger(__name__)
 
 

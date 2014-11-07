@@ -18,9 +18,9 @@ class TrumbaTestAccounts(TestCase):
         with self.settings(
             RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
             ):
-            self.assertRaises(AccountNameEmpty, 
+            self.assertRaises(AccountNameEmpty,
                               Account.add_editor,'','')
-            
+
             self.assertRaises(InvalidEmail,
                               Account.add_editor,'010','')
 
@@ -41,9 +41,9 @@ class TrumbaTestAccounts(TestCase):
         with self.settings(
             RESTCLIENTS_TRUMBA_SEA_DAO_CLASS='restclients.dao_implementation.trumba.FileSea'
             ):
-            self.assertRaises(AccountNotExist, 
+            self.assertRaises(AccountNotExist,
                               Account.delete_editor,'')
-            
+
             self.assertRaises(AccountNotExist,
                               Account.delete_editor,'test')
 

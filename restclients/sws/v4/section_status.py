@@ -15,7 +15,7 @@ course_res_url_prefix = "/student/v4/course"
 
 def get_section_status_by_label(label):
     """
-    Return a restclients.models.sws.SectionStatus object 
+    Return a restclients.models.sws.SectionStatus object
     for the passed section label.
     """
     if not section_label_pattern.match(label):

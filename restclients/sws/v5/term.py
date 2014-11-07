@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def get_term_by_year_and_quarter(year, quarter):
     """
-    Returns a restclients.models.sws.Term object, 
+    Returns a restclients.models.sws.Term object,
     for the passed year and quarter.
     """
     url = "%s/%s,%s.json" % (term_res_url_prefix, str(year), quarter.lower())
@@ -24,7 +24,7 @@ def get_term_by_year_and_quarter(year, quarter):
 
 def get_current_term():
     """
-    Returns a restclients.models.sws.Term object, 
+    Returns a restclients.models.sws.Term object,
     for the current term.
     """
     url = "%s/current.json" % term_res_url_prefix
@@ -41,7 +41,7 @@ def get_current_term():
 
 def get_next_term():
     """
-    Returns a restclients.models.sws.Term object, 
+    Returns a restclients.models.sws.Term object,
     for the next term.
     """
     url = "%s/next.json" % term_res_url_prefix
@@ -50,7 +50,7 @@ def get_next_term():
 
 def get_previous_term():
     """
-    Returns a restclients.models.sws.Term object, 
+    Returns a restclients.models.sws.Term object,
     for the previous term.
     """
     url = "%s/previous.json" % term_res_url_prefix
@@ -59,7 +59,7 @@ def get_previous_term():
 
 def get_term_before(aterm):
     """
-    Returns a restclients.models.sws.Term object, 
+    Returns a restclients.models.sws.Term object,
     for the term before the term given.
     """
     prev_year = aterm.year
@@ -73,7 +73,7 @@ def get_term_before(aterm):
 
 def get_term_after(aterm):
     """
-    Returns a restclients.models.sws.Term object, 
+    Returns a restclients.models.sws.Term object,
     for the term after the term given.
     """
     next_year = aterm.year
@@ -113,7 +113,7 @@ def _json_to_term_model(term_data):
 
     term.last_day_drop = strptime(
         term_data["LastDropDay"], day_format)
-        
+
     if term_data["ATermLastDay"] is not None:
         term.aterm_last_date = strptime(
             term_data["ATermLastDay"], day_format)
@@ -171,7 +171,7 @@ def _json_to_term_model(term_data):
             campus=campus.lower(),
             is_on=(term_data["TimeScheduleConstruction"][campus] is True))
         term.time_schedule_construction.append(tsc)
-    
+
     term.clean_fields()
     return term
 

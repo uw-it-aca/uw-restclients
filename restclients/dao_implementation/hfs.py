@@ -40,10 +40,10 @@ class Live(object):
                 settings.RESTCLIENTS_HFS_CERT_FILE,
                 max_pool_size=HFS_MAX_POOL_SIZE,
                 socket_timeout=HFS_SOCKET_TIMEOUT)
-        return get_live_url(Live.pool, 
+        return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_HFS_HOST,
-                            url, 
+                            url,
                             headers=headers,
                             service_name='hfs')
 

@@ -9,14 +9,14 @@ from restclients.models.uwnetid import UwEmailForwarding
 from restclients.uwnetid import get_resource
 
 
-url_prefix = "/nws/v1/uwnetid/" 
-url_suffix = "/subscription/105" 
+url_prefix = "/nws/v1/uwnetid/"
+url_suffix = "/subscription/105"
 logger = logging.getLogger(__name__)
 
 
 def get_email_forwarding(netid):
     """
-    Return a restclients.models.uwnetid.UwEmailForwarding object 
+    Return a restclients.models.uwnetid.UwEmailForwarding object
     on the given uwnetid
     """
     url = "%s%s%s" % (url_prefix, netid, url_suffix)

@@ -1,5 +1,5 @@
 """
-This is the interface for interacting with 
+This is the interface for interacting with
 the uwnetid subscription web service.
 """
 

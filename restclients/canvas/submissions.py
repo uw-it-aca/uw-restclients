@@ -11,16 +11,16 @@ class Submissions(Canvas):
         https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.for_students
         """
         if is_section:
-            return self.get_submissions_multiple_assignments(is_section, 
-                                                 self._sis_id(sis_id, "section"), 
-                                                 students, 
+            return self.get_submissions_multiple_assignments(is_section,
+                                                 self._sis_id(sis_id, "section"),
+                                                 students,
                                                  assignments)
         else:
-            return self.get_submissions_multiple_assignments(is_section, 
-                                                 self._sis_id(sis_id, "course"), 
-                                                 students, 
+            return self.get_submissions_multiple_assignments(is_section,
+                                                 self._sis_id(sis_id, "course"),
+                                                 students,
                                                  assignments)
-        
+
     def get_submissions_multiple_assignments(self, is_section, course_id, students=None, assignments=None):
         """
         List submissions for multiple assignments by course/section id and optionally student

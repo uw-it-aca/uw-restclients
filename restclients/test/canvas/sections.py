@@ -1,5 +1,5 @@
 from django.test import TestCase
-from restclients.canvas.sections import Sections 
+from restclients.canvas.sections import Sections
 
 class CanvasTestSections(TestCase):
 

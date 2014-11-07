@@ -14,13 +14,13 @@ class formatorTest(TestCase):
 
 
     def test_full_month_date_str(self):
-        
+
         self.assertEquals(full_month_date_str(date(2014, 7, 4)),
                           'July 4, 2014')
-        
+
         self.assertEquals(full_month_date_str(date(2014, 6, 12)),
                           'June 12, 2014')
-                                            
+
 
     def test_time_str(self):
         self.assertEquals(time_str(datetime(2014, 7, 4, 0, 0)), '12:00 AM')
@@ -33,10 +33,10 @@ class formatorTest(TestCase):
     def test_abbr_month_date_time_str(self):
         self.assertEquals(abbr_month_date_time_str(datetime(2014, 7, 4, 3, 3)),
                           'Jul 4, 2014 at 3:03 AM')
-        
+
         self.assertEquals(abbr_month_date_time_str(datetime(2014, 6, 12, 17, 55)),
                           'Jun 12, 2014 at 5:55 PM')
-                                            
+
 
     def test_abbr_week_month_day_str(self):
         self.assertEquals(abbr_week_month_day_str(datetime(2014, 7, 4)),
@@ -53,7 +53,7 @@ class formatorTest(TestCase):
                           'Tue, Jun 17')
         self.assertEquals(abbr_week_month_day_str(datetime(2014, 6, 18)),
                           'Wed, Jun 18')
-                                            
+
 
     def test_last_midnight(self):
         now = datetime.now()
@@ -62,7 +62,7 @@ class formatorTest(TestCase):
 
 
     def test_is_today(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertTrue(is_today(now))
         self.assertTrue(is_today(last_midnight()))
         self.assertTrue(is_today(last_midnight()+timedelta(seconds=1)))
@@ -71,7 +71,7 @@ class formatorTest(TestCase):
 
 
     def test_is_yesterday(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertFalse(is_days_ago(last_midnight()+timedelta(seconds=1), 1))
         self.assertTrue(is_days_ago(last_midnight(), 1))
         self.assertTrue(is_days_ago(now-timedelta(days=1), 1))
@@ -84,7 +84,7 @@ class formatorTest(TestCase):
 
 
     def test_is_days_ago(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertTrue(is_days_ago(last_midnight()-timedelta(days=1), 2))
         self.assertTrue(
             is_days_ago(last_midnight()-timedelta(days=1)-timedelta(seconds=1), 2))
@@ -100,7 +100,7 @@ class formatorTest(TestCase):
 
 
     def test_is_a_week_ago(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertFalse(
             is_days_ago(last_midnight()-timedelta(days=6)+timedelta(seconds=1),7))
         self.assertTrue(is_days_ago(last_midnight()-timedelta(days=6),7))
@@ -114,7 +114,7 @@ class formatorTest(TestCase):
 
 
     def test_is_over_1_week_ago(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertFalse(
             get_past_weeks_count(now-timedelta(days=7))==1)
         self.assertFalse(
@@ -133,7 +133,7 @@ class formatorTest(TestCase):
 
 
     def test_is_over_2_weeks_ago(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertFalse(get_past_weeks_count(now-timedelta(days=14))==2)
         self.assertTrue(get_past_weeks_count(last_midnight()-timedelta(days=14))==2)
         self.assertTrue(get_past_weeks_count(now-timedelta(days=15))==2)
@@ -149,7 +149,7 @@ class formatorTest(TestCase):
         self.assertFalse(get_past_weeks_count(now-timedelta(days=22))==2)
 
     def test_is_over_3_weeks_ago(self):
-        now = datetime.now() 
+        now = datetime.now()
         self.assertFalse(get_past_weeks_count(now-timedelta(days=21))==3)
         self.assertTrue(get_past_weeks_count(last_midnight()-timedelta(days=21))==3)
         self.assertTrue(get_past_weeks_count(now-timedelta(days=22))==3)
@@ -228,7 +228,7 @@ class formatorTest(TestCase):
         self.assertFalse(get_past_years_count(last_midnight()-timedelta(days=365*3))==2)
         self.assertFalse(get_past_years_count(now-timedelta(days=1096))==2)
 
-            
+
     def test_past_datetime_str_today(self):
         now = datetime.now()
         t1 = datetime(now.year, now.month, now.day, 0, 0, 0)
@@ -248,73 +248,73 @@ class formatorTest(TestCase):
         t2 = datetime(day.year, day.month, day.day, 0, 0, 0)
         self.assertEquals(past_datetime_str(t2), 'yesterday at 12:00 AM')
         t2 = datetime(day.year, day.month, day.day, 1,)
-        self.assertEquals(past_datetime_str(t2), 'yesterday at 1:00 AM') 
+        self.assertEquals(past_datetime_str(t2), 'yesterday at 1:00 AM')
 
 
     def test_past_datetime_str_days_ago(self):
         day = datetime.now() - timedelta(days=2)
-        self.assertEquals(past_datetime_str(day), '2 days ago') 
+        self.assertEquals(past_datetime_str(day), '2 days ago')
 
         day = datetime.now() - timedelta(days=3)
-        self.assertEquals(past_datetime_str(day), '3 days ago') 
+        self.assertEquals(past_datetime_str(day), '3 days ago')
 
         day = datetime.now() - timedelta(days=4)
-        self.assertEquals(past_datetime_str(day), '4 days ago') 
+        self.assertEquals(past_datetime_str(day), '4 days ago')
 
         day = datetime.now() - timedelta(days=5)
-        self.assertEquals(past_datetime_str(day), '5 days ago') 
+        self.assertEquals(past_datetime_str(day), '5 days ago')
 
         day = datetime.now() - timedelta(days=6)
-        self.assertEquals(past_datetime_str(day), '6 days ago') 
+        self.assertEquals(past_datetime_str(day), '6 days ago')
 
 
     def test_past_datetime_str_a_week_ago(self):
         day = datetime.now() - timedelta(days=7)
-        self.assertEquals(past_datetime_str(day), '1 week ago') 
+        self.assertEquals(past_datetime_str(day), '1 week ago')
 
     def test_past_datetime_str_over_weeks_ago(self):
         day = datetime.now() - timedelta(days=8)
-        self.assertEquals(past_datetime_str(day), 'over 1 week ago') 
-        day = datetime.now() - timedelta(days=14) 
-        self.assertEquals(past_datetime_str(day), 'over 1 week ago') 
+        self.assertEquals(past_datetime_str(day), 'over 1 week ago')
+        day = datetime.now() - timedelta(days=14)
+        self.assertEquals(past_datetime_str(day), 'over 1 week ago')
 
-        day = last_midnight() - timedelta(days=14) 
-        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
-        day = datetime.now() - timedelta(days=15) 
-        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
-        day = datetime.now() - timedelta(days=21) 
-        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago') 
+        day = last_midnight() - timedelta(days=14)
+        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago')
+        day = datetime.now() - timedelta(days=15)
+        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago')
+        day = datetime.now() - timedelta(days=21)
+        self.assertEquals(past_datetime_str(day), 'over 2 weeks ago')
 
         day = last_midnight() - timedelta(days=21)
-        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago') 
+        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago')
         day = datetime.now() - timedelta(days=22)
-        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago') 
+        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago')
         day = datetime.now() - timedelta(days=28)
-        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago') 
+        self.assertEquals(past_datetime_str(day), 'over 3 weeks ago')
 
     def test_past_datetime_str_over_months_ago(self):
         day = datetime.now() - timedelta(days=29)
-        self.assertEquals(past_datetime_str(day), 'over 1 month ago') 
+        self.assertEquals(past_datetime_str(day), 'over 1 month ago')
         day = datetime.now() - timedelta(days=56)
-        self.assertEquals(past_datetime_str(day), 'over 1 month ago') 
+        self.assertEquals(past_datetime_str(day), 'over 1 month ago')
 
         day = datetime.now() - timedelta(days=57)
-        self.assertEquals(past_datetime_str(day), 'over 2 months ago') 
+        self.assertEquals(past_datetime_str(day), 'over 2 months ago')
         day = datetime.now() - timedelta(days=84)
-        self.assertEquals(past_datetime_str(day), 'over 2 months ago') 
+        self.assertEquals(past_datetime_str(day), 'over 2 months ago')
 
         day = datetime.now() - timedelta(days=85)
-        self.assertEquals(past_datetime_str(day), 'over 3 months ago') 
+        self.assertEquals(past_datetime_str(day), 'over 3 months ago')
         day = datetime.now() - timedelta(days=112)
-        self.assertEquals(past_datetime_str(day), 'over 3 months ago') 
-        
+        self.assertEquals(past_datetime_str(day), 'over 3 months ago')
+
     def test_past_datetime_str_over_years_ago(self):
         day = datetime.now() - timedelta(days=366)
-        self.assertEquals(past_datetime_str(day), 'over 1 year ago') 
+        self.assertEquals(past_datetime_str(day), 'over 1 year ago')
         day = datetime.now() - timedelta(days=730)
-        self.assertEquals(past_datetime_str(day), 'over 1 year ago') 
+        self.assertEquals(past_datetime_str(day), 'over 1 year ago')
 
         day = datetime.now() - timedelta(days=731)
-        self.assertEquals(past_datetime_str(day), 'over 2 years ago') 
+        self.assertEquals(past_datetime_str(day), 'over 2 years ago')
         day = datetime.now() - timedelta(days=1095)
-        self.assertEquals(past_datetime_str(day), 'over 2 years ago') 
+        self.assertEquals(past_datetime_str(day), 'over 2 years ago')

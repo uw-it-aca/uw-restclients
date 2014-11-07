@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.canvas.accounts import Accounts as Canvas 
+from restclients.canvas.accounts import Accounts as Canvas
 from restclients.exceptions import DataFailureException
 
 class CanvasTestAccounts(TestCase):

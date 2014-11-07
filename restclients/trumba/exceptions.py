@@ -52,7 +52,7 @@ class CalendarOwnByDiffAccount(TrumbaException):
 
 class ErrorCreatingEditor(TrumbaException):
     """
-    Exception when other errors occur on a creating editor request 
+    Exception when other errors occur on a creating editor request
     """
     pass
 

@@ -6,8 +6,8 @@ from django.conf import settings
 from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
-import datetime                                                                 
-import hashlib                                                                  
+import datetime
+import hashlib
 import pytz
 
 
