@@ -2,6 +2,7 @@ import random
 import re
 from django.test import TestCase
 from django.conf import settings
+# XXX - drop the v4 when there's a v5 implementation
 from restclients.sws.v4 import graderoster as sws_graderoster
 from restclients.sws import section as sws_section
 import restclients.sws.section as SectionSws
