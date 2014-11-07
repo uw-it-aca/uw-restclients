@@ -10,7 +10,7 @@ before_script:
   - cp travis-ci/manage.py manage.py
   - python manage.py syncdb --noinput
 script:
-  - pep8 --exclude=migrations restclients/
+#  - pep8 --exclude=migrations restclients/
   - coverage run --source=restclients manage.py test restclients
 after_script:
   - coveralls

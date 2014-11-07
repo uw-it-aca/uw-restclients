@@ -152,7 +152,10 @@ class SWSv4VSv5Test(TestCase):
 #        self.assertTrue(is_obj_list_eq(v4_get_account_balances_by_regid(), v5_get_account_balances_by_regid()))
 
     def test_get_grades_by_regid_and_term(self):
-        self.assertTrue(is_obj_list_eq(v4_get_grades_by_regid_and_term(), v5_get_grades_by_regid_and_term()))
+        t1 = v4_get_current_term()
+        t2 = v5_get_current_term()
+        r = "9136CCB8F66711D5BE060004AC494FFE"
+        self.assertTrue(is_obj_list_eq(v4_get_grades_by_regid_and_term(r, t1), v5_get_grades_by_regid_and_term(r, t2)))
 
     def test_get_enrollment_by_regid_and_term(self):
         t1 = v4_get_current_term()

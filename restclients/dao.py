@@ -50,6 +50,7 @@ class MY_DAO(DAO_BASE):
         cache_response = cache.getCache(service, url, headers)
         if cache_response != None:
             if "response" in cache_response:
+                print "Returning the cached version..."
                 return cache_response["response"]
             if "headers" in cache_response:
                 headers = cache_response["headers"]

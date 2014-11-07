@@ -205,62 +205,68 @@ def _json_to_schedule(term_data, term, regid,
     term_credit_hours = Decimal("0.0")
 
     enable_cache_entry_queueing()
-    for registration in term_data["Registrations"]:
-        reg_url = registration["Href"]
+    try:
+        for registration in term_data["Registrations"]:
+            reg_url = registration["Href"]
 
-        # Skip a step here, and go right to the course section resource
-        course_url = re.sub('registration', 'course', reg_url)
-        course_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', course_url)
-        course_url = re.sub(',([^,]*).json', '/\\1.json', course_url)
+            # Skip a step here, and go right to the course section resource
+            course_url = re.sub('registration', 'course', reg_url)
+            course_url = re.sub('^(.*?,.*?,.*?,.*?,.*?),.*', '\\1.json', course_url)
+            course_url = re.sub(',([^,]*).json', '/\\1.json', course_url)
 
-        thread = SWSThread()
-        thread.url = course_url
-        thread.reg_url = reg_url
-        thread.headers = {"Accept": "application/json"}
-        thread.start()
-        sws_threads.append(thread)
+            thread = SWSThread()
+            thread.url = course_url
+            thread.reg_url = reg_url
+            thread.headers = {"Accept": "application/json"}
+            thread.start()
+            sws_threads.append(thread)
 
-    for thread in sws_threads:
-        thread.join()
+        for thread in sws_threads:
+            thread.join()
 
-    for thread in sws_threads:
-        response = thread.response
-        if response.status != 200:
-            raise DataFailureException(thread.url,
-                                       response.status,
-                                       response.data)
+        for thread in sws_threads:
+            response = thread.response
+            if response.status != 200:
+                raise DataFailureException(thread.url,
+                                           response.status,
+                                           response.data)
 
-        section = _json_to_section(json.loads(response.data), term,
-                                   include_instructor_not_on_time_schedule)
+            section = _json_to_section(json.loads(response.data), term,
+                                       include_instructor_not_on_time_schedule)
 
-        _add_credits_grade_to_section(thread.reg_url, section)
-        if section.student_credits is not None:
-            term_credit_hours += section.student_credits
-        # For independent study courses, only include the one relevant
-        # instructor
-        if registration["Instructor"]:
-            actual_instructor = None
-            instructor_regid = registration["Instructor"]["RegID"]
+            _add_credits_grade_to_section(thread.reg_url, section)
+            if section.student_credits is not None:
+                term_credit_hours += section.student_credits
+            # For independent study courses, only include the one relevant
+            # instructor
+            if registration["Instructor"]:
+                actual_instructor = None
+                instructor_regid = registration["Instructor"]["RegID"]
 
-            for instructor in section.meetings[0].instructors:
-                if instructor.uwregid == instructor_regid:
-                    actual_instructor = instructor
+                for instructor in section.meetings[0].instructors:
+                    if instructor.uwregid == instructor_regid:
+                        actual_instructor = instructor
 
-            if actual_instructor:
-                section.meetings[0].instructors = [actual_instructor]
-            else:
-                section.meetings[0].instructors = []
-            section.independent_study_instructor_regid = registration["Instructor"]
-        sections.append(section)
+                if actual_instructor:
+                    section.meetings[0].instructors = [actual_instructor]
+                else:
+                    section.meetings[0].instructors = []
+                section.independent_study_instructor_regid = registration["Instructor"]
+            sections.append(section)
 
-    term.credits = term_credit_hours
-    term.section_count = len(sections)
-    schedule = ClassSchedule()
-    schedule.sections = sections
-    schedule.term = term
+        term.credits = term_credit_hours
+        term.section_count = len(sections)
+        schedule = ClassSchedule()
+        schedule.sections = sections
+        schedule.term = term
+        save_all_queued_entries()
+        disable_cache_entry_queueing()
 
-    save_all_queued_entries()
-    disable_cache_entry_queueing()
+    except Exception as ex:
+        save_all_queued_entries()
+        disable_cache_entry_queueing()
+
+        raise ex
     return schedule
 
 
