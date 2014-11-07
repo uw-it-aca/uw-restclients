@@ -2,7 +2,7 @@ import random
 import re
 from django.test import TestCase
 from django.conf import settings
-from restclients.sws import graderoster as sws_graderoster
+from restclients.sws.v4 import graderoster as sws_graderoster
 from restclients.sws import section as sws_section
 import restclients.sws.section as SectionSws
 from restclients.models.sws import Section

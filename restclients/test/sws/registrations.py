@@ -71,9 +71,9 @@ class SWSTestRegistrations(TestCase):
             for section in class_schedule.sections:
                 if section.section_label() == '2013,spring,TRAIN,100/A':
                     self.assertEquals(len(section.get_instructors()), 1)
-                    self.assertEquals(section.student_credits, 1.5)
-                    self.assertEquals(section.student_grade, "P")
-                    self.assertEquals(section.get_grade_date_str(), "2013-06-10")
+                    self.assertEquals(section.student_credits, 1.0)
+                    self.assertEquals(section.student_grade, "X")
+                    self.assertEquals(section.get_grade_date_str(), None)
 
                 if section.section_label() == '2013,spring,PHYS,121/AC':
                     self.assertEquals(section.student_credits, 3.0)

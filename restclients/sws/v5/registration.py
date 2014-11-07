@@ -14,7 +14,7 @@ from restclients.cache_manager import disable_cache_entry_queueing
 from restclients.cache_manager import save_all_queued_entries
 from restclients.pws import PWS
 from restclients.thread import Thread
-from restclients.sws import get_resource, SWSThread
+from restclients.sws import get_resource, SWSThread, deprecation
 from restclients.sws.v5.section import _json_to_section
 
 

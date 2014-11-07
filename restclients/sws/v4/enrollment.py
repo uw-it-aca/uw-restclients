@@ -7,7 +7,7 @@ from restclients.models.sws import Term
 from restclients.models.sws import StudentGrades, StudentCourseGrade
 from restclients.models.sws import Enrollment, Major, Minor
 from restclients.sws import get_resource
-from restclients.sws.section import get_section_by_url
+from restclients.sws.v4.section import get_section_by_url
 
 
 logger = logging.getLogger(__name__)
