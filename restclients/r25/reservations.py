@@ -63,9 +63,12 @@ def reservations_from_xml(tree):
             cnode = rnode.xpath("r25:contact", namespaces=nsmap)[0]
             reservation.contact_name = cnode.xpath("r25:contact_name",
                                                    namespaces=nsmap)[0].text
-            anode = cnode.xpath("r25:address", namespaces=nsmap)[0]
-            reservation.contact_email = anode.xpath("r25:email",
-                                                    namespaces=nsmap)[0].text
+            try:
+                anode = cnode.xpath("r25:address", namespaces=nsmap)[0]
+                reservation.contact_email = anode.xpath("r25:email",
+                                                        namespaces=nsmap)[0].text
+            except IndexError:
+                reservation.contact_email = None
 
         except IndexError:
             enode = tree.getparent()
