@@ -59,6 +59,14 @@ def reservations_from_xml(tree):
             reservation.event_name = enode.xpath("r25:event_name",
                                                  namespaces=nsmap)[0].text
 
+            rnode = enode.xpath("r25:role", namespaces=nsmap)[0]
+            cnode = rnode.xpath("r25:contact", namespaces=nsmap)[0]
+            reservation.contact_name = cnode.xpath("r25:contact_name",
+                                                   namespaces=nsmap)[0].text
+            anode = cnode.xpath("r25:address", namespaces=nsmap)[0]
+            reservation.contact_email = anode.xpath("r25:email",
+                                                    namespaces=nsmap)[0].text
+
         except IndexError:
             enode = tree.getparent()
             reservation.event_id = enode.xpath("r25:event_id",

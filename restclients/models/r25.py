@@ -89,6 +89,8 @@ class Reservation(models.Model):
     event_id = models.IntegerField(max_length=10)
     event_name = models.CharField(max_length=64)
     profile_name = models.CharField(max_length=32)
+    contact_name = models.CharField(max_length=64)
+    contact_email = models.CharField(max_length=64)
 
     def state_name(self):
         return dict(self.STATE_CHOICES)[self.state]
