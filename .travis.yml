@@ -10,7 +10,7 @@ before_script:
   - cp travis-ci/manage.py manage.py
   - python manage.py syncdb --noinput
 script:
-  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/util/,restclients/trumba/,restclients/dao_implementation,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/models/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/thread.py,restclients/pws.py,restclients/bookstore.py,restclients/exceptions.py,restclients/views.py,restclients/gws.py,restclients/dao.py,restclients/cache_manager.py,restclients/amazon_sqs.py,restclients/cache_implementation.py,restclients/sms.py,restclients/urls.py restclients/
+  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/util/,restclients/trumba/,restclients/dao_implementation,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/models/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/thread.py,restclients/pws.py,restclients/bookstore.py,restclients/exceptions.py,restclients/views.py,restclients/gws.py,restclients/dao.py,restclients/cache_manager.py,restclients/amazon_sqs.py,restclients/cache_implementation.py,restclients/sms.py,restclients/urls.py,restclients/library/ restclients/
   - coverage run --source=restclients manage.py test restclients
 after_script:
   - coveralls
