@@ -77,7 +77,7 @@ class SWSTestRegistrations(TestCase):
                     self.assertEquals(section.get_grade_date_str(), None)
 
                 if section.section_label() == '2013,spring,PHYS,121/AC':
-                    self.assertEquals(section.student_credits, 3.0)
+                    self.assertEquals(section.student_credits, Decimal("%s" % 3.0))
                     self.assertEquals(section.student_grade, "4.0")
                     self.assertEquals(section.get_grade_date_str(), "2013-06-11")
 
