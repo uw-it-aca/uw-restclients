@@ -111,7 +111,7 @@ def format_json(service, content):
     formatted = formatted.replace(" ", "&nbsp;")
     formatted = formatted.replace("\n", "<br/>\n")
 
-    formatted = re.sub(r"\"/(.*?)\"", r"<a href='/restclients/view/%s/\1'>/\1</a>" % service, formatted)
+    formatted = re.sub(r"\"/(.*?)\"", r'"<a href="/restclients/view/%s/\1">/\1</a>"' % service, formatted)
 
     return formatted
 
