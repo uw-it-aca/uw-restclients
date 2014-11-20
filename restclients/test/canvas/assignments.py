@@ -13,6 +13,8 @@ class CanvasTestAssignments(TestCase):
             self.assertEquals(assignment.name, "Assignment 1", "Assignment name")
             self.assertEquals(assignment.muted, False, "Assignment isn't muted")
             self.assertEquals(assignment.due_at.day, 1, "Due date")
+            self.assertEquals(assignment.grading_type, "points", "Grading type")
+            self.assertEquals(assignment.grading_standard_id, None, "Grading Standard ID")
 
     def test_assignment_by_course_sis_id(self):
         with self.settings(
