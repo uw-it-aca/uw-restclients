@@ -276,6 +276,8 @@ class Assignment(models.Model):
     integration_data = models.CharField(max_length=1500)
     due_at = models.DateTimeField(null=True)
     points_possible = models.IntegerField(max_length=8)
+    grading_type = models.CharField(max_length=20)
+    grading_standard_id = models.IntegerField(max_length=20, null=True)
     position = models.IntegerField(max_length=8)
     name = models.CharField(max_length=500)
     muted = models.BooleanField()
