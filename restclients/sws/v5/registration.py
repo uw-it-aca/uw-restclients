@@ -280,7 +280,7 @@ def _add_credits_grade_to_section(url, section):
 
         if len(section_reg_data['GradeDate']) > 0:
             section.grade_date = datetime.strptime(section_reg_data['GradeDate'],
-                                                   "%Y-%m-%d").date()
+                                                   "%m/%d/%Y").date()
         try:
             section.student_credits = Decimal(section_reg_data['Credits'].strip())
         except InvalidOperation:
