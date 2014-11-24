@@ -31,7 +31,10 @@ class Quizzes(Canvas):
     def _quiz_from_json(self, data):
         quiz = Quiz()
         quiz.quiz_id = data['id']
-        quiz.due_at = dateutil.parser.parse(data['due_at'])
+        try:
+            quiz.due_at = dateutil.parser.parse(data['due_at'])
+        except Exception as ex:
+            quiz.due_at = None
         quiz.title = data['title']
         quiz.html_url = data['html_url']
         quiz.published = data['published']
