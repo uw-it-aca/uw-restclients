@@ -43,7 +43,7 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_participation
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/activity.json" % sis_course_id
+        url = "/api/v1/courses/%s/analytics/activity.json" % self._sis_id(sis_course_id, sis_field="course")
         return self._get_resource(url)
 
     def get_assignments_by_course(self, course_id):
@@ -55,7 +55,7 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_assignments
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/assignments.json" % sis_course_id
+        url = "/api/v1/courses/%s/analytics/assignments.json" % self._sis_id(sis_course_id, sis_field="course")
         return self._get_resource(url)
 
     def get_student_summaries_by_course(self, course_id):
@@ -67,7 +67,7 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.course_student_summaries
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/student_summaries.json" % sis_course_id
+        url = "/api/v1/courses/%s/analytics/student_summaries.json" % self._sis_id(sis_course_id, sis_field="course")
         return self._get_resource(url)
 
     def get_student_activity_for_course(self, user_id, course_id):
@@ -79,8 +79,8 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_participation
         """
-        url = "/api/v1/sis_course_id:courses/%s/analytics/users/sis_user_id:%s/activity.json" % (
-            sis_course_id, sis_user_id)
+        url = "/api/v1/courses/%s/analytics/users/sis_user_id:%s/activity.json" % (
+            self._sis_id(sis_course_id, sis_field="course"), sis_user_id)
         return self._get_resource(url)
 
     def get_student_assignments_for_course(self, user_id, course_id):
@@ -92,8 +92,8 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_assignments
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/assignments.json" % (
-            sis_course_id, sis_user_id)
+        url = "/api/v1/courses/%s/analytics/users/sis_user_id:%s/assignments.json" % (
+            self._sis_id(sis_course_id, sis_field="course"), sis_user_id)
         return self._get_resource(url)
 
     def get_student_assignments_for_sis_course_id_and_canvas_user_id(self, sis_course_id, user_id):
@@ -103,8 +103,8 @@ class Analytics(Canvas):
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_assignments
         """
 
-        url = "/api/v1/courses/sis_course_id:%s/analytics/users/%s/assignments.json" % (
-            sis_course_id, user_id)
+        url = "/api/v1/courses/%s/analytics/users/%s/assignments.json" % (
+            self._sis_id(sis_course_id, sis_field="course"), user_id)
         return self._get_resource(url)
 
 
@@ -117,6 +117,6 @@ class Analytics(Canvas):
 
         https://canvas.instructure.com/doc/api/analytics.html#method.analytics_api.student_in_course_messaging
         """
-        url = "/api/v1/courses/sis_course_id:%s/analytics/users/sis_user_id:%s/communication.json" % (
-            sis_course_id, sis_user_id)
+        url = "/api/v1/courses/%s/analytics/users/sis_user_id:%s/communication.json" % (
+            self._sis_id(sis_course_id, sis_field="course"), sis_user_id)
         return self._get_resource(url)
