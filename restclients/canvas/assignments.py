@@ -44,7 +44,7 @@ class Assignments(Canvas):
         assignment.course_id = data['course_id']
         assignment.integration_id = data['integration_id']
         assignment.integration_data = data['integration_data']
-        if 'due_at' in data:
+        if 'due_at' in data and data['due_at']:
             assignment.due_at = dateutil.parser.parse(data['due_at'])
         assignment.points_possible = data['points_possible']
         assignment.grading_type = data['grading_type']
