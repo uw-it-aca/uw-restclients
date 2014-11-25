@@ -49,6 +49,7 @@ class TimedCache(object):
             response = MockHTTP()
             response.status = hit.status
             response.data = hit.content
+            response.headers = hit.getHeaders()
 
             return {
                 "response": response,
@@ -85,7 +86,14 @@ class TimedCache(object):
         cache_entry.url = url
         cache_entry.status = response.status
         cache_entry.content = response.data
-        cache_entry.headers = []
+
+        # This extra step is needed w/ Live resources because
+        # HTTPHeaderDict isn't serializable.
+        header_data = {}
+        for header in response.headers:
+            header_data[header] = response.getheader(header)
+
+        cache_entry.headers = header_data
         cache_entry.time_saved = now
 
         try:
