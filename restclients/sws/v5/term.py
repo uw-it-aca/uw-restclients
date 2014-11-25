@@ -144,7 +144,7 @@ def _json_to_term_model(term_data):
 
     term.registration_period2_start = parse_sws_date(term_data["RegistrationPeriods"][1]["StartDate"])
     term.registration_period2_end = parse_sws_date(term_data["RegistrationPeriods"][1]["EndDate"])
-q
+
     term.registration_period3_start = parse_sws_date(term_data["RegistrationPeriods"][2]["StartDate"])
     term.registration_period3_end = parse_sws_date(term_data["RegistrationPeriods"][2]["EndDate"])
 
