@@ -3,7 +3,7 @@ from restclients.models.canvas import DiscussionTopic, DiscussionEntry
 
 class Discussions(Canvas):
     def get_discussion_topics_for_sis_course_id(self, sis_course_id):
-        url = "/api/v1/courses/sis_course_id:%s/discussion_topics" % sis_course_id
+        url = "/api/v1/courses/%s/discussion_topics" % self._sis_id(sis_course_id, sis_field="course")
         data = self._get_resource(url)
 
         topics = []

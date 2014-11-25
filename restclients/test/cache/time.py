@@ -18,6 +18,35 @@ class TimeCacheTest(TestCase):
             term = get_current_term()
             get_schedule_by_regid_and_term('9136CCB8F66711D5BE060004AC494FFE', term)
 
+    def test_saved_headers(self):
+        with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                           RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
+                           RESTCLIENTS_DAO_CACHE_CLASS='restclients.cache_implementation.TimeSimpleCache'):
+
+            cache = TimeSimpleCache()
+
+            response = MockHTTP()
+            response.status = 200
+            response.data = "Cache testing"
+            response.headers = {
+                "link": "next,http://somewhere",
+                "Content-type": "text",
+                "random": "stuff",
+                "and": "more",
+            }
+
+            cache._process_response("cache_test", "/v1/headers", response)
+
+            from_db = cache._response_from_cache("cache_test", "/v1/headers", {}, 10)
+
+            self.assertEquals(from_db["response"].status, 200)
+            self.assertEquals(from_db["response"].data, "Cache testing")
+            self.assertEquals(from_db["response"].getheader("random"), "stuff")
+            self.assertEquals(from_db["response"].getheader("and"), "more")
+            self.assertEquals(from_db["response"].getheader("Content-type"), "text")
+            self.assertEquals(from_db["response"].getheader("link"), "next,http://somewhere")
+
+
     def test_simple_time(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                            RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',

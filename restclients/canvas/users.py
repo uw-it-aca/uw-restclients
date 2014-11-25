@@ -23,7 +23,7 @@ class Users(Canvas):
         """
         Returns a list of users for the given sis course id.
         """
-        url = "/api/v1/courses/sis_course_id:%s/users" % (sis_course_id)
+        url = "/api/v1/courses/%s/users" % (self._sis_id(sis_course_id, sis_field="course"))
         data = self._get_resource(url)
         users = []
         for entry in data:
