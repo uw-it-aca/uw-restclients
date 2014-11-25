@@ -3,7 +3,7 @@ This class interfaces with the Student Web Service, Term resource.
 """
 import logging
 from datetime import datetime
-from restclients.sws import get_resource, QUARTER_SEQ, get_current_sws_version
+from restclients.sws import get_resource, QUARTER_SEQ, get_current_sws_version, parse_sws_date
 from restclients.models.sws import Term as TermModel
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import TimeScheduleConstruction
@@ -102,36 +102,27 @@ def _json_to_term_model(term_data):
     term.year = term_data["Year"]
     term.quarter = term_data["Quarter"]
 
-    term.last_day_add = strptime(
-        term_data["LastAddDay"], day_format)
+    term.last_day_add = parse_sws_date(term_data["LastAddDay"])
 
-    term.first_day_quarter = strptime(
-        term_data["FirstDay"], day_format)
+    term.first_day_quarter = parse_sws_date(term_data["FirstDay"])
 
-    term.last_day_instruction = strptime(
-        term_data["LastDayOfClasses"], day_format)
+    term.last_day_instruction = parse_sws_date(term_data["LastDayOfClasses"])
 
-    term.last_day_drop = strptime(
-        term_data["LastDropDay"], day_format)
+    term.last_day_drop = parse_sws_date(term_data["LastDropDay"])
 
     if term_data["ATermLastDay"] is not None:
-        term.aterm_last_date = strptime(
-            term_data["ATermLastDay"], day_format)
+        term.aterm_last_date = parse_sws_date(term_data["ATermLastDay"])
 
     if term_data["BTermFirstDay"] is not None:
-        term.bterm_first_date = strptime(
-            term_data["BTermFirstDay"], day_format)
+        term.bterm_first_date = parse_sws_date(term_data["BTermFirstDay"])
 
     if term_data["LastAddDayATerm"] is not None:
-        term.aterm_last_day_add = strptime(
-            term_data["LastAddDayATerm"], day_format)
+        term.aterm_last_day_add = parse_sws_date(term_data["LastAddDayATerm"])
 
     if term_data["LastAddDayBTerm"] is not None:
-        term.bterm_last_day_add = strptime(
-            term_data["LastAddDayBTerm"], day_format)
+        term.bterm_last_day_add = parse_sws_date(term_data["LastAddDayBTerm"])
 
-    term.last_final_exam_date = strptime(
-        term_data["LastFinalExamDay"], day_format)
+    term.last_final_exam_date = parse_sws_date(term_data["LastFinalExamDay"])
 
     term.grading_period_open = strptime(
         term_data["GradingPeriodOpen"], datetime_format)
@@ -146,24 +137,16 @@ def _json_to_term_model(term_data):
     term.grade_submission_deadline = strptime(
         term_data["GradeSubmissionDeadline"], datetime_format)
 
+    term.registration_services_start = parse_sws_date(term_data["RegistrationServicesStart"])
 
-    term.registration_services_start = strptime(
-        term_data["RegistrationServicesStart"], day_format)
+    term.registration_period1_start = parse_sws_date(term_data["RegistrationPeriods"][0]["StartDate"])
+    term.registration_period1_end = parse_sws_date(term_data["RegistrationPeriods"][0]["EndDate"])
 
-    term.registration_period1_start = strptime(
-        term_data["RegistrationPeriods"][0]["StartDate"], day_format)
-    term.registration_period1_end= strptime(
-        term_data["RegistrationPeriods"][0]["EndDate"], day_format)
-
-    term.registration_period2_start = strptime(
-        term_data["RegistrationPeriods"][1]["StartDate"], day_format)
-    term.registration_period2_end= strptime(
-        term_data["RegistrationPeriods"][1]["EndDate"], day_format)
-
-    term.registration_period3_start = strptime(
-        term_data["RegistrationPeriods"][2]["StartDate"], day_format)
-    term.registration_period3_end= strptime(
-        term_data["RegistrationPeriods"][2]["EndDate"], day_format)
+    term.registration_period2_start = parse_sws_date(term_data["RegistrationPeriods"][1]["StartDate"])
+    term.registration_period2_end = parse_sws_date(term_data["RegistrationPeriods"][1]["EndDate"])
+q
+    term.registration_period3_start = parse_sws_date(term_data["RegistrationPeriods"][2]["StartDate"])
+    term.registration_period3_end = parse_sws_date(term_data["RegistrationPeriods"][2]["EndDate"])
 
     term.time_schedule_construction = []
     for campus in term_data["TimeScheduleConstruction"]:
