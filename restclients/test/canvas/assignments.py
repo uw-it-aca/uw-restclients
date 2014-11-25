@@ -29,3 +29,22 @@ class CanvasTestAssignments(TestCase):
             canvas = Assignments(as_user="730FA4DCAE3411D689DA0004AC494FFE")
             assignments = canvas.get_assignments_by_sis_id("2013-autumn-PHYS-248-A")
             self.assertEquals(len(assignments), 2, "Assignment Count")
+
+    def test_due_at_none(self):
+        data = {
+                "id": "id",
+                "course_id": "cid",
+                "integration_id": "X",
+                "integration_data": "data",
+                "points_possible": "data",
+                "grading_type": "data",
+                "grading_standard_id": "data",
+                "position": "data",
+                "name": "data",
+                "muted": "data",
+                "html_url": "data",
+                "due_at": None
+                }
+
+        assignment = Assignments()._assignment_from_json(data)
+
