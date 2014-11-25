@@ -46,6 +46,28 @@ def use_v5_resources():
         return True
     return False
 
+
+def parse_sws_date(date_string):
+    """
+    Takes a date from the SWS response object
+    and attempts to parse it using one of the several
+    datetime formats used by the SWS
+    :param date_string:
+    :return: date object
+    """
+    date_formats = ["%m/%d/%Y", "%Y-%m-%d", "%Y%m%d"]
+    datetime_obj = None
+    for fmt in date_formats:
+        try:
+            datetime_obj = datetime.strptime(date_string, fmt)
+        except ValueError:
+            continue
+        break
+    if datetime_obj is None:
+        raise ValueError("Unknown SWS date format")
+    return datetime_obj
+
+
 class SWSThread(Thread):
     url = None # the course url to send a request
     reg_url = None
