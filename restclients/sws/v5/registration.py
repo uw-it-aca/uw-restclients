@@ -14,7 +14,7 @@ from restclients.cache_manager import disable_cache_entry_queueing
 from restclients.cache_manager import save_all_queued_entries
 from restclients.pws import PWS
 from restclients.thread import Thread
-from restclients.sws import get_resource, SWSThread, deprecation
+from restclients.sws import get_resource, SWSThread, deprecation, parse_sws_date
 from restclients.sws.v5.section import _json_to_section
 
 
@@ -279,8 +279,7 @@ def _add_credits_grade_to_section(url, section):
         section.student_grade = section_reg_data['Grade']
 
         if len(section_reg_data['GradeDate']) > 0:
-            section.grade_date = datetime.strptime(section_reg_data['GradeDate'],
-                                                   "%Y-%m-%d").date()
+            section.grade_date = parse_sws_date(section_reg_data['GradeDate']).date()
         try:
             section.student_credits = Decimal(section_reg_data['Credits'].strip())
         except InvalidOperation:
