@@ -5,8 +5,6 @@ from restclients.test.util.date_formator import formatorTest
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
 
-from restclients.test.sws.v4_vs_v5 import SWSv4VSv5Test
-
 from restclients.test.sws.compatible import SWSTest
 from restclients.test.sws.financial import SWSFinance
 from restclients.test.sws.notice import SWSNotice
@@ -89,5 +87,3 @@ from restclients.test.r25.spaces import R25TestSpaces
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock
-
-from restclients.test.sws_version import SWSVersionTest
