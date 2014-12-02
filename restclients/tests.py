@@ -31,6 +31,8 @@ from restclients.test.sws.curriculum import SWSTestCurriculum
 
 from restclients.test.sws.graderoster import SWSTestGradeRoster
 
+from restclients.test.sws.dates import SWSTestDates
+
 from restclients.test.pws.person import PWSTestPersonData
 from restclients.test.pws.entity import PWSTestEntityData
 from restclients.test.pws.idcard import TestIdCardPhoto
