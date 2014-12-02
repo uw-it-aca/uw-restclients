@@ -1,0 +1,72 @@
+BEGIN:VCALENDAR
+PRODID:-//Trumba Corporation//Trumba Calendar Services 0.11.11919//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+X-WR-CALNAME:UW Seattle Academic Calendar|Commencement
+X-WR-TIMEZONE:America/Los_Angeles
+METHOD:PUBLISH
+BEGIN:VEVENT
+SUMMARY:Commencement for Seattle Campus
+DTSTART;VALUE=DATE:20150613
+DTEND;VALUE=DATE:20150614
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+URL:http://www.washington.edu/graduation/
+X-TRUMBA-CUSTOMFIELD;NAME="Event Type";ID=21;TYPE=number:Important Dates
+ /Deadlines
+X-TRUMBA-CUSTOMFIELD;NAME="Year";ID=30147;TYPE=CustomAsset:2015
+X-TRUMBA-CUSTOMFIELD;NAME="Quarter";ID=30148;TYPE=CustomAsset:Spring
+DTSTAMP:20140121T144710Z
+DESCRIPTION:Year: 2015\nQuarter: Spring\nLink: http://www.washington.edu
+ /graduation/
+CATEGORIES:Commencement
+UID:http://uid.trumba.com/event/108207677
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Commencement for Seattle Campus
+DTSTART;VALUE=DATE:20160610
+DTEND;VALUE=DATE:20160611
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+URL:http://www.washington.edu/graduation/
+X-TRUMBA-CUSTOMFIELD;NAME="Event Type";ID=21;TYPE=number:Important Dates
+ /Deadlines
+X-TRUMBA-CUSTOMFIELD;NAME="Year";ID=30147;TYPE=CustomAsset:2016
+X-TRUMBA-CUSTOMFIELD;NAME="Quarter";ID=30148;TYPE=CustomAsset:Spring
+DTSTAMP:20140121T145414Z
+DESCRIPTION:Year: 2016\nQuarter: Spring\nLink: http://www.washington.edu
+ /graduation/
+CATEGORIES:Commencement
+UID:http://uid.trumba.com/event/108848406
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Commencement for Seattle Campus
+DTSTART;VALUE=DATE:20170610
+DTEND;VALUE=DATE:20170611
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+URL:http://www.washington.edu/graduation/
+X-TRUMBA-CUSTOMFIELD;NAME="Event Type";ID=21;TYPE=number:Important Dates
+ /Deadlines
+X-TRUMBA-CUSTOMFIELD;NAME="Year";ID=30147;TYPE=CustomAsset:2017
+X-TRUMBA-CUSTOMFIELD;NAME="Quarter";ID=30148;TYPE=CustomAsset:Spring
+DTSTAMP:20140121T144728Z
+DESCRIPTION:Year: 2017\nQuarter: Spring\nLink: http://www.washington.edu
+ /graduation/
+CATEGORIES:Commencement
+UID:http://uid.trumba.com/event/108218057
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Commencement for Seattle Campus
+DTSTART;VALUE=DATE:20180609
+DTEND;VALUE=DATE:20180610
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+URL:http://www.washington.edu/graduation/
+X-TRUMBA-CUSTOMFIELD;NAME="Event Type";ID=21;TYPE=number:Important Dates
+ /Deadlines
+X-TRUMBA-CUSTOMFIELD;NAME="Year";ID=30147;TYPE=CustomAsset:2018
+X-TRUMBA-CUSTOMFIELD;NAME="Quarter";ID=30148;TYPE=CustomAsset:Spring
+DTSTAMP:20140121T144745Z
+DESCRIPTION:Year: 2018\nQuarter: Spring\nLink: http://www.washington.edu
+ /graduation/
+CATEGORIES:Commencement
+UID:http://uid.trumba.com/event/108218177
+END:VEVENT
+END:VCALENDAR
