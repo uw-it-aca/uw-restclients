@@ -13,6 +13,7 @@ from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
 from restclients.dao_implementation.trumba import FileSea
 from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
+from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.libraries import File as LibrariesFile
 from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
@@ -220,6 +221,13 @@ class Uwnetid_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_UWNETID_DAO_CLASS', UwnetidFile)
+
+class TrumbaCalendar_DAO(MY_DAO):
+    def getURL(self, url, headers=None):
+        return self._getURL('calendar', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_CALENDAR_DAO_CLASS', CalendarFile)
 
 
 class TrumbaBot_DAO(MY_DAO):
