@@ -2,7 +2,8 @@ from django.conf import settings
 from restclients.canvas import Canvas
 from restclients.dao import Canvas_DAO
 from restclients.exceptions import DataFailureException
-from restclients.models.canvas import Report, ReportType, Attachment
+from restclients.models.canvas import CanvasReport, CanvasReportType
+from restclients.models.canvas import CanvasAttachment
 from urllib3 import PoolManager
 from time import sleep
 import json

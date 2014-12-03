@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import Account
+from restclients.models.canvas import CanvasAccount
 
 
 class Accounts(Canvas):
@@ -69,7 +69,7 @@ class Accounts(Canvas):
         return self._account_from_json(data)
 
     def _account_from_json(self, data):
-        account = Account()
+        account = CanvasAccount()
         account.account_id = data["id"]
         account.sis_account_id = data["sis_account_id"] if "sis_account_id" in data else None
         account.name = data["name"]

@@ -2,7 +2,7 @@ from django.conf import settings
 from restclients.dao import Canvas_DAO
 from restclients.canvas import Canvas
 from restclients.exceptions import DataFailureException
-from restclients.models.canvas import SISImport as SISImportModel
+from restclients.models.canvas import CanvasSISImport as SISImportModel
 import zipfile
 import json
 import os

@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Account(models.Model):
+class CanvasAccount(models.Model):
     account_id = models.IntegerField(max_length=20)
     sis_account_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=500)
@@ -12,7 +12,7 @@ class Account(models.Model):
         db_table = "restclients_canvas_account"
 
 
-class Role(models.Model):
+class CanvasRole(models.Model):
     role = models.CharField(max_length=200)
     base_role_type = models.CharField(max_length=200)
     workflow_state = models.CharField(max_length=50)
@@ -41,7 +41,7 @@ class CanvasTerm(models.Model):
         db_table = "restclients_canvas_term"
 
 
-class Course(models.Model):
+class CanvasCourse(models.Model):
     course_id = models.IntegerField(max_length=20)
     sis_course_id = models.CharField(max_length=100, null=True)
     account_id = models.IntegerField(max_length=20)
@@ -145,7 +145,7 @@ class CanvasEnrollment(models.Model):
         db_table = "restclients_canvas_enrollment"
 
 
-class Attachment(models.Model):
+class CanvasAttachment(models.Model):
     attachment_id = models.IntegerField(max_length=20)
     filename = models.CharField(max_length=100)
     display_name = models.CharField(max_length=200)
@@ -157,20 +157,20 @@ class Attachment(models.Model):
         db_table = "restclients_canvas_attachment"
 
 
-class Report(models.Model):
+class CanvasReport(models.Model):
     report_id = models.IntegerField(max_length=20)
     account_id = models.IntegerField(max_length=20)
     type = models.CharField(max_length=500)
     url = models.CharField(max_length=500)
     status = models.CharField(max_length=50)
     progress = models.SmallIntegerField(max_length=3, default=0)
-    attachment = models.ForeignKey(Attachment, null=True)
+    attachment = models.ForeignKey(CanvasAttachment, null=True)
 
     class Meta:
         db_table = "restclients_canvas_report"
 
 
-class ReportType(models.Model):
+class CanvasReportType(models.Model):
     PROVISIONING = "provisioning_csv"
     SIS_EXPORT = "sis_export_csv"
     UNUSED_COURSES = "unused_courses_csv"
@@ -188,7 +188,7 @@ class ReportType(models.Model):
         db_table = "restclients_canvas_reporttype"
 
 
-class SISImport(models.Model):
+class CanvasSISImport(models.Model):
     CSV_IMPORT_TYPE = "instructure_csv"
 
     import_id = models.IntegerField(max_length=20)
@@ -199,7 +199,7 @@ class SISImport(models.Model):
         db_table = "restclients_canvas_sisimport"
 
 
-class User(models.Model):
+class CanvasUser(models.Model):
     user_id = models.IntegerField(max_length=20)
     name = models.CharField(max_length=100, null=True)
     short_name = models.CharField(max_length=100, null=True)
@@ -224,7 +224,7 @@ class User(models.Model):
         db_table = "restclients_canvas_user"
 
 
-class Login(models.Model):
+class CanvasLogin(models.Model):
     login_id = models.IntegerField(max_length=20)
     account_id = models.IntegerField(max_length=20)
     sis_user_id = models.CharField(max_length=100, null=True)
@@ -239,16 +239,16 @@ class Login(models.Model):
         db_table = "restclients_canvas_login"
 
 
-class Admin(models.Model):
+class CanvasAdmin(models.Model):
     admin_id = models.IntegerField(max_length=20)
     role = models.CharField(max_length=100)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(CanvasUser)
 
     class Meta:
         db_table = "restclients_canvas_admin"
 
 
-class Submission(models.Model):
+class CanvasSubmission(models.Model):
     submission_id = models.IntegerField(max_length=20)
     body = models.TextField(null=True)
     attempt = models.IntegerField(max_length=2)
@@ -269,7 +269,7 @@ class Submission(models.Model):
         db_table = "restclients_canvas_submission"
 
 
-class Assignment(models.Model):
+class CanvasAssignment(models.Model):
     assignment_id = models.IntegerField(max_length=20)
     course_id = models.IntegerField(max_length=20)
     integration_id = models.CharField(max_length=200)
@@ -292,7 +292,7 @@ class Assignment(models.Model):
         db_table = "restclients_canvas_assignment"
 
 
-class Quiz(models.Model):
+class CanvasQuiz(models.Model):
     quiz_id = models.IntegerField(max_length=20)
     due_at = models.DateTimeField()
     title = models.CharField(max_length=500)
@@ -303,7 +303,7 @@ class Quiz(models.Model):
         db_table ="restclients_canvas_quiz"
 
 
-class GradingStandard(models.Model):
+class CanvasGradingStandard(models.Model):
     COURSE_CONTEXT = "Course"
     ACCOUNT_CONTEXT = "Account"
 
@@ -319,12 +319,12 @@ class GradingStandard(models.Model):
     grading_scheme = models.TextField()
 
 
-class DiscussionTopic(models.Model):
+class CanvasDiscussionTopic(models.Model):
     topic_id = models.IntegerField(max_length=20)
     html_url = models.CharField(max_length=500, null=True)
     course_id = models.IntegerField()
 
 
-class DiscussionEntry(models.Model):
+class CanvasDiscussionEntry(models.Model):
     entry_id = models.IntegerField()
     user_id = models.IntegerField()
