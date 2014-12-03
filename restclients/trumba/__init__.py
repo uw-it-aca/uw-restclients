@@ -8,11 +8,27 @@ import logging
 import json
 import time
 from lxml import etree
+from icalendar import Calendar, Event
 from restclients.dao import TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
+from restclients.dao import TrumbaCalendar_DAO
 from restclients.util.timer import Timer
 from restclients.util.log import log_info, log_err
+from restclients.exceptions import DataFailureException
 
 logger = logging.getLogger(__name__)
+
+
+def get_calendar_by_name(calendar_name):
+    url = "/calendars/%s.ics" % calendar_name
+
+    response = TrumbaCalendar_DAO().getURL(url)
+
+    if response.status != 200:
+        raise DataFailureException(url, response.status, response.data)
+
+    calendar = Calendar.from_ical(response.data)
+
+    return calendar
 
 
 def _log_xml_resp(campus, url, response, timer):
