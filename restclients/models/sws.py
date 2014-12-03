@@ -438,6 +438,7 @@ class Section(models.Model):
             'curriculum_abbr': self.curriculum_abbr,
             'course_number': self.course_number,
             'section_id': self.section_id,
+            'is_primary_section': self.is_primary_section,
             'course_title': self.course_title,
             'course_campus': self.course_campus,
             'class_website_url': self.class_website_url,

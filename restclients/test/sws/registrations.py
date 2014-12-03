@@ -75,11 +75,13 @@ class SWSTestRegistrations(TestCase):
                     self.assertEquals(section.student_credits, Decimal("%s" % 1.0))
                     self.assertEquals(section.student_grade, "X")
                     self.assertEquals(section.get_grade_date_str(), None)
+                    self.assertTrue(section.is_primary_section)
 
                 if section.section_label() == '2013,spring,PHYS,121/AC':
                     self.assertEquals(section.student_credits, Decimal("%s" % 3.0))
                     self.assertEquals(section.student_grade, "4.0")
                     self.assertEquals(section.get_grade_date_str(), "2013-06-11")
+                    self.assertFalse(section.is_primary_section)
 
             class_schedule = get_schedule_by_regid_and_term(
                 '9136CCB8F66711D5BE060004AC494FFE',
