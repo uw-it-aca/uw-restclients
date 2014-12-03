@@ -158,7 +158,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     used_price = models.DecimalField(max_digits=7, decimal_places=2)
-    is_required = models.BooleanField()
+    is_required = models.NullBooleanField()
     notes = models.TextField()
     cover_image_url = models.CharField(max_length=2048)
 

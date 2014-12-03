@@ -50,7 +50,7 @@ class Course(models.Model):
     name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
     workflow_state = models.CharField(max_length=50)
-    public_syllabus = models.BooleanField()
+    public_syllabus = models.NullBooleanField()
     syllabus_body = models.TextField(null=True)
 
     def sws_course_id(self):
@@ -256,10 +256,10 @@ class Submission(models.Model):
     assignment_id = models.IntegerField(max_length=20)
     workflow_state = models.CharField(max_length=100, null=True)
     preview_url = models.CharField(max_length=500)
-    late = models.BooleanField()
+    late = models.NullBooleanField()
     grade = models.TextField(max_length=12, null=True)
     score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    grade_matches_current_submission = models.BooleanField()
+    grade_matches_current_submission = models.NullBooleanField()
     url = models.CharField(max_length=500, null=True)
     grader_id = models.IntegerField(max_length=20)
     graded_at = models.DateTimeField(null=True)
@@ -280,7 +280,7 @@ class Assignment(models.Model):
     grading_standard_id = models.IntegerField(max_length=20, null=True)
     position = models.IntegerField(max_length=8)
     name = models.CharField(max_length=500)
-    muted = models.BooleanField()
+    muted = models.NullBooleanField()
     html_url = models.CharField(max_length=500, null=True)
 
     def json_data(self):
@@ -297,7 +297,7 @@ class Quiz(models.Model):
     due_at = models.DateTimeField()
     title = models.CharField(max_length=500)
     html_url = models.CharField(max_length=500, null=True)
-    published = models.BooleanField()
+    published = models.NullBooleanField()
 
     class Meta:
         db_table ="restclients_canvas_quiz"
