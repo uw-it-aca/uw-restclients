@@ -21,7 +21,7 @@ class Role(models.Model):
         db_table = "restclients_canvas_role"
 
 
-class Term(models.Model):
+class CanvasTerm(models.Model):
     term_id = models.IntegerField(max_length=20)
     sis_term_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=100)
@@ -45,7 +45,7 @@ class Course(models.Model):
     course_id = models.IntegerField(max_length=20)
     sis_course_id = models.CharField(max_length=100, null=True)
     account_id = models.IntegerField(max_length=20)
-    term = models.ForeignKey(Term, null=True)
+    term = models.ForeignKey(CanvasTerm, null=True)
     code = models.CharField(max_length=100)
     name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
@@ -70,7 +70,7 @@ class Course(models.Model):
         db_table = "restclients_canvas_course"
 
 
-class Section(models.Model):
+class CanvasSection(models.Model):
     section_id = models.IntegerField(max_length=20)
     sis_section_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=200)
@@ -81,7 +81,7 @@ class Section(models.Model):
         db_table = "restclients_canvas_section"
 
 
-class Enrollment(models.Model):
+class CanvasEnrollment(models.Model):
     STUDENT = "StudentEnrollment"
     TEACHER = "TeacherEnrollment"
     TA = "TaEnrollment"

@@ -19,7 +19,7 @@ from restclients.models.gws import CourseGroup as gwsCourseGroup
 from restclients.models.gws import GroupUser as gwsGroupUser
 from restclients.models.gws import GroupMember as gwsGroupMember
 from restclients.models.canvas import Course as canvasCourse
-from restclients.models.canvas import Enrollment as canvasEnrollment
+from restclients.models.canvas import CanvasEnrollment as canvasEnrollment
 
 
 # These aliases are here for backwards compatibility

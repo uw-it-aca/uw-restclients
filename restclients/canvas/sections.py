@@ -1,6 +1,6 @@
 from restclients.canvas import Canvas
 from restclients.canvas.users import Users
-from restclients.models.canvas import Section
+from restclients.models.canvas import CanvasSection
 
 
 class Sections(Canvas):
@@ -77,7 +77,7 @@ class Sections(Canvas):
         return self._section_from_json(data)
 
     def _section_from_json(self, data):
-        section = Section()
+        section = CanvasSection()
         section.section_id = data["id"]
         section.sis_section_id = data["sis_section_id"] if "sis_section_id" in data else None
         section.name = data["name"]

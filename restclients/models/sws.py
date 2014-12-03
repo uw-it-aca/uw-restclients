@@ -136,7 +136,7 @@ class SwsPerson(models.Model):
     uwnetid = models.SlugField(max_length=16,
                                db_index=True,
                                unique=True)
-    directory_release = models.BooleanField(null=True)
+    directory_release = models.NullBooleanField(null=True)
     employee_id = models.SlugField(max_length=16, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=1, null=True, blank=True)
@@ -150,11 +150,13 @@ class SwsPerson(models.Model):
                                       null=True)
     local_address = models.ForeignKey(StudentAddress,
                                       on_delete=models.PROTECT,
-                                      null=True)
+                                      null=True,
+                                      related_name='local_address')
     local_phone = models.CharField(max_length=64, null=True, blank=True)
     permanent_address = models.ForeignKey(StudentAddress,
                                       on_delete=models.PROTECT,
-                                      null=True)
+                                      null=True,
+                                      related_name='permanent_address')
     permanent_phone = models.CharField(max_length=64, null=True, blank=True)
     visa_type = models.CharField(max_length=2, null=True, blank=True)
 

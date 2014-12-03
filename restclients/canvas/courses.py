@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import Course, Term
+from restclients.models.canvas import Course, CanvasTerm
 import re
 
 
@@ -115,7 +115,7 @@ class Courses(Canvas):
 
         # Optional attributes specified in the course URL
         if "term" in data:
-            course.term = Term(term_id=data["term"]["id"],
+            course.term = CanvasTerm(term_id=data["term"]["id"],
                                sis_term_id=data["term"]["sis_term_id"],
                                name=data["term"]["name"])
 
