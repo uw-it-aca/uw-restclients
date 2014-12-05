@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from restclients.exceptions import DataFailureException
 from restclients.sws.term import get_term_by_year_and_quarter, get_term_before, get_term_after
 from restclients.sws.term import get_current_term, get_next_term, get_previous_term
+from restclients.sws.term import get_term_by_date
 
 
 class SWSTestTerm(TestCase):
@@ -361,3 +362,44 @@ class SWSTestTerm(TestCase):
 
             term = get_previous_term()
             self.assertEquals(term.canvas_sis_id(), '2013-winter', 'Canvas SIS ID')
+
+    def test_by_date(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File'):
+
+            date = datetime.strptime("2013-01-10", "%Y-%m-%d").date()
+            term = get_term_by_date(date)
+
+            self.assertEquals(term.year, 2013)
+            self.assertEquals(term.quarter, 'winter')
+
+            date = datetime.strptime("2013-01-01", "%Y-%m-%d").date()
+            term = get_term_by_date(date)
+
+            self.assertEquals(term.year, 2012)
+            self.assertEquals(term.quarter, 'autumn')
+
+            date = datetime.strptime("2013-01-07", "%Y-%m-%d").date()
+            term = get_term_by_date(date)
+
+            self.assertEquals(term.year, 2013)
+            self.assertEquals(term.quarter, 'winter')
+
+            date = datetime.strptime("2013-01-06", "%Y-%m-%d").date()
+            term = get_term_by_date(date)
+
+            self.assertEquals(term.year, 2012)
+            self.assertEquals(term.quarter, 'autumn')
+
+            date = datetime.strptime("2013-07-04", "%Y-%m-%d").date()
+            term = get_term_by_date(date)
+
+            self.assertEquals(term.year, 2013)
+            self.assertEquals(term.quarter, 'summer')
+
+            date = datetime.strptime("2013-12-31", "%Y-%m-%d").date()
+            term = get_term_by_date(date)
+
+            self.assertEquals(term.year, 2013)
+            self.assertEquals(term.quarter, 'autumn')
+
