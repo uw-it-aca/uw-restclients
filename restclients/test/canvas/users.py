@@ -1,6 +1,6 @@
 from django.test import TestCase
 from restclients.canvas.users import Users
-from restclients.models.canvas import CanvasUser
+from restclients.models.canvas import User
 
 
 class CanvasTestUsers(TestCase):
@@ -32,7 +32,7 @@ class CanvasTestUsers(TestCase):
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
             canvas = Users()
 
-            new_user = CanvasUser(name="J AVG USR", login_id="testid99",
+            new_user = User(name="J AVG USR", login_id="testid99",
                             sis_user_id="DEB35E0A465242CF9C5CDBC108050EC0",
                             email="testid99@foo.com", locale="en")
 

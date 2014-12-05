@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasSubmission
+from restclients.models.canvas import Submission
 import dateutil.parser
 
 
@@ -45,7 +45,7 @@ class Submissions(Canvas):
         return submissions
 
     def _submission_from_json(self, data):
-        submission = CanvasSubmission()
+        submission = Submission()
         submission.submission_id = data['id']
         submission.body = data['body']
         submission.attempt = data['attempt']

@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasAssignment
+from restclients.models.canvas import Assignment
 import dateutil.parser
 
 
@@ -39,7 +39,7 @@ class Assignments(Canvas):
         return self._assignment_from_json(data)
 
     def _assignment_from_json(self, data):
-        assignment = CanvasAssignment()
+        assignment = Assignment()
         assignment.assignment_id = data['id']
         assignment.course_id = data['course_id']
         assignment.integration_id = data['integration_id']

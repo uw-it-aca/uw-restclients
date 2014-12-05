@@ -1,6 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasDiscussionTopic
-from restclients.models.canvas import CanvasDiscussionEntry
+from restclients.models.canvas import DiscussionTopic, DiscussionEntry
 
 class Discussions(Canvas):
     def get_discussion_topics_for_sis_course_id(self, sis_course_id):

@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasGradingStandard
+from restclients.models.canvas import GradingStandard
 
 
 class GradingStandards(Canvas):

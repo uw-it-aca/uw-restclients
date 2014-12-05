@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasQuiz
+from restclients.models.canvas import Quiz
 import dateutil.parser
 
 
@@ -29,7 +29,7 @@ class Quizzes(Canvas):
         return quizzes
 
     def _quiz_from_json(self, data):
-        quiz = CanvasQuiz()
+        quiz = Quiz()
         quiz.quiz_id = data['id']
         try:
             quiz.due_at = dateutil.parser.parse(data['due_at'])

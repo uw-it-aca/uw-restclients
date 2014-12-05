@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasCourse, CanvasTerm
+from restclients.models.canvas import Course, CanvasTerm
 import re
 
 
@@ -100,7 +100,7 @@ class Courses(Canvas):
         return self._course_from_json(data)
 
     def _course_from_json(self, data):
-        course = CanvasCourse()
+        course = Course()
         course.course_id = data["id"]
         course.sis_course_id = data["sis_course_id"] if "sis_course_id" in data else None
         course.account_id = data["account_id"]
