@@ -1,6 +1,6 @@
 from restclients.canvas import Canvas
 from restclients.canvas.courses import Courses
-from restclients.models.canvas import Enrollment
+from restclients.models.canvas import CanvasEnrollment
 import re
 
 
@@ -92,7 +92,7 @@ class Enrollments(Canvas):
         return self._enrollment_from_json(data)
 
     def _enrollment_from_json(self, data):
-        enrollment = Enrollment()
+        enrollment = CanvasEnrollment()
         enrollment.user_id = data["user_id"]
         enrollment.course_id = data["course_id"]
         enrollment.section_id = data["course_section_id"]

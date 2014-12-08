@@ -1,6 +1,6 @@
 from restclients.canvas import Canvas
 from restclients.canvas.users import Users
-from restclients.models.canvas import Admin
+from restclients.models.canvas import CanvasAdmin
 from restclients.exceptions import DataFailureException
 from restclients.dao import Canvas_DAO
 from urllib import quote, unquote
@@ -72,7 +72,7 @@ class Admins(Canvas):
         return self.delete_admin(self._sis_id(sis_account_id), user_id, role)
 
     def _admin_from_json(delf, data):
-        admin = Admin()
+        admin = CanvasAdmin()
         admin.admin_id = data["id"]
         admin.role = data["role"]
         admin.user = Users()._user_from_json(data["user"])

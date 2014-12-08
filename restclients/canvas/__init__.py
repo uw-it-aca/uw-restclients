@@ -3,7 +3,7 @@ This is the interface for interacting with Instructure's Canvas web services.
 """
 from django.conf import settings
 from restclients.dao import Canvas_DAO
-from restclients.models.canvas import Course, Term
+from restclients.models.canvas import CanvasTerm
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
 import warnings
@@ -55,7 +55,7 @@ class Canvas(object):
 
         for term in data["enrollment_terms"]:
             if term["sis_term_id"] == sis_term_id:
-                term = Term(term_id=term["id"],
+                term = CanvasTerm(term_id=term["id"],
                             sis_term_id=term["sis_term_id"],
                             name=term["name"])
                 return term

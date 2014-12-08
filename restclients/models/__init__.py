@@ -18,8 +18,8 @@ from restclients.models.gws import Group as gwsGroup
 from restclients.models.gws import CourseGroup as gwsCourseGroup
 from restclients.models.gws import GroupUser as gwsGroupUser
 from restclients.models.gws import GroupMember as gwsGroupMember
-from restclients.models.canvas import Course as canvasCourse
-from restclients.models.canvas import Enrollment as canvasEnrollment
+from restclients.models.canvas import CanvasCourse as canvasCourse
+from restclients.models.canvas import CanvasEnrollment as canvasEnrollment
 
 
 # These aliases are here for backwards compatibility
@@ -103,12 +103,12 @@ def GroupMember(*args, **kwargs):
 
 
 def CanvasCourse(*args, **kwargs):
-    deprecation("Use restclients.models.canvas.Course")
+    deprecation("Use restclients.models.canvas.CanvasCourse")
     return canvasCourse(*args, **kwargs)
 
 
 def CanvasEnrollment(*args, **kwargs):
-    deprecation("Use restclients.models.canvas.Enrollment")
+    deprecation("Use restclients.models.canvas.CanvasEnrollment")
     return canvasEnrollment(*args, **kwargs)
 
 
@@ -158,7 +158,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     used_price = models.DecimalField(max_digits=7, decimal_places=2)
-    is_required = models.BooleanField()
+    is_required = models.NullBooleanField()
     notes = models.TextField()
     cover_image_url = models.CharField(max_length=2048)
 

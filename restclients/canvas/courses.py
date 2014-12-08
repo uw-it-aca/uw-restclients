@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import Course, Term
+from restclients.models.canvas import CanvasCourse, CanvasTerm
 import re
 
 
@@ -100,7 +100,7 @@ class Courses(Canvas):
         return self._course_from_json(data)
 
     def _course_from_json(self, data):
-        course = Course()
+        course = CanvasCourse()
         course.course_id = data["id"]
         course.sis_course_id = data["sis_course_id"] if "sis_course_id" in data else None
         course.account_id = data["account_id"]
@@ -115,7 +115,7 @@ class Courses(Canvas):
 
         # Optional attributes specified in the course URL
         if "term" in data:
-            course.term = Term(term_id=data["term"]["id"],
+            course.term = CanvasTerm(term_id=data["term"]["id"],
                                sis_term_id=data["term"]["sis_term_id"],
                                name=data["term"]["name"])
 
