@@ -18,7 +18,7 @@ from restclients.models.gws import Group as gwsGroup
 from restclients.models.gws import CourseGroup as gwsCourseGroup
 from restclients.models.gws import GroupUser as gwsGroupUser
 from restclients.models.gws import GroupMember as gwsGroupMember
-from restclients.models.canvas import Course as canvasCourse
+from restclients.models.canvas import CanvasCourse as canvasCourse
 from restclients.models.canvas import CanvasEnrollment as canvasEnrollment
 
 
@@ -103,12 +103,12 @@ def GroupMember(*args, **kwargs):
 
 
 def CanvasCourse(*args, **kwargs):
-    deprecation("Use restclients.models.canvas.Course")
+    deprecation("Use restclients.models.canvas.CanvasCourse")
     return canvasCourse(*args, **kwargs)
 
 
 def CanvasEnrollment(*args, **kwargs):
-    deprecation("Use restclients.models.canvas.Enrollment")
+    deprecation("Use restclients.models.canvas.CanvasEnrollment")
     return canvasEnrollment(*args, **kwargs)
 
 

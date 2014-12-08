@@ -3,7 +3,7 @@ This is the interface for interacting with Instructure's Canvas web services.
 """
 from django.conf import settings
 from restclients.dao import Canvas_DAO
-from restclients.models.canvas import Course, CanvasTerm
+from restclients.models.canvas import CanvasTerm
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
 import warnings

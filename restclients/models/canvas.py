@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Account(models.Model):
+class CanvasAccount(models.Model):
     account_id = models.IntegerField(max_length=20)
     sis_account_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=500)
@@ -12,7 +12,7 @@ class Account(models.Model):
         db_table = "restclients_canvas_account"
 
 
-class Role(models.Model):
+class CanvasRole(models.Model):
     role = models.CharField(max_length=200)
     base_role_type = models.CharField(max_length=200)
     workflow_state = models.CharField(max_length=50)
@@ -41,7 +41,7 @@ class CanvasTerm(models.Model):
         db_table = "restclients_canvas_term"
 
 
-class Course(models.Model):
+class CanvasCourse(models.Model):
     course_id = models.IntegerField(max_length=20)
     sis_course_id = models.CharField(max_length=100, null=True)
     account_id = models.IntegerField(max_length=20)
@@ -199,7 +199,7 @@ class SISImport(models.Model):
         db_table = "restclients_canvas_sisimport"
 
 
-class User(models.Model):
+class CanvasUser(models.Model):
     user_id = models.IntegerField(max_length=20)
     name = models.CharField(max_length=100, null=True)
     short_name = models.CharField(max_length=100, null=True)
@@ -239,10 +239,10 @@ class Login(models.Model):
         db_table = "restclients_canvas_login"
 
 
-class Admin(models.Model):
+class CanvasAdmin(models.Model):
     admin_id = models.IntegerField(max_length=20)
     role = models.CharField(max_length=100)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(CanvasUser)
 
     class Meta:
         db_table = "restclients_canvas_admin"

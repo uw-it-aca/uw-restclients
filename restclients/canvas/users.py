@@ -1,6 +1,6 @@
 from django.conf import settings
 from restclients.canvas import Canvas
-from restclients.models.canvas import User, Login
+from restclients.models.canvas import CanvasUser, Login
 
 
 class Users(Canvas):
@@ -82,7 +82,7 @@ class Users(Canvas):
         return self._login_from_json(data)
 
     def _user_from_json(self, data):
-        user = User()
+        user = CanvasUser()
         user.user_id = data["id"]
         user.name = data["name"]
         user.short_name = data["short_name"] if "short_name" in data else None

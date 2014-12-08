@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.models.canvas import CanvasEnrollment, Course
+from restclients.models.canvas import CanvasEnrollment, CanvasCourse
 from restclients.exceptions import DataFailureException
 
 class CanvasBadSISIDs(TestCase):
@@ -18,7 +18,7 @@ class CanvasBadSISIDs(TestCase):
         with self.settings(
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
 
-            course = Course()
+            course = CanvasCourse()
             course.sis_id = "2013-winter-CHEM-121"
             sws_id = course.sws_course_id()
 
