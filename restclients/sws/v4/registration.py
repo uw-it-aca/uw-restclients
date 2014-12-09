@@ -278,7 +278,7 @@ def _add_credits_grade_to_section(url, section):
     section_reg_data = get_resource(url)
     if section_reg_data is not None:
         section.student_grade = section_reg_data['Grade']
-
+        section.is_auditor = section_reg_data['Auditor']
         if len(section_reg_data['GradeDate']) > 0:
             section.grade_date = parse_sws_date(section_reg_data['GradeDate']).date()
         try:
