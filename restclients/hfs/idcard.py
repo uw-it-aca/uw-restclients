@@ -4,7 +4,7 @@ This is the interface for interacting with the HFS Web Service.
 
 from datetime import datetime
 import logging
-import json
+import simplejson as json
 from restclients.models.hfs import StudentHuskyCardAccout, EmployeeHuskyCardAccount
 from restclients.models.hfs import ResidentDiningAccount, HfsAccouts
 from restclients.hfs import get_resource
@@ -25,7 +25,7 @@ def get_hfs_accounts(netid):
 
 def _object_from_json(response_body):
     return_obj = HfsAccouts()
-    json_data = json.loads(response_body)
+    json_data = json.loads(response_body, use_decimal=True)
 
     if json_data.get('student_husky_card') is not None:
         return_obj.student_husky_card = _load_acc_obj(
@@ -40,7 +40,6 @@ def _object_from_json(response_body):
         return_obj.resident_dining = _load_acc_obj(
             json_data['student_resident_dining'],
             ResidentDiningAccount())
-
 
     if json_data.get('employee_husky_card') is not None:
         return_obj.employee_husky_card = _load_acc_obj(
