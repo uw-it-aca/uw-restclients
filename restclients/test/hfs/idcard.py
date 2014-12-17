@@ -83,7 +83,7 @@ class HfsTest(TestCase):
                 self.assertEquals(ex.msg, "Input for this method must be either a valid UWNetID or two nine-digit Student and Faculty/Staff/Employee ID numbers, comma-separated.")
 
 
-    def test_get_hfs_empty_account(self):
+    def test_float_parsing(self):
         with self.settings(
             RESTCLIENTS_HFS_DAO_CLASS=
             'restclients.dao_implementation.hfs.File'):
