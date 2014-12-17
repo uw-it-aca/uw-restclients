@@ -147,23 +147,9 @@ class Reports(Canvas):
         if report.attachment is None or report.attachment.url is None:
             return
 
-        url = report.attachment.url
+        data = self._get_report_file(report.attachment.url)
 
-        # Ensure file url matches the hostname in settings,
-        # workaround for Canvas bug help.instructure.com/tickets/362386
-        url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
-
-        timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", 15.0)
-        cafile = getattr(settings, "RESTCLIENTS_CA_BUNDLE", "/etc/ssl/certs/ca-bundle.crt")
-        response = PoolManager(cert_reqs="CERT_REQUIRED",
-                               ca_certs=cafile,
-                               timeout=timeout,
-                               retries=5).request("GET", url)
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return response.data.split("\n")
+        return data.split("\n")
 
     def get_report_status(self, report):
         """
@@ -197,6 +183,26 @@ class Reports(Canvas):
 
         return self._report_from_json(report.account_id,
                                       json.loads(response.data))
+
+    def _get_report_file(self, url):
+        # Ensure file url matches the hostname in settings,
+        # workaround for Canvas bug help.instructure.com/tickets/362386
+        url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
+
+        timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", 15.0)
+        cafile = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
+                         "/etc/ssl/certs/ca-bundle.crt")
+        pool_manager = PoolManager(cert_reqs="CERT_REQUIRED",
+                                   ca_certs=cafile,
+                                   timeout=timeout,
+                                   retries=5)
+
+        response = pool_manager.request("GET", url)
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return response.data
 
     def _report_from_json(self, account_id, data):
         report = Report()
