@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.hfs.idcard import get_hfs_accounts
 from restclients.exceptions import DataFailureException
+from decimal import  *
 
 class HfsTest(TestCase):
 
@@ -14,19 +15,19 @@ class HfsTest(TestCase):
             hfs_acc = get_hfs_accounts("javerage")
             self.assertEquals(hfs_acc.student_husky_card.last_updated,
                               datetime(2014, 6, 2, 15, 17, 16))
-            self.assertEquals(hfs_acc.student_husky_card.balance, 1.23)
+            self.assertEquals(hfs_acc.student_husky_card.balance, Decimal('1.23'))
             self.assertEquals(hfs_acc.student_husky_card.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
             self.assertEquals(hfs_acc.employee_husky_card.last_updated,
                               datetime(2014, 5, 19, 14, 16, 26))
-            self.assertEquals(hfs_acc.employee_husky_card.balance, 0.56)
+            self.assertEquals(hfs_acc.employee_husky_card.balance, Decimal('0.56'))
             self.assertEquals(hfs_acc.employee_husky_card.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
             self.assertEquals(hfs_acc.resident_dining.last_updated,
                               datetime(2014, 6, 1, 13, 15, 36))
-            self.assertEquals(hfs_acc.resident_dining.balance, 7.89)
+            self.assertEquals(hfs_acc.resident_dining.balance, Decimal('7.89'))
             self.assertEquals(hfs_acc.resident_dining.add_funds_url,
                               "https://www.hfs.washington.edu/olco")
 
@@ -50,11 +51,11 @@ class HfsTest(TestCase):
             hfs_acc = get_hfs_accounts("jnew")
             self.assertIsNotNone(hfs_acc.student_husky_card)
             self.assertIsNone(hfs_acc.student_husky_card.last_updated)
-            self.assertEquals(hfs_acc.student_husky_card.balance, 0.0)
+            self.assertEquals(hfs_acc.student_husky_card.balance, Decimal('0.0'))
 
             self.assertIsNone(hfs_acc.employee_husky_card)
 
-            self.assertEquals(hfs_acc.resident_dining.balance, 777.89)
+            self.assertEquals(hfs_acc.resident_dining.balance, Decimal('777.89'))
             self.assertEquals(hfs_acc.resident_dining.last_updated,
                                datetime(2014, 5, 17, 13, 15, 36))
             self.assertEquals(hfs_acc.resident_dining.add_funds_url,
