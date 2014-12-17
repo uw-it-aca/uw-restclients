@@ -11,7 +11,7 @@ from authz_group import Group
 from userservice.user import UserService
 from time import time
 from urllib import quote, unquote, urlencode
-import json
+import simplejson as json
 import re
 
 
@@ -103,7 +103,7 @@ def proxy(request, service, url):
                               context_instance=RequestContext(request))
 
 def format_json(service, content):
-    json_data = json.loads(content)
+    json_data = json.loads(content, use_decimal=True)
     formatted = json.dumps(json_data, sort_keys=True, indent=4)
     formatted = formatted.replace("&", "&amp;")
     formatted = formatted.replace("<", "&lt;")
