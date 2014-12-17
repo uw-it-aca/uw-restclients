@@ -154,8 +154,11 @@ class Reports(Canvas):
         url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
 
         timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", 15.0)
-        response = PoolManager().request("GET", url, retries=5,
-                                         timeout=timeout)
+        cafile = getattr(settings, "RESTCLIENTS_CA_BUNDLE", "/etc/ssl/certs/ca-bundle.crt")
+        response = PoolManager(cert_reqs="CERT_REQUIRED",
+                               ca_certs=cafile,
+                               timeout=timeout,
+                               retries=5).request("GET", url)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
