@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Account(models.Model):
+class CanvasAccount(models.Model):
     account_id = models.IntegerField(max_length=20)
     sis_account_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=500)
@@ -12,7 +12,7 @@ class Account(models.Model):
         db_table = "restclients_canvas_account"
 
 
-class Role(models.Model):
+class CanvasRole(models.Model):
     role = models.CharField(max_length=200)
     base_role_type = models.CharField(max_length=200)
     workflow_state = models.CharField(max_length=50)
@@ -21,7 +21,7 @@ class Role(models.Model):
         db_table = "restclients_canvas_role"
 
 
-class Term(models.Model):
+class CanvasTerm(models.Model):
     term_id = models.IntegerField(max_length=20)
     sis_term_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=100)
@@ -41,16 +41,16 @@ class Term(models.Model):
         db_table = "restclients_canvas_term"
 
 
-class Course(models.Model):
+class CanvasCourse(models.Model):
     course_id = models.IntegerField(max_length=20)
     sis_course_id = models.CharField(max_length=100, null=True)
     account_id = models.IntegerField(max_length=20)
-    term = models.ForeignKey(Term, null=True)
+    term = models.ForeignKey(CanvasTerm, null=True)
     code = models.CharField(max_length=100)
     name = models.CharField(max_length=200)
     course_url = models.CharField(max_length=2000)
     workflow_state = models.CharField(max_length=50)
-    public_syllabus = models.BooleanField()
+    public_syllabus = models.NullBooleanField()
     syllabus_body = models.TextField(null=True)
 
     def sws_course_id(self):
@@ -70,7 +70,7 @@ class Course(models.Model):
         db_table = "restclients_canvas_course"
 
 
-class Section(models.Model):
+class CanvasSection(models.Model):
     section_id = models.IntegerField(max_length=20)
     sis_section_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=200)
@@ -81,7 +81,7 @@ class Section(models.Model):
         db_table = "restclients_canvas_section"
 
 
-class Enrollment(models.Model):
+class CanvasEnrollment(models.Model):
     STUDENT = "StudentEnrollment"
     TEACHER = "TeacherEnrollment"
     TA = "TaEnrollment"
@@ -199,7 +199,7 @@ class SISImport(models.Model):
         db_table = "restclients_canvas_sisimport"
 
 
-class User(models.Model):
+class CanvasUser(models.Model):
     user_id = models.IntegerField(max_length=20)
     name = models.CharField(max_length=100, null=True)
     short_name = models.CharField(max_length=100, null=True)
@@ -239,10 +239,10 @@ class Login(models.Model):
         db_table = "restclients_canvas_login"
 
 
-class Admin(models.Model):
+class CanvasAdmin(models.Model):
     admin_id = models.IntegerField(max_length=20)
     role = models.CharField(max_length=100)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(CanvasUser)
 
     class Meta:
         db_table = "restclients_canvas_admin"
@@ -256,10 +256,10 @@ class Submission(models.Model):
     assignment_id = models.IntegerField(max_length=20)
     workflow_state = models.CharField(max_length=100, null=True)
     preview_url = models.CharField(max_length=500)
-    late = models.BooleanField()
+    late = models.NullBooleanField()
     grade = models.TextField(max_length=12, null=True)
     score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    grade_matches_current_submission = models.BooleanField()
+    grade_matches_current_submission = models.NullBooleanField()
     url = models.CharField(max_length=500, null=True)
     grader_id = models.IntegerField(max_length=20)
     graded_at = models.DateTimeField(null=True)
@@ -280,7 +280,7 @@ class Assignment(models.Model):
     grading_standard_id = models.IntegerField(max_length=20, null=True)
     position = models.IntegerField(max_length=8)
     name = models.CharField(max_length=500)
-    muted = models.BooleanField()
+    muted = models.NullBooleanField()
     html_url = models.CharField(max_length=500, null=True)
 
     def json_data(self):
@@ -297,7 +297,7 @@ class Quiz(models.Model):
     due_at = models.DateTimeField()
     title = models.CharField(max_length=500)
     html_url = models.CharField(max_length=500, null=True)
-    published = models.BooleanField()
+    published = models.NullBooleanField()
 
     class Meta:
         db_table ="restclients_canvas_quiz"

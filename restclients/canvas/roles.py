@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import Role, Account
+from restclients.models.canvas import CanvasRole, CanvasAccount
 from urllib import quote
 
 
@@ -41,10 +41,10 @@ class Roles(Canvas):
                              role)
 
     def _role_from_json(self, data):
-        role = Role()
+        role = CanvasRole()
         role.role = data["role"]
         role.base_role_type = data["base_role_type"]
         role.workflow_state = data["workflow_state"]
         role.permissions = data.get("permissions", {})
-        role.account = Account(data["account"])
+        role.account = CanvasAccount(data["account"])
         return role

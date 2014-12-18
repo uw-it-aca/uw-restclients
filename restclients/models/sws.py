@@ -18,17 +18,17 @@ class Person(models.Model):
                                db_index=True,
                                unique=True)
 
-    whitepages_publish = models.BooleanField()
+    whitepages_publish = models.NullBooleanField()
 
     first_name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
     full_name = models.CharField(max_length=250)
 
-    is_student = models.BooleanField()
-    is_staff = models.BooleanField()
-    is_employee = models.BooleanField()
-    is_alum = models.BooleanField()
-    is_faculty = models.BooleanField()
+    is_student = models.NullBooleanField()
+    is_staff = models.NullBooleanField()
+    is_employee = models.NullBooleanField()
+    is_alum = models.NullBooleanField()
+    is_faculty = models.NullBooleanField()
 
     email1 = models.CharField(max_length=255)
     email2 = models.CharField(max_length=255)
@@ -136,7 +136,7 @@ class SwsPerson(models.Model):
     uwnetid = models.SlugField(max_length=16,
                                db_index=True,
                                unique=True)
-    directory_release = models.BooleanField(null=True)
+    directory_release = models.NullBooleanField(null=True)
     employee_id = models.SlugField(max_length=16, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=1, null=True, blank=True)
@@ -150,11 +150,13 @@ class SwsPerson(models.Model):
                                       null=True)
     local_address = models.ForeignKey(StudentAddress,
                                       on_delete=models.PROTECT,
-                                      null=True)
+                                      null=True,
+                                      related_name='local_address')
     local_phone = models.CharField(max_length=64, null=True, blank=True)
     permanent_address = models.ForeignKey(StudentAddress,
                                       on_delete=models.PROTECT,
-                                      null=True)
+                                      null=True,
+                                      related_name='permanent_address')
     permanent_phone = models.CharField(max_length=64, null=True, blank=True)
     visa_type = models.CharField(max_length=2, null=True, blank=True)
 
@@ -257,8 +259,8 @@ class Term(models.Model):
 
 
 class FinalExam(models.Model):
-    is_confirmed = models.BooleanField()
-    no_exam_or_nontraditional = models.BooleanField()
+    is_confirmed = models.NullBooleanField()
+    no_exam_or_nontraditional = models.NullBooleanField()
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
     building = models.CharField(max_length=20, null=True, blank=True)
@@ -299,7 +301,7 @@ class Section(models.Model):
     course_title_long = models.CharField(max_length=50)
     course_campus = models.CharField(max_length=7)
     section_type = models.CharField(max_length=30)
-    is_independent_study = models.BooleanField()
+    is_independent_study = models.NullBooleanField()
     independent_study_instructor_regid = models.CharField(max_length=32,
                                                           null=True)
     institute_name = models.CharField(max_length=200, null=True)
@@ -308,7 +310,7 @@ class Section(models.Model):
     sln = models.PositiveIntegerField()
     summer_term = models.CharField(max_length=12, null=True)
     delete_flag = models.CharField(max_length=20)
-    is_withdrawn = models.BooleanField()
+    is_withdrawn = models.NullBooleanField()
     current_enrollment = models.IntegerField()
     auditors = models.IntegerField()
 
@@ -338,9 +340,9 @@ class Section(models.Model):
                                                             blank=True,
                                                             )
     primary_section_id = models.CharField(max_length=2, null=True, blank=True)
-    is_primary_section = models.BooleanField()
-    allows_secondary_grading = models.BooleanField()
-    is_auditor = models.BooleanField()
+    is_primary_section = models.NullBooleanField()
+    allows_secondary_grading = models.NullBooleanField()
+    is_auditor = models.NullBooleanField()
     student_credits = models.DecimalField(max_digits=3, decimal_places=1)
     student_grade = models.CharField(max_length=6, null=True, blank=True)
     grade_date = models.DateField(null=True, blank=True, default=None)
@@ -481,10 +483,10 @@ class SectionReference(models.Model):
 
 
 class SectionStatus(models.Model):
-    add_code_required = models.BooleanField()
+    add_code_required = models.NullBooleanField()
     current_enrollment = models.IntegerField()
     current_registration_period = models.IntegerField()
-    faculty_code_required = models.BooleanField()
+    faculty_code_required = models.NullBooleanField()
     limit_estimated_enrollment = models.IntegerField()
     limit_estimate_enrollment_indicator = models.CharField(max_length=8)
     room_capacity = models.IntegerField()
@@ -517,7 +519,7 @@ class Registration(models.Model):
                                 on_delete=models.PROTECT)
     person = models.ForeignKey(Person,
                                on_delete=models.PROTECT)
-    is_active = models.BooleanField()
+    is_active = models.NullBooleanField()
 
 
 class SectionMeeting(models.Model):
@@ -527,21 +529,21 @@ class SectionMeeting(models.Model):
                                 on_delete=models.PROTECT)
     meeting_index = models.PositiveSmallIntegerField()
     meeting_type = models.CharField(max_length=20)
-    building_to_be_arranged = models.BooleanField()
+    building_to_be_arranged = models.NullBooleanField()
     building = models.CharField(max_length=5)
-    room_to_be_arranged = models.BooleanField()
+    room_to_be_arranged = models.NullBooleanField()
     room_number = models.CharField(max_length=5)
-    days_to_be_arranged = models.BooleanField()
+    days_to_be_arranged = models.NullBooleanField()
     start_time = models.TimeField(blank=True)
     end_time = models.TimeField(blank=True)
 
-    meets_monday = models.BooleanField()
-    meets_tuesday = models.BooleanField()
-    meets_wednesday = models.BooleanField()
-    meets_thursday = models.BooleanField()
-    meets_friday = models.BooleanField()
-    meets_saturday = models.BooleanField()
-    meets_sunday = models.BooleanField()
+    meets_monday = models.NullBooleanField()
+    meets_tuesday = models.NullBooleanField()
+    meets_wednesday = models.NullBooleanField()
+    meets_thursday = models.NullBooleanField()
+    meets_friday = models.NullBooleanField()
+    meets_saturday = models.NullBooleanField()
+    meets_sunday = models.NullBooleanField()
 #    instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
 
     class Meta:
@@ -659,7 +661,7 @@ class GradeRoster(models.Model):
     instructor = models.ForeignKey(Person,
                                    on_delete=models.PROTECT)
     section_credits = models.FloatField()
-    allows_writing_credit = models.BooleanField()
+    allows_writing_credit = models.NullBooleanField()
 
     def graderoster_label(self):
         return "%s,%s,%s,%s,%s,%s" % (self.section.term.year,
@@ -730,7 +732,7 @@ class GradeSubmissionDelegate(models.Model):
 
 class TimeScheduleConstruction(models.Model):
     campus = models.SlugField(max_length=15)
-    is_on = models.BooleanField()
+    is_on = models.NullBooleanField()
 
     class Meta:
         app_label = "restclients"
@@ -805,7 +807,7 @@ class Finance(models.Model):
 
 
 class Enrollment(models.Model):
-    is_honors = models.BooleanField()
+    is_honors = models.NullBooleanField()
     class_level = models.CharField(max_length=100)
     regid = models.CharField(max_length=32,
                                db_index=True,
