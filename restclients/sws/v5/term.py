@@ -88,6 +88,35 @@ def get_term_after(aterm):
     return get_term_by_year_and_quarter(next_year, next_quarter)
 
 
+def get_term_by_date(date):
+    """
+    Returns a term for the datetime.date object given.
+    """
+    year = date.year
+
+    term = None
+    for quarter in ('autumn', 'summer', 'spring', 'winter'):
+        term = get_term_by_year_and_quarter(year, quarter)
+
+        if date >= term.first_day_quarter:
+            break
+
+    # If we're in a year, before the start of winter quarter, we need to go
+    # to the previous year's autumn term:
+    if date < term.first_day_quarter:
+        term = get_term_by_year_and_quarter(year - 1, 'autumn')
+
+    # Autumn quarter should always last through the end of the year,
+    # with winter of the next year starting in January.  But this makes sure
+    # we catch it if not.
+    term_after = get_term_after(term)
+    if term_after.first_day_quarter > date:
+        return term
+    else:
+        return term_after
+
+    pass
+
 def _json_to_term_model(term_data):
     """
     Returns a term model created from the passed json data.

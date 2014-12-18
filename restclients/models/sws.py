@@ -342,6 +342,7 @@ class Section(models.Model):
     primary_section_id = models.CharField(max_length=2, null=True, blank=True)
     is_primary_section = models.NullBooleanField()
     allows_secondary_grading = models.NullBooleanField()
+    is_auditor = models.NullBooleanField()
     student_credits = models.DecimalField(max_digits=3, decimal_places=1)
     student_grade = models.CharField(max_length=6, null=True, blank=True)
     grade_date = models.DateField(null=True, blank=True, default=None)
@@ -452,6 +453,7 @@ class Section(models.Model):
             'auditors' : self.auditors,
             'meetings': [],
             'credits': str(self.student_credits),
+            'is_auditor':  self.is_auditor,
             'grade': self.student_grade,
             'grade_date': self.get_grade_date_str()
         }
