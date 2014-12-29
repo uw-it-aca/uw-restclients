@@ -21,17 +21,7 @@ class Bookstore(object):
         """
         dao = Book_DAO()
 
-        slns = []
-        sln_count = 1
-        for section in schedule.sections:
-            slns.append("sln%s=%s" % (sln_count, section.sln))
-            sln_count += 1
-
-        sln_string = "&".join(slns)
-        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&%s" % (
-                                                        schedule.term.quarter,
-                                                        sln_string,
-                                                       )
+        url = self.get_books_url(schedule)
 
         response = dao.getURL(url, {"Accept": "application/json"})
         if response.status != 200:
@@ -76,17 +66,7 @@ class Bookstore(object):
         """
         dao = Book_DAO()
 
-        slns = []
-        sln_count = 1
-        for section in schedule.sections:
-            slns.append("sln%s=%s" % (sln_count, section.sln))
-            sln_count += 1
-
-        sln_string = "&".join(slns)
-        url = "/myuw/myuw_mobile_v.ubs?quarter=%s&%s" % (
-                                                        schedule.term.quarter,
-                                                        sln_string,
-                                                       )
+        url = self.get_verba_url(schedule)
 
         response = dao.getURL(url, {"Accept": "application/json"})
         if response.status != 200:
@@ -97,3 +77,37 @@ class Bookstore(object):
         for key in data:
             if re.match(r'^[A-Z]{2}[0-9]{5}$', key):
                 return "http://uw-seattle.verbacompare.com/m?section_id=%s&quarter=%s" % (key, schedule.term.quarter)
+
+    def get_books_url(self, schedule):
+        sln_string = self._get_slns_string(schedule)
+        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&%s" % (
+                                                        schedule.term.quarter,
+                                                        sln_string,
+                                                       )
+
+        return url
+
+    def get_verba_url(self, schedule):
+        sln_string = self._get_slns_string(schedule)
+        url = "/myuw/myuw_mobile_v.ubs?quarter=%s&%s" % (
+                                                        schedule.term.quarter,
+                                                        sln_string,
+                                                       )
+
+        return url
+
+    def _get_slns_string(self, schedule):
+        slns = []
+        # Prevent dupes - mainly for mock data
+        seen_slns = {}
+        sln_count = 1
+        for section in schedule.sections:
+            sln = section.sln
+            if sln not in seen_slns:
+                seen_slns[sln] = True
+                slns.append("sln%s=%s" % (sln_count, section.sln))
+                sln_count += 1
+
+        sln_string = "&".join(slns)
+
+        return sln_string
