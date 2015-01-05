@@ -194,6 +194,7 @@ class PWS(object):
         person.surname = person_data["RegisteredSurname"]
         person.first_name = person_data["RegisteredFirstMiddleName"]
         person.full_name = person_data["RegisteredName"]
+        person.display_name = person_data["DisplayName"]
 
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":

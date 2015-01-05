@@ -27,6 +27,16 @@ class PWSTestPersonData(TestCase):
             self.assertEquals(person.uwnetid, 'javerage', "Correct netid")
             self.assertEquals(person.uwregid, '9136CCB8F66711D5BE060004AC494FFE', "Correct regid")
 
+    def test_names(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            pws = PWS()
+            person = pws.get_person_by_netid('javerage')
+            self.assertEquals(person.surname, 'STUDENT')
+            self.assertEquals(person.first_name, 'JAMES AVERAGE')
+            self.assertEquals(person.full_name, 'JAMES AVERAGE STUDENT')
+            self.assertEquals(person.display_name, 'James Student')
+
     def test_bad_netids(self):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
