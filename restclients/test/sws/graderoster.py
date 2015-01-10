@@ -2,10 +2,8 @@ import random
 import re
 from django.test import TestCase
 from django.conf import settings
-# XXX - drop the v4 when there's a v5 implementation
-from restclients.sws.v4 import graderoster as sws_graderoster
-from restclients.sws import section as sws_section
-import restclients.sws.section as SectionSws
+from restclients.sws.graderoster import get_graderoster, update_graderoster
+from restclients.sws.section import get_section_by_label
 from restclients.models.sws import Section
 from restclients.exceptions import DataFailureException
 
@@ -17,10 +15,10 @@ class SWSTestGradeRoster(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            section = sws_section.get_section_by_label('2013,summer,CSS,161/A')
+            section = get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
 
-            graderoster = sws_graderoster.get_graderoster(section, instructor)
+            graderoster = get_graderoster(section, instructor)
 
             self.assertEquals(graderoster.graderoster_label(),
                               "2013,summer,CSS,161,A,%s" % instructor.uwregid,
@@ -44,10 +42,10 @@ class SWSTestGradeRoster(TestCase):
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
-            section = sws_section.get_section_by_label('2013,summer,CSS,161/A')
+            section = get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
 
-            graderoster = sws_graderoster.get_graderoster(section, instructor)
+            graderoster = get_graderoster(section, instructor)
 
             for item in graderoster.items:
                 new_grade = str(round(random.uniform(1, 4), 1))
@@ -55,7 +53,7 @@ class SWSTestGradeRoster(TestCase):
 
             orig_xhtml = split_xhtml(graderoster.xhtml())
 
-            new_graderoster = sws_graderoster.update_graderoster(graderoster)
+            new_graderoster = update_graderoster(graderoster)
             new_xhtml = split_xhtml(new_graderoster.xhtml())
             self.assertEquals(orig_xhtml, new_xhtml, "XHTML is equal")
 
