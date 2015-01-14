@@ -30,6 +30,10 @@ def get_resource(url):
         json_data = json.loads(response.data)
         raise DataFailureException(url, 404, json_data["Message"])
 
-    logger.debug("%s ==data==> %s" % (url, response.data))
+    try:
+        logger.debug("%s ==data==> %s" % (url, response.data.decode('utf-8')))
+    except Exception as ex:
+        # MUWM-2414
+        logger.debug("%s ==data==> Data not decodable to log file: %s" % (url, ex))
 
     return response.data
