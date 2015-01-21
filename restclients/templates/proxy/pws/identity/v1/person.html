@@ -1,0 +1,50 @@
+<h1>Person Search (Proxy)</h1>
+<form method="get" action="person.json">
+    <label for="uwregid">UW RegID:</label>
+    <input class="uwregid" id="uwregid" name="uwregid" value="{{search.uwregid}}" size="50" type="text">
+    <br>
+    <label for="uwnetid">UW NetID:</label>
+    <input class="uwnetid" id="uwnetid" name="uwnetid" value="{{search.uwnetid}}" type="text">
+    <br>
+    <label for="employee_id">Employee ID:</label>
+    <input class="employee_id" id="employee_id" name="employee_id" value="{{search.employee_id}}" type="text">
+    <br>
+    <label for="student_number">Student number:</label>
+    <input class="student_number" id="student_number" name="student_number" size="8" value="{{search.student_number}}" type="text">
+    <br>
+    <label for="student_system_key">Student system key:</label>
+    <input class="student_system_key" id="student_system_key" name="student_system_key" size="10" value="{{search.student_system_key}}" type="text">
+    <br>
+    <label for="development_id">Development ID:</label>
+    <input class="development_id" id="development_id" name="development_id" value="{{search.development_id}}" type="text">
+    <br>
+    <label for="registered_surname">Registered surname:</label>
+    <input class="registered_surname" id="registered_surname" name="registered_surname" value="{{search.registered_surname}}" type="text">
+    <br>
+    <label for="registered_first_middle_name">Registered first middle name:</label>
+    <input class="registered_first_middle_name" id="registered_first_middle_name" name="registered_first_middle_name" value="{{search.registered_first_middle_name}}" type="text">
+    <br>
+    <div>
+    <br>
+        Select an eduPersonAffiliation (ePA) filter to NARROW results.  Uncheck all for broadest search results.<br>
+        See also: PWS Developer documentation for more info on appropriate use of ePA search filters and <a href="http://www.washington.edu/computing/eds/edupersonaffiliation.html">EduPerson Affiliation Reference</a> for ePA value definitions.
+
+        <br><br></div>
+    <div>
+        eduPersonAffiliation:
+        <label for="edupersonaffiliation">Student:</label><input name="edupersonaffiliation_student" class="edupersonaffiliation" id="edupersonaffiliation_student" type="checkbox"><label for="edupersonaffiliation">Staff:</label><input name="edupersonaffiliation_staff" class="edupersonaffiliation" id="edupersonaffiliation_staff" type="checkbox"><label for="edupersonaffiliation">Faculty:</label><input name="edupersonaffiliation_faculty" class="edupersonaffiliation" id="edupersonaffiliation_faculty" type="checkbox"><label for="edupersonaffiliation">Employee:</label><input name="edupersonaffiliation_employee" class="edupersonaffiliation" id="edupersonaffiliation_employee" type="checkbox"><label for="edupersonaffiliation">Member:</label><input name="edupersonaffiliation_member" class="edupersonaffiliation" id="edupersonaffiliation_member" type="checkbox"><label for="edupersonaffiliation">Alum:</label><input name="edupersonaffiliation_alum" class="edupersonaffiliation" id="edupersonaffiliation_alum" type="checkbox"><label for="edupersonaffiliation">Affiliate:</label><input name="edupersonaffiliation_affiliate" class="edupersonaffiliation" id="edupersonaffiliation_affiliate" type="checkbox">
+        <div><br><label for="max_result_size">Maximum Result Set Size:</label><span class="max_result_size">500</span><br><br><label for="page_size">Page Size</label>:
+    <select class="page_size" id="page_size" name="page_size"><option value="10" selected="selected">
+    10
+    </option><option value="25">
+    25
+    </option><option value="50">
+    50
+    </option><option value="100">
+    100
+    </option><option value="250">
+    250
+    </option></select></div><br>
+    <div><input value="Search" type="submit"></div>
+</div>
+</form>
