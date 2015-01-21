@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <div class="restclients-proxy">
-        
+
         <div class="row restclients-header">
             <div class="col-md-8 restclients-header-url" style=""><span class="glyphicon glyphicon-stats"></span><input type="input" class="form-control input-sm" id="inputEmail3" value="{{ url }}" disabled></div>
             <div class="col-md-2" style="text-align:center; width:auto;">
@@ -12,18 +12,19 @@
                 <span class="label" style="color:#999;">STATUS</span> <span class="label label-default">{{ response_code }}</span>
             </div>
         </div>
-        
+
         <div class="restclients-response-content">
+            {% if search_template %}{% include search_template %}{% endif %}
             {{ content|safe }}
         </div>
-        
+
         <div class="restclients-footer">
         <b>Headers:</b><br/>
         {% for key, val in headers.items %}
             <b>{{ key }}</b>: {{ val }}<br/>
         {% endfor %}
         </div>
-        
+
     </div>
 </div>
 {% endblock %}

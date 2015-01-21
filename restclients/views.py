@@ -11,6 +11,7 @@ from authz_group import Group
 from userservice.user import UserService
 from time import time
 from urllib import quote, unquote, urlencode
+from urlparse import urlparse, parse_qs
 import simplejson as json
 import re
 
@@ -29,7 +30,7 @@ def proxy(request, service, url):
     g = Group()
     is_admin = g.is_member_of_group(actual_user, settings.RESTCLIENTS_ADMIN_GROUP)
 
-    if is_admin == False:
+    if not is_admin:
         return HttpResponseRedirect("/")
 
     headers = {}
@@ -98,9 +99,27 @@ def proxy(request, service, url):
     except TemplateDoesNotExist:
         context["wrapper_template"] = "proxy_wrapper.html"
 
+    try:
+        search_template_path = re.sub(r"\..*$", "", url)
+        search_template = "proxy/%s%s.html" % (service, search_template_path)
+        loader.get_template(search_template)
+        context["search_template"] = search_template
+        context["search"] = format_search_params(url)
+    except TemplateDoesNotExist:
+        context["search_template"] = None
+
     return render_to_response("proxy.html",
                               context,
                               context_instance=RequestContext(request))
+
+
+def format_search_params(url):
+    params = {}
+    query_params = parse_qs(urlparse(url).query)
+    for param in query_params:
+        params[param] = ",".join(query_params[param])
+    return params
+
 
 def format_json(service, content):
     json_data = json.loads(content, use_decimal=True)
@@ -115,11 +134,13 @@ def format_json(service, content):
 
     return formatted
 
+
 def format_html(service, content):
     formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", r"href='/restclients/view/%s/\1'" % service, content)
     formatted = re.sub(re.compile(r"<style.*/style>", re.S), "", formatted)
     formatted = clean_self_closing_divs(formatted)
     return formatted
+
 
 def clean_self_closing_divs(content):
     cleaned = re.sub("((<div[^>]*?)/>)", "<!-- \g<1> -->\g<2>></div>", content)
