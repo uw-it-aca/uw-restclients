@@ -1,18 +1,16 @@
 <h1>Course Section Search (Proxy)</h1>
 <form method="get" action="section.json">
-    <div>
-        Search Form:
-        <div><label for="year">Year:</label><input class="year" id="year" name="year" value="{{search.year}}" type="text"></div>
-        <div><label for="quarter">Quarter:</label><select class="quarter" id="quarter" name="quarter"><option value="">select...</option><option value="summer"{% if search.quarter == 'summer' %} selected="selected"{% endif %}>summer</option><option value="autumn"{% if search.quarter == 'autumn' %} selected="selected"{% endif %}>autumn</option><option value="winter"{% if search.quarter == 'winter' %} selected="selected"{% endif %}>winter</option><option value="spring"{% if search.quarter == 'spring' %} selected="selected"{% endif %}>spring</option></select></div>
-        <div><label for="future_terms">Number of future terms to search:</label><input class="future_terms" id="future_terms" name="future_terms" value="{{search.future_terms}}" size="2" type="text"></div>
-        <div><label for="curriculum_abbreviation">Curriculum:</label><input class="curriculum_abbreviation" id="curriculum_abbreviation" name="curriculum_abbreviation" value="{{search.curriculum_abbreviation}}" type="text"></div>
-        <div><label for="course_number">Course number:</label><input class="course_number" id="course_number" name="course_number" value="{{search.course_number}}" type="text"></div>
-        <div><label for="reg_id">RegID:</label><input class="reg_id" id="reg_id" name="reg_id" value="{{search.reg_id}}" size="50" type="text"> <input class="search_by" id="search_by_instructor" name="search_by" value="Instructor" checked="checked" type="radio">
-            Instructor
-            <input class="search_by" id="search_by_delegate" name="search_by" value="GradeSubmissionDelegate" type="radio">
-            Grade Submission Delegate
-        </div><label for="include_secondaries">Include secondary sections:</label><input class="include_secondaries" id="include_secondaries" name="include_secondaries" type="checkbox"><br>
-        <div><label for="delete_flag">Delete flag:</label><input class="delete_flag" id="delete_flag" name="delete_flag" value="{{search.delete_flag}}" size="30" type="text"></div>
-        <input value="Search" type="submit">
-    </div>
+{% include 'proxy/sws/student/v5/includes/term.html' %}
+{% include 'proxy/sws/student/v5/includes/course.html' %}
+{% include 'proxy/sws/student/v5/includes/reg_id.html' %}
+<div>
+<input class="search_by" id="search_by_instructor" name="search_by" value="Instructor" checked="checked" type="radio">
+<label for="search_by_instructor">Instructor</label>
+<input class="search_by" id="search_by_delegate" name="search_by" value="GradeSubmissionDelegate" type="radio">
+<label for="search_by_delegate">Grade Submission Delegate</label>
+</div>
+<div><label for="include_secondaries">Include secondary sections:</label> <input class="include_secondaries" id="include_secondaries" name="include_secondaries" type="checkbox"></div>
+<div><label for="delete_flag">Delete flag:</label> <input class="delete_flag" id="delete_flag" name="delete_flag" value="{{search.delete_flag}}" size="15" type="text"></div>
+{% include 'proxy/sws/student/v5/includes/page_size.html' %}
+<input value="Search" type="submit">                                            
 </form>

@@ -1,0 +1,9 @@
+<h1>Person Search (Proxy)</h1>
+<form method="get" action="person.json">
+{% include 'proxy/sws/student/v5/includes/reg_id.html' %}
+<div><label for="net_id">UW NetID: </label><input class="net_id" id="net_id" name="net_id" value="{{search.net_id}}" type="text" size="12"></div>
+<div><label for="employee_id">Employee ID:</label> <input class="employee_id" id="employee_id" name="employee_id" value="{{search.employee_id}}" type="text" size="9"></div>
+<div><label for="student_number">Student Number:</label> <input class="student_number" id="student_number" name="student_number" value="{{search.student_number}}" type="text" size="9"></div>
+<div><label for="student_system_key">Syskey:</label> <input class="student_system_key" id="student_system_key" name="student_system_key" value="{{search.student_system_key}}" type="text"></div>
+<input value="Search" type="submit">
+</form>
