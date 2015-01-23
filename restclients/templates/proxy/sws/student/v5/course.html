@@ -1,0 +1,10 @@
+<h1>Course Search (Proxy)</h1>
+<form method="get" action="course.json">
+{% include 'proxy/sws/student/v5/includes/term.html' %}
+{% include 'proxy/sws/student/v5/includes/course.html' %}
+<div><label for="course_title_starts">Title starts with:</label> <input class="course_title_starts" id="course_title_starts" name="course_title_starts" value="{{search.course_title_starts}}" type="text"></div>
+<div><label for="course_title_contains">Title contains:</label> <input class="course_title_contains" id="course_title_contains" name="course_title_contains" value="{{search.course_title_contains}}" type="text"></div>
+<div><label for="exclude_courses_without_sections">Exclude courses without sections:</label> <input class="exclude_courses_without_sections" id="exclude_courses_without_sections" name="exclude_courses_without_sections" type="checkbox"></div>
+{% include 'proxy/sws/student/v5/includes/page_size.html' %}
+<input value="Search" type="submit">                                            
+</form>

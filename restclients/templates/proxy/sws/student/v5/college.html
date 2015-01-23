@@ -1,0 +1,7 @@
+<h1>College Search (Proxy)</h1>
+<form method="get" action="college.json">
+{% include 'proxy/sws/student/v5/includes/term.html' %}
+<div><label for="">Campus Short Name:</label> <input class="campus_short_name" id="campus_short_name" name="campus_short_name" value="{{search.campus_short_name}}" type="text" size="10"></div>
+{% include 'proxy/sws/student/v5/includes/page_size.html' %}
+<input value="Search" type="submit">
+</form>

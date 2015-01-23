@@ -1,0 +1,11 @@
+<h1>Registration Search (Proxy)</h1>
+<form method="get" action="curriculum.json">
+{% include 'proxy/sws/student/v5/includes/term.html' %}
+{% include 'proxy/sws/student/v5/includes/course.html' %}
+{% include 'proxy/sws/student/v5/includes/section_id.html' %}
+{% include 'proxy/sws/student/v5/includes/reg_id.html' %}
+<div><label for="is_active">Active registration:</label> <input class="is_active" id="is_active" name="is_active" type="checkbox"></div>
+<div><label for="instructor_reg_id">Independent study instructor RegID:</label> <input class="instructor_reg_id" id="instructor_reg_id" name="instructor_reg_id" value="{{search.instructor_reg_id}}" type="text" size="32"></div>
+{% include 'proxy/sws/student/v5/includes/page_size.html' %}
+<input value="Search" type="submit">
+</form>
