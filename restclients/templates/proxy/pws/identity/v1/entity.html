@@ -1,0 +1,30 @@
+<h1>Entity Search (Proxy)</h1>
+<form method="get" action="entity.json">
+    <label for="display_name">Display Name:</label>
+    <input class="display_name" id="display_name" name="display_name" value="{{search.display_name}}" size="50" type="text">
+    <br>
+    <br>
+    <label for="is_test_entity">Is Test Entity:</label>
+    <input class="is_test_entity" id="is_test_entity" name="is_test_entity" size="50" type="checkbox">
+    <br>
+    <label for="only_entities">Only return entity types (exclude persons)? </label>
+    <input class="only_entities" id="only_entities" name="only_entities" size="50" type="checkbox">
+    <br>
+    <label for="max_result_size">Maximum Result Set Size:</label>
+    <span class="max_result_size">500</span>
+    <br>
+    <br>
+    <label for="page_size">Page Size</label>:
+    <select class="page_size" id="page_size" name="page_size"><option value="10" selected="selected">
+    10
+    </option><option value="25">
+    25
+    </option><option value="50">
+    50
+    </option><option value="100">
+    100
+    </option><option value="250">
+    250
+    </option></select><br><br>
+    <input value="Search" type="submit">
+</form>

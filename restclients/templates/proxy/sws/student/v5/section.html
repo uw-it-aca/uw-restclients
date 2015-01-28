@@ -1,0 +1,16 @@
+<h1>Course Section Search (Proxy)</h1>
+<form method="get" action="section.json">
+{% include 'proxy/sws/student/v5/includes/term.html' %}
+{% include 'proxy/sws/student/v5/includes/course.html' %}
+{% include 'proxy/sws/student/v5/includes/reg_id.html' %}
+<div>
+<input class="search_by" id="search_by_instructor" name="search_by" value="Instructor" checked="checked" type="radio">
+<label for="search_by_instructor">Instructor</label>
+<input class="search_by" id="search_by_delegate" name="search_by" value="GradeSubmissionDelegate" type="radio">
+<label for="search_by_delegate">Grade Submission Delegate</label>
+</div>
+<div><label for="include_secondaries">Include secondary sections:</label> <input class="include_secondaries" id="include_secondaries" name="include_secondaries" type="checkbox"></div>
+<div><label for="delete_flag">Delete flag:</label> <input class="delete_flag" id="delete_flag" name="delete_flag" value="{{search.delete_flag}}" size="15" type="text"></div>
+{% include 'proxy/sws/student/v5/includes/page_size.html' %}
+<input value="Search" type="submit">                                            
+</form>

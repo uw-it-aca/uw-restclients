@@ -19,7 +19,6 @@ def get_graderoster(section, instructor):
     url = "%s/%s" % (graderoster_url, encode_section_label(label))
     headers = {"Accept": "text/xhtml",
                "X-UW-Act-as": instructor.uwnetid}
-    print url
     response = SWS_DAO().getURL(url, headers)
 
     if response.status != 200:
