@@ -8,7 +8,7 @@ from restclients.sws import get_resource
 
 
 logger = logging.getLogger(__name__)
-dept_search_url_prefix = "/student/v4/department.json"
+dept_search_url_prefix = "/student/v5/department.json"
 
 
 def get_departments_by_college(college):
