@@ -90,6 +90,8 @@
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
+          <span class="code">200</span>
+          <span class="message"></span>
         </li>
         <li class="graderoster_item">
           <h1>AVERAGE,JASON A</h1>
@@ -147,6 +149,8 @@
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
+          <span class="code">200</span>
+          <span class="message"></span>
         </li>
         <li class="graderoster_item">
           <h1>AVERAGE,STEPHEN J</h1>
@@ -204,6 +208,8 @@
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
+          <span class="code">200</span>
+          <span class="message"></span>
         </li>
         <li class="graderoster_item">
           <h1>AVERAGE,MICHAEL S.</h1>
@@ -261,6 +267,8 @@
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
+          <span class="code">200</span>
+          <span class="message"></span>
         </li>
         <li class="graderoster_item">
           <h1>TEACHER,PHIL AVERAGE</h1>
@@ -318,6 +326,8 @@
           <div>
           Grade submitter source:
           <span class="grade_submitter_source">WEBCGB</span></div>
+          <span class="code">200</span>
+          <span class="message"></span>
         </li>
       </ul>
     </div>

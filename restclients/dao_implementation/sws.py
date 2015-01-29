@@ -5,6 +5,7 @@ Contains SWS DAO implementations.
 import json
 import time
 import re
+import random
 from datetime import date, datetime, timedelta
 from lxml import etree
 from django.conf import settings
@@ -25,8 +26,6 @@ class File(object):
 
     RESTCLIENTS_SWS_DAO_CLASS = 'restclients.dao_implementation.sws.File'
     """
-
-    grade_roster_document = None
 
     def _make_notice_date(self, response):
         """
@@ -71,7 +70,8 @@ class File(object):
             self._make_notice_date(response)
 
         # This is to enable mock data grading.
-        if re.match("/student/v\d/term/current.json", url) or re.match("/student/v\d/term/2013,spring.json", url):
+        if (re.match("/student/v\d/term/current.json", url) or
+                re.match("/student/v\d/term/2013,spring.json", url)):
             now = datetime.now()
             tomorrow = now + timedelta(days=1)
             yesterday = now - timedelta(days=1)
@@ -83,12 +83,6 @@ class File(object):
             json_data["GradingPeriodOpenATerm"] = yesterday.strftime("%Y-%m-%dT17:00:00")
 
             response.data = json.dumps(json_data)
-
-        # This would come from putURL below - grading workflow
-        if re.match('/student/v\d/graderoster/2013,spring', url):
-            if File.grade_roster_document:
-                response.data = self._make_grade_roster_submitted(File.grade_roster_document)
-                File.grade_roster_document = None
 
         return response
 
@@ -107,17 +101,11 @@ class File(object):
             response.status = 404
             return response
 
-        # To support the grading workflow - there's a GET after the PUT
-        # stash the PUT graderoster away, with submitted dates/grader values
-        if re.match('/student/v\d/graderoster/2013,spring', url):
-            time.sleep(5)
-            File.grade_roster_document = body
-
         response = MockHTTP()
         if body is not None:
             response.status = 200
             response.headers = {"X-Data-Source": "SWS file mock data"}
-            response.data = body
+            response.data = self._make_grade_roster_submitted(body)
         else:
             response.status = 400
             response.data = "Bad Request: no PUT body"
@@ -129,10 +117,34 @@ class File(object):
         item_elements = root.findall('.//*[@class="graderoster_item"]')
         for item in item_elements:
             date_graded = item.find('.//*[@class="date_graded date"]')
-            date_graded.text = '2013-06-01'
+            if date_graded.text is None:
+                date_graded.text = '2013-06-01'
 
             grade_submitter_source = item.find('.//*[@class="grade_submitter_source"]')
-            grade_submitter_source.text = 'CGB'
+            if grade_submitter_source.text is None:
+                grade_submitter_source.text = 'WEBCGB'
+
+            # Set the status code and message for each item, these elements
+            # aren't present in graderosters returned from GET
+            # Use settings.GRADEROSTER_PARTIAL_SUBMISSIONS to simulate failures
+            status_code_text = '200'
+            status_message_text = ''
+            if (getattr(settings, 'GRADEROSTER_PARTIAL_SUBMISSIONS', False) and
+                    random.choice([True, False])):
+                status_code_text = '500'
+                status_message_text = 'Invalid grade'
+
+            status_code = item.find('.//*[@class="code"]')
+            if status_code is None:
+                status_code = etree.fromstring('<span class="code"/>')
+                item.append(status_code)
+            status_code.text = status_code_text
+
+            status_message = item.find('.//*[@class="message"]')
+            if status_message is None:
+                status_message = etree.fromstring('<span class="message"/>')
+                item.append(status_message)
+            status_message.text = status_message_text
 
         return etree.tostring(root)
 
