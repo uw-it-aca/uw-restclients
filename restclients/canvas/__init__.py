@@ -91,7 +91,7 @@ class Canvas(object):
         if params and len(params):
             p = []
             if six.PY2:
-                items = params.iteritmes
+                items = params.iteritems
             else:
                 items = params.items
             for key, val in items():
