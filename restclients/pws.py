@@ -7,10 +7,11 @@ from restclients.exceptions import InvalidRegID, InvalidNetID, InvalidEmployeeID
 from restclients.exceptions import InvalidIdCardPhotoSize
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import Person, Entity
-try:
-    from io import StringIO
-except Exception:
+import six
+if six.PY2:
     from StringIO import StringIO
+else:
+    from io import StringIO
 
 try:
     from urllib.parse import urlencode
