@@ -1,7 +1,12 @@
 from restclients.models.r25 import Event, BindingReservation
 from restclients.r25 import nsmap, get_resource
 from restclients.r25.reservations import reservations_from_xml
-from urllib import urlencode, quote
+try:
+    # Python 3 version
+    from urllib.parse import urlencode, quote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import urlencode, quote
 
 
 def get_event_by_id(event_id):

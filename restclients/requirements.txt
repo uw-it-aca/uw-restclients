@@ -1,8 +1,8 @@
 # Make sure you also add things to ../setup.py
 Django
-lxml==2.3.5
+lxml==3.4.1
 urllib3>=1.6
-twilio==3.4.1
+twilio==3.6.15
 boto
 ordereddict>=1.1
 simplejson>=2.1
@@ -11,6 +11,6 @@ djangorestframework>=2.0
 jsonpickle>=0.4.0
 unittest2>=0.5.1
 pytz
--e git://github.com/vegitron/authz_group#egg=AuthZGroup
--e git://github.com/vegitron/django-userservice#egg=Django-UserService
+-e git://github.com/uw-it-aca/authz_group#egg=AuthZGroup
+-e git://github.com/uw-it-aca/django-userservice#egg=Django-UserService
 icalendar

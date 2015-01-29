@@ -10,8 +10,20 @@ from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
 from time import time
-from urllib import quote, unquote, urlencode
-from urlparse import urlparse, parse_qs
+try:
+    # Python 3 version
+    from urllib.parse import quote, unquote, urlencode
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote, unquote, urlencode
+
+try:
+    # Python 3 version
+    from urllib.parse import urlparse, parse_qs
+except ImportError as ex:
+    # Python 2 version
+    from urlparse import urlparse, parse_qs
+
 import simplejson as json
 import re
 
@@ -21,8 +33,8 @@ import re
 def proxy(request, service, url):
 
     if not hasattr(settings, "RESTCLIENTS_ADMIN_GROUP"):
-        print "You must have a group defined as your admin group."
-        print 'Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"'
+        print("You must have a group defined as your admin group.")
+        print('Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"')
         raise Exception("Missing RESTCLIENTS_ADMIN_GROUP in settings")
 
     user_service = UserService()

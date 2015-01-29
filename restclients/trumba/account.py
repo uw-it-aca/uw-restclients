@@ -10,7 +10,12 @@ from functools import partial
 import logging
 import re
 from lxml import etree, objectify
-from urllib import quote, unquote
+try:
+    # Python 3 version
+    from urllib.parse import quote, unquote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote, unquote
 from restclients.exceptions import DataFailureException
 import restclients.trumba as Trumba
 from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist

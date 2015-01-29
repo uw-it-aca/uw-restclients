@@ -7,11 +7,17 @@ import json
 from restclients.dao import NWS_DAO
 from restclients.exceptions import DataFailureException, InvalidUUID, InvalidNetID, InvalidEndpointProtocol, InvalidRegID
 from restclients.models import CourseAvailableEvent
-from urllib import quote
+try:
+    # Python 3 version
+    from urllib.parse import quote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote
 from datetime import datetime, time
 from vm.v1.viewmodels import Channel, ChannelList, Endpoint, EndpointList, Serializer, Subscription, SubscriptionList
 from vm.v1.viewmodels import Person, PersonList
 from restclients.sws.term import get_current_term, get_term_after
+import six
 
 
 MANAGED_ATTRIBUTES = ('DispatchedEmailCount', 'DispatchedTextMessageCount', 'SentTextMessageCount', 'SubscriptionCount')
@@ -437,7 +443,11 @@ class NWS(object):
         number_of_args = len(kwargs)
         if number_of_args > 0:
             url += '?'
-            for k,v in kwargs.iteritems():
+            if six.PY2:
+                items = kwargs.iteritems
+            else:
+                items = kwargs.items
+            for k,v in items():
                 if k is not None and v is not None:
                     url += k + '=' + v
                     if number_of_args > 1:

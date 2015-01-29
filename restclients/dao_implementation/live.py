@@ -7,7 +7,13 @@ import logging
 import ssl
 import time
 import socket
-from urlparse import urlparse
+try:
+    # Python 3 version
+    from urllib.parse import urlparse
+except ImportError as ex:
+    # Python 2 version
+    from urlparse import urlparse
+
 from urllib3 import connection_from_url
 from django.conf import settings
 from restclients.signals.rest_request import rest_request

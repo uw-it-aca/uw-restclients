@@ -12,12 +12,14 @@ from django.utils.importlib import import_module
 from restclients.signals.rest_request import rest_request
 from restclients.signals.success import rest_request_passfail
 from restclients.mock_http import MockHTTP
+import six
 
 """
 A centralized the mock data access
 """
 # Based on django.template.loaders.app_directories
-fs_encoding = sys.getfilesystemencoding() or sys.getdefaultencoding()
+if six.PY2:
+    fs_encoding = sys.getfilesystemencoding() or sys.getdefaultencoding()
 app_resource_dirs = []
 
 # An issue w/ loading order in management commands means this needs to be
@@ -30,14 +32,18 @@ def __initialize_app_resource_dirs():
     for app in settings.INSTALLED_APPS:
         try:
             mod = import_module(app)
-        except ImportError, e:
+        except ImportError as e:
             raise ImproperlyConfigured('ImportError %s: %s' % (app, e.args[0]))
 
         resource_dir = os.path.join(os.path.dirname(mod.__file__), 'resources')
         if os.path.isdir(resource_dir):
             # Cheating, to make sure our resources are overridable
+            if six.PY2:
+                path = resource_dir.decode(fs_encoding)
+            else:
+                path = resource_dir
             data = {
-                'path': resource_dir.decode(fs_encoding),
+                'path': path,
                 'app': app,
             }
             if app == 'restclients':

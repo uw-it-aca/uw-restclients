@@ -4,7 +4,13 @@ Interfacing with the Student Web Service, Registration_Search query.
 import logging
 import json
 import re
-from urllib import urlencode
+try:
+    # Python 3 version
+    from urllib.parse import urlencode
+except ImportError as ex:
+    # Python 2 version
+    from urllib import urlencode
+
 from decimal import *
 from datetime import datetime
 from restclients.models.sws import Registration, ClassSchedule

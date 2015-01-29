@@ -30,7 +30,7 @@ def save_all_queued_entries():
                 entry.save()
                 seen_urls[entry.url] = True
     except Exception as ex:
-        print "Error bulk saving cache entries: ", ex
+        print("Error bulk saving cache entries: %s" % ex)
 
     __bulk_insert_queue = []
 

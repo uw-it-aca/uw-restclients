@@ -8,9 +8,15 @@ from restclients.exceptions import InvalidGroupID
 from restclients.exceptions import DataFailureException
 from restclients.models.gws import Group, CourseGroup, GroupReference
 from restclients.models.gws import GroupUser, GroupMember
-from urllib import urlencode
+try:
+    # Python 3 version
+    from urllib.parse import urlencode
+except ImportError as ex:
+    # Python 2 version
+    from urllib import urlencode
 from lxml import etree
 import re
+import six
 
 
 class GWS(object):
@@ -45,7 +51,12 @@ class GWS(object):
                 Values are 'one' to limit results to one level of stem name
                 and 'all' to return all groups.
         """
-        kwargs = dict((k.lower(), v.lower()) for k,v in kwargs.iteritems())
+        if six.PY2:
+            items = kwargs.iteritems
+        else:
+            items = kwargs.items
+
+        kwargs = dict((k.lower(), v.lower()) for k,v in items())
         if 'type' in kwargs and (kwargs['type'] != 'direct' and
                                  kwargs['type'] != 'effective'):
             del(kwargs['type'])

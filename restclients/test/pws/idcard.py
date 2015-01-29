@@ -67,7 +67,7 @@ class TestIdCardPhoto(TestCase):
             self.assertRaises(InvalidIdCardPhotoSize, pws.get_idcard_photo,
                               person.uwregid, 0)
             self.assertRaises(InvalidIdCardPhotoSize, pws.get_idcard_photo,
-                              person.uwregid, 01)
+                              person.uwregid, 1)
             self.assertRaises(InvalidIdCardPhotoSize, pws.get_idcard_photo,
                               person.uwregid, -50)
             self.assertRaises(InvalidIdCardPhotoSize, pws.get_idcard_photo,

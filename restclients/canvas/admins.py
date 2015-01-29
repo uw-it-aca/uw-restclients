@@ -3,7 +3,12 @@ from restclients.canvas.users import Users
 from restclients.models.canvas import CanvasAdmin
 from restclients.exceptions import DataFailureException
 from restclients.dao import Canvas_DAO
-from urllib import quote, unquote
+try:
+    # Python 3 version
+    from urllib.parse import quote, unquote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote, unquote
 
 
 class Admins(Canvas):

@@ -7,8 +7,15 @@ from restclients.exceptions import InvalidRegID, InvalidNetID, InvalidEmployeeID
 from restclients.exceptions import InvalidIdCardPhotoSize
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import Person, Entity
-from StringIO import StringIO
-from urllib import urlencode
+try:
+    from io import StringIO
+except Exception:
+    from StringIO import StringIO
+
+try:
+    from urllib.parse import urlencode
+except Exception:
+    from urllib import urlencode
 import json
 import re
 

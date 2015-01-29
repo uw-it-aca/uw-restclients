@@ -1,6 +1,11 @@
 from restclients.canvas import Canvas
 from restclients.models.canvas import CanvasRole, CanvasAccount
-from urllib import quote
+try:
+    # Python 3 version
+    from urllib.parse import quote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote
 
 
 class Roles(Canvas):

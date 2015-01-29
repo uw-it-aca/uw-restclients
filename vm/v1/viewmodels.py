@@ -1,10 +1,16 @@
-from ordereddict import OrderedDict
+try:
+    from collections import OrderedDict
+except Exception:
+    from ordereddict import OrderedDict
 
 from datetime import datetime
 from dateutil import parser, tz
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_text
+except Exception:
+    from django.utils.encoding import smart_unicode
 from django.utils.timezone import utc
 
 import re

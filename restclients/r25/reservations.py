@@ -1,7 +1,12 @@
 from restclients.models.r25 import Reservation
 from restclients.r25 import nsmap, get_resource
 from restclients.r25.spaces import space_reservation_from_xml
-from urllib import urlencode
+try:
+    # Python 3 version
+    from urllib.parse import urlencode
+except ImportError as ex:
+    # Python 2 version
+    from urllib import urlencode
 
 
 def get_reservation_by_id(reservation_id):

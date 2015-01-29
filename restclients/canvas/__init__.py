@@ -5,10 +5,16 @@ from django.conf import settings
 from restclients.dao import Canvas_DAO
 from restclients.models.canvas import CanvasTerm
 from restclients.exceptions import DataFailureException
-from urllib import quote, unquote
+try:
+    # Python 3 version
+    from urllib.parse import quote, unquote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote, unquote
 import warnings
 import json
 import re
+import six
 
 
 DEFAULT_PAGINATION = 0
@@ -84,7 +90,11 @@ class Canvas(object):
     def _params(self, params):
         if params and len(params):
             p = []
-            for key, val in params.iteritems():
+            if six.PY2:
+                items = params.iteritmes
+            else:
+                items = params.items
+            for key, val in items():
                 if isinstance(val, list):
                     p.extend([key + '=' + str(v) for v in val])
                 else:

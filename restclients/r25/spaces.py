@@ -1,6 +1,11 @@
 from restclients.models.r25 import Space
 from restclients.r25 import nsmap, get_resource
-from urllib import urlencode
+try:
+    # Python 3 version
+    from urllib.parse import urlencode
+except ImportError as ex:
+    # Python 2 version
+    from urllib import urlencode
 
 
 def get_space_by_id(space_id):

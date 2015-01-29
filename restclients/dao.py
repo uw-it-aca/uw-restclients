@@ -28,7 +28,7 @@ class DAO_BASE(object):
             module, attr = getattr(settings, settings_key).rsplit('.', 1)
             try:
                 mod = import_module(module)
-            except ImportError, e:
+            except ImportError as e:
                 raise ImproperlyConfigured('Error importing module %s: "%s"' %
                                            (module, e))
             try:

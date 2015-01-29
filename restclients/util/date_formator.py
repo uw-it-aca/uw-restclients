@@ -61,7 +61,7 @@ def past_datetime_str(adatetime):
         return "today at %s" % time_str(adatetime)
 
     if last_midnight() - adatetime <= timedelta(days=7):
-        for day in xrange(1, 8):
+        for day in range(1, 8):
             if is_days_ago(adatetime, day):
                 if day == 1:
                     return "yesterday at %s" % time_str(adatetime)

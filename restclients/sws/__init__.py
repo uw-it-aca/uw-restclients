@@ -4,7 +4,13 @@ This is the interface for interacting with the Student Web Service.
 import logging
 import json
 import warnings
-from urllib import quote
+try:
+    # Python 3 version
+    from urllib.parse import quote
+except ImportError as ex:
+    # Python 2 version
+    from urllib import quote
+
 from datetime import datetime
 from restclients.thread import Thread
 from restclients.dao import SWS_DAO

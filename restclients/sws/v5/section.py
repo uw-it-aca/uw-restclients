@@ -5,7 +5,10 @@ Interfaceing with the Student Web Service,
 import logging
 import re
 from datetime import datetime
-from urllib import urlencode
+try:
+    from urllib.parse import urlencode
+except Exception:
+    from urllib import urlencode
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.models.sws import Section, SectionReference, FinalExam
