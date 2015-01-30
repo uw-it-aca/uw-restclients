@@ -117,21 +117,21 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
         try:
             orig_file_path = RESOURCE_ROOT + url
             file_path = convert_to_platform_safe(orig_file_path)
-            handle = open(file_path)
+            handle = open(file_path, "rb")
         except IOError:
             try:
                 file_path = "%s/%s" % (file_path,
                                        "index.html")
-                handle = open(file_path)
+                handle = open(file_path, "rb")
             except IOError:
                 file_path = orig_file_path
                 try:
-                    handle = open(file_path)
+                    handle = open(file_path, "rb")
                 except IOError:
                     try:
                         file_path = "%s/%s" % (file_path,
                                                "index.html")
-                        handle = open(file_path)
+                        handle = open(file_path, "rb")
                     except IOError:
                         return
 
@@ -140,7 +140,14 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
 
         response = MockHTTP()
         response.status = 200
-        response.data = handle.read()
+
+        data = handle.read()
+
+        try:
+            string_data = data.decode("utf-8")
+            response.data = string_data
+        except UnicodeDecodeError as ex:
+            response.data = data
         response.headers = {"X-Data-Source": service_name + " file mock data", }
 
         try:

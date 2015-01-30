@@ -7,11 +7,6 @@ from restclients.exceptions import InvalidRegID, InvalidNetID, InvalidEmployeeID
 from restclients.exceptions import InvalidIdCardPhotoSize
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import Person, Entity
-import six
-if six.PY2:
-    from StringIO import StringIO
-else:
-    from io import StringIO
 
 try:
     from urllib.parse import urlencode
@@ -175,7 +170,7 @@ class PWS(object):
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
-        return StringIO(response.data)
+        return response.data
 
     def valid_uwnetid(self, netid):
         uwnetid = str(netid)

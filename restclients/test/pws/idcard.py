@@ -41,19 +41,19 @@ class TestIdCardPhoto(TestCase):
             pws = PWS()
 
             img = pws.get_idcard_photo(person.uwregid)
-            self.assertEquals(img.len, 4661, "Correct file for default size")
+            self.assertEquals(len(img), 4661, "Correct file for default size")
 
             img = pws.get_idcard_photo(person.uwregid, size="medium")
-            self.assertEquals(img.len, 4661, "Correct file for medium size")
+            self.assertEquals(len(img), 4661, "Correct file for medium size")
 
             img = pws.get_idcard_photo(person.uwregid, size="small")
-            self.assertEquals(img.len, 4661, "Correct file for small size")
+            self.assertEquals(len(img), 4661, "Correct file for small size")
 
             img = pws.get_idcard_photo(person.uwregid, size="large")
-            self.assertEquals(img.len, 4661, "Correct file for large size")
+            self.assertEquals(len(img), 4661, "Correct file for large size")
 
             img = pws.get_idcard_photo(person.uwregid, size=100)
-            self.assertEquals(img.len, 4661, "Correct file for custom size")
+            self.assertEquals(len(img), 4661, "Correct file for custom size")
 
             # Invalid size param, should throw exceptions
             self.assertRaises(InvalidIdCardPhotoSize, pws.get_idcard_photo,
