@@ -1,4 +1,5 @@
 import pickle
+import math
 from django.db import models
 from django.template import Context, loader
 from base64 import b64encode, b64decode
@@ -240,9 +241,9 @@ class Term(models.Model):
     def get_week_of_term_for_date(self, date):
         days = (date.date() - self.first_day_quarter).days
         if days >= 0:
-            return (days / 7) + 1
+            return int(days / 7) + 1
 
-        return (days / 7)
+        return int(math.floor(days / 7))
 
     def term_label(self):
         return "%s,%s" % (self.year, self.quarter)
