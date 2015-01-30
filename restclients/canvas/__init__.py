@@ -54,7 +54,7 @@ class Canvas(object):
         """
         Return a term resource for the passed SIS ID.
         """
-        params = {"workflow_state": "all", "per_page": 500}
+        params = [("per_page", 500), ("workflow_state", "all")]
         url = "/api/v1/accounts/%s/terms%s" % (
             settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, self._params(params))
         data = self._get_resource(url)
@@ -90,15 +90,19 @@ class Canvas(object):
     def _params(self, params):
         if params and len(params):
             p = []
-            if six.PY2:
-                items = params.iteritems
+            if type(params) == type([]):
+                for param in params:
+                    p.extend(['%s=%s' % (param[0], param[1])])
             else:
-                items = params.items
-            for key, val in items():
-                if isinstance(val, list):
-                    p.extend([key + '=' + str(v) for v in val])
+                if six.PY2:
+                    items = params.iteritems
                 else:
-                    p.append(key + '=' + str(val))
+                    items = params.items
+                for key, val in items():
+                    if isinstance(val, list):
+                        p.extend([key + '=' + str(v) for v in val])
+                    else:
+                        p.append(key + '=' + str(val))
 
             return "?%s" % ('&'.join(p))
 
