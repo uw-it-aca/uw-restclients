@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 try:
     from django.utils.encoding import smart_text
+    smart_unicode = smart_text
 except Exception:
     from django.utils.encoding import smart_unicode
 from django.utils.timezone import utc
@@ -16,6 +17,8 @@ from django.utils.timezone import utc
 import re
 import simplejson as json
 import logging
+import six
+from six import with_metaclass
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -51,7 +54,16 @@ class Field(object):
                     return 1
         
         return 0
- 
+
+    # Python3 - __cmp__ is ignored for sorting.
+    def __lt__(self, other):
+        if self is not None and other is not None:
+            if hasattr(self, 'ordinal') and hasattr(other, 'ordinal'):
+                if self.ordinal < other.ordinal:
+                    return True
+        return False
+
+
     def from_model_attribute(self, model):
         if not self.modelizable:
             return None
@@ -101,7 +113,9 @@ class DateField(Field):
                 return parser.parse(value).astimezone(tz.tzutc())
             except ValueError:
                 pass
-        
+            except TypeError:
+                pass
+
         return None
         
     def to_model_attribute(self, value):
@@ -240,7 +254,7 @@ class ViewModelBase(type):
         return view_model
     
 
-class ViewModel(object):
+class ViewModel(with_metaclass(ViewModelBase)):
     __metaclass__ = ViewModelBase
     
     def __init__(self, *args, **kwargs):                
@@ -483,7 +497,11 @@ class DictionaryViewModel(ViewModel):
         self.view_models.append(view_model)
 
     def from_object_literal(self, object_literal):
-        for k, v in object_literal.iteritems():
+        if six.PY2:
+            items = object_literal.iteritems
+        else:
+            items = object_literal.items
+        for k, v in items():
             self.add(ParameterDetailViewModel(k,v))
         return self
 
