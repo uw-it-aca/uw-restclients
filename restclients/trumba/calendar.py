@@ -15,6 +15,7 @@ from restclients.exceptions import DataFailureException
 import restclients.trumba as Trumba
 from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist
 from restclients.trumba.exceptions import NoDataReturned, UnknownError, UnexpectedError
+import six
 
 logger = logging.getLogger(__name__)
 
@@ -237,7 +238,10 @@ def _load_permissions(campus, calendarid, resp_fragment, permission_list):
         perm.campus = campus
         perm.uwnetid = _extract_uwnetid(record['Email'])
         perm.level = record['Level']
-        perm.name = unicode(record['Name'])
+        if six.PY2:
+            perm.name = unicode(record['Name'])
+        else:
+            perm.name = str(record['Name'])
         permission_list.append(perm)
 
 
