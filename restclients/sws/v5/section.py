@@ -56,11 +56,11 @@ def get_sections_by_curriculum_and_term(curriculum, term):
     for the passed curriculum and term.
     """
     url = "%s?%s" % (section_res_url_prefix,
-                     urlencode(
-            {"year": term.year,
-             "quarter": term.quarter.lower(),
-             "curriculum_abbreviation": curriculum.label
-             }))
+                     urlencode([
+            ("curriculum_abbreviation", curriculum.label),
+            ("quarter", term.quarter.lower()),
+            ("year", term.year),
+             ]))
     return _json_to_sectionref(get_resource(url), term)
 
 
@@ -89,12 +89,13 @@ def _get_sections_by_person_and_term(person, term, course_role,
     """
     url = "%s?%s" % (
         section_res_url_prefix,
-        urlencode({"year": term.year,
-                   "quarter": term.quarter.lower(),
-                   "reg_id": person.uwregid,
-                   "search_by": course_role,
-                   "include_secondaries": include_secondaries
-                   }))
+        urlencode([
+                   ("reg_id", person.uwregid),
+                   ("search_by", course_role),
+                   ("quarter", term.quarter.lower()),
+                   ("include_secondaries", include_secondaries),
+                   ("year", term.year),
+                   ]))
 
     return _json_to_sectionref(get_resource(url), term)
 

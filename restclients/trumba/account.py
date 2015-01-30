@@ -153,7 +153,7 @@ def _process_resp(request_id, response, is_success_func):
                                    )
     if response.data is None:
         raise NoDataReturned()
-    root = objectify.fromstring(response.data)
+    root = objectify.fromstring(response.data.encode("utf-8"))
     if root.ResponseMessage is None or root.ResponseMessage.attrib['Code'] is None:
         raise UnknownError()
     resp_code = int(root.ResponseMessage.attrib['Code'])

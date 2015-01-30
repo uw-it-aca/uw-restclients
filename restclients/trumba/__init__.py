@@ -36,7 +36,7 @@ def _log_xml_resp(campus, url, response, timer):
         log_info(logger,
                  "%s %s ==status==> %s" % (campus, url, response.status),
                  timer)
-        root = etree.fromstring(response.data)
+        root = etree.fromstring(response.data.encode("utf-8"))
         resp_msg = ''
         for el in root.iterchildren():
             resp_msg += str(el.attrib)
