@@ -440,19 +440,13 @@ class NWS(object):
         """
         url = "/notification/v1/subscription" #?subscriber_id=%s" % (subscriber_id)
 
-        number_of_args = len(kwargs)
-        if number_of_args > 0:
-            url += '?'
-            if six.PY2:
-                items = kwargs.iteritems
-            else:
-                items = kwargs.items
-            for k,v in items():
-                if k is not None and v is not None:
-                    url += k + '=' + v
-                    if number_of_args > 1:
-                        url += '&'
-                    number_of_args -= 1
+        params = []
+        for key in ["max_results", "channel_id", "subscriber_id"]:
+            if key in kwargs:
+                params.extend(["%s=%s" % (key, kwargs[key])])
+
+        if params:
+            url = "%s?%s" % (url, "&".join(params))
 
         dao = NWS_DAO()
         response = dao.getURL(url, {"Accept": "application/json"})
