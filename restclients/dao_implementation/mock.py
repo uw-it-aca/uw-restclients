@@ -155,13 +155,19 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
             file_values = json.loads(headers.read())
 
             if "headers" in file_values:
-                response.headers = dict(response.headers.items() + file_values['headers'].items())
+                if six.PY2:
+                    response.headers = dict(response.headers.items() + file_values['headers'].items())
+                else:
+                    response.headers = dict(list(response.headers.items()) + list(file_values['headers'].items()))
 
                 if 'status' in file_values:
                     response.status = file_values['status']
 
             else:
-                response.headers = dict(response.headers.items() + file_values.items())
+                if six.PY2:
+                    response.headers = dict(response.headers.items() + file_values.items())
+                else:
+                    response.headers = dict(list(response.headers.items()) + list(file_values.items()))
 
         except IOError:
             pass
