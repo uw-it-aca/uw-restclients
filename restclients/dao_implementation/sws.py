@@ -182,3 +182,12 @@ class Live(object):
                             settings.RESTCLIENTS_SWS_KEY_FILE,
                             settings.RESTCLIENTS_SWS_CERT_FILE,
                             max_pool_size=SWS_MAX_POOL_SIZE)
+
+
+# For testing MUWM-2411
+class TestBadResponse(File):
+    def getURL(self, url, headers):
+        if url == "/student/v5/course/2012,summer,PHYS,121/AQ.json":
+            raise Exception("Uh oh!")
+        return super(TestBadResponse, self).getURL(url, headers)
+
