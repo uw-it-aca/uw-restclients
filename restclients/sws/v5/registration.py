@@ -227,6 +227,10 @@ def _json_to_schedule(term_data, term, regid,
 
         for thread in sws_threads:
             response = thread.response
+            if not response:
+                raise DataFailureException(thread.url,
+                                           500,
+                                           thread.exception)
             if response.status != 200:
                 raise DataFailureException(thread.url,
                                            response.status,
