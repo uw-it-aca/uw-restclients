@@ -32,7 +32,8 @@ class Thread(threading.Thread):
             super(Thread, self).start()
 
         else:
-            self.run()
+            super(Thread, self).start()
+            super(Thread, self).join()
 
 
     def join(self):
