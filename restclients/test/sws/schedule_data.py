@@ -9,14 +9,13 @@ class SWSTestScheduleData(TestCase):
     def test_bad_response(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.TestBadResponse',
-                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
+                RESTCLIENTS_USE_INLINE_THREADS=True):
             term = get_term_by_year_and_quarter(2012, 'summer')
             self.assertRaises(DataFailureException,
                               get_schedule_by_regid_and_term,
                               "9136CCB8F66711D5BE060004AC494FFE",
                               term)
-
-            self.assertEquals(1, 0)
 
     def test_sws_schedule_data(self):
         with self.settings(
