@@ -71,6 +71,7 @@ class SWSThread(Thread):
     reg_url = None
     headers = None
     response = None
+    exception = None
 
     def run(self):
         if self.url is None:
@@ -78,7 +79,10 @@ class SWSThread(Thread):
 
         args = self.headers or {}
 
-        self.response = SWS_DAO().getURL(self.url, args)
+        try:
+            self.response = SWS_DAO().getURL(self.url, args)
+        except Exception as ex:
+            self.exception = ex
 
 
 class SWS(object):

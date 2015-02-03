@@ -32,7 +32,14 @@ class Thread(threading.Thread):
             super(Thread, self).start()
 
         else:
-            self.run()
+            # Needed to test failures in the threads.
+            # But it can't be on all the time - sqlite dbs aren't shared to
+            # threads.
+            if hasattr(settings, "RESTCLIENTS_USE_INLINE_THREADS"):
+                super(Thread, self).start()
+                super(Thread, self).join()
+            else:
+                self.run()
 
 
     def join(self):
