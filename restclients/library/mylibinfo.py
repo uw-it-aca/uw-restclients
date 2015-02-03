@@ -45,7 +45,11 @@ def _get_resource(netid, timestamp=None, style=None):
 
 
 def _account_from_json(body):
-    account_data = json.loads(body)
+    try:
+        account_data = json.loads(body)
+    except Exception as ex:
+        raise Exception("Unable to parse library data: %s.  Exception: %s" % (
+                            body, ex))
     account = MyLibAccount()
     account.fines = account_data["fines"]
     account.holds_ready = account_data["holds_ready"]
