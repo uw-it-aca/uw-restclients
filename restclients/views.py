@@ -74,12 +74,15 @@ def proxy(request, service, url):
     # Assume json, and try to format it.
     try:
         content = format_json(service, response.data)
+        json_data = response.data;
     except Exception as e:
         content = format_html(service, response.data)
+        json_data = None;
 
     context = {
         "url": unquote(url),
         "content": content,
+        "json_data": json_data,
         "response_code": response.status,
         "time_taken": "%f seconds" % (end - start),
         "headers": response.headers,
