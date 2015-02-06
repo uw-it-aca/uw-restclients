@@ -28,3 +28,8 @@
     </div>
 </div>
 {% endblock %}
+{% block extra_js %}
+{% if json_data %}
+<script>window.restclients_json_data = {{json_data|safe}};</script>
+{% endif %}
+{% endblock %}
