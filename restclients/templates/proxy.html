@@ -15,7 +15,9 @@
 
         <div class="restclients-response-content">
             {% if search_template %}{% include search_template %}{% endif %}
+            {% if use_pre %}<pre>{% endif %}
             {{ content|safe }}
+            {% if use_pre %}</pre>{% endif %}
         </div>
 
         <div class="restclients-footer">

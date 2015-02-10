@@ -6,10 +6,10 @@
         <div class="graderoster">
             <div>
                 Section:
-                <a class="section" rel="section" href="/student/v4/course/{{section_id}}"><span class="year">{{graderoster.section.term.year}}</span> <span class="quarter">{{graderoster.section.term.quarter}}</span> <span class="curriculum_abbreviation">{{graderoster.section.curriculum_abbr}}</span> <span class="course_number">{{graderoster.section.course_number}}</span> <span class="section_id">{{graderoster.section.section_id}}</span></a></div>
+                <a class="section" rel="section" href="/student/v5/course/{{section_id}}"><span class="year">{{graderoster.section.term.year}}</span> <span class="quarter">{{graderoster.section.term.quarter}}</span> <span class="curriculum_abbreviation">{{graderoster.section.curriculum_abbr}}</span> <span class="course_number">{{graderoster.section.course_number}}</span> <span class="section_id">{{graderoster.section.section_id}}</span></a></div>
             <div>
                 Instructor:
-                <a class="person" rel="instructor" href="/student/v4/person/{{graderoster.instructor.uwregid}}"><span class="name">{{graderoster.instructor.surname}},{{graderoster.instructor.first_name}}</span> - <span class="reg_id">{{graderoster.instructor.uwregid}}</span></a></div>
+                <a class="person" rel="instructor" href="/student/v5/person/{{graderoster.instructor.uwregid}}"><span class="name">{{graderoster.instructor.surname}},{{graderoster.instructor.first_name}}</span> - <span class="reg_id">{{graderoster.instructor.uwregid}}</span></a></div>
             <div>
                 SLN:
                 <span class="sln">{{graderoster.section.sln}}</span></div>
@@ -26,17 +26,17 @@
             <div>
                 Authorized Grade Submitters:
                 <ul class="authorized_grade_submitters">{% for person in graderoster.authorized_grade_submitters %}
-                    <li><a class="person" rel="authorized_grade_submitter" href="/student/v4/person/{{person.uwregid}}"><span class="name">{{person.surname}},{{person.first_name}}</span> - <span class="reg_id">{{person.uwregid}}</span></a></li>{% endfor %}
+                    <li><a class="person" rel="authorized_grade_submitter" href="/student/v5/person/{{person.uwregid}}"><span class="name">{{person.surname}},{{person.first_name}}</span> - <span class="reg_id">{{person.uwregid}}</span></a></li>{% endfor %}
                 </ul>
                 <ul class="grade_submission_delegates">{% for gsd in graderoster.grade_submission_delegates %}
-                    <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v4/person/{{gsd.person.uwregid}}"><span class="name">{{gsd.person.surname}},{{gsd.person.first_name}}</span> - <span class="reg_id">{{gsd.person.uwregid}}</span></a> <span class="delegate_level">{{gsd.delegate_level}}</span></li>{% endfor %}
+                    <li class="grade_submission_delegate"><a class="person" rel="grade_submission_delegate" href="/student/v5/person/{{gsd.person.uwregid}}"><span class="name">{{gsd.person.surname}},{{gsd.person.first_name}}</span> - <span class="reg_id">{{gsd.person.uwregid}}</span></a> <span class="delegate_level">{{gsd.delegate_level}}</span></li>{% endfor %}
                 </ul>
             </div>
             <ul class="graderoster_items">{% for item in graderoster.items %}
                 <li class="graderoster_item">
                     <h1>{{item.student_surname|default_if_none:""}},{{item.student_first_name|default_if_none:""}}</h1>
                     <div>
-                        <a class="person" rel="student" href="/student/v4/person/{{item.student_uwregid}}"><span class="name">{{item.student_surname|default_if_none:""}},{{item.student_first_name|default_if_none:""}}</span> - <span class="reg_id">{{item.student_uwregid}}</span></a>
+                        <a class="person" rel="student" href="/student/v5/person/{{item.student_uwregid}}"><span class="name">{{item.student_surname|default_if_none:""}},{{item.student_first_name|default_if_none:""}}</span> - <span class="reg_id">{{item.student_uwregid}}</span></a>
                     </div>
                     <div>
                         Duplicate code:
@@ -44,7 +44,7 @@
                     {% if item.section_id != graderoster.section.section_id %}
                     <div>
                         Linked Section:
-                        <a class="section" rel="secondary" href="/student/v4/course/{{graderoster.section.term.year}},{{graderoster.section.term.quarter}},{{graderoster.section.curriculum_abbr}},{{graderoster.section.course_number}}/{{item.section_id}}"><span class="year">{{graderoster.section.term.year}}</span> <span class="quarter">{{graderoster.section.term.quarter}}</span> <span class="curriculum_abbreviation">{{graderoster.section.curriculum_abbr}}</span> <span class="course_number">{{graderoster.section.course_number}}</span> <span class="section_id">{{item.section_id}}</span></a></div>
+                        <a class="section" rel="secondary" href="/student/v5/course/{{graderoster.section.term.year}},{{graderoster.section.term.quarter}},{{graderoster.section.curriculum_abbr}},{{graderoster.section.course_number}}/{{item.section_id}}"><span class="year">{{graderoster.section.term.year}}</span> <span class="quarter">{{graderoster.section.term.quarter}}</span> <span class="curriculum_abbreviation">{{graderoster.section.curriculum_abbr}}</span> <span class="course_number">{{graderoster.section.course_number}}</span> <span class="section_id">{{item.section_id}}</span></a></div>
                     {% endif %}
                     <div>
                         Student Former Name:
