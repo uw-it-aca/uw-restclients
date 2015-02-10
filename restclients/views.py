@@ -6,6 +6,7 @@ from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO
 from restclients.dao import Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO
+from restclients.dao import TrumbaCalendar_DAO
 from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
@@ -33,6 +34,7 @@ def proxy(request, service, url):
     if not is_admin:
         return HttpResponseRedirect("/")
 
+    use_pre = False
     headers = {}
     if service == "sws":
         dao = SWS_DAO()
@@ -53,6 +55,9 @@ def proxy(request, service, url):
         dao = Uwnetid_DAO()
     elif service == "libraries":
         dao = Libraries_DAO()
+    elif service == "calendar":
+        dao = TrumbaCalendar_DAO()
+        use_pre = True
     else:
         return HttpResponseNotFound("Unknown service: %s" % service)
 
@@ -73,8 +78,12 @@ def proxy(request, service, url):
 
     # Assume json, and try to format it.
     try:
-        content = format_json(service, response.data)
-        json_data = response.data;
+        if not use_pre:
+            content = format_json(service, response.data)
+            json_data = response.data;
+        else:
+            content = response.data
+            json_data = None
     except Exception as e:
         content = format_html(service, response.data)
         json_data = None;
@@ -87,6 +96,7 @@ def proxy(request, service, url):
         "time_taken": "%f seconds" % (end - start),
         "headers": response.headers,
         "override_user": user_service.get_override_user(),
+        "use_pre": use_pre,
     }
 
     try:
