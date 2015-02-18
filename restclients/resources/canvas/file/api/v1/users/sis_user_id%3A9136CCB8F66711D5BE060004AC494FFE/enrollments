@@ -18,6 +18,8 @@
             "sis_login_id": "javerage"
         },
         "id": 1667135,
+        "last_activity_at": "2012-08-18T23:08:51-06:00",
+        "total_activity_time": 250,
         "updated_at": "2012-09-25T12:09:46-06:00",
         "limit_privileges_to_course_section": false
     },
@@ -29,11 +31,12 @@
         "limit_privileges_to_course_section": false,
         "root_account_id": 83919,
         "type": "StudentEnrollment",
-        "updated_at": "2013-12-18T21:41:03Z",
+        "updated_at": "2013-12-18T21:41:03-06:00",
         "user_id": 496168,
         "enrollment_state": "active",
         "role": "StudentEnrollment",
-        "last_activity_at": null,
+        "last_activity_at": "2012-08-18T23:08:51-06:00",
+        "total_activity_time": 100,
         "grades": {
             "html_url": "https://uw.test.instructure.com/courses/862539/grades/496164",
             "current_score": 23.0,

@@ -113,6 +113,8 @@ class CanvasEnrollment(models.Model):
     current_grade = models.TextField(max_length=12, null=True)
     final_grade = models.TextField(max_length=12, null=True)
     grade_html_url = models.CharField(max_length=1000)
+    total_activity_time = models.IntegerField(max_length=10, null=True)
+    last_activity_at = models.DateTimeField(null=True) 
 
     def sws_course_id(self):
         if self.sis_course_id is None:
