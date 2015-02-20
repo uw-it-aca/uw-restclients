@@ -103,6 +103,7 @@ class CanvasEnrollment(models.Model):
     sis_user_id = models.CharField(max_length=32, null=True)
     role = models.CharField(max_length=80, choices=ROLE_CHOICES)
     status = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     html_url = models.CharField(max_length=1000)
     sis_section_id = models.CharField(max_length=100, null=True)
     sis_course_id = models.CharField(max_length=100, null=True)
@@ -211,6 +212,7 @@ class CanvasUser(models.Model):
     time_zone = models.CharField(max_length=100, null=True)
     locale = models.CharField(max_length=2, null=True)
     email = models.CharField(max_length=100, null=True)
+    avatar_url = models.CharField(max_length=500, null=True)
 
     def post_data(self):
         return {"user": {"name": self.name,
