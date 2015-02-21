@@ -1,6 +1,7 @@
 from restclients.canvas import Canvas
 from restclients.canvas.courses import Courses
 from restclients.models.canvas import CanvasEnrollment
+import dateutil.parser
 import re
 
 
@@ -99,11 +100,15 @@ class Enrollments(Canvas):
         enrollment.role = data["type"]
         enrollment.status = data["enrollment_state"]
         enrollment.html_url = data["html_url"]
+        enrollment.total_activity_time = data["total_activity_time"]
+        if data["last_activity_at"] is not None:
+            date_str = data["last_activity_at"]
+            enrollment.last_activity_at = dateutil.parser.parse(date_str)
         if "sis_section_id" in data:
             enrollment.sis_section_id = data["sis_section_id"]
         if "user" in data:
-            if "login_id" in data["user"]:
-                enrollment.login_id = data["user"]["login_id"]
+            enrollment.login_id = data["user"]["login_id"]
+            enrollment.name = data["user"]["name"]
             if "sis_user_id" in data["user"]:
                 enrollment.sis_user_id = data["user"]["sis_user_id"]
         if "grades" in data:

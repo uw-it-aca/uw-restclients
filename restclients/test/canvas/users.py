@@ -26,6 +26,7 @@ class CanvasTestUsers(TestCase):
             self.assertEquals(user.sis_user_id, "DEB35E0A465242CF9C5CDBC108050EC0",
                               "Has correct sis id")
             self.assertEquals(user.email, "testid99@foo.com", "Has correct email")
+            self.assertEquals(user.avatar_url, "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0cd05241443a591868?s=80&r=g", "Has correct avatar url")
 
     def test_create_user(self):
         with self.settings(
