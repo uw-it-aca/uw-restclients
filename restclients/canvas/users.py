@@ -92,6 +92,7 @@ class Users(Canvas):
         user.email = data["email"] if "email" in data else None
         user.time_zone = data["time_zone"] if "time_zone" in data else None
         user.locale = data["locale"] if "locale" in data else None
+        user.avatar_url = data["avatar_url"] if "avatar_url" in data else None
         return user
 
     def _login_from_json(self, data):
