@@ -133,9 +133,7 @@ def _load_resource_from_path(resource_dir, service_name, implementation_name,
                 pass
 
         if handle is None:
-            response = MockHTTP()
-            response.status = 404
-            return response
+            return None
 
         logger = logging.getLogger(__name__)
         logger.debug("URL: %s; App: %s; File: %s" % (url, app, file_path))
