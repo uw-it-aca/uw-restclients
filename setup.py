@@ -8,7 +8,7 @@ from distutils.core import setup
 import setuptools
 
 setup(name='UW-RestClients',
-      version='1.0.3',
+      version='1.0.4',
       license = "Apache 2.0",
       author = "UW-IT ACA",
       author_email = "pmichaud@uw.edu",
