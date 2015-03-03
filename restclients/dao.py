@@ -14,6 +14,7 @@ from restclients.dao_implementation.trumba import FileSea
 from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
+from restclients.dao_implementation.digitlib import File as DigitlibFile
 from restclients.dao_implementation.libraries import File as LibrariesFile
 from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
@@ -145,6 +146,14 @@ class Catalyst_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_CATALYST_DAO_CLASS', CatalystFile)
+
+
+class DigitLib_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('digitlib', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_DIGITLIB_DAO_CLASS', DigitlibFile)
 
 
 class R25_DAO(MY_DAO):
