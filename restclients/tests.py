@@ -86,6 +86,8 @@ from restclients.test.gws.trumba_group import TestGwsTrumbaGroup
 from restclients.test.r25.events import R25TestEvents
 from restclients.test.r25.spaces import R25TestSpaces
 
+from restclients.test.myplan import MyPlanTestData
+
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock

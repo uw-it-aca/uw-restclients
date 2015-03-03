@@ -1,0 +1,2 @@
+recursive-include restclients/templates *
+recursive-include restclients/resources *
