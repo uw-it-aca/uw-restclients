@@ -29,3 +29,5 @@ def get_resource(url):
     if response.status == 200 and response.data is not None:
         logger.debug("%s ==data==> %s" % (url, response.data))
         return json.loads(response.data)
+
+    raise DataFailureException(url, response.status, response.data)
