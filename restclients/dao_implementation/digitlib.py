@@ -35,7 +35,7 @@ class Live(object):
     RESTCLIENTS_DIGITLIB_HOST
     RESTCLIENTS_DIGITLIB_CERT_FILE
     RESTCLIENTS_DIGITLIB_KEY_FILE
-    RESTCLIENTS_DIGITLIB_HOST
+    RESTCLIENTS_DIGITLIB_REDIRECT
     """
     pool = None
 
@@ -48,7 +48,7 @@ class Live(object):
                 max_pool_size=DIGITLIB_MAX_POOL_SIZE,
                 socket_timeout=DIGITLIB_SOCKET_TIMEOUT)
         redirect = getattr(settings, 
-                           "RESTCLIENTS_REDIRECT",
+                           "RESTCLIENTS_DIGITLIB_REDIRECT",
                            True)
         return get_live_url(Live.pool,
                             'GET',
