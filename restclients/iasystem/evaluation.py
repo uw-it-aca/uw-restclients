@@ -33,4 +33,5 @@ def get_evaluation_by_id(evaluation_id):
 
 
 def _json_to_evaluation(data):
+    # TODO: make a model
     return data
