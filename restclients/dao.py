@@ -268,3 +268,11 @@ class TrumbaTac_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_TRUMBA_TAC_DAO_CLASS',
                                FileTac)
+
+
+class IASYSTEM_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('iasystem', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASYSTEM_DAO)

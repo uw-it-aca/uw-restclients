@@ -88,3 +88,5 @@ from restclients.test.r25.spaces import R25TestSpaces
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock
+
+from restclients.test.iasystem.evaluation import IASystemTest
