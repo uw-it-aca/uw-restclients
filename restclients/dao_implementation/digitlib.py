@@ -27,7 +27,6 @@ class File(object):
 
 DIGITLIB_MAX_POOL_SIZE = 10
 DIGITLIB_SOCKET_TIMEOUT = 15
-DIGITLIB_MESSAGE = "HTTPSConnectionPool(host='digital.lib.washington.edu', port=443): Tried to open a foreign host with url: "
 
 
 class Live(object):
@@ -36,6 +35,7 @@ class Live(object):
     RESTCLIENTS_DIGITLIB_HOST
     RESTCLIENTS_DIGITLIB_CERT_FILE
     RESTCLIENTS_DIGITLIB_KEY_FILE
+    RESTCLIENTS_DIGITLIB_REDIRECT
     """
     pool = None
 
@@ -47,22 +47,13 @@ class Live(object):
                 settings.RESTCLIENTS_DIGITLIB_CERT_FILE,
                 max_pool_size=DIGITLIB_MAX_POOL_SIZE,
                 socket_timeout=DIGITLIB_SOCKET_TIMEOUT)
-        try:
-            return get_live_url(Live.pool,
-                                'GET',
-                                settings.RESTCLIENTS_DIGITLIB_HOST,
-                                url,
-                                headers=headers,
-                                service_name='digitlib')
-            # normal response
-        except Exception as ex:
-            err_str = str(ex)
-            if DIGITLIB_MESSAGE in err_str:
-                # html 302 redirect
-                response = MockHTTP()
-                response.headers = {}
-                response.headers["Location"] = err_str.replace(DIGITLIB_MESSAGE, "")
-                response.status = 302
-                return response
-            logger.error("%s ==exception==>%s" % (url, err_str))
-            return None
+        redirect = getattr(settings, 
+                           "RESTCLIENTS_DIGITLIB_REDIRECT",
+                           True)
+        return get_live_url(Live.pool,
+                            'GET',
+                            settings.RESTCLIENTS_DIGITLIB_HOST,
+                            url,
+                            headers=headers,
+                            redirect=redirect,
+                            service_name='digitlib')
