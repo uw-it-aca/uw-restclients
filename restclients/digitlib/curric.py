@@ -34,9 +34,9 @@ def _extract_url(data_in_resp):
     Return the string representing the url
     """
     if data_in_resp is not None:
-        if data_in_resp.get("Location") is not None:
-            return data_in_resp.get("Location")
-        if data_in_resp.get("location") is not None:
-            return data_in_resp.get("location")
+        if "Location" in data_in_resp:
+            return data_in_resp["Location"]
+        if "location" in data_in_resp:
+            return data_in_resp["location"]
     logger.warn("Invalid library curric response: %s" % data_in_resp)
     return None
