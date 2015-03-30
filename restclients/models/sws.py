@@ -287,6 +287,31 @@ class FinalExam(models.Model):
 
 class Section(models.Model):
     SUMMER_A_TERM = "A-term"
+
+    LMS_CANVAS = "CANVAS"
+    LMS_CATALYST = "CATALYST"
+    LMS_MOODLE = "MOODLE"
+    LMS_NONE = "NONE"
+
+    PRIMARY_LMS_CHOICES = (
+        (LMS_CANVAS, LMS_CANVAS),
+        (LMS_CATALYST, LMS_CATALYST),
+        (LMS_MOODLE, LMS_MOODLE),
+        (LMS_NONE, LMS_NONE),
+    )
+
+    LMS_OWNER_CAMPUS = "CAMPUS"
+    LMS_OWNER_AP = "PCE_AP"
+    LMS_OWNER_IELP = "PCS_IELP"
+    LMS_OWNER_OL = "PCE_OL"
+
+    LMS_OWNER_CHOICES = (
+        (LMS_OWNER_CAMPUS, LMS_OWNER_CAMPUS),
+        (LMS_OWNER_AP, LMS_OWNER_AP),
+        (LMS_OWNER_IELP, LMS_OWNER_IELP),
+        (LMS_OWNER_OL, LMS_OWNER_OL),
+    )
+
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
     final_exam = models.ForeignKey(FinalExam,
@@ -312,6 +337,10 @@ class Section(models.Model):
     summer_term = models.CharField(max_length=12, null=True)
     delete_flag = models.CharField(max_length=20)
     is_withdrawn = models.NullBooleanField()
+    primary_lms = models.CharField(max_length=12, choices=PRIMARY_LMS_CHOICES,
+                                   null=True)
+    lms_ownership = models.CharField(max_length=12, choices=LMS_OWNER_CHOICES)
+    is_independent_start = models.NullBooleanField()
     current_enrollment = models.IntegerField()
     auditors = models.IntegerField()
 
