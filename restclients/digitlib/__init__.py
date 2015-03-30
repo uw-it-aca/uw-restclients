@@ -24,10 +24,15 @@ def get_resource(url):
              timer)
 
     if response.status == 302:
+        logger.debug("%s ==headers==> %s" % (url,
+                                             response.headers))
         return response.headers
 
     if response.status == 200 and response.data is not None:
-        logger.debug("%s ==data==> %s" % (url, response.data))
+        logger.debug("%s ==data==> %s" % (url,
+                                          response.data))
         return json.loads(response.data)
 
-    raise DataFailureException(url, response.status, response.data)
+    raise DataFailureException(url,
+                               response.status,
+                               response.data)
