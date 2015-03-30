@@ -19,6 +19,7 @@ def get_subject_guide(course_code, sln, quarter, year):
     :param year: four digit number
     Return the string representing the url of
     the Library subject guide page
+    Return None if receiving invalid response
     """
     url = "%s%s%s%s%s%s%s%s" % (url_prefix,
                                 course_code.replace(" ", "%20"),
@@ -38,5 +39,5 @@ def _extract_url(data_in_resp):
             return data_in_resp["Location"]
         if "location" in data_in_resp:
             return data_in_resp["location"]
-    logger.warn("Invalid library curric response: %s" % data_in_resp)
+    logger.error("Invalid library curric response: %s" % data_in_resp)
     return None
