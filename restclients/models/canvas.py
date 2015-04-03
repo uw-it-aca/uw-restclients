@@ -96,13 +96,31 @@ class CanvasEnrollment(models.Model):
         (DESIGNER, "Designer")
     )
 
+    STATUS_ACTIVE = "active"
+    STATUS_INVITED = "invited"
+    STATUS_PENDING = "creation_pending"
+    STATUS_DELETED = "deleted"
+    STATUS_REJECTED = "rejected"
+    STATUS_COMPLETED = "completed"
+    STATUS_INACTIVE = "inactive"
+
+    STATUS_CHOICES = (
+        (STATUS_ACTIVE, STATUS_ACTIVE),
+        (STATUS_INVITED, STATUS_INVITED),
+        (STATUS_PENDING, STATUS_PENDING),
+        (STATUS_DELETED, STATUS_DELETED),
+        (STATUS_REJECTED, STATUS_REJECTED),
+        (STATUS_COMPLETED, STATUS_COMPLETED),
+        (STATUS_INACTIVE, STATUS_INACTIVE)
+    )
+
     user_id = models.IntegerField(max_length=20)
     course_id = models.IntegerField(max_length=20)
     section_id = models.IntegerField(max_length=20)
-    login_id = models.CharField(max_length=80)
+    login_id = models.CharField(max_length=80, null=True)
     sis_user_id = models.CharField(max_length=32, null=True)
     role = models.CharField(max_length=80, choices=ROLE_CHOICES)
-    status = models.CharField(max_length=100)
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES)
     name = models.CharField(max_length=100)
     html_url = models.CharField(max_length=1000)
     sis_section_id = models.CharField(max_length=100, null=True)
@@ -115,7 +133,7 @@ class CanvasEnrollment(models.Model):
     final_grade = models.TextField(max_length=12, null=True)
     grade_html_url = models.CharField(max_length=1000)
     total_activity_time = models.IntegerField(max_length=10, null=True)
-    last_activity_at = models.DateTimeField(null=True) 
+    last_activity_at = models.DateTimeField(null=True)
 
     def sws_course_id(self):
         if self.sis_course_id is None:
