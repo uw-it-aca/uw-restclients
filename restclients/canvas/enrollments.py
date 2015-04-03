@@ -107,8 +107,9 @@ class Enrollments(Canvas):
         if "sis_section_id" in data:
             enrollment.sis_section_id = data["sis_section_id"]
         if "user" in data:
-            enrollment.login_id = data["user"]["login_id"]
             enrollment.name = data["user"]["name"]
+            if "login_id" in data["user"]:
+                enrollment.login_id = data["user"]["login_id"]
             if "sis_user_id" in data["user"]:
                 enrollment.sis_user_id = data["user"]["sis_user_id"]
         if "grades" in data:

@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.conf import settings
 from restclients.canvas.enrollments import Enrollments
 from restclients.exceptions import DataFailureException
+from restclients.models.canvas import CanvasEnrollment
+
 
 class CanvasTestEnrollment(TestCase):
     def test_enrollments_for_course_id(self):
@@ -48,6 +50,7 @@ class CanvasTestEnrollment(TestCase):
             self.assertEquals(enrollment.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
             self.assertEquals(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
             self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
+
             stu_enrollment = enrollments[1]
             self.assertEquals(stu_enrollment.grade_html_url, "https://uw.test.instructure.com/courses/862539/grades/496164", "Grade URL")
             self.assertEquals(stu_enrollment.current_score, 23.0, "Current score")
@@ -56,3 +59,19 @@ class CanvasTestEnrollment(TestCase):
             self.assertEquals(stu_enrollment.name, "JAMES AVERAGE STUDENT", "Name")
             self.assertEquals(str(stu_enrollment.last_activity_at), "2012-08-18 23:08:51-06:00", "Last activity datetime")
             self.assertEquals(stu_enrollment.total_activity_time, 100, "Total activity time")
+            self.assertEquals(stu_enrollment.status, CanvasEnrollment.STATUS_ACTIVE, "Status")
+
+    def test_pending_enrollments(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Enrollments()
+
+            enrollments = canvas.get_enrollments_for_course("862539")
+
+            self.assertEquals(len(enrollments), 1, "Has 1 canvas enrollment")
+
+            enrollment = enrollments[0]
+            self.assertEquals(enrollment.name, "j.average@gmail.com", "Name")
+            self.assertEquals(enrollment.login_id, None)
+            self.assertEquals(enrollment.status, CanvasEnrollment.STATUS_INVITED, "Status")
+
