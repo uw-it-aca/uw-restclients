@@ -51,7 +51,7 @@ def events_from_xml(tree):
         for pnode in node.xpath("r25:profile", namespaces=nsmap):
             event.binding_reservations += binding_reservations_from_xml(pnode)
             event.reservations += reservations_from_xml(pnode)
-            events.append(event)
+        events.append(event)
 
     return events
 
