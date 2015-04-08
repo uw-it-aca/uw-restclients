@@ -6,7 +6,6 @@ from unittest2 import skipIf
 
 class R25TestEvents(TestCase):
 
-    @skipIf(True, "Shouldn't be skipped")
     def test_event_by_id(self):
         with self.settings(
                 RESTCLIENTS_R25_DAO_CLASS='restclients.dao_implementation.r25.File'):
