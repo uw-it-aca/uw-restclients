@@ -11,6 +11,7 @@ from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.models.sws import Section, SectionReference, FinalExam
 from restclients.models.sws import SectionMeeting
 from restclients.models.sws import GradeSubmissionDelegate
+from restclients.models.sws import Person
 from restclients.pws import PWS
 from restclients.sws import get_resource, encode_section_label
 from restclients.sws.term import get_term_by_year_and_quarter
@@ -282,7 +283,11 @@ def _json_to_section(section_data,
                 pdata = instructor_data["Person"]
 
                 if "RegID" in pdata and pdata["RegID"] is not None:
-                    instructor = pws.get_person_by_regid(pdata["RegID"])
+                    try:
+                        instructor = pws.get_person_by_regid(pdata["RegID"])
+                    except:
+                        instructor = Person(uwregid = pdata["RegID"],
+                                            display_name = pdata["Name"])
                     instructor.TSPrint = instructor_data["TSPrint"]
                     meeting.instructors.append(instructor)
 
