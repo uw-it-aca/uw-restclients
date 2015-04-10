@@ -81,6 +81,29 @@ class MY_DAO(DAO_BASE):
         return response
 
 
+class Subdomain_DAO(MY_DAO):
+    def _getURL(self, service, url, headers, subdomain):
+        dao = self._getDAO()
+        # TODO: Implement a subdomain supporting cache implementation
+        # cache = self._getCache()
+        # cache_response = cache.getCache(service, url, headers)
+        # if cache_response != None:
+        #     if "response" in cache_response:
+        #         return cache_response["response"]
+        #     if "headers" in cache_response:
+        #         headers = cache_response["headers"]
+
+        response = dao.getURL(url, headers, subdomain)
+
+        # cache_post_response = cache.processResponse(service, url, response)
+
+        # if cache_post_response != None:
+        #     if "response" in cache_post_response:
+        #         return cache_post_response["response"]
+
+        return response
+
+
 class SWS_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('sws', url, headers)
@@ -270,9 +293,9 @@ class TrumbaTac_DAO(MY_DAO):
                                FileTac)
 
 
-class IASYSTEM_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('iasystem', url, headers)
+class IASYSTEM_DAO(Subdomain_DAO):
+    def getURL(self, url, headers, subdomain):
+        return self._getURL('iasystem', url, headers, subdomain)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASYSTEM_DAO)

@@ -3,6 +3,7 @@ Contains IASystem DAO implementations.
 """
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
@@ -27,15 +28,22 @@ class Live(object):
     This DAO provides real data.  It requires further configuration, e.g.
     RESTCLIENTS_IASYSTEM_HOST
     """
-    pool = None
+    pool = {}
 
-    def getURL(self, url, headers):
-        host = settings.RESTCLIENTS_IASYSTEM_HOST
+    def getURL(self, url, headers, subdomain):
+        host = self._get_host(subdomain)
 
-        if Live.pool is None:
-            Live.pool = get_con_pool(host,
+        if subdomain not in Live.pool:
+            Live.pool[subdomain] = get_con_pool(host,
                 key_file=settings.RESTCLIENTS_IASYSTEM_KEY_FILE,
                 cert_file=settings.RESTCLIENTS_IASYSTEM_CERT_FILE)
 
-        return get_live_url(Live.pool, "GET", host, url, headers=headers,
+        return get_live_url(Live.pool[subdomain], "GET", host, url, headers=headers,
                             service_name="iasystem")
+
+    def _get_host(self, subdomain):
+        host_setting = settings.RESTCLIENTS_IASYSTEM_HOST
+        if "[subdomain]" not in host_setting:
+            raise ImproperlyConfigured("Host configuration requires a [subdomain] placeholder")
+        return host_setting.replace('[subdomain]', subdomain)
+

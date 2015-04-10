@@ -2,7 +2,7 @@
 Interfacing with the IASytem API, Evaluation resource.
 """
 from urllib import urlencode
-from restclients.iasystem import get_resource
+from restclients.iasystem import get_resource_by_campus
 from restclients.models.iasystem import Evaluation
 from datetime import datetime
 import pytz
@@ -19,7 +19,7 @@ def search_evaluations(**kwargs):
     """
     url = "/api/v1/evaluation?%s" % urlencode(kwargs)
 
-    data = get_resource(url)
+    data = get_resource_by_campus(url, "seattle")
     evaluations = _json_to_evaluation(data)
 
     return evaluations
@@ -27,7 +27,7 @@ def search_evaluations(**kwargs):
 
 def get_evaluation_by_id(evaluation_id):
     url = "/api/v1/evaluation/%s" % evaluation_id
-    return _json_to_evaluation(get_resource(url))
+    return _json_to_evaluation(get_resource(url, "seattle"))
 
 
 def _json_to_evaluation(data):
