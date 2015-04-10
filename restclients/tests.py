@@ -4,6 +4,7 @@ from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.util.date_formator import formatorTest
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
+from restclients.test.digitlib.curric import DigitLibTest
 
 from restclients.test.sws.compatible import SWSTest
 from restclients.test.sws.financial import SWSFinance
@@ -84,6 +85,8 @@ from restclients.test.gws.trumba_group import TestGwsTrumbaGroup
 
 from restclients.test.r25.events import R25TestEvents
 from restclients.test.r25.spaces import R25TestSpaces
+
+from restclients.test.myplan import MyPlanTestData
 
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
