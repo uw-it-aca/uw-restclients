@@ -20,6 +20,7 @@ from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
+from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.cache_implementation import NoCache
 
 
@@ -80,6 +81,29 @@ class MY_DAO(DAO_BASE):
     def _putURL(self, service, url, headers, body=None):
         dao = self._getDAO()
         response = dao.putURL(url, headers, body)
+        return response
+
+
+class Subdomain_DAO(MY_DAO):
+    def _getURL(self, service, url, headers, subdomain):
+        dao = self._getDAO()
+        # TODO: Implement a subdomain supporting cache implementation
+        # cache = self._getCache()
+        # cache_response = cache.getCache(service, url, headers)
+        # if cache_response != None:
+        #     if "response" in cache_response:
+        #         return cache_response["response"]
+        #     if "headers" in cache_response:
+        #         headers = cache_response["headers"]
+
+        response = dao.getURL(url, headers, subdomain)
+
+        # cache_post_response = cache.processResponse(service, url, response)
+
+        # if cache_post_response != None:
+        #     if "response" in cache_post_response:
+        #         return cache_post_response["response"]
+
         return response
 
 
@@ -286,3 +310,11 @@ class TrumbaTac_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_TRUMBA_TAC_DAO_CLASS',
                                FileTac)
+
+
+class IASYSTEM_DAO(Subdomain_DAO):
+    def getURL(self, url, headers, subdomain):
+        return self._getURL('iasystem', url, headers, subdomain)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASystemFile)
