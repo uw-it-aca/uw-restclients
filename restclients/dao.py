@@ -20,6 +20,7 @@ from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
+from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.cache_implementation import NoCache
 
 
@@ -316,4 +317,4 @@ class IASYSTEM_DAO(Subdomain_DAO):
         return self._getURL('iasystem', url, headers, subdomain)
 
     def _getDAO(self):
-        return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASYSTEM_DAO)
+        return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASystemFile)
