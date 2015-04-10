@@ -6,6 +6,7 @@ CAMPUS_SUBDOMAIN = {'seattle': 'uw',
                     'tacoma': 'uwt',
                     'bothell': 'uwb'}
 
+
 def get_resource_by_campus(url, campus):
     return get_resource(url, CAMPUS_SUBDOMAIN[campus])
 
