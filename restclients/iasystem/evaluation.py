@@ -8,7 +8,7 @@ from datetime import datetime
 import pytz
 
 
-def search_evaluations(**kwargs):
+def search_evaluations(campus, **kwargs):
     """
     year (required)
     term_name (required): Winter|Spring|Summer|Autumn
@@ -19,15 +19,15 @@ def search_evaluations(**kwargs):
     """
     url = "/api/v1/evaluation?%s" % urlencode(kwargs)
 
-    data = get_resource_by_campus(url, "seattle")
+    data = get_resource_by_campus(url, campus)
     evaluations = _json_to_evaluation(data)
 
     return evaluations
 
 
-def get_evaluation_by_id(evaluation_id):
+def get_evaluation_by_id(evaluation_id, campus):
     url = "/api/v1/evaluation/%s" % evaluation_id
-    return _json_to_evaluation(get_resource(url, "seattle"))
+    return _json_to_evaluation(get_resource_by_campus(url, campus))
 
 
 def _json_to_evaluation(data):

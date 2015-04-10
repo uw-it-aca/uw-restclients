@@ -7,5 +7,5 @@ class Evaluation(models.Model):
     eval_open_date = models.DateTimeField()
     eval_close_date = models.DateTimeField()
     eval_status = models.CharField(max_length=7)
-    eval_is_online = models.BooleanField()
+    eval_is_online = models.BooleanField(default=False)
     eval_url = models.URLField()

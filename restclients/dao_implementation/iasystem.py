@@ -19,8 +19,8 @@ class File(object):
 
     RESTCLIENTS_IASYSTEM_DAO_CLASS = 'restclients.dao_implementation.iasystem.File'
     """
-    def getURL(self, url, headers):
-        return get_mockdata_url("iasystem", "file", url, headers)
+    def getURL(self, url, headers, subdomain):
+        return get_mockdata_url("iasystem", subdomain, url, headers)
 
 
 class Live(object):
