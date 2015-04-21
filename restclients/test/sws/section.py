@@ -6,6 +6,8 @@ from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.exceptions import InvalidCanvasIndependentStudyCourse, InvalidCanvasSection
 import restclients.sws.section as SectionSws
 from restclients.sws import use_v5_resources
+from datetime import datetime
+
 
 class SWSTestSectionData(TestCase):
     def test_final_exams(self):
@@ -304,6 +306,17 @@ class SWSTestSectionData(TestCase):
                               SectionSws.get_sections_by_curriculum_and_term,
                               Curriculum(label="FINN"),
                               term)
+
+    def test_changed_sections_by_term(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+
+            changed_date = datetime(2013, 12, 12).date()
+            term = Term(quarter="winter", year=2013)
+            sections = SectionSws.get_changed_sections_by_term(changed_date, term)
+
+            self.assertEquals(len(sections), 2)
 
     def test_instructor_published(self):
         with self.settings(
