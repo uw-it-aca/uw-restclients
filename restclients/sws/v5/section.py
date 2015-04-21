@@ -1,6 +1,5 @@
 """
-Interfaceing with the Student Web Service,
- for Section resource and Course resource.
+Interfacing with the Student Web Service, for Section and Course resources.
 """
 import logging
 import re
@@ -54,12 +53,29 @@ def get_sections_by_curriculum_and_term(curriculum, term):
     for the passed curriculum and term.
     """
     url = "%s?%s" % (section_res_url_prefix,
-                     urlencode(
-            {"year": term.year,
-             "quarter": term.quarter.lower(),
-             "curriculum_abbreviation": curriculum.label
-             }))
+                     urlencode({"year": term.year,
+                                "quarter": term.quarter.lower(),
+                                "curriculum_abbreviation": curriculum.label}))
     return _json_to_sectionref(get_resource(url), term)
+
+
+def get_changed_sections_by_term(changed_since_date, term):
+    url = "%s?%s" % (section_res_url_prefix,
+                     urlencode({"year": term.year,
+                                "quarter": term.quarter.lower(),
+                                "changed_since_date": changed_since_date,
+                                "page_size": 1000}))
+
+    sections = []
+    while url is not None:
+        data = get_resource(url)
+        sections.extend(_json_to_sectionref(data, term))
+
+        url = None
+        if data.get("Next") is not None:
+            url = data.get("Next").get("Href", None)
+
+    return sections
 
 
 def _json_to_sectionref(data, aterm):
@@ -294,7 +310,7 @@ def _json_to_section(section_data,
         section.meetings.append(meeting)
 
     section.final_exam = None
-    if "FinalExam" in section_data:
+    if "FinalExam" in section_data and section_data["FinalExam"] is not None:
         if "MeetingStatus" in section_data["FinalExam"]:
             final_exam = FinalExam()
             final_data = section_data["FinalExam"]
