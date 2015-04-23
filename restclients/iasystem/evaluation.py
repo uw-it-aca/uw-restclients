@@ -33,6 +33,8 @@ def get_evaluation_by_id(evaluation_id, campus):
 def _json_to_evaluation(data):
     evaluations = []
     collection_items = data.get('collection').get('items')
+    if collection_items is None:
+        return evaluations
     for item in collection_items:
         type = _get_item_type(item.get('meta'))
         if type == "evaluation":
