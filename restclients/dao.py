@@ -87,22 +87,22 @@ class MY_DAO(DAO_BASE):
 class Subdomain_DAO(MY_DAO):
     def _getURL(self, service, url, headers, subdomain):
         dao = self._getDAO()
-        # TODO: Implement a subdomain supporting cache implementation
-        # cache = self._getCache()
-        # cache_response = cache.getCache(service, url, headers)
-        # if cache_response != None:
-        #     if "response" in cache_response:
-        #         return cache_response["response"]
-        #     if "headers" in cache_response:
-        #         headers = cache_response["headers"]
+        cache = self._getCache()
+        cache_url = subdomain + url
+        cache_response = cache.getCache(service, cache_url, headers)
+        if cache_response != None:
+            if "response" in cache_response:
+                return cache_response["response"]
+            if "headers" in cache_response:
+                headers = cache_response["headers"]
 
         response = dao.getURL(url, headers, subdomain)
 
-        # cache_post_response = cache.processResponse(service, url, response)
+        cache_post_response = cache.processResponse(service, cache_url, response)
 
-        # if cache_post_response != None:
-        #     if "response" in cache_post_response:
-        #         return cache_post_response["response"]
+        if cache_post_response != None:
+            if "response" in cache_post_response:
+                return cache_post_response["response"]
 
         return response
 
