@@ -43,6 +43,7 @@ class Person(models.Model):
     mailstop = models.CharField(max_length=255)
     title1 = models.CharField(max_length=255)
     title2 = models.CharField(max_length=255)
+    home_department = models.CharField(max_length=255)
 
     def json_data(self):
         return {'uwnetid': self.uwnetid,
@@ -63,6 +64,7 @@ class Person(models.Model):
                 'address1': self.address1,
                 'address2': self.address2,
                 'mailstop': self.mailstop,
+                'home_department': self.home_department,
                 }
 
     def __eq__(self, other):
