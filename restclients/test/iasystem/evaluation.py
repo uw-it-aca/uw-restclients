@@ -18,7 +18,13 @@ class IASystemTest(TestCase):
             self.assertEqual(evals[0].eval_is_online, True)
             self.assertEqual(evals[0].eval_url, "https://uw.iasysdev.org/survey/132068")
             self.assertEqual(evals[1].eval_status, "Closed")
+            self.assertEqual(evals[1].eval_is_online, True)
+
             self.assertEqual(evals[2].eval_is_online, False)
+            self.assertEqual(evals[2].eval_status, "Closed")
+            self.assertEqual(evals[2].eval_open_date, None)
+            self.assertEqual(evals[2].eval_close_date, None)
+            self.assertEqual(evals[2].eval_url, "")
 
     def test_all_campuses(self):
         evals = search_evaluations("seattle", year=2014, term_name='Autumn', student_id=1033334)

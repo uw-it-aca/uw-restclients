@@ -40,11 +40,13 @@ def _json_to_evaluation(data):
         if type == "evaluation":
             evaluation = Evaluation()
             item_data = item.get('data')
-            evaluation.eval_open_date = get_open_date(item_data)
-            evaluation.eval_close_date = get_close_date(item_data)
-            evaluation.eval_status = get_value_by_name(item_data, 'status')
             evaluation.eval_is_online = get_is_online(item_data)
-            evaluation.eval_url = get_eval_url(item.get('links'))
+            evaluation.eval_status = get_value_by_name(item_data, 'status')
+
+            if evaluation.eval_is_online:
+                evaluation.eval_open_date = get_open_date(item_data)
+                evaluation.eval_close_date = get_close_date(item_data)
+                evaluation.eval_url = get_eval_url(item.get('links'))
 
             section, instructor = get_section_and_instructor(item,
                                                              collection_items)

@@ -454,23 +454,6 @@
                         "prompt": "Status",
                         "name": "status",
                         "value": "Closed"
-                    },
-                    {
-                        "value": "2014-11-24T15:00:00Z",
-                        "prompt": "Open Date",
-                        "name": "openDate"
-                    },
-                    {
-                        "value": "2014-12-03T07:59:59Z",
-                        "prompt": "Close Date",
-                        "name": "closeDate"
-                    }
-                ],
-                "links": [
-                    {
-                        "prompt": "Evaluation URL",
-                        "href": "https://uw.iasysdev.org/survey/132167",
-                        "rel": "publishedto"
                     }
                 ],
                 "href": "https://uw.iasysdev.org/api/v1/evaluation/132167"
