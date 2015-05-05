@@ -2,7 +2,7 @@
     "collection": {
         "queries": [
             {
-                "href": "https://uw.iasysdev.org/api/v1/evaluation",
+                "href": "https://uwb.iasysdev.org/api/v1/evaluation",
                 "data": [
                     {
                         "required": true,
@@ -95,11 +95,11 @@
                 "links": [
                     {
                         "rel": "publishedto",
-                        "href": "https://uw.iasysdev.org/survey/132068",
+                        "href": "https://uwb.iasysdev.org/survey/132068",
                         "prompt": "Evaluation URL"
                     }
                 ],
-                "href": "https://uw.iasysdev.org/api/v1/evaluation/132068"
+                "href": "https://uwb.iasysdev.org/api/v1/evaluation/132068"
             },
             {
                 "meta": [
@@ -233,11 +233,11 @@
                         "value": "2014-12-03T07:59:59Z"
                     }
                 ],
-                "href": "https://uw.iasysdev.org/api/v1/evaluation/132136",
+                "href": "https://uwb.iasysdev.org/api/v1/evaluation/132136",
                 "links": [
                     {
                         "rel": "publishedto",
-                        "href": "https://uw.iasysdev.org/survey/132136",
+                        "href": "https://uwb.iasysdev.org/survey/132136",
                         "prompt": "Evaluation URL"
                     }
                 ]
@@ -469,11 +469,11 @@
                 "links": [
                     {
                         "prompt": "Evaluation URL",
-                        "href": "https://uw.iasysdev.org/survey/132167",
+                        "href": "https://uwb.iasysdev.org/survey/132167",
                         "rel": "publishedto"
                     }
                 ],
-                "href": "https://uw.iasysdev.org/api/v1/evaluation/132167"
+                "href": "https://uwb.iasysdev.org/api/v1/evaluation/132167"
             },
             {
                 "meta": [
@@ -699,16 +699,16 @@
         "links": [
             {
                 "rel": "home",
-                "href": "https://uw.iasysdev.org/api/v1",
+                "href": "https://uwb.iasysdev.org/api/v1",
                 "prompt": "IASystem v1 Web API"
             },
             {
                 "rel": "self",
-                "href": "https://uw.iasysdev.org/api/v1/evaluation?student_id=1230430&term_name=Autumn&year=2014",
+                "href": "https://uwb.iasysdev.org/api/v1/evaluation?student_id=1230430&term_name=Autumn&year=2014",
                 "prompt": "IASystem Evaluation Listing"
             }
         ],
-        "href": "https://uw.iasysdev.org/api/v1/evaluation",
+        "href": "https://uwb.iasysdev.org/api/v1/evaluation",
         "version": "1.0"
     }
 }
