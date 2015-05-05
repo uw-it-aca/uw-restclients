@@ -199,36 +199,36 @@ class PWS(object):
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":
                 person.is_student = True
-            if affiliation == "staff":
+            elif affiliation == "alum":
+                person.is_alum = True
+            elif affiliation == "staff":
                 person.is_staff = True
-            if affiliation == "faculty":
+            elif affiliation == "faculty":
                 person.is_faculty = True
-            if affiliation == "employee":
+            elif affiliation == "employee":
                 person.is_employee = True
 
-                # This is for MUWM-417
-                affiliations = person_data["PersonAffiliations"]
-                if "EmployeePersonAffiliation" in affiliations:
-                    employee = affiliations["EmployeePersonAffiliation"]
-                    white_pages = employee["EmployeeWhitePages"]
+        affiliations = person_data["PersonAffiliations"]
+        if "EmployeePersonAffiliation" in affiliations:
+            employee = affiliations["EmployeePersonAffiliation"]
+            person.mailstop = employee["MailStop"]
+            person.home_department = employee["HomeDepartment"]
 
-                    if not white_pages["PublishInDirectory"]:
-                        person.whitepages_publish = False
-                    else:
-                        person.email1 = white_pages["Email1"]
-                        person.email2 = white_pages["Email2"]
-                        person.phone1 = white_pages["Phone1"]
-                        person.phone2 = white_pages["Phone2"]
-                        person.title1 = white_pages["Title1"]
-                        person.title2 = white_pages["Title2"]
-                        person.voicemail = white_pages["VoiceMail"]
-                        person.fax = white_pages["Fax"]
-                        person.touchdial = white_pages["TouchDial"]
-                        person.address1 = white_pages["Address1"]
-                        person.address2 = white_pages["Address2"]
-                        person.mailstop = employee["MailStop"]
-                if affiliation == "alum":
-                    person.is_alum = True
+            white_pages = employee["EmployeeWhitePages"]
+            if not white_pages["PublishInDirectory"]:
+                person.whitepages_publish = False
+            else:
+                person.email1 = white_pages["Email1"]
+                person.email2 = white_pages["Email2"]
+                person.phone1 = white_pages["Phone1"]
+                person.phone2 = white_pages["Phone2"]
+                person.title1 = white_pages["Title1"]
+                person.title2 = white_pages["Title2"]
+                person.voicemail = white_pages["VoiceMail"]
+                person.fax = white_pages["Fax"]
+                person.touchdial = white_pages["TouchDial"]
+                person.address1 = white_pages["Address1"]
+                person.address2 = white_pages["Address2"]
 
         return person
 

@@ -93,6 +93,22 @@ class PWSTestPersonData(TestCase):
             self.assertEquals(person1 == person2, True, "persons are equal")
             self.assertEquals(person1 == person3, False, "persons are inequal")
 
+    def test_affiliation_data(self):
+         with self.settings(
+                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+             pws = PWS()
+
+             person1 = pws.get_person_by_netid("javerage")
+             self.assertEquals(person1.is_student, True)
+             self.assertEquals(person1.is_alum, True)
+             self.assertEquals(person1.is_staff, True)
+             self.assertEquals(person1.is_faculty, None)
+             self.assertEquals(person1.is_employee, True)
+
+             self.assertEquals(person1.mailstop, None, "MailStop")
+             self.assertEquals(person1.home_department, "C&C TEST BUDGET",
+                               "HomeDepartment")
+
     def _test_regid(self, netid, regid):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
