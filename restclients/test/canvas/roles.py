@@ -20,6 +20,15 @@ class CanvasTestRoles(TestCase):
             self.assertEquals(role.role, "Course Access")
             self.assertEquals(role.permissions.get('read_course_list').get('enabled'), True)
 
+    def test_course_roles(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Roles()
+
+            roles = canvas.get_effective_course_roles_in_account(12345)
+            
+            self.assertEquals(len(roles), 5, "Course roles only")
+
     def test_role(self):
         with self.settings(
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):

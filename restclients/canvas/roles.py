@@ -6,11 +6,12 @@ from urllib import quote
 class Roles(Canvas):
     def get_roles_in_account(self, account_id, params={}):
         """
-        List the roles available to an account, for the passed Canvas account ID.
+        List the roles for an account, for the passed Canvas account ID.
 
         https://canvas.instructure.com/doc/api/roles.html#method.role_overrides.api_index
         """
-        url = "/api/v1/accounts/%s/roles%s" % (account_id, self._params(params))
+        url = "/api/v1/accounts/%s/roles%s" % (account_id,
+                                               self._params(params))
         roles = []
         for datum in self._get_resource(url):
             roles.append(self._role_from_json(datum))
@@ -18,11 +19,23 @@ class Roles(Canvas):
 
     def get_roles_by_account_sis_id(self, account_sis_id, params={}):
         """
-        List the roles available to an account, for the passed account SIS ID.
+        List the roles for an account, for the passed account SIS ID.
         """
         return self.get_roles_in_account(self._sis_id(account_sis_id,
                                                       sis_field="account"),
                                          params)
+
+    def get_effective_course_roles_in_account(self, account_id):
+        """
+        List all course roles available to an account, for the passed Canvas
+        account ID, including course roles inherited from parent accounts.
+        """
+        course_roles = []
+        params = {"show_inherited": "1"}
+        for role in self.get_roles_in_account(account_id, params):
+            if role.base_role_type != "AccountMembership":
+                course_roles.append(role)
+        return course_roles
 
     def get_role(self, account_id, role_id):
         """
@@ -41,7 +54,7 @@ class Roles(Canvas):
                              role_id)
 
     def _role_from_json(self, data):
-        role = CanvasRole() 
+        role = CanvasRole()
         role.role = data["role"]
         role.role_id = data["id"]
         role.base_role_type = data["base_role_type"]
