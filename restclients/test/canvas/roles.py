@@ -28,6 +28,9 @@ class CanvasTestRoles(TestCase):
             roles = canvas.get_effective_course_roles_in_account(12345)
             
             self.assertEquals(len(roles), 5, "Course roles only")
+            
+            role = roles[0]
+            self.assertEquals(role.role, "TeacherEnrollment")
 
     def test_role(self):
         with self.settings(
