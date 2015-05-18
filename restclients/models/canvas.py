@@ -13,6 +13,7 @@ class CanvasAccount(models.Model):
 
 
 class CanvasRole(models.Model):
+    role_id = models.IntegerField(max_length=20)
     role = models.CharField(max_length=200)
     base_role_type = models.CharField(max_length=200)
     workflow_state = models.CharField(max_length=50)
