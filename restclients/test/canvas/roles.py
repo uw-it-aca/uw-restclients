@@ -17,7 +17,8 @@ class CanvasTestRoles(TestCase):
 
             role = roles[10]
 
-            self.assertEquals(role.role, "Course Access")
+            self.assertEquals(role.base_role_type, "AccountMembership")
+            self.assertEquals(role.label, "Course Access")
             self.assertEquals(role.permissions.get('read_course_list').get('enabled'), True)
 
     def test_course_roles(self):
@@ -30,7 +31,8 @@ class CanvasTestRoles(TestCase):
             self.assertEquals(len(roles), 5, "Course roles only")
             
             role = roles[0]
-            self.assertEquals(role.role, "TeacherEnrollment")
+            self.assertEquals(role.base_role_type, "TeacherEnrollment")
+            self.assertEquals(role.label, "Teacher")
 
     def test_role(self):
         with self.settings(
@@ -40,5 +42,5 @@ class CanvasTestRoles(TestCase):
             role = canvas.get_role(12345, 999)
 
             self.assertEquals(role.role_id, 999)
-            self.assertEquals(role.role, "Course Access")
+            self.assertEquals(role.label, "Course Access")
             self.assertEquals(role.permissions.get('read_course_list').get('enabled'), True)
