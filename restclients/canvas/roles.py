@@ -55,8 +55,8 @@ class Roles(Canvas):
 
     def _role_from_json(self, data):
         role = CanvasRole()
-        role.role = data["role"]
         role.role_id = data["id"]
+        role.label = data["label"]
         role.base_role_type = data["base_role_type"]
         role.workflow_state = data["workflow_state"]
         role.permissions = data.get("permissions", {})
