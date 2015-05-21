@@ -4,9 +4,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
-from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO
-from restclients.dao import Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO
-from restclients.dao import TrumbaCalendar_DAO, MyPlan_DAO
+from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO, \
+Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO, TrumbaCalendar_DAO, \
+MyPlan_DAO, IASYSTEM_DAO
 from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
@@ -57,6 +57,8 @@ def proxy(request, service, url):
         dao = Libraries_DAO()
     elif service == "myplan":
         dao = MyPlan_DAO()
+    elif service == "iasystem":
+        dao = IASYSTEM_DAO()
     elif service == "calendar":
         dao = TrumbaCalendar_DAO()
         use_pre = True
