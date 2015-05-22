@@ -5,8 +5,8 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO, \
-Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO, TrumbaCalendar_DAO, \
-MyPlan_DAO, IASYSTEM_DAO
+    Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO, TrumbaCalendar_DAO, \
+    MyPlan_DAO, IASYSTEM_DAO
 from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
@@ -29,7 +29,8 @@ def proxy(request, service, url):
     user_service = UserService()
     actual_user = user_service.get_original_user()
     g = Group()
-    is_admin = g.is_member_of_group(actual_user, settings.RESTCLIENTS_ADMIN_GROUP)
+    is_admin = g.is_member_of_group(actual_user, 
+                                    settings.RESTCLIENTS_ADMIN_GROUP)
 
     if not is_admin:
         return HttpResponseRedirect("/")
@@ -147,13 +148,16 @@ def format_json(service, content):
     formatted = formatted.replace(" ", "&nbsp;")
     formatted = formatted.replace("\n", "<br/>\n")
 
-    formatted = re.sub(r"\"/(.*?)\"", r'"<a href="/restclients/view/%s/\1">/\1</a>"' % service, formatted)
+    formatted = re.sub(r"\"/(.*?)\"",
+                       r'"<a href="/restclients/view/%s/\1">/\1</a>"' % \
+                           service, formatted)
 
     return formatted
 
 
 def format_html(service, content):
-    formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", r"href='/restclients/view/%s/\1'" % service, content)
+    formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", 
+                       r"href='/restclients/view/%s/\1'" % service, content)
     formatted = re.sub(re.compile(r"<style.*/style>", re.S), "", formatted)
     formatted = clean_self_closing_divs(formatted)
     return formatted
