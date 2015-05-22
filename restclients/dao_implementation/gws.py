@@ -84,4 +84,4 @@ class Live(object):
         return get_con_pool(settings.RESTCLIENTS_GWS_HOST,
                             settings.RESTCLIENTS_GWS_KEY_FILE,
                             settings.RESTCLIENTS_GWS_CERT_FILE,
-                            max_pool_size = GWS_MAX_POOL_SIZE)
+                            max_pool_size=GWS_MAX_POOL_SIZE)

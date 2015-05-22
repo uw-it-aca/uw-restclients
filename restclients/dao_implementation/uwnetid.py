@@ -13,7 +13,8 @@ class File(object):
     The File DAO implementation returns generally static content.  Use this
     DAO with this configuration:
 
-    RESTCLIENTS_UWNETID_DAO_CLASS = 'restclients.dao_implementation.uwnetid.File'
+    RESTCLIENTS_UWNETID_DAO_CLASS =
+    'restclients.dao_implementation.uwnetid.File'
     """
     def getURL(self, url, headers):
         return get_mockdata_url("uwnetid", "file", url, headers)

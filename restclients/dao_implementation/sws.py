@@ -41,7 +41,8 @@ class File(object):
 
         json_data = json.loads(response.data)
         for notice in json_data["Notices"]:
-            if notice["NoticeAttributes"] and len(notice["NoticeAttributes"]) > 0:
+            if notice["NoticeAttributes"] and\
+                    len(notice["NoticeAttributes"]) > 0:
                 for attr in notice["NoticeAttributes"]:
                     if attr["DataType"] == "date":
                         if attr["Value"] == "yesterday":
@@ -77,10 +78,14 @@ class File(object):
             yesterday = now - timedelta(days=1)
             json_data = json.loads(response.data)
 
-            json_data["GradeSubmissionDeadline"] = tomorrow.strftime("%Y-%m-%dT17:00:00")
-            json_data["GradingPeriodClose"] = tomorrow.strftime("%Y-%m-%dT17:00:00")
-            json_data["GradingPeriodOpen"] = yesterday.strftime("%Y-%m-%dT17:00:00")
-            json_data["GradingPeriodOpenATerm"] = yesterday.strftime("%Y-%m-%dT17:00:00")
+            json_data["GradeSubmissionDeadline"] =\
+                tomorrow.strftime("%Y-%m-%dT17:00:00")
+            json_data["GradingPeriodClose"] =\
+                tomorrow.strftime("%Y-%m-%dT17:00:00")
+            json_data["GradingPeriodOpen"] =\
+                yesterday.strftime("%Y-%m-%dT17:00:00")
+            json_data["GradingPeriodOpenATerm"] =\
+                yesterday.strftime("%Y-%m-%dT17:00:00")
 
             response.data = json.dumps(json_data)
 
@@ -88,14 +93,16 @@ class File(object):
 
     def putURL(self, url, headers, body):
         # For developing against crashes in grade submission
-        if re.match('/student/v\d/graderoster/2013,spring,ZERROR,101,S1,', url):
+        if re.match('/student/v\d/graderoster/2013,spring,ZERROR,101,S1,',
+                    url):
             response = MockHTTP()
             response.data = "No employee found for ID 1234567890"
             response.status = 500
             return response
 
         # Submitted too late, sad.
-        if re.match('/student/v\d/graderoster/2013,spring,ZERROR,101,S2,', url):
+        if re.match('/student/v\d/graderoster/2013,spring,ZERROR,101,S2,',
+                    url):
             response = MockHTTP()
             response.data = "grading period not active for year/quarter"
             response.status = 404
@@ -120,7 +127,8 @@ class File(object):
             if date_graded.text is None:
                 date_graded.text = '2013-06-01'
 
-            grade_submitter_source = item.find('.//*[@class="grade_submitter_source"]')
+            grade_submitter_source = item.find(
+                './/*[@class="grade_submitter_source"]')
             if grade_submitter_source.text is None:
                 grade_submitter_source.text = 'WEBCGB'
 
@@ -129,8 +137,10 @@ class File(object):
             # Use settings.GRADEROSTER_PARTIAL_SUBMISSIONS to simulate failures
             status_code_text = '200'
             status_message_text = ''
-            if (getattr(settings, 'GRADEROSTER_PARTIAL_SUBMISSIONS', False) and
-                    random.choice([True, False])):
+            if (getattr(settings,
+                        'GRADEROSTER_PARTIAL_SUBMISSIONS',
+                        False) and random.choice([True, False])):
+
                 status_code_text = '500'
                 status_message_text = 'Invalid grade'
 
@@ -190,4 +200,3 @@ class TestBadResponse(File):
         if url == "/student/v5/course/2012,summer,PHYS,121/AQ.json":
             raise Exception("Uh oh!")
         return super(TestBadResponse, self).getURL(url, headers)
-
