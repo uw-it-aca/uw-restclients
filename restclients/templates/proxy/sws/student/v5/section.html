@@ -4,13 +4,14 @@
 {% include 'proxy/sws/student/v5/includes/course.html' %}
 {% include 'proxy/sws/student/v5/includes/reg_id.html' %}
 <div>
-<input class="search_by" id="search_by_instructor" name="search_by" value="Instructor" checked="checked" type="radio">
+    <input class="search_by" id="search_by_instructor" name="search_by" value="Instructor"{% if search.search_by == "Instructor" %} checked="checked"{% endif %} type="radio">
 <label for="search_by_instructor">Instructor</label>
-<input class="search_by" id="search_by_delegate" name="search_by" value="GradeSubmissionDelegate" type="radio">
+<input class="search_by" id="search_by_delegate" name="search_by" value="GradeSubmissionDelegate"{% if search.search_by == "GradeSubmissionDelegate" %} checked="checked"{% endif %} type="radio">
 <label for="search_by_delegate">Grade Submission Delegate</label>
 </div>
-<div><label for="include_secondaries">Include secondary sections:</label> <input class="include_secondaries" id="include_secondaries" name="include_secondaries" type="checkbox"></div>
+<div><label for="include_secondaries">Include secondary sections:</label> <input class="include_secondaries" id="include_secondaries" name="include_secondaries" value="on"{% if search.include_secondaries == "on" %} checked="checked"{% endif %} type="checkbox"></div>
 <div><label for="delete_flag">Delete flag:</label> <input class="delete_flag" id="delete_flag" name="delete_flag" value="{{search.delete_flag}}" size="15" type="text"></div>
+<div><label for="changed_since_date">Changed since date:</label> <input class="changed_since_date" id="changed_since_date" name="changed_since_date" value="{{search.changed_since_date}}" size="15" type="text"></div>
 {% include 'proxy/sws/student/v5/includes/page_size.html' %}
 <input value="Search" type="submit">                                            
 </form>
