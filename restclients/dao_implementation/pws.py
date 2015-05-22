@@ -8,10 +8,10 @@ import re
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 
-# This seemed like a good number based on a test using a class w/ 300 students.
-# The range 10-50 all did well, so this seemed like the most sociable, high performing
-# number to choose
+# This seemed a good number based on a test using a class w/ 300 students.
+# The range 10-50 all did well
 PWS_MAX_POOL_SIZE = 10
+
 
 class File(object):
     """
@@ -22,6 +22,7 @@ class File(object):
     """
     def getURL(self, url, headers):
         return get_mockdata_url("pws", "file", url, headers)
+
 
 class AlwaysJAverage(object):
     """
@@ -68,11 +69,11 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = get_con_pool(settings.RESTCLIENTS_PWS_HOST,
                                      settings.RESTCLIENTS_PWS_KEY_FILE,
                                      settings.RESTCLIENTS_PWS_CERT_FILE,
-                                     max_pool_size= PWS_MAX_POOL_SIZE)
+                                     max_pool_size=PWS_MAX_POOL_SIZE)
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_PWS_HOST,
                             url, headers=headers,

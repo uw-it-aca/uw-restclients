@@ -16,7 +16,8 @@ class File(object):
     The File DAO implementation returns generally static content.  Use this
     DAO with this configuration:
 
-    RESTCLIENTS_CANVAS_DAO_CLASS = 'restclients.dao_implementation.catalyst.File'
+    RESTCLIENTS_CANVAS_DAO_CLASS =
+    'restclients.dao_implementation.catalyst.File'
     """
     def getURL(self, url, headers):
         return get_mockdata_url("catalyst", "file", url, headers)
@@ -46,12 +47,12 @@ class Live(object):
         host = settings.RESTCLIENTS_CATALYST_HOST
 
         if hasattr(settings, "RESTCLIENTS_CATALYST_CERT_FILE"):
-             Live.pool = get_con_pool(host,
-                                      settings.RESTCLIENTS_CATALYST_KEY_FILE,
-                                      settings.RESTCLIENTS_CATALYST_CERT_FILE)
+            Live.pool = get_con_pool(host,
+                                     settings.RESTCLIENTS_CATALYST_KEY_FILE,
+                                     settings.RESTCLIENTS_CATALYST_CERT_FILE)
 
         else:
-             Live.pool = get_con_pool(host)
+            Live.pool = get_con_pool(host)
 
         if hasattr(settings, "RESTCLIENTS_CATALYST_SOL_AUTH_PRIVATE_KEY"):
             # Use js_rest instead of rest, to avoid certificate issues

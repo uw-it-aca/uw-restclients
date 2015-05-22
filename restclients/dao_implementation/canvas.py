@@ -3,8 +3,8 @@ Contains Instructure Canvas DAO implementations.
 """
 
 from restclients.dao_implementation.live import get_con_pool, get_live_url
-from restclients.dao_implementation.mock import get_mockdata_url, post_mockdata_url
-from restclients.dao_implementation.mock import delete_mockdata_url, put_mockdata_url
+from restclients.dao_implementation.mock import get_mockdata_url, \
+    post_mockdata_url, delete_mockdata_url, put_mockdata_url
 from django.conf import settings
 from os.path import abspath, dirname
 
@@ -64,7 +64,9 @@ class Live(object):
     RESTCLIENTS_CANVAS_OAUTH_BEARER="..."
     """
     pool = None
-    ignore_security = getattr(settings, 'RESTCLIENTS_CANVAS_IGNORE_CA_SECURITY', False)
+    ignore_security = getattr(settings,
+                              'RESTCLIENTS_CANVAS_IGNORE_CA_SECURITY',
+                              False)
 
     verify_https = True
     if ignore_security:
@@ -76,7 +78,7 @@ class Live(object):
 
         headers["Authorization"] = "Bearer %s" % bearer_key
 
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'GET',
                             host, url, headers=headers,
@@ -88,7 +90,7 @@ class Live(object):
 
         headers["Authorization"] = "Bearer %s" % bearer_key
 
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'PUT',
                             host, url, headers=headers, body=body,
@@ -100,7 +102,7 @@ class Live(object):
 
         headers["Authorization"] = "Bearer %s" % bearer_key
 
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'POST',
                             host, url, headers=headers, body=body,
@@ -112,7 +114,7 @@ class Live(object):
 
         headers["Authorization"] = "Bearer %s" % bearer_key
 
-        if Live.pool == None:
+        if Live.pool is None:
             Live.pool = self._get_pool()
         return get_live_url(Live.pool, 'DELETE',
                             host, url, headers=headers,
