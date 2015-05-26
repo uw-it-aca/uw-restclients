@@ -7,6 +7,7 @@ from django.conf import settings
 from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 
+
 class CalendarFile(object):
     """
     The File DAO implementation returns generally static content.  Use this
@@ -29,7 +30,7 @@ class CalendarLive(object):
 
     def _get_pool(self):
         return get_con_pool(CalendarLive.TRUMBA_HOST,
-                            max_pool_size = CalendarLive.MAX_POOL_SIZE)
+                            max_pool_size=CalendarLive.MAX_POOL_SIZE)
 
     def getURL(self, url, headers):
         if CalendarLive.pool is None:
@@ -50,13 +51,13 @@ class FileSea(object):
     RESTCLIENTS_TRUMBA_SEA_DAO_CLASS =
     'restclients.dao_implementation.trumba.FileSea'
     """
-    #logger = logging.getLogger('restclients.dao_implementation.trumba.File')
+    # logger = logging.getLogger('restclients.dao_implementation.trumba.File')
 
     def get_path_prefix(self):
         return "trumba_sea"
 
     def getURL(self, url, headers):
-        #FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))
+        # FileSea.logger.info("%s/file%s" % (self.get_path_prefix(), url))
         return get_mockdata_url(
             self.get_path_prefix(), "file",
             url, headers)

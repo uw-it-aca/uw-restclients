@@ -13,8 +13,8 @@ class Local(object):
     This implements a local queue, using django models.
     """
     def create_queue(self, queue_name):
-        obj, created = MockAmazonSQSQueue.objects.get_or_create(name=queue_name)
-
+        obj, created = MockAmazonSQSQueue.objects.get_or_create(
+            name=queue_name)
         return obj
 
     def get_queue(self, queue_name):

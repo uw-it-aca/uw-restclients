@@ -25,7 +25,7 @@ class Local(object):
             return None
 
     def send_message(self, message):
-        #Mock SMS Response
+        # Mock SMS Response
         response = SMSResponse()
         response.status = "queued"
         response.body = message.get_body()
@@ -33,6 +33,7 @@ class Local(object):
         response.rid = "blahblahblah"
 
         return response
+
 
 class Email(object):
     """
@@ -46,8 +47,11 @@ class Email(object):
         return message
 
     def send_message(self, message):
-        content = "Phone number: %s\nMessage:\n\n%s" % (message.to, message.body)
-        email = EmailMessage('SMS Message', content, settings.RESTCLIENTS_SMS_EMAIL_TO)
+        content = "Phone number: %s\nMessage:\n\n%s" %\
+            (message.to, message.body)
+        email = EmailMessage('SMS Message',
+                             content,
+                             settings.RESTCLIENTS_SMS_EMAIL_TO)
         email.to = [settings.RESTCLIENTS_SMS_EMAIL_TO]
         email.send()
 
@@ -56,6 +60,7 @@ class Email(object):
         response.body = message.body
         response.status = "queued"
         response.rid = "email_sms"
+
 
 class Live(object):
     """
