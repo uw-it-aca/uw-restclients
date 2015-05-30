@@ -49,8 +49,8 @@ def _json_to_evaluation(data):
                 evaluation.eval_close_date = get_close_date(item_data)
                 evaluation.eval_url = get_eval_url(item.get('links'))
 
-            section, instructors = get_section_and_instructor(item,
-                                                             collection_items)
+            section, instructors = get_section_and_instructor(
+                item, collection_items)
             evaluation.section_sln = get_section_sln(section)
             evaluation.instructor_ids = instructors
             evaluations.append(evaluation)
