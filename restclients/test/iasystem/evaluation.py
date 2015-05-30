@@ -16,7 +16,9 @@ class IASystemTest(TestCase):
                                        term_name='Autumn',
                                        student_id=1033334)
             self.assertEqual(evals[0].section_sln, 15314)
-            self.assertEqual(evals[0].instructor_id, 851006409)
+            self.assertIsNotNone(evals[0].instructor_ids)
+            self.assertEqual(len(evals[0].instructor_ids), 1)
+            self.assertEqual(evals[0].instructor_ids[0], 851006409)
             self.assertEqual(evals[0].eval_open_date,
                              datetime.datetime(2014, 11, 24,
                                                15, 0,

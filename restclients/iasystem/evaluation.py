@@ -1,11 +1,12 @@
 """
 Interfacing with the IASytem API, Evaluation resource.
 """
+import pytz
+import logging
 from urllib import urlencode
 from restclients.iasystem import get_resource_by_campus
 from restclients.models.iasystem import Evaluation
 from datetime import datetime
-import pytz
 
 
 def search_evaluations(campus, **kwargs):
@@ -48,10 +49,10 @@ def _json_to_evaluation(data):
                 evaluation.eval_close_date = get_close_date(item_data)
                 evaluation.eval_url = get_eval_url(item.get('links'))
 
-            section, instructor = get_section_and_instructor(item,
+            section, instructors = get_section_and_instructor(item,
                                                              collection_items)
             evaluation.section_sln = get_section_sln(section)
-            evaluation.instructor_id = get_instructor_id(instructor)
+            evaluation.instructor_ids = instructors
             evaluations.append(evaluation)
     return evaluations
 
@@ -67,7 +68,7 @@ def get_instructor_id(instructor):
 
 
 def get_section_and_instructor(eval_data, collection_items):
-    instructor = None
+    instructors = []  # array of intergers
     section = None
     child_ids = _get_child_ids(eval_data.get('meta'))
     for item in collection_items:
@@ -75,10 +76,10 @@ def get_section_and_instructor(eval_data, collection_items):
         if id in child_ids:
             type = get_value_by_name(item.get('meta'), 'type')
             if type == "instructor":
-                instructor = item
+                instructors.append(get_instructor_id(item))
             if type == "section":
                 section = item
-    return section, instructor
+    return section, instructors
 
 
 def _get_child_ids(meta_data):
