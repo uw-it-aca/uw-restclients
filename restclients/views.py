@@ -29,7 +29,7 @@ def proxy(request, service, url):
     user_service = UserService()
     actual_user = user_service.get_original_user()
     g = Group()
-    is_admin = g.is_member_of_group(actual_user, 
+    is_admin = g.is_member_of_group(actual_user,
                                     settings.RESTCLIENTS_ADMIN_GROUP)
 
     if not is_admin:
@@ -85,13 +85,13 @@ def proxy(request, service, url):
     try:
         if not use_pre:
             content = format_json(service, response.data)
-            json_data = response.data;
+            json_data = response.data
         else:
             content = response.data
             json_data = None
     except Exception as e:
         content = format_html(service, response.data)
-        json_data = None;
+        json_data = None
 
     context = {
         "url": unquote(url),
@@ -149,14 +149,14 @@ def format_json(service, content):
     formatted = formatted.replace("\n", "<br/>\n")
 
     formatted = re.sub(r"\"/(.*?)\"",
-                       r'"<a href="/restclients/view/%s/\1">/\1</a>"' % \
-                           service, formatted)
+                       r'"<a href="/restclients/view/%s/\1">/\1</a>"' %
+                       service, formatted)
 
     return formatted
 
 
 def format_html(service, content):
-    formatted = re.sub(r"href\s*=\s*\"/(.*?)\"", 
+    formatted = re.sub(r"href\s*=\s*\"/(.*?)\"",
                        r"href='/restclients/view/%s/\1'" % service, content)
     formatted = re.sub(re.compile(r"<style.*/style>", re.S), "", formatted)
     formatted = clean_self_closing_divs(formatted)

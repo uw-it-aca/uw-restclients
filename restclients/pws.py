@@ -3,14 +3,17 @@ This is the interface for interacting with the Person Web Service.
 """
 
 from restclients.dao import PWS_DAO
-from restclients.exceptions import InvalidRegID, InvalidNetID, InvalidEmployeeID
-from restclients.exceptions import InvalidIdCardPhotoSize
-from restclients.exceptions import DataFailureException
+from restclients.exceptions import InvalidRegID, InvalidNetID,\
+    InvalidEmployeeID, InvalidIdCardPhotoSize, DataFailureException
 from restclients.models.sws import Person, Entity
 from StringIO import StringIO
 from urllib import urlencode
 import json
 import re
+
+
+PERSON_PREFIX = '/identity/v1/person'
+ENTITY_PREFIX = '/identity/v1/entity'
 
 
 class PWS(object):
@@ -21,8 +24,10 @@ class PWS(object):
         self.actas = actas
         self._re_regid = re.compile(r'^[A-F0-9]{32}$', re.I)
         self._re_personal_netid = re.compile(r'^[a-z][a-z0-9]{0,7}$', re.I)
-        self._re_admin_netid = re.compile(r'^[a-z]adm_[a-z][a-z0-9]{0,7}$', re.I)
-        self._re_application_netid = re.compile(r'^a_[a-z0-9\-\_\.$.]{1,18}$', re.I)
+        self._re_admin_netid = re.compile(r'^[a-z]adm_[a-z][a-z0-9]{0,7}$',
+                                          re.I)
+        self._re_application_netid = re.compile(r'^a_[a-z0-9\-\_\.$.]{1,18}$',
+                                                re.I)
         self._re_employee_id = re.compile(r'^\d{9}$')
 
     def get_person_by_regid(self, regid):
@@ -35,7 +40,7 @@ class PWS(object):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/person/%s/full.json" % regid.upper()
+        url = "%s/%s/full.json" % (PERSON_PREFIX, regid.upper())
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -53,7 +58,7 @@ class PWS(object):
             raise InvalidNetID(netid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/person/%s/full.json" % netid.lower()
+        url = "%s/%s/full.json" % (PERSON_PREFIX, netid.lower())
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -70,7 +75,8 @@ class PWS(object):
         if not self.valid_employee_id(employee_id):
             raise InvalidEmployeeID(employee_id)
 
-        url = "/identity/v1/person.json?%s" % urlencode({"employee_id": employee_id})
+        url = "%s.json?%s" % (PERSON_PREFIX,
+                              urlencode({"employee_id": employee_id}))
         response = PWS_DAO().getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -92,7 +98,7 @@ class PWS(object):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/entity/%s.json" % regid.upper()
+        url = "%s/%s.json" % (ENTITY_PREFIX, regid.upper())
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -110,7 +116,7 @@ class PWS(object):
             raise InvalidNetID(netid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/entity/%s.json" % netid.lower()
+        url = "%s/%s.json" % (ENTITY_PREFIX, netid.lower())
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -126,7 +132,7 @@ class PWS(object):
             raise InvalidRegID(regid)
 
         dao = PWS_DAO()
-        url = "/identity/v1/person/%s/full.json" % regid.upper()
+        url = "%s/%s/full.json" % (PERSON_PREFIX, regid.upper())
         response = dao.getURL(url, {"Accept": "application/json"})
 
         if response.status == 404:
@@ -171,9 +177,9 @@ class PWS(object):
 
     def valid_uwnetid(self, netid):
         uwnetid = str(netid)
-        return (self._re_personal_netid.match(uwnetid) != None
-                or self._re_admin_netid.match(uwnetid) != None
-                or self._re_application_netid.match(uwnetid) != None)
+        return (self._re_personal_netid.match(uwnetid) is not None or
+                self._re_admin_netid.match(uwnetid) is not None or
+                self._re_application_netid.match(uwnetid) is not None)
 
     def valid_uwregid(self, regid):
         return True if self._re_regid.match(str(regid)) else False

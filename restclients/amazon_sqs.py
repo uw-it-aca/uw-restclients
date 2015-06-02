@@ -5,6 +5,7 @@ from restclients.dao import AmazonSQS_DAO
 from boto.sqs.message import RawMessage
 from django.conf import settings
 
+
 class AmazonSQS(object):
     """
     The AmazonSQS class has methods for getting/creating queues.

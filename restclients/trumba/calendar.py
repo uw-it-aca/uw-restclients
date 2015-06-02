@@ -7,17 +7,19 @@ The underline http requests and responses will be logged.
 Be sure to set the logging configuration if you use the LiveDao!
 """
 
+
 import logging
 import json
 import re
-from restclients.models.trumba import TrumbaCalendar, Permission, is_bot, is_sea, is_tac
+from restclients.models.trumba import TrumbaCalendar, Permission,\
+    is_bot, is_sea, is_tac
 from restclients.exceptions import DataFailureException
 import restclients.trumba as Trumba
-from restclients.trumba.exceptions import CalendarOwnByDiffAccount, CalendarNotExist
-from restclients.trumba.exceptions import NoDataReturned, UnknownError, UnexpectedError
+from restclients.trumba.exceptions import CalendarOwnByDiffAccount,\
+    CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
+
 
 logger = logging.getLogger(__name__)
-
 get_calendarlist_url = "/service/calendars.asmx/GetCalendarList"
 get_permissions_url = "/service/calendars.asmx/GetPermissions"
 
@@ -173,7 +175,8 @@ def _load_calendar(campus, resp_fragment, calendar_dict, parent):
              None if error, {} if not exists
     """
     for record in resp_fragment:
-        if re.match('Internal Event Actions', record['Name']) or re.match('Migrated .*', record['Name']):
+        if re.match('Internal Event Actions', record['Name']) or\
+                re.match('Migrated .*', record['Name']):
             continue
         trumba_cal = TrumbaCalendar()
         trumba_cal.calendarid = record['ID']
@@ -189,7 +192,8 @@ def _load_calendar(campus, resp_fragment, calendar_dict, parent):
             continue
 
         calendar_dict[trumba_cal.calendarid] = trumba_cal
-        if record['ChildCalendars'] is not None and len(record['ChildCalendars']) > 0:
+        if record['ChildCalendars'] is not None and\
+                len(record['ChildCalendars']) > 0:
             _load_calendar(campus,
                            record['ChildCalendars'],
                            calendar_dict,
