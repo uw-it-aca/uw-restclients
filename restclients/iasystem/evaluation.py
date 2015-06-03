@@ -32,28 +32,36 @@ def get_evaluation_by_id(evaluation_id, campus):
 
 
 def _json_to_evaluation(data):
-    evaluations = []
+    """
+    Only keep the data for online evaluations.
+    Two scenarios for multiple instructors:
+    1) all of the co-instructors may be evaluated online as a group,
+       sharing the eval URL.
+    2) each co-instructor may be evaluated individually,
+       with separate eval URLs.
+    """
     collection_items = data.get('collection').get('items')
     if collection_items is None:
-        return evaluations
+        return None
+    evaluations = []
     for item in collection_items:
-        type = _get_item_type(item.get('meta'))
+        item_meta = item.get('meta')
+        type = _get_item_type(item_meta)
         if type == "evaluation":
-            evaluation = Evaluation()
-            item_data = item.get('data')
-            evaluation.eval_is_online = get_is_online(item_data)
-            evaluation.eval_status = get_value_by_name(item_data, 'status')
-
-            if evaluation.eval_is_online:
-                evaluation.eval_open_date = get_open_date(item_data)
-                evaluation.eval_close_date = get_close_date(item_data)
+            delivery_data = item.get('data')
+            if get_is_online(delivery_data):
+                evaluation = Evaluation()
+                evaluation.eval_status = \
+                    get_value_by_name(delivery_data, 'status')
+                evaluation.eval_open_date = get_open_date(delivery_data)
+                evaluation.eval_close_date = get_close_date(delivery_data)
                 evaluation.eval_url = get_eval_url(item.get('links'))
-
-            section, instructors = get_section_and_instructor(
-                item, collection_items)
-            evaluation.section_sln = get_section_sln(section)
-            evaluation.instructor_ids = instructors
-            evaluations.append(evaluation)
+                section, instructors = \
+                    get_section_and_instructors(_get_child_ids(item_meta),
+                                                collection_items)
+                evaluation.section_sln = get_section_sln(section)
+                evaluation.instructor_ids = instructors
+                evaluations.append(evaluation)
     return evaluations
 
 
@@ -67,10 +75,9 @@ def get_instructor_id(instructor):
     return int(id)
 
 
-def get_section_and_instructor(eval_data, collection_items):
-    instructors = []  # array of intergers
+def get_section_and_instructors(child_ids, collection_items):
     section = None
-    child_ids = _get_child_ids(eval_data.get('meta'))
+    instructors = []  # array of intergers
     for item in collection_items:
         id = get_value_by_name(item.get('meta'), 'id')
         if id in child_ids:

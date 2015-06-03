@@ -28,31 +28,41 @@ class IASystemTest(TestCase):
                                                7, 59, 59,
                                                tzinfo=pytz.utc))
             self.assertEqual(evals[0].eval_status, "Open")
-            self.assertEqual(evals[0].eval_is_online, True)
             self.assertEqual(evals[0].eval_url,
                              "https://uw.iasysdev.org/survey/132068")
             self.assertEqual(evals[1].eval_status, "Closed")
-            self.assertEqual(evals[1].eval_is_online, True)
-
-            self.assertEqual(evals[2].eval_is_online, False)
-            self.assertEqual(evals[2].eval_status, "Closed")
-            self.assertEqual(evals[2].eval_open_date, None)
-            self.assertEqual(evals[2].eval_close_date, None)
-            self.assertEqual(evals[2].eval_url, "")
 
     def test_all_campuses(self):
         evals = search_evaluations("seattle", year=2014,
                                    term_name='Autumn', student_id=1033334)
-        self.assertEqual(len(evals), 3)
+        self.assertEqual(len(evals), 2)
 
         evals = search_evaluations("bothell", year=2014,
                                    term_name='Autumn', student_id=1033334)
-        self.assertEqual(len(evals), 3)
+        self.assertEqual(len(evals), 2)
 
         evals = search_evaluations("tacoma", year=2014,
                                    term_name='Autumn', student_id=1033334)
-        self.assertEqual(len(evals), 3)
+        self.assertEqual(len(evals), 2)
 
     def test_get_by_id(self):
         evals = get_evaluation_by_id(132136, "seattle")
         self.assertEqual(len(evals), 1)
+
+    def test_multiple_instructor(self):
+        evals = get_evaluation_by_id(141412, "seattle")
+        self.assertEqual(len(evals), 1)
+        self.assertEqual(len(evals[0].instructor_ids), 3)
+        self.assertEqual(evals[0].instructor_ids[0], 849004282)
+        self.assertEqual(evals[0].instructor_ids[1], 849007339)
+        self.assertEqual(evals[0].instructor_ids[2], 859003192)
+        self.assertEqual(evals[0].eval_open_date,
+                         datetime.datetime(2015, 3, 13,
+                                           14, 0,
+                                           tzinfo=pytz.utc))
+        self.assertEqual(evals[0].eval_close_date,
+                         datetime.datetime(2015, 3, 21,
+                                           6, 59, 59,
+                                           tzinfo=pytz.utc))
+        self.assertEqual(evals[0].eval_url,
+                         "https://uw.iasystem.org/survey/141412")
