@@ -9,6 +9,9 @@ from restclients.models.iasystem import Evaluation
 from datetime import datetime
 
 
+IAS_PREFIX = "/api/v1/evaluation"
+
+
 def search_evaluations(campus, **kwargs):
     """
     year (required)
@@ -18,7 +21,7 @@ def search_evaluations(campus, **kwargs):
     section_id
     student_id (student number)
     """
-    url = "/api/v1/evaluation?%s" % urlencode(kwargs)
+    url = "%s?%s" % (IAS_PREFIX, urlencode(kwargs))
 
     data = get_resource_by_campus(url, campus)
     evaluations = _json_to_evaluation(data)
@@ -27,7 +30,7 @@ def search_evaluations(campus, **kwargs):
 
 
 def get_evaluation_by_id(evaluation_id, campus):
-    url = "/api/v1/evaluation/%s" % evaluation_id
+    url = "%s/%s" % (IAS_PREFIX, evaluation_id)
     return _json_to_evaluation(get_resource_by_campus(url, campus))
 
 
