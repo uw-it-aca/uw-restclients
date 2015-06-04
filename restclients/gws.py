@@ -19,7 +19,6 @@ class GWS(object):
     """
     QTRS = {'win': 'winter', 'spr': 'spring', 'sum': 'summer', 'aut': 'autumn'}
 
-
     def __init__(self, config={}):
         self.actas = config['actas'] if 'actas' in config else None
 
@@ -45,7 +44,7 @@ class GWS(object):
                 Values are 'one' to limit results to one level of stem name
                 and 'all' to return all groups.
         """
-        kwargs = dict((k.lower(), v.lower()) for k,v in kwargs.iteritems())
+        kwargs = dict((k.lower(), v.lower()) for k, v in kwargs.iteritems())
         if 'type' in kwargs and (kwargs['type'] != 'direct' and
                                  kwargs['type'] != 'effective'):
             del(kwargs['type'])
@@ -252,11 +251,14 @@ class GWS(object):
         group_id = root.find('.//*[@class="name"]').text
         if re.match(r'^course_', group_id):
             group = CourseGroup()
-            group.curriculum_abbr = root.find('.//*[@class="course_curr"]').text.upper()
+            group.curriculum_abbr = root.find(
+                './/*[@class="course_curr"]').text.upper()
             group.course_number = root.find('.//*[@class="course_no"]').text
             group.year = root.find('.//*[@class="course_year"]').text
-            group.quarter = self.QTRS[root.find('.//*[@class="course_qtr"]').text]
-            group.section_id = root.find('.//*[@class="course_sect"]').text.upper()
+            group.quarter = self.QTRS[
+                root.find('.//*[@class="course_qtr"]').text]
+            group.section_id = root.find(
+                './/*[@class="course_sect"]').text.upper()
             group.sln = root.find('.//*[@class="course_sln"]').text
 
             group.instructors = []
@@ -289,11 +291,13 @@ class GWS(object):
             group.admins.append(GroupUser(name=user.text,
                                           user_type=user.get("type")))
 
-        for user in root.findall('.//*[@class="updaters"]/*[@class="updater"]'):
+        for user in\
+                root.findall('.//*[@class="updaters"]/*[@class="updater"]'):
             group.updaters.append(GroupUser(name=user.text,
                                             user_type=user.get("type")))
 
-        for user in root.findall('.//*[@class="creators"]/*[@class="creator"]'):
+        for user in\
+                root.findall('.//*[@class="creators"]/*[@class="creator"]'):
             group.creators.append(GroupUser(name=user.text,
                                             user_type=user.get("type")))
 
@@ -303,7 +307,7 @@ class GWS(object):
 
         for user in root.findall('.//*[@class="optins"]/*[@class="optin"]'):
             group.optins.append(GroupUser(name=user.text,
-                                           user_type=user.get("type")))
+                                          user_type=user.get("type")))
 
         for user in root.findall('.//*[@class="optouts"]/*[@class="optout"]'):
             group.optouts.append(GroupUser(name=user.text,
@@ -375,7 +379,7 @@ class GWS(object):
 
     def _add_header(self, headers, header, value):
         if not headers:
-            return { header: value }
+            return {header: value}
 
         headers[header] = value
         return headers

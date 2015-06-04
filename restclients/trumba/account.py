@@ -6,6 +6,7 @@ The underline http requests and responses will be logged.
 Be sure to set the logging configuration if you use the LiveDao!
 """
 
+
 from functools import partial
 import logging
 import re
@@ -13,12 +14,11 @@ from lxml import etree, objectify
 from urllib import quote, unquote
 from restclients.exceptions import DataFailureException
 import restclients.trumba as Trumba
-from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist
-from restclients.trumba.exceptions import AccountUsedByDiffUser, CalendarNotExist
-from restclients.trumba.exceptions import CalendarOwnByDiffAccount, InvalidEmail
-from restclients.trumba.exceptions import InvalidPermissionLevel, FailedToClosePublisher
-from restclients.trumba.exceptions import NoAllowedPermission, ErrorCreatingEditor
-from restclients.trumba.exceptions import NoDataReturned, UnexpectedError, UnknownError
+from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist,\
+    AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount,\
+    InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher,\
+    NoAllowedPermission, ErrorCreatingEditor, NoDataReturned,\
+    UnexpectedError, UnknownError
 
 
 add_editor_url_prefix = "/service/accounts.asmx/CreateEditor"
@@ -136,7 +136,8 @@ def _process_resp(request_id, response, is_success_func):
     """
     :param request_id: campus url identifying the request
     :param response: the GET method response object
-    :param is_success_func: the name of the function for verifying a success code
+    :param is_success_func: the name of the function for
+        verifying a success code
     :return: True if successful, False otherwise.
     raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
@@ -149,7 +150,8 @@ def _process_resp(request_id, response, is_success_func):
     if response.data is None:
         raise NoDataReturned()
     root = objectify.fromstring(response.data)
-    if root.ResponseMessage is None or root.ResponseMessage.attrib['Code'] is None:
+    if root.ResponseMessage is None or\
+            root.ResponseMessage.attrib['Code'] is None:
         raise UnknownError()
     resp_code = int(root.ResponseMessage.attrib['Code'])
     func = partial(is_success_func)

@@ -9,6 +9,9 @@ import json
 import re
 
 
+BOOK_PREFIX = "http://uw-seattle.verbacompare.com/m?section_id="
+
+
 class Bookstore(object):
     """
     Get book information for courses.
@@ -53,7 +56,7 @@ class Bookstore(object):
 
                     response[section.sln].append(book)
             except KeyError as err:
-                #do nothing if bookstore has no record of book
+                # do nothing if bookstore has no record of book
                 pass
 
         return response
@@ -76,23 +79,25 @@ class Bookstore(object):
 
         for key in data:
             if re.match(r'^[A-Z]{2}[0-9]{5}$', key):
-                return "http://uw-seattle.verbacompare.com/m?section_id=%s&quarter=%s" % (key, schedule.term.quarter)
+                return "%s%s&quarter=%s" % (BOOK_PREFIX,
+                                            key,
+                                            schedule.term.quarter)
 
     def get_books_url(self, schedule):
         sln_string = self._get_slns_string(schedule)
         url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&%s" % (
-                                                        schedule.term.quarter,
-                                                        sln_string,
-                                                       )
+            schedule.term.quarter,
+            sln_string,
+            )
 
         return url
 
     def get_verba_url(self, schedule):
         sln_string = self._get_slns_string(schedule)
         url = "/myuw/myuw_mobile_v.ubs?quarter=%s&%s" % (
-                                                        schedule.term.quarter,
-                                                        sln_string,
-                                                       )
+            schedule.term.quarter,
+            sln_string,
+            )
 
         return url
 

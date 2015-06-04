@@ -4,9 +4,12 @@ For restclients methods that use threading, this can be used to prevent
 innodb gap locks from deadlocking sequential inserts.
 """
 
+from django.db import IntegrityError
+
+
 __manage_bulk_inserts = False
 __bulk_insert_queue = []
-from django.db import IntegrityError
+
 
 def store_cache_entry(entry):
     global __manage_bulk_inserts
@@ -18,6 +21,7 @@ def store_cache_entry(entry):
     else:
         entry.save()
 
+
 def save_all_queued_entries():
     global __bulk_insert_queue
 
@@ -26,7 +30,7 @@ def save_all_queued_entries():
 
     try:
         for entry in __bulk_insert_queue:
-            if not entry.url in seen_urls:
+            if entry.url not in seen_urls:
                 entry.save()
                 seen_urls[entry.url] = True
     except Exception as ex:
@@ -34,9 +38,11 @@ def save_all_queued_entries():
 
     __bulk_insert_queue = []
 
+
 def enable_cache_entry_queueing():
     global __manage_bulk_inserts
     __manage_bulk_inserts = True
+
 
 def disable_cache_entry_queueing():
     global __manage_bulk_inserts
