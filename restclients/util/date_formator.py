@@ -44,7 +44,8 @@ def abbr_week_month_day_str(adatetime):
 def past_datetime_str(adatetime):
     """
     For adatetime is since 12:00AM, return: "Today at H:MM [A]PM"
-    For adatetime is between 12:00AM and 11:59PM on yesterday: "Yesterday at 6:23 PM"
+    For adatetime is between 12:00AM and 11:59PM on yesterday:
+                                    "Yesterday at 6:23 PM"
     For adatetime is between 2 and 6 days ago: "[2-6] days ago"
     For adatetime is 7 days ago: "1 week ago"
     For adatetime is 8-14 days ago: "Over 1 week ago"
@@ -150,4 +151,5 @@ def get_total_seconds(time_delta):
     """
     Returns the total number of seconds in a passed timedelta
     """
-    return (time_delta.microseconds + (time_delta.seconds + time_delta.days * 24 * 3600) * 10**6) / 10**6
+    return (time_delta.microseconds +
+            (time_delta.seconds + time_delta.days * 24 * 3600) * 10**6) / 10**6

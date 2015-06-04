@@ -7,6 +7,7 @@ same api where start just calls run and.
 import threading
 from django.conf import settings
 
+
 class Thread(threading.Thread):
     _use_thread = False
 
@@ -14,7 +15,8 @@ class Thread(threading.Thread):
         # Threading has been tested w/ the mysql backend.
         # It should also work with the postgres/oracle/and so on backends,
         # but we don't use those.
-        if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+        if settings.DATABASES['default']['ENGINE'] ==\
+                'django.db.backends.mysql':
             if hasattr(settings, "RESTCLIENTS_DISABLE_THREADING"):
                 if not settings.RESTCLIENTS_DISABLE_THREADING:
                     self._use_thread = True
@@ -40,7 +42,6 @@ class Thread(threading.Thread):
                 super(Thread, self).join()
             else:
                 self.run()
-
 
     def join(self):
         if self._use_thread:

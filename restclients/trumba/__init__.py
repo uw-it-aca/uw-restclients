@@ -43,20 +43,25 @@ def _log_xml_resp(campus, url, response, timer):
         logger.info("%s %s ==message==> %s" % (campus, url, resp_msg))
     else:
         log_err(logger,
-                "%s %s ==error==> %s %s" % (
-                campus, url, response.status, response.reason),
+                "%s %s ==error==> %s %s" % (campus, url,
+                                            response.status,
+                                            response.reason),
                 timer)
 
 
 def _log_json_resp(campus, url, body, response, timer):
     if response.status == 200 and response.data is not None:
         log_info(logger,
-                 "%s %s %s ==status==> %s" % (campus, url, body, response.status),
+                 "%s %s %s ==status==> %s" % (campus, url, body,
+                                              response.status),
                  timer)
-        logger.debug("%s %s %s ==data==> %s" % (campus, url, body, response.data))
+        logger.debug("%s %s %s ==data==> %s" % (campus, url, body,
+                                                response.data))
     else:
         log_err(logger,
-                "%s %s %s ==error==> %s %s" % (campus, url, body, response.status, response.reason),
+                "%s %s %s ==error==> %s %s" % (campus, url, body,
+                                               response.status,
+                                               response.reason),
                 timer)
 
 
@@ -129,9 +134,10 @@ def post_bot_resource(url, body):
     response = None
     while True:
         timer = Timer()
-        response = TrumbaBot_DAO().postURL(url,
-                                           {"Content-Type": "application/json"},
-                                           body)
+        response = TrumbaBot_DAO().postURL(
+            url,
+            {"Content-Type": "application/json"},
+            body)
         _log_json_resp("Bothell", url, body, response, timer)
         if response.status != 500 or retry == 1:
             break
@@ -150,9 +156,10 @@ def post_sea_resource(url, body):
     response = None
     while True:
         timer = Timer()
-        response = TrumbaSea_DAO().postURL(url,
-                                           {"Content-Type": "application/json"},
-                                           body)
+        response = TrumbaSea_DAO().postURL(
+            url,
+            {"Content-Type": "application/json"},
+            body)
         _log_json_resp("Seattle", url, body, response, timer)
         if response.status != 500 or retry == 1:
             break
@@ -171,9 +178,10 @@ def post_tac_resource(url, body):
     response = None
     while True:
         timer = Timer()
-        response = TrumbaTac_DAO().postURL(url,
-                                           {"Content-Type": "application/json"},
-                                           body)
+        response = TrumbaTac_DAO().postURL(
+            url,
+            {"Content-Type": "application/json"},
+            body)
         _log_json_resp("Tacoma", url, body, response, timer)
         if response.status != 500 or retry == 1:
             break

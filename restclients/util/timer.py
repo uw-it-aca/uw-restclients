@@ -6,12 +6,12 @@ def uctnow():
 
 
 class Timer:
+
     def __init__(self):
         """
         Start the timer
         """
         self.start = uctnow()
-
 
     def get_elapsed(self):
         """
