@@ -6,7 +6,6 @@ class Evaluation(models.Model):
     eval_open_date = models.DateTimeField()
     eval_close_date = models.DateTimeField()
     eval_status = models.CharField(max_length=7)
-    eval_is_online = models.BooleanField(default=False)
     eval_url = models.URLField()
 
     def __init__(self, *args, **kwargs):
@@ -15,5 +14,8 @@ class Evaluation(models.Model):
 
 
     def __str__(self):
-        return "{sln: %d, eval_is_online: %s, status: %s}" % (
-            self.section_sln, self.eval_is_online, self.eval_status)
+        return "{%s: %d, %s: %s, %s: %s, %s: %s}" % (
+            "sln", self.section_sln,
+            "eval_open_date", self.eval_open_date,
+            "eval_close_date", self.eval_close_date,
+            "eval_url", self.eval_url)
