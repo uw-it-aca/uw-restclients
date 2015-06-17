@@ -63,13 +63,12 @@ def proxy(request, service, url):
         headers = {"Accept": "application/vnd.collection+json"}
         subdomain = None
         if url.endswith('/evaluation'):
-            if url.startswith('uwb/') or url.startswith('uwt/') :
+            if url.startswith('uwb/') or url.startswith('uwt/'):
                 subdomain = url[:3]
                 url = url[4:]
             else:
                 subdomain = url[:2]
                 url = url[3:]
-        
     elif service == "calendar":
         dao = TrumbaCalendar_DAO()
         use_pre = True
