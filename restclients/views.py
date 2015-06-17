@@ -60,6 +60,9 @@ def proxy(request, service, url):
         dao = MyPlan_DAO()
     elif service == "iasystem":
         dao = IASYSTEM_DAO()
+        headers = {"Accept": "application/vnd.collection+json"}
+        subdomain = url[:2]
+        url = url[3:]
     elif service == "calendar":
         dao = TrumbaCalendar_DAO()
         use_pre = True
@@ -73,7 +76,10 @@ def proxy(request, service, url):
 
     start = time()
     try:
-        response = dao.getURL(url, headers)
+        if service == "iasystem":
+            response = dao.getURL(url, headers, subdomain)
+        else:
+            response = dao.getURL(url, headers)
     except Exception as ex:
         response = MockHTTP()
         response.status = 500
