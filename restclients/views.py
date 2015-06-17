@@ -61,8 +61,15 @@ def proxy(request, service, url):
     elif service == "iasystem":
         dao = IASYSTEM_DAO()
         headers = {"Accept": "application/vnd.collection+json"}
-        subdomain = url[:2]
-        url = url[3:]
+        subdomain = None
+        if url.endswith('/evaluation'):
+            if url.startswith('uwb/') or url.startswith('uwt/') :
+                subdomain = url[:3]
+                url = url[4:]
+            else:
+                subdomain = url[:2]
+                url = url[3:]
+        
     elif service == "calendar":
         dao = TrumbaCalendar_DAO()
         use_pre = True
@@ -76,7 +83,7 @@ def proxy(request, service, url):
 
     start = time()
     try:
-        if service == "iasystem":
+        if service == "iasystem" and subdomain is not None:
             response = dao.getURL(url, headers, subdomain)
         else:
             response = dao.getURL(url, headers)
