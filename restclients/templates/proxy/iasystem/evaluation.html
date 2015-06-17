@@ -1,7 +1,7 @@
 <h1>Iasystem Search (Proxy)</h1>
-<div>
 <form method="get" action="evaluation">
-
+<div>
+    <p>
     <label for="term_name">Term:</label>
     <select id="term_name" name="term_name" value="{{search.term_name}}">
         <option value="Winter">Winter</option>
@@ -9,30 +9,29 @@
         <option value="Summer">Summer</option>
         <option value="Autumn">Autumn</option>
     </select>
-
-
+    </p>
+    <p>
     <label for="curriculum_abbreviation">Curriculum Abbreviation:</label>
     <input class="" id="curriculum_abbreviation" name="curriculum_abbreviation" value="{{search.curriculum_abbreviation}}" size="10" type="text">
-
-
+    </p>
+    <p>
     <label for="course_number">Course Number:</label>
     <input class="" id="course_number" name="course_number" value="{{search.course_number}}" size="10" type="text">
-
+    </p>
+    <p>
     <label for="section_id">Section Id:</label>
     <input class="" id="section_id" name="section_id" value="{{search.section_id}}" size="5" type="text">
-
+    </p>
+    <p>
     <label for="year">Year:</label>
     <select id="year" name="year" value="{{search.year}}">
         <option value="2013">2013</option>
         <option value="2014">2014</option>
         <option value="2015">2015</option>
         <option value="2016">2016</option>
-
-    <br>
-    <br>
-    <br>
-
+    </select>
+    </p>
     <input value="Search" type="submit">
 
-</form>
 </div>
+</form>
