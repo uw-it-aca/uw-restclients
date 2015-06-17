@@ -1,0 +1,19 @@
+<h1>Iasystem Search (Proxy)</h1>
+<ul>
+    {% url 'restclients.views.proxy' 'iasystem' 'uw/api/v1/evaluation' as uw_url %}
+    {% if uw_url %}
+    <li><a href="{{ uw_url }}">Seattle Domain</a></li>
+    {% endif %}
+
+    {% url 'restclients.views.proxy' 'iasystem' 'uwb/api/v1/evaluation' as uwb_url %}
+    {% if uwb_url %}
+    <li><a href="{{ uwb_url }}">Bothell Domain</a></li>
+    {% endif %}
+
+    {% url 'restclients.views.proxy' 'iasystem' 'uwt/api/v1/evaluation' as uwt_url %}
+    {% if uwt_url %}
+    <li><a href="{{ uwt_url }}">Tacoma Domain</a></li>
+    {% endif %}
+
+</ul>
+
