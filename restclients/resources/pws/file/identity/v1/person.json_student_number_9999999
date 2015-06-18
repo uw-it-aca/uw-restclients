@@ -1,0 +1,27 @@
+{
+    "Current": {
+        "DevelopmentID": null,
+        "EduPersonAffiliationAffiliate": null,
+        "EduPersonAffiliationAlum": null,
+        "EduPersonAffiliationEmployee": null,
+        "EduPersonAffiliationFaculty": null,
+        "EduPersonAffiliationMember": null,
+        "EduPersonAffiliationStaff": null,
+        "EduPersonAffiliationStudent": null,
+        "EmployeeID": null,
+        "Href": "/identity/v1/person.json?uwregid=&uwnetid=&employee_id=&student_number=9999999&student_system_key=&development_id=&registered_surname=&registered_first_middle_name=&edupersonaffiliation_student=&edupersonaffiliation_staff=&edupersonaffiliation_faculty=&edupersonaffiliation_employee=&edupersonaffiliation_member=&edupersonaffiliation_alum=&edupersonaffiliation_affiliate=&page_size=10&page_start=1",
+        "PageSize": "10",
+        "PageStart": "1",
+        "RegisteredFirstMiddleName": null,
+        "RegisteredSurname": null,
+        "Start": "1",
+        "StudentNumber": "9999999",
+        "StudentSystemKey": null,
+        "UWNetID": null,
+        "UWRegID": null
+    },
+    "MaxResultSize": 500,
+    "Next": null,
+    "Persons": [],
+    "Previous": null
+}

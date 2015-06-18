@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.pws import PWS
-from restclients.exceptions import InvalidRegID, InvalidNetID, InvalidEmployeeID
+from restclients.exceptions import InvalidRegID, InvalidNetID,\
+    InvalidEmployeeID, InvalidStudentNumber
 from restclients.exceptions import DataFailureException
 
 class PWSTestPersonData(TestCase):
@@ -26,6 +27,32 @@ class PWSTestPersonData(TestCase):
             person = pws.get_person_by_employee_id('123456789')
             self.assertEquals(person.uwnetid, 'javerage', "Correct netid")
             self.assertEquals(person.uwregid, '9136CCB8F66711D5BE060004AC494FFE', "Correct regid")
+
+            self.assertRaises(InvalidEmployeeID,
+                              pws.get_person_by_employee_id,
+                              '12345')
+
+            # Valid non-existent employee ID
+            self.assertRaises(DataFailureException,
+                              pws.get_person_by_employee_id,
+                              '999999999')
+
+    def test_by_student_number(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            pws = PWS()
+            person = pws.get_person_by_student_number('1234567')
+            self.assertEquals(person.uwnetid, 'javerage', "Correct netid")
+            self.assertEquals(person.uwregid, '9136CCB8F66711D5BE060004AC494FFE', "Correct regid")
+
+            # Valid non-existent student number
+            self.assertRaises(DataFailureException,
+                              pws.get_person_by_student_number,
+                              '9999999')
+
+            self.assertRaises(InvalidStudentNumber,
+                              pws.get_person_by_student_number,
+                              '123456')
 
     def test_names(self):
         with self.settings(
