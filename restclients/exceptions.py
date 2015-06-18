@@ -28,6 +28,11 @@ class InvalidEmployeeID(Exception):
     pass
 
 
+class InvalidStudentNumber(Exception):
+    """Exception for invalid student number."""
+    pass
+
+
 class InvalidUUID(Exception):
     """Exception for invalid UUID."""
     pass
