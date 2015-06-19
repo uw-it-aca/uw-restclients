@@ -4,7 +4,8 @@ This is the interface for interacting with the Person Web Service.
 
 from restclients.dao import PWS_DAO
 from restclients.exceptions import InvalidRegID, InvalidNetID,\
-    InvalidEmployeeID, InvalidIdCardPhotoSize, DataFailureException
+    InvalidEmployeeID, InvalidStudentNumber, InvalidIdCardPhotoSize,\
+    DataFailureException
 from restclients.models.sws import Person, Entity
 from StringIO import StringIO
 from urllib import urlencode
@@ -29,12 +30,13 @@ class PWS(object):
         self._re_application_netid = re.compile(r'^a_[a-z0-9\-\_\.$.]{1,18}$',
                                                 re.I)
         self._re_employee_id = re.compile(r'^\d{9}$')
+        self._re_student_number = re.compile(r'^\d{7}$')
 
     def get_person_by_regid(self, regid):
         """
         Returns a restclients.Person object for the given regid.  If the
-        regid isn't found, nothing will be returned.  If there is an error
-        communicating with the PWS, a DataFailureException will be thrown.
+        regid isn't found, or if there is an error communicating with the PWS,
+        a DataFailureException will be thrown.
         """
         if not self.valid_uwregid(regid):
             raise InvalidRegID(regid)
@@ -51,8 +53,8 @@ class PWS(object):
     def get_person_by_netid(self, netid):
         """
         Returns a restclients.Person object for the given netid.  If the
-        netid isn't found, nothing will be returned.  If there is an error
-        communicating with the PWS, a DataFailureException will be thrown.
+        netid isn't found, or if there is an error communicating with the PWS,
+        a DataFailureException will be thrown.
         """
         if not self.valid_uwnetid(netid):
             raise InvalidNetID(netid)
@@ -69,8 +71,8 @@ class PWS(object):
     def get_person_by_employee_id(self, employee_id):
         """
         Returns a restclients.Person object for the given employee id.  If the
-        employee id isn't found, nothing will be returned. If there is an error
-        communicating with the PWS, a DataFailureException will be thrown.
+        employee id isn't found, or if there is an error communicating with the
+        PWS, a DataFailureException will be thrown.
         """
         if not self.valid_employee_id(employee_id):
             raise InvalidEmployeeID(employee_id)
@@ -84,15 +86,41 @@ class PWS(object):
 
         # Search does not return a full person resource
         data = json.loads(response.data)
-        if len(data["Persons"]):
-            regid = data["Persons"][0]["PersonURI"]["UWRegID"]
-            return self.get_person_by_regid(regid)
+        if not len(data["Persons"]):
+            raise DataFailureException(url, 404, "No person found")
+
+        regid = data["Persons"][0]["PersonURI"]["UWRegID"]
+        return self.get_person_by_regid(regid)
+
+    def get_person_by_student_number(self, student_number):
+        """
+        Returns a restclients.Person object for the given student number.  If
+        the student number isn't found, or if there is an error communicating
+        with the PWS, a DataFailureException will be thrown.
+        """
+        if not self.valid_student_number(student_number):
+            raise InvalidStudentNumber(student_number)
+
+        url = "%s.json?%s" % (PERSON_PREFIX,
+                              urlencode({"student_number": student_number}))
+        response = PWS_DAO().getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        # Search does not return a full person resource
+        data = json.loads(response.data)
+        if not len(data["Persons"]):
+            raise DataFailureException(url, 404, "No person found")
+
+        regid = data["Persons"][0]["PersonURI"]["UWRegID"]
+        return self.get_person_by_regid(regid)
 
     def get_entity_by_regid(self, regid):
         """
         Returns a restclients.Entity object for the given regid.  If the
-        regid isn't found, nothing will be returned.  If there is an error
-        communicating with the PWS, a DataFailureException will be thrown.
+        regid isn't found, or if there is an error communicating with the PWS,
+        a DataFailureException will be thrown.
         """
         if not self.valid_uwregid(regid):
             raise InvalidRegID(regid)
@@ -109,8 +137,8 @@ class PWS(object):
     def get_entity_by_netid(self, netid):
         """
         Returns a restclients.Entity object for the given netid.  If the
-        netid isn't found, nothing will be returned.  If there is an error
-        communicating with the PWS, a DataFailureException will be thrown.
+        netid isn't found, or if there is an error communicating with the PWS,
+        a DataFailureException will be thrown.
         """
         if not self.valid_uwnetid(netid):
             raise InvalidNetID(netid)
@@ -186,6 +214,10 @@ class PWS(object):
 
     def valid_employee_id(self, employee_id):
         return True if self._re_employee_id.match(str(employee_id)) else False
+
+    def valid_student_number(self, student_number):
+        return True if (
+            self._re_student_number.match(str(student_number))) else False
 
     def _person_from_json(self, data):
         """
