@@ -25,5 +25,6 @@ class MyLibAccount(models.Model):
                 }
 
     def __str__(self):
-        return "{next_due: %s, holds_ready: %d, fines: %.2f, items_loaned: %d}" % (
-            self.next_due, self.holds_ready, self.fines, self.items_loaned)
+        return\
+            "{next_due: %s, holds_ready: %d, fines: %.2f, items_loaned: %d}" %\
+            (self.next_due, self.holds_ready, self.fines, self.items_loaned)
