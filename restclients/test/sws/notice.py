@@ -123,16 +123,18 @@ class SWSNotice(TestCase):
 
             notice = notices[13]
             self.assertEquals(notice.notice_category, "StudentFinAid")
-            self.assertEquals(notice.notice_type, "DirectDepositLong")
+            self.assertEquals(notice.notice_type, "DirectDeposit")
 
             notice = notices[14]
             self.assertEquals(notice.notice_category, "StudentFinAid")
             self.assertEquals(notice.notice_type, "DirectDepositShort")
+            self.assertEquals(notice.long_notice.notice_type, "DirectDeposit")
 
             notice = notices[15]
             self.assertEquals(notice.notice_category, "StudentFinAid")
-            self.assertEquals(notice.notice_type, "AidPriorityDateLong")
+            self.assertEquals(notice.notice_type, "AidPriorityDate")
 
             notice = notices[16]
             self.assertEquals(notice.notice_category, "StudentFinAid")
             self.assertEquals(notice.notice_type, "AidPriorityDateShort")
+            self.assertEquals(notice.long_notice.notice_type, "AidPriorityDate")

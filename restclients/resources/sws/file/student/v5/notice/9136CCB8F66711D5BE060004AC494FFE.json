@@ -192,7 +192,7 @@
         {
             "NoticeAttributes": [],
             "NoticeCategory": "StudentFinAid",
-            "NoticeType": "DirectDepositLong",
+            "NoticeType": "DirectDeposit",
             "NoticeContent": "<span class=\"notice-title\">Enroll in Direct Deposit for Aid Funds</span>&nbs<span class=\"notice-body-with-title\"><a href=\"https://sdb.admin.uw.edu/students/uwnetid/emt.asp\">Sign up for direct deposit</a> of your Financial Aid Funds</span>"
         },
         {
@@ -225,7 +225,7 @@
                }
             ],
             "NoticeCategory": "StudentFinAid",
-            "NoticeType": "AidPriorityDateLong",
+            "NoticeType": "AidPriorityDate",
             "NoticeContent": "<span class=\"notice-title\">Submit [year] FAFSA by Feb 28th</span>&nbsp<span class=\"notice-body-with-title\">If you haven't already, complete your [year] <a href=\"https://fafsa.gov\">Financial Aid Application</a> before Feb 28th for priority consideration</span>"
         },
         {

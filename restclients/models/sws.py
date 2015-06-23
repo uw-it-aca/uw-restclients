@@ -823,6 +823,8 @@ class Notice(models.Model):
     custom_category = models.CharField(max_length=100,
                                        default="Uncategorized"
                                        )
+    # long_notice: if it is a short notice, this attribute
+    # will point to the corresponding long notice
 
     def json_data(self, include_abbr_week_month_day_format=False):
 
