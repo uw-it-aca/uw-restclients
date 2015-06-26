@@ -3,15 +3,18 @@ from datetime import datetime
 
 
 def is_bot(campus_code):
-    return campus_code is not None and campus_code == TrumbaCalendar.BOT_CAMPUS_CODE
+    return campus_code is not None and\
+        campus_code == TrumbaCalendar.BOT_CAMPUS_CODE
 
 
 def is_sea(campus_code):
-    return campus_code is not None and campus_code == TrumbaCalendar.SEA_CAMPUS_CODE
+    return campus_code is not None and\
+        campus_code == TrumbaCalendar.SEA_CAMPUS_CODE
 
 
 def is_tac(campus_code):
-    return campus_code is not None and campus_code == TrumbaCalendar.TAC_CAMPUS_CODE
+    return campus_code is not None and\
+        campus_code == TrumbaCalendar.TAC_CAMPUS_CODE
 
 
 def is_valid_campus_code(campus_code):
@@ -70,11 +73,18 @@ def make_group_title(calendar_name, gtype):
     return "%s calendar %s group" % (calendar_name, gtype)
 
 
+editor_group_desc =\
+    "Specifying the editors who can add/edit/delete events on this calendar"
+showon_group_desc =\
+    "Specifying the editor groups whose members have the showon permissions" +\
+    " on this calendar"
+
+
 def make_group_desc(gtype):
     if is_editor_group(gtype):
-        return "Specifying the editors who can add/edit/delete events on this calendar"
+        return editor_group_desc
     else:
-        return "Specifying the editor groups whose members have the showon permissions on this calendar"
+        return showon_group_desc
 
 
 class UwcalGroup(models.Model):
@@ -176,10 +186,12 @@ class Permission(models.Model):
         return "%s@washington.edu" % self.uwnetid
 
     def is_edit(self):
-        return is_edit_permission(self.level) or is_publish_permission(self.level)
+        return is_edit_permission(self.level) or\
+            is_publish_permission(self.level)
 
     def is_showon(self):
-        return is_showon_permission(self.level) or is_republish_permission(self.level)
+        return is_showon_permission(self.level) or\
+            is_republish_permission(self.level)
 
     def is_bot(self):
         return is_bot(self.campus)
@@ -191,13 +203,14 @@ class Permission(models.Model):
         return is_tac(self.campus)
 
     def __eq__(self, other):
-         # noinspection PyPep8,PyPep8
-        return self.calendarid == other.calendarid and self.uwnetid == other.uwnetid and self.name == other.name and self.level == other.level
+        return self.calendarid == other.calendarid and\
+            self.uwnetid == other.uwnetid and\
+            self.name == other.name and self.level == other.level
 
     def __str__(self):
         return "{calendarid: %s, campus: %s, uwnetid: %s, level: %s}" % (
             self.calendarid, self.campus, self.uwnetid, self.level)
 
     def __unicode__(self):
-        return u'{calendarid: %s, campus: %s, uwnetid: %s, name: %s, level: %s}' % (
-            self.calendarid, self.campus, self.uwnetid, self.name, self.level)
+        return u'{calendarid: %s, campus: %s, uwnetid: %s, level: %s}' % (
+            self.calendarid, self.campus, self.uwnetid, self.level)

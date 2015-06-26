@@ -1,15 +1,19 @@
 from django.db import models
 
+
 class MyPlan(models.Model):
     def __init__(self):
         self.terms = []
 
     def json_data(self):
-        data = { "terms": [] }
+        data = {
+            "terms": []
+            }
         for term in self.terms:
             data["terms"].append(term.json_data())
 
         return data
+
 
 class MyPlanTerm(models.Model):
     SPRING = 'spring'
@@ -43,6 +47,7 @@ class MyPlanTerm(models.Model):
 
         return data
 
+
 class MyPlanCourse(models.Model):
     def __init__(self):
         self.sections = []
@@ -65,9 +70,12 @@ class MyPlanCourse(models.Model):
 
         return data
 
+
 class MyPlanCourseSection(models.Model):
     section_id = models.CharField(max_length=2,
                                   db_index=True)
 
     def json_data(self):
-        return { "section_id": self.section_id }
+        return {
+            "section_id": self.section_id
+            }

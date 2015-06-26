@@ -31,12 +31,14 @@ class CanvasTerm(models.Model):
     def get_start_date(self):
         if self._start_date:
             return self._start_date
-        raise Exception("Need to fetch this from the SWS, or manually pre-populate")
+        raise Exception(
+            "Need to fetch this from the SWS, or manually pre-populate")
 
     def get_end_date(self):
         if self._end_date:
             return self._end_date
-        raise Exception("Need to fetch this from the SWS, or manually pre-populate")
+        raise Exception(
+            "Need to fetch this from the SWS, or manually pre-populate")
 
     class Meta:
         db_table = "restclients_canvas_term"
@@ -128,8 +130,10 @@ class CanvasEnrollment(models.Model):
     sis_course_id = models.CharField(max_length=100, null=True)
     course_url = models.CharField(max_length=2000, null=True)
     course_name = models.CharField(max_length=100, null=True)
-    current_score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    final_score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    current_score = models.DecimalField(max_digits=10,
+                                        decimal_places=2, null=True)
+    final_score = models.DecimalField(max_digits=10,
+                                      decimal_places=2, null=True)
     current_grade = models.TextField(max_length=12, null=True)
     final_grade = models.TextField(max_length=12, null=True)
     grade_html_url = models.CharField(max_length=1000)
@@ -323,7 +327,7 @@ class Quiz(models.Model):
     published = models.NullBooleanField()
 
     class Meta:
-        db_table ="restclients_canvas_quiz"
+        db_table = "restclients_canvas_quiz"
 
 
 class GradingStandard(models.Model):

@@ -251,7 +251,7 @@ class SMSResponse(models.Model):
     body = models.TextField(max_length=8192)
     to = models.TextField(max_length=40)
     status = models.TextField(max_length=8192)
-    #all sms requests have some sort of response id
+    # all sms requests have some sort of response id
     rid = models.TextField(max_length=8192)
 
     def get_body(self):

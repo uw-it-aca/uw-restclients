@@ -188,6 +188,51 @@
             "NoticeCategory": "StudentDAD",
             "NoticeContent": "Spring quarter ends <b>June 13, 2014<b>",
             "NoticeType": "QtrEnd"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentFinAid",
+            "NoticeType": "DirectDeposit",
+            "NoticeContent": "<span class=\"notice-title\">Enroll in Direct Deposit for Aid Funds</span>&nbsp;<span class=\"notice-body-with-title\"><a href=\"https://sdb.admin.uw.edu/students/uwnetid/emt.asp\">Sign up for direct deposit</a> of your Financial Aid Funds</span>"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentFinAid",
+            "NoticeType": "DirectDepositShort",
+            "NoticeContent": "Enroll in Direct Deposit"
+        },
+        {
+            "NoticeAttributes": [
+               {
+               "Name": "Year",
+               "DataType": "string",
+               "Value": "2016"
+               },
+               {
+               "Name": "Date",
+               "DataType": "date",
+               "Value": "future"
+               },
+               {
+               "Name": "Begin",
+               "DataType": "date",
+               "Value": "week"
+               },
+               {
+               "Name": "End",
+               "DataType": "date",
+               "Value": "future"
+               }
+            ],
+            "NoticeCategory": "StudentFinAid",
+            "NoticeType": "AidPriorityDate",
+            "NoticeContent": "<span class=\"notice-title\">Submit [year] FAFSA by Feb 28th</span>&nbsp;<span class=\"notice-body-with-title\">If you haven't already, complete your [year] <a href=\"https://fafsa.gov\">Financial Aid Application</a> before Feb 28th for priority consideration</span>"
+        },
+        {
+            "NoticeAttributes": [],
+            "NoticeCategory": "StudentFinAid",
+            "NoticeType": "AidPriorityDateShort",
+            "NoticeContent": "Submit [year] FAFSA by Feb 28th"
         }
     ],
     "Person": {

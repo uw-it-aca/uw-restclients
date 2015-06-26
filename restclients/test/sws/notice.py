@@ -6,11 +6,11 @@ from datetime import date, datetime, timedelta
 class SWSNotice(TestCase):
     def test_notice_resource(self):
         with self.settings(
-                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
-                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+            RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
 
             notices = get_notices_by_regid("9136CCB8F66711D5BE060004AC494FFE")
-            self.assertEquals(len(notices), 13)
+            self.assertEquals(len(notices), 17)
 
             today = date.today()
             yesterday = today - timedelta(days=1)
@@ -120,3 +120,21 @@ class SWSNotice(TestCase):
             self.assertEquals(attribute.name, "Date")
             self.assertEquals(attribute.data_type, "date")
             self.assertEquals(attribute.get_value(), future_end.strftime("%Y-%m-%d"))
+
+            notice = notices[13]
+            self.assertEquals(notice.notice_category, "StudentFinAid")
+            self.assertEquals(notice.notice_type, "DirectDeposit")
+
+            notice = notices[14]
+            self.assertEquals(notice.notice_category, "StudentFinAid")
+            self.assertEquals(notice.notice_type, "DirectDepositShort")
+            self.assertEquals(notice.long_notice.notice_type, "DirectDeposit")
+
+            notice = notices[15]
+            self.assertEquals(notice.notice_category, "StudentFinAid")
+            self.assertEquals(notice.notice_type, "AidPriorityDate")
+
+            notice = notices[16]
+            self.assertEquals(notice.notice_category, "StudentFinAid")
+            self.assertEquals(notice.notice_type, "AidPriorityDateShort")
+            self.assertEquals(notice.long_notice.notice_type, "AidPriorityDate")
