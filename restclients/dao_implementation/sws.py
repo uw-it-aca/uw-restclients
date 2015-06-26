@@ -60,7 +60,7 @@ class File(object):
                         elif attr["Value"] == "week":
                             attr["Value"] = week.strftime("%Y%m%d")
                         else:
-                            attr["Value"] = week.strftime("%Y%m%d")
+                            pass # use original
 
         response.data = json.dumps(json_data)
 
