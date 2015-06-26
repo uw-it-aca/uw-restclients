@@ -12,7 +12,6 @@ class Evaluation(models.Model):
         super(Evaluation, self).__init__(*args, **kwargs)
         self.instructor_ids = []
 
-
     def __str__(self):
         return "{%s: %d, %s: %s, %s: %s, %s: %s}" % (
             "sln", self.section_sln,

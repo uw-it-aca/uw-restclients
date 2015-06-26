@@ -12,7 +12,7 @@ before_script:
   - cp travis-ci/manage.py manage.py
   - python manage.py syncdb --noinput
 script:
-  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/models/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/sms.py,restclients/library/ restclients/
+  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/sms.py,restclients/library/ restclients/
   - coverage run --source=restclients manage.py test restclients
 after_script:
   - coveralls

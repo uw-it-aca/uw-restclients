@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class UwEmailForwarding(models.Model):
     fwd = models.CharField(max_length=64, null=True)
     permitted = models.NullBooleanField()

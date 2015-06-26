@@ -98,15 +98,15 @@ class HfsAccouts(models.Model):
                         }
 
         if self.student_husky_card is not None:
-            return_value['student_husky_card'] = self.student_husky_card.json_data(
-                use_custom_date_format)
+            return_value['student_husky_card'] =\
+                self.student_husky_card.json_data(use_custom_date_format)
 
         if self.employee_husky_card is not None:
-            return_value['employee_husky_card'] = self.employee_husky_card.json_data(
-                use_custom_date_format)
+            return_value['employee_husky_card'] =\
+                self.employee_husky_card.json_data(use_custom_date_format)
 
         if self.resident_dining is not None:
-            return_value['resident_dining'] = self.resident_dining.json_data(
-                use_custom_date_format)
+            return_value['resident_dining'] =\
+                self.resident_dining.json_data(use_custom_date_format)
 
         return return_value
