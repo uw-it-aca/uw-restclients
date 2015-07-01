@@ -163,6 +163,7 @@ class Live(object):
     """
     This DAO provides real data.  It requires further configuration, e.g.
 
+    RESTCLIENTS_SWS_OAUTH_BEARER="..."
     RESTCLIENTS_SWS_CERT_FILE='/path/to/an/authorized/cert.cert',
     RESTCLIENTS_SWS_KEY_FILE='/path/to/the/certs_key.key',
     RESTCLIENTS_SWS_HOST='https://ucswseval1.cac.washington.edu:443',
@@ -170,6 +171,11 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
+        if hasattr(settings, 'RESTCLIENTS_SWS_OAUTH_BEARER'):
+            bearer_key = settings.RESTCLIENTS_SWS_OAUTH_BEARER
+
+            headers["Authorization"] = "Bearer %s" % bearer_key
+
         if Live.pool is None:
             Live.pool = self._get_pool()
 
@@ -188,10 +194,11 @@ class Live(object):
                             service_name='sws')
 
     def _get_pool(self):
-        return get_con_pool(settings.RESTCLIENTS_SWS_HOST,
-                            settings.RESTCLIENTS_SWS_KEY_FILE,
-                            settings.RESTCLIENTS_SWS_CERT_FILE,
-                            max_pool_size=SWS_MAX_POOL_SIZE)
+        return get_con_pool(
+            settings.RESTCLIENTS_SWS_HOST,
+            getattr(settings, 'RESTCLIENTS_SWS_KEY_FILE', None),
+            getattr(settings, 'RESTCLIENTS_SWS_CERT_FILE', None),
+            max_pool_size=SWS_MAX_POOL_SIZE)
 
 
 # For testing MUWM-2411
