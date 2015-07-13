@@ -30,14 +30,14 @@ def _process_json(json_data):
     requests = []
     for item in json_data:
         degree = GradDegree()
-        degree.req_type = item["RequestType"]
-        degree.submit_date = datetime_from_string(item["RequestSubmitDate"])
-        degree.degree_title = item["DegreeTitle"]
-        degree.status = item["status"]
+        degree.degree_title = item["degreeTitle"]
         degree.exam_place = item["examPlace"]
         degree.exam_date = datetime_from_string(item["examDate"])
-        degree.target_award_year = item["TargetAwardYear"]
-        degree.target_award_quarter = item["TargetAwardQuarter"]
+        degree.req_type = item["requestType"]
+        degree.submit_date = datetime_from_string(item["requestSubmitDate"])
+        degree.status = item["status"]
+        degree.target_award_year = item["targetAwardYear"]
+        degree.target_award_quarter = item["targetAwardQuarter"]
 
         requests.append(degree)
     return requests

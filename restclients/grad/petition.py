@@ -29,9 +29,9 @@ def _process_json(data):
     requests = []
     for item in data:
         petition = GradPetition()
-        petition.description = item.get('Description')
-        petition.submit_date = datetime_from_string(item.get('SubmitDate'))
-        petition.dept_recommend = item.get('DeptRecommend')
-        petition.gradschool_decision = item.get('GradSchoolDecision')
+        petition.description = item.get('description')
+        petition.submit_date = datetime_from_string(item.get('submitDate'))
+        petition.dept_recommend = item.get('deptRecommend')
+        petition.gradschool_decision = item.get('gradSchoolDecision')
         requests.append(petition)
     return requests
