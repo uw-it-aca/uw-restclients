@@ -1,10 +1,10 @@
 from django.db import models
 
 
-def get_datetime_str(dt):
-    if dt is None:
+def get_datetime_str(datetime_obj):
+    if datetime_obj is None:
         return None
-    return dt.strftime("%Y-%m-%d %H:%M:%S")
+    return datetime_obj.strftime("%Y-%m-%d %H:%M")
 
 
 class GradTerm(models.Model):
