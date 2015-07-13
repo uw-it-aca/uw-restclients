@@ -14,9 +14,11 @@ class CommitteeTest(TestCase):
                  'restclients.dao_implementation.iasystem.File'):
             requests = get_committee_by_regid(
                 "9136CCB8F66711D5BE060004AC494FFE")
+
             self.assertEqual(len(requests), 3)
 
             committee = requests[0]
+            self.assertIsNotNone(committee.json_data())
             self.assertEqual(committee.committee_type,
                              "Advisor")
             self.assertEqual(committee.status, "active")

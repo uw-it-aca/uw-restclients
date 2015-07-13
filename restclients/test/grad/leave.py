@@ -17,6 +17,7 @@ class LeaveTest(TestCase):
 
             self.assertEqual(len(requests), 5)
             leave = requests[0]
+            self.assertIsNotNone(leave.json_data())
             self.assertEqual(leave.reason,
                              "Dissertation/Thesis research/writing")
             self.assertEqual(leave.submit_date,

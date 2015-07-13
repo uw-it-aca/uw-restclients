@@ -17,6 +17,7 @@ class PetitionTest(TestCase):
 
             self.assertEqual(len(requests), 1)
             petition = requests[0]
+            self.assertIsNotNone(petition.json_data())
             self.assertEqual(petition.description,
                              "Master's degree - Extend six year limit")
             self.assertEqual(petition.submit_date,

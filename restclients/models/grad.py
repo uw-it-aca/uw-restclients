@@ -1,6 +1,12 @@
 from django.db import models
 
 
+def get_datetime_str(dt):
+    if dt is None:
+        return None
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
 class GradTerm(models.Model):
     SPRING = 'spring'
     SUMMER = 'summer'
@@ -43,9 +49,9 @@ class GradDegree(models.Model):
             "req_type": self.req_type,
             "degree_title": self.degree_title,
             "exam_place": self.exam_place,
-            "exam_date": self.exam_date,
+            "exam_date": get_datetime_str(self.exam_date),
             "status": self.status,
-            "submit_date": self.submit_date,
+            "submit_date": get_datetime_str(self.submit_date),
             "target_award_year": self.target_award_year,
             "target_award_quarter": self.target_award_quarter,
             }
@@ -91,8 +97,8 @@ class GradCommittee(models.Model):
             "degree_type": self.degree_type,
             "major_full_name": self.major_full_name,
             "status": self.status,
-            "start_date": self.start_date,
-            "end_date": self.end_date,
+            "start_date": get_datetime_str(self.start_date),
+            "end_date": get_datetime_str(self.end_date),
             "members": [],
             }
         for member in self.members:
@@ -134,7 +140,7 @@ class GradPetition(models.Model):
     def json_data(self):
         data = {
             'description': self.description,
-            'submit_date': self.submit_date,
+            'submit_date': get_datetime_str(self.submit_date),
             'dept_recommend': self.dept_recommend,
             'gradschool_decision': self.gradschool_decision,
             }

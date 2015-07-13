@@ -17,6 +17,7 @@ class DegreeTest(TestCase):
 
             self.assertEqual(len(requests), 6)
             degree = requests[0]
+            self.assertIsNotNone(degree.json_data())
             self.assertEqual(degree.req_type, "Masters Request")
             self.assertEqual(degree.submit_date,
                              datetime.datetime(2015, 3, 11, 20, 53, 32))
