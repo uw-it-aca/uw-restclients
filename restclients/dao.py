@@ -15,6 +15,7 @@ from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.digitlib import File as DigitlibFile
+from restclients.dao_implementation.grad import File as GradFile
 from restclients.dao_implementation.libraries import File as LibrariesFile
 from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.hfs import File as HfsFile
@@ -181,6 +182,14 @@ class DigitLib_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_DIGITLIB_DAO_CLASS', DigitlibFile)
+
+
+class Grad_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('grad', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_GRAD_DAO_CLASS', GradFile)
 
 
 class R25_DAO(MY_DAO):
