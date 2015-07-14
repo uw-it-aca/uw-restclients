@@ -29,9 +29,6 @@ def _process_json(data):
     """
     requests = []
     for item in data:
-        if item.get('status') == "inactive":
-            continue
-
         committee = GradCommittee()
         committee.status = item.get('status')
         committee.committee_type = item.get('committeeType')
