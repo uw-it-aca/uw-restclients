@@ -24,6 +24,8 @@ class DegreeTest(TestCase):
             self.assertEqual(
                 degree.degree_title,
                 "MASTER OF LANDSCAPE ARCHITECTURE/MASTER OF ARCHITECTURE")
+            self.assertEqual(degree.major_full_name,
+                             "Landscape Arch/Architecture (Concurrent)")
             self.assertEqual(degree.status,
                              "Awaiting Dept Action (Final Exam)")
             self.assertIsNone(degree.exam_place)

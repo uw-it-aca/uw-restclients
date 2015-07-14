@@ -9,7 +9,7 @@ from restclients.grad import get_resource, datetime_from_string
 
 
 PREFIX = "/services/students/v1/api/request?id="
-SUFFIX = "&exclude_past_quarter=yes"
+SUFFIX = "&exclude_past_quarter=true"
 
 
 def get_degree_by_regid(regid):
@@ -34,6 +34,7 @@ def _process_json(json_data):
         degree.exam_place = item["examPlace"]
         degree.exam_date = datetime_from_string(item["examDate"])
         degree.req_type = item["requestType"]
+        degree.major_full_name = item["majorFullName"]
         degree.submit_date = datetime_from_string(item["requestSubmitDate"])
         degree.status = item["status"]
         degree.target_award_year = item["targetAwardYear"]

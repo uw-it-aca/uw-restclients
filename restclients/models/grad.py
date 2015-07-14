@@ -36,8 +36,9 @@ class GradTerm(models.Model):
 class GradDegree(models.Model):
     req_type = models.CharField(max_length=100)
     submit_date = models.DateTimeField()
-    degree_title = models.CharField(max_length=255, null=True)
-    status = models.CharField(max_length=64, null=True)
+    degree_title = models.CharField(max_length=255)
+    major_full_name = models.CharField(max_length=255)
+    status = models.CharField(max_length=64)
     exam_place = models.CharField(max_length=255, null=True)
     exam_date = models.DateTimeField(null=True)
     target_award_year = models.PositiveSmallIntegerField()
@@ -50,6 +51,7 @@ class GradDegree(models.Model):
             "degree_title": self.degree_title,
             "exam_place": self.exam_place,
             "exam_date": get_datetime_str(self.exam_date),
+            "major_full_name": self.major_full_name,
             "status": self.status,
             "submit_date": get_datetime_str(self.submit_date),
             "target_award_year": self.target_award_year,
