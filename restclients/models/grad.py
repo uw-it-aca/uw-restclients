@@ -30,7 +30,7 @@ class GradTerm(models.Model):
 
     def json_data(self):
         return {"year": self.year,
-                "quarter": self.quarter,
+                "quarter": self.get_quarter_display(),
                 }
 
 
@@ -56,7 +56,7 @@ class GradDegree(models.Model):
             "status": self.status,
             "submit_date": get_datetime_str(self.submit_date),
             "target_award_year": self.target_award_year,
-            "target_award_quarter": self.target_award_quarter,
+            "target_award_quarter": self.get_target_award_quarter_display(),
             }
 
 
