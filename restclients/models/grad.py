@@ -1,10 +1,11 @@
+import datetime
 from django.db import models
 
 
 def get_datetime_str(datetime_obj):
     if datetime_obj is None:
         return None
-    return datetime_obj.strftime("%Y-%m-%d %H:%M")
+    return datetime_obj.isoformat()
 
 
 class GradTerm(models.Model):
@@ -29,7 +30,7 @@ class GradTerm(models.Model):
 
     def json_data(self):
         return {"year": self.year,
-                "quarter": self.quarter,
+                "quarter": self.get_quarter_display(),
                 }
 
 
@@ -55,7 +56,7 @@ class GradDegree(models.Model):
             "status": self.status,
             "submit_date": get_datetime_str(self.submit_date),
             "target_award_year": self.target_award_year,
-            "target_award_quarter": self.target_award_quarter,
+            "target_award_quarter": self.get_target_award_quarter_display(),
             }
 
 
@@ -121,7 +122,7 @@ class GradLeave(models.Model):
     def json_data(self):
         data = {
             'reason': self.reason,
-            'submit_date': self.submit_date,
+            'submit_date': get_datetime_str(self.submit_date),
             'status': self.status,
             'terms': [],
         }

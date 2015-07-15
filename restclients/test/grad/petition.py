@@ -24,3 +24,13 @@ class PetitionTest(TestCase):
                              datetime.datetime(2005, 7, 11, 11, 25, 35))
             self.assertEqual(petition.dept_recommend, "Approve")
             self.assertEqual(petition.gradschool_decision, "Approved")
+
+
+    def test_empty_system_key(self):
+         with self.settings(
+             RESTCLIENTS_GRAD_DAO_CLASS=\
+                 'restclients.dao_implementation.grad.File',
+             RESTCLIENTS_PWS_DAO_CLASS=\
+                 'restclients.dao_implementation.iasystem.File'):
+             self.assertIsNone(get_petition_by_regid(
+                     "00000000000000000000000000000001"))

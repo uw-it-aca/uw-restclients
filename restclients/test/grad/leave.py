@@ -26,3 +26,13 @@ class LeaveTest(TestCase):
             self.assertEqual(len(leave.terms), 1)
             self.assertEqual(leave.terms[0].quarter, "autumn")
             self.assertEqual(leave.terms[0].year, 2012)
+
+
+    def test_empty_ysytem_key(self):
+         with self.settings(
+             RESTCLIENTS_GRAD_DAO_CLASS=\
+                 'restclients.dao_implementation.grad.File',
+             RESTCLIENTS_PWS_DAO_CLASS=\
+                 'restclients.dao_implementation.iasystem.File'):
+             self.assertIsNone(get_leave_by_regid(
+                     "00000000000000000000000000000001"))
