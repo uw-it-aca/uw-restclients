@@ -12,6 +12,9 @@ PREFIX = "/services/students/v1/api/request?id="
 SUFFIX = "&exclude_past_quarter=true"
 
 
+logger = logging.getLogger(__name__)
+
+
 def get_degree_by_regid(regid):
     sws_person = get_person_by_regid(regid)
     if sws_person is None:
@@ -20,12 +23,16 @@ def get_degree_by_regid(regid):
 
 
 def get_degree_by_syskey(system_key):
+    if system_key is None:
+        logger.info("get_degree_by_syskey abort, key is None!")
+        return None
     url = "%s%s%s" % (PREFIX, system_key, SUFFIX)
     return _process_json(json.loads(get_resource(url)))
 
 
 def _process_json(json_data):
     """
+    return a list of GradDegree objects.
     """
     requests = []
     for item in json_data:

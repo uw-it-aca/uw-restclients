@@ -32,3 +32,12 @@ class DegreeTest(TestCase):
             self.assertIsNone(degree.exam_date)
             self.assertEqual(degree.target_award_year, 2015)
             self.assertEqual(degree.target_award_quarter, "winter")
+
+    def test_empty_system_key(self):
+         with self.settings(
+             RESTCLIENTS_GRAD_DAO_CLASS=\
+                 'restclients.dao_implementation.grad.File',
+             RESTCLIENTS_PWS_DAO_CLASS=\
+                 'restclients.dao_implementation.iasystem.File'):
+             self.assertIsNone(get_degree_by_regid(
+                     "00000000000000000000000000000001"))

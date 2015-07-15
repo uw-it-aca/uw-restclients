@@ -48,3 +48,13 @@ class CommitteeTest(TestCase):
                              "Doctoral Supervisory Committee")
             members = committee.members
             self.assertEqual(len(members), 4)
+
+
+    def test_empty_system(self):
+         with self.settings(
+             RESTCLIENTS_GRAD_DAO_CLASS=\
+                 'restclients.dao_implementation.grad.File',
+             RESTCLIENTS_PWS_DAO_CLASS=\
+                 'restclients.dao_implementation.iasystem.File'):
+             self.assertIsNone(get_committee_by_regid(
+                     "00000000000000000000000000000001"))
