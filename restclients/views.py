@@ -6,7 +6,7 @@ from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO, \
     Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO, TrumbaCalendar_DAO, \
-    MyPlan_DAO, IASYSTEM_DAO
+    MyPlan_DAO, IASYSTEM_DAO, Grad_DAO
 from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
@@ -52,6 +52,8 @@ def proxy(request, service, url):
         dao = Book_DAO()
     elif service == "canvas":
         dao = Canvas_DAO()
+    elif service == "grad":
+        dao = Grad_DAO()
     elif service == "uwnetid":
         dao = Uwnetid_DAO()
     elif service == "libraries":
