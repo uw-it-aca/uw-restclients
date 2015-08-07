@@ -64,6 +64,7 @@ class GradCommitteeMember(models.Model):
     first_name = models.CharField(max_length=96)
     last_name = models.CharField(max_length=96)
     member_type = models.CharField(max_length=64)
+    reading_type = models.CharField(max_length=64)
     dept = models.CharField(max_length=128, null=True)
     email = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=64)
@@ -73,6 +74,7 @@ class GradCommitteeMember(models.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "member_type": self.member_type,
+            "reading_type": self.reading_type,
             "dept": self.dept,
             "email": self.email,
             "status": self.status,
