@@ -53,6 +53,7 @@ def _process_json(data):
             com_mem.first_name = member.get('nameFirst')
             com_mem.last_name = member.get('nameLast')
             com_mem.member_type = member.get('memberType')
+            com_mem.reading_type = member.get('readingType')
             com_mem.dept = member.get('dept')
             com_mem.email = member.get('email')
             com_mem.status = member.get('status')
