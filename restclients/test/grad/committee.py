@@ -39,6 +39,7 @@ class CommitteeTest(TestCase):
             self.assertEqual(members[0].first_name, "Nina L.")
             self.assertEqual(members[0].last_name, "Patrick")
             self.assertEqual(members[0].member_type, "chair")
+            self.assertEqual(members[0].reading_type, "chair")
             self.assertEqual(members[0].dept, "Epidemiology - Public Health")
             self.assertEqual(members[0].email, "nnn@u.washington.edu")
             self.assertEqual(members[0].status, "active")
