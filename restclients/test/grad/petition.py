@@ -24,6 +24,11 @@ class PetitionTest(TestCase):
                              datetime.datetime(2005, 7, 11, 11, 25, 35))
             self.assertEqual(petition.dept_recommend, "Approve")
             self.assertEqual(petition.gradschool_decision, "Approved")
+            self.assertTrue(petition.is_dept_approve())
+            self.assertFalse(petition.is_dept_deny())
+            self.assertFalse(petition.is_dept_pending())
+            self.assertFalse(petition.is_dept_withdraw())
+            self.assertFalse(petition.is_gs_pending())
 
 
     def test_empty_system_key(self):
