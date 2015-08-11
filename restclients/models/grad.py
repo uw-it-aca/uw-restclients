@@ -175,7 +175,8 @@ class GradPetition(models.Model):
     gradschool_decision = models.CharField(max_length=50,
                                            null=True,
                                            blank=True)
-    decision_date = models.DateTimeField()
+    decision_date = models.DateTimeField(null=True)
+    # gradschool decision date
 
     def is_dept_approve(self):
         return self.dept_recommend.lower() == "approve"
