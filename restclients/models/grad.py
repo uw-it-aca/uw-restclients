@@ -40,6 +40,7 @@ class GradDegree(models.Model):
     degree_title = models.CharField(max_length=255)
     major_full_name = models.CharField(max_length=255)
     status = models.CharField(max_length=64)
+    status_date = models.DateTimeField(null=True)
     exam_place = models.CharField(max_length=255, null=True)
     exam_date = models.DateTimeField(null=True)
     target_award_year = models.PositiveSmallIntegerField()
@@ -174,6 +175,7 @@ class GradPetition(models.Model):
     gradschool_decision = models.CharField(max_length=50,
                                            null=True,
                                            blank=True)
+    decision_date = models.DateTimeField()
 
     def is_dept_approve(self):
         return self.dept_recommend.lower() == "approve"
