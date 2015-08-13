@@ -34,6 +34,7 @@ class Group(models.Model):
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=2000, null=True)
     contact = models.CharField(max_length=120, null=True)
+    membership_modified = models.DateTimeField()
     authnfactor = models.PositiveSmallIntegerField(max_length=1,
                                                    choices=((1, ""), (2, "")),
                                                    default=1)
