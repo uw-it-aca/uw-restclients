@@ -28,6 +28,10 @@ class DegreeTest(TestCase):
                              "Landscape Arch/Architecture (Concurrent)")
             self.assertEqual(degree.status,
                              "Awaiting Dept Action (Final Exam)")
+            self.assertTrue(degree.is_status_await())
+            self.assertFalse(degree.is_status_graduated())
+            self.assertFalse(degree.is_status_candidacy())
+            self.assertFalse(degree.is_status_recommended())
             self.assertIsNone(degree.exam_place)
             self.assertIsNone(degree.exam_date)
             self.assertEqual(degree.target_award_year, 2015)
