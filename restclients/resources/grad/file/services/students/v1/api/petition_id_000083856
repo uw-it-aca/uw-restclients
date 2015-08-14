@@ -1,8 +1,15 @@
 [
    {
     "description":"Master's degree - Extend six year limit",
-    "submitDate":"2005-07-11T11:25:35.917",
+    "submitDate":"2013-05-11T11:25:35.917",
+    "decisionDate":"2013-06-10T16:32:28.64",
     "deptRecommend":"Approve",
     "gradSchoolDecision":"Approved"
+   },
+   {
+    "description":"Master's degree - Extend six year limit",
+    "submitDate":"2013-07-11T11:25:35.917",
+    "deptRecommend":"Approve",
+    "gradSchoolDecision":"Pending"
    }
 ]
