@@ -15,13 +15,15 @@ class PetitionTest(TestCase):
             requests = get_petition_by_regid(
                 "9136CCB8F66711D5BE060004AC494FFE")
 
-            self.assertEqual(len(requests), 1)
+            self.assertEqual(len(requests), 2)
             petition = requests[0]
             self.assertIsNotNone(petition.json_data())
             self.assertEqual(petition.description,
                              "Master's degree - Extend six year limit")
             self.assertEqual(petition.submit_date,
-                             datetime.datetime(2005, 7, 11, 11, 25, 35))
+                             datetime.datetime(2013, 5, 11, 11, 25, 35))
+            self.assertEqual(petition.decision_date,
+                             datetime.datetime(2013, 6, 10, 16, 32, 28))
             self.assertEqual(petition.dept_recommend, "Approve")
             self.assertEqual(petition.gradschool_decision, "Approved")
             self.assertTrue(petition.is_dept_approve())
@@ -29,7 +31,10 @@ class PetitionTest(TestCase):
             self.assertFalse(petition.is_dept_pending())
             self.assertFalse(petition.is_dept_withdraw())
             self.assertFalse(petition.is_gs_pending())
-
+            petition = requests[1]
+            self.assertEqual(petition.gradschool_decision, "Pending")
+            self.assertIsNone(petition.decision_date)
+            self.assertTrue(petition.is_gs_pending())
 
     def test_empty_system_key(self):
          with self.settings(
