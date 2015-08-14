@@ -40,11 +40,30 @@ class GradDegree(models.Model):
     degree_title = models.CharField(max_length=255)
     major_full_name = models.CharField(max_length=255)
     status = models.CharField(max_length=64)
+    status_date = models.DateTimeField(null=True)
     exam_place = models.CharField(max_length=255, null=True)
     exam_date = models.DateTimeField(null=True)
     target_award_year = models.PositiveSmallIntegerField()
     target_award_quarter = models.CharField(
             max_length=6, choices=GradTerm.QUARTERNAME_CHOICES)
+
+    def is_status_graduated(self):
+        return self.status.lower() == "graduated by grad school"
+
+    def is_status_candidacy(self):
+        return self.status.lower() == "candidacy granted"
+
+    def is_status_await(self):
+        """
+        return true if status is:
+        Awaiting Dept Action,
+        Awaiting Dept Action (Final Exam),
+        Awaiting Dept Action (General Exam)
+        """
+        return self.status.startswith("Awaiting ")
+
+    def is_status_recommended(self):
+        return self.status.lower() == "recommended by dept"
 
     def json_data(self):
         return {
@@ -121,6 +140,21 @@ class GradLeave(models.Model):
     def __init__(self):
         self.terms = []
 
+    def is_status_approved(self):
+        return self.status.lower() == "approved"
+
+    def is_status_denied(self):
+        return self.status.lower() == "denied"
+
+    def is_status_paid(self):
+        return self.status.lower() == "paid"
+
+    def is_status_requested(self):
+        return self.status.lower() == "requested"
+
+    def is_status_withdrawn(self):
+        return self.status.lower() == "withdrawn"
+
     def json_data(self):
         data = {
             'reason': self.reason,
@@ -141,6 +175,23 @@ class GradPetition(models.Model):
     gradschool_decision = models.CharField(max_length=50,
                                            null=True,
                                            blank=True)
+    decision_date = models.DateTimeField(null=True)
+    # gradschool decision date
+
+    def is_dept_approve(self):
+        return self.dept_recommend.lower() == "approve"
+
+    def is_dept_deny(self):
+        return self.dept_recommend.lower() == "deny"
+
+    def is_dept_pending(self):
+        return self.dept_recommend.lower() == "pending"
+
+    def is_dept_withdraw(self):
+        return self.dept_recommend.lower() == "withdraw"
+
+    def is_gs_pending(self):
+        return self.gradschool_decision.lower() == "pending"
 
     def json_data(self):
         data = {
