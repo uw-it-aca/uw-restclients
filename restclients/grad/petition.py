@@ -38,6 +38,12 @@ def _process_json(data):
         petition = GradPetition()
         petition.description = item.get('description')
         petition.submit_date = datetime_from_string(item.get('submitDate'))
+        if 'decisionDate' in item:
+            petition.decision_date = datetime_from_string(
+                item.get('decisionDate'))
+        else:
+            petition.decision_date = None
+
         petition.dept_recommend = item.get('deptRecommend')
         petition.gradschool_decision = item.get('gradSchoolDecision')
         requests.append(petition)
