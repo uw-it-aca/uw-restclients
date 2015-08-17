@@ -197,6 +197,8 @@ class GradPetition(models.Model):
         data = {
             'description': self.description,
             'submit_date': get_datetime_str(self.submit_date),
+            'decision_date': get_datetime_str(self.decision_date)
+            if self.decision_date is not None else None,
             'dept_recommend': self.dept_recommend,
             'gradschool_decision': self.gradschool_decision,
             }
