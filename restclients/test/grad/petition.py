@@ -31,7 +31,13 @@ class PetitionTest(TestCase):
             self.assertFalse(petition.is_dept_pending())
             self.assertFalse(petition.is_dept_withdraw())
             self.assertFalse(petition.is_gs_pending())
-            self.assertIsNotNone(petition.json_data())
+            json_data = petition.json_data()
+            print json_data
+            self.assertIsNotNone(json_data)
+            self.assertEqual(json_data['submit_date'],
+                             "2013-05-11T11:25:35")
+            self.assertEqual(json_data['decision_date'],
+                             "2013-06-10T16:32:28")
             petition = requests[1]
             self.assertEqual(petition.gradschool_decision, "Pending")
             self.assertIsNone(petition.decision_date)
