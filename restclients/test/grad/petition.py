@@ -31,10 +31,12 @@ class PetitionTest(TestCase):
             self.assertFalse(petition.is_dept_pending())
             self.assertFalse(petition.is_dept_withdraw())
             self.assertFalse(petition.is_gs_pending())
+            self.assertIsNotNone(petition.json_data())
             petition = requests[1]
             self.assertEqual(petition.gradschool_decision, "Pending")
             self.assertIsNone(petition.decision_date)
             self.assertTrue(petition.is_gs_pending())
+            self.assertIsNotNone(petition.json_data())
 
     def test_empty_system_key(self):
          with self.settings(
