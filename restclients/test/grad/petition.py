@@ -32,7 +32,6 @@ class PetitionTest(TestCase):
             self.assertFalse(petition.is_dept_withdraw())
             self.assertFalse(petition.is_gs_pending())
             json_data = petition.json_data()
-            print json_data
             self.assertIsNotNone(json_data)
             self.assertEqual(json_data['submit_date'],
                              "2013-05-11T11:25:35")
