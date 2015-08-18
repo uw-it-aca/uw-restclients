@@ -53,6 +53,9 @@ class GradDegree(models.Model):
     def is_status_candidacy(self):
         return self.status.lower() == "candidacy granted"
 
+    def is_status_not_graduate(self):
+        return self.status.lower() == "did not graduate"
+
     def is_status_await(self):
         """
         return true if status is:
