@@ -40,7 +40,7 @@ class GradDegree(models.Model):
     degree_title = models.CharField(max_length=255)
     major_full_name = models.CharField(max_length=255)
     status = models.CharField(max_length=64)
-    status_date = models.DateTimeField(null=True)
+    decision_date = models.DateTimeField(null=True)
     exam_place = models.CharField(max_length=255, null=True)
     exam_date = models.DateTimeField(null=True)
     target_award_year = models.PositiveSmallIntegerField()
@@ -73,12 +73,16 @@ class GradDegree(models.Model):
             "req_type": self.req_type,
             "degree_title": self.degree_title,
             "exam_place": self.exam_place,
-            "exam_date": get_datetime_str(self.exam_date),
+            "exam_date": get_datetime_str(self.exam_date)
+            if self.exam_date is not None else None,
             "major_full_name": self.major_full_name,
             "status": self.status,
+            'decision_date': get_datetime_str(self.decision_date)
+            if self.decision_date is not None else None,
             "submit_date": get_datetime_str(self.submit_date),
             "target_award_year": self.target_award_year,
-            "target_award_quarter": self.get_target_award_quarter_display(),
+            "target_award_quarter": self.get_target_award_quarter_display()
+            if self.target_award_quarter is not None else None,
             }
 
 
@@ -124,8 +128,10 @@ class GradCommittee(models.Model):
             "degree_type": self.degree_type,
             "major_full_name": self.major_full_name,
             "status": self.status,
-            "start_date": get_datetime_str(self.start_date),
-            "end_date": get_datetime_str(self.end_date),
+            "start_date": get_datetime_str(self.start_date)
+            if self.start_date is not None else None,
+            "end_date": get_datetime_str(self.end_date)
+            if self.end_date is not None else None,
             "members": [],
             }
         for member in self.members:
@@ -161,7 +167,8 @@ class GradLeave(models.Model):
     def json_data(self):
         data = {
             'reason': self.reason,
-            'submit_date': get_datetime_str(self.submit_date),
+            'submit_date': get_datetime_str(self.submit_date)
+            if self.submit_date is not None else None,
             'status': self.status,
             'terms': [],
         }
