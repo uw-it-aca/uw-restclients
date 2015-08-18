@@ -36,6 +36,9 @@ class DegreeTest(TestCase):
             self.assertIsNone(degree.exam_date)
             self.assertEqual(degree.target_award_year, 2015)
             self.assertEqual(degree.target_award_quarter, "winter")
+            degree = requests[5]
+            self.assertEqual(degree.status,
+                             "Did Not Graduate")
 
     def test_empty_system_key(self):
          with self.settings(
