@@ -95,12 +95,27 @@ class GradCommitteeMember(models.Model):
     email = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=64)
 
+    def is_reading_committee_member(self):
+        return self.reading_type is not None and\
+            self.reading_type.lower() == "member"
+
+    def is_reading_committee_chair(self):
+        return self.reading_type is not None and\
+            self.reading_type.lower() == "chair"
+
+    def get_reading_type_display(self):
+        if self.is_reading_committee_chair():
+            return "reading committee chair"
+        if self.is_reading_committee_member():
+            return "reading committee member"
+        return None
+
     def json_data(self):
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
             "member_type": self.member_type,
-            "reading_type": self.reading_type,
+            "reading_type": self.get_reading_type_display(),
             "dept": self.dept,
             "email": self.email,
             "status": self.status,
