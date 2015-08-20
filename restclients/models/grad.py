@@ -96,10 +96,12 @@ class GradCommitteeMember(models.Model):
     status = models.CharField(max_length=64)
 
     def is_reading_committee_member(self):
-        return self.reading_type.lower() == "member"
+        return self.reading_type is not None and\
+            self.reading_type.lower() == "member"
 
     def is_reading_committee_chair(self):
-        return self.reading_type.lower() == "chair"
+        return self.reading_type is not None and\
+            self.reading_type.lower() == "chair"
 
     def get_reading_type_display(self):
         if self.is_reading_committee_chair():
