@@ -43,6 +43,9 @@ def _process_json(json_data):
         degree.req_type = item["requestType"]
         degree.major_full_name = item["majorFullName"]
         degree.submit_date = datetime_from_string(item["requestSubmitDate"])
+        if 'decisionDate' in item and item.get('decisionDate') is not None:
+            degree.decision_date = datetime_from_string(
+                item.get('decisionDate'))
         degree.status = item["status"]
         degree.target_award_year = item["targetAwardYear"]
         degree.target_award_quarter = item["targetAwardQuarter"]
