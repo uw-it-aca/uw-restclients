@@ -44,8 +44,10 @@ class CommitteeTest(TestCase):
             self.assertEqual(members[0].email, "nnn@u.washington.edu")
             self.assertEqual(members[0].status, "active")
             json_data = members[0].json_data()
+            self.assertEqual(json_data["member_type"],
+                             "Chair")
             self.assertEqual(json_data["reading_type"],
-                             "reading committee chair")
+                             "Reading Committee Chair")
 
             committee = requests[2]
             self.assertEqual(committee.committee_type,
