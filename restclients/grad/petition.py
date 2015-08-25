@@ -38,7 +38,7 @@ def _process_json(data):
         petition = GradPetition()
         petition.description = item.get('description')
         petition.submit_date = datetime_from_string(item.get('submitDate'))
-        if 'decisionDate' in item:
+        if 'decisionDate' in item and item.get('decisionDate') is not None:
             petition.decision_date = datetime_from_string(
                 item.get('decisionDate'))
         else:
