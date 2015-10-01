@@ -99,6 +99,19 @@ class Courses(Canvas):
 
         return self._course_from_json(data)
 
+    def update_sis_id(self, course_id, sis_course_id):
+        """
+        Updates the SIS ID for the course identified by the passed course ID.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.update
+        """
+        url = "/api/v1/courses/%s" % course_id
+        body = {"course": {"sis_course_id": sis_course_id}}
+
+        data = self._put_resource(url, body)
+
+        return self._course_from_json(data)
+
     def _course_from_json(self, data):
         course = CanvasCourse()
         course.course_id = data["id"]
