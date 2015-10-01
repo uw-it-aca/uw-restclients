@@ -104,3 +104,14 @@ class CanvasTestCourses(TestCase):
             self.assertEquals(course.course_id, 18881, "Correct course ID")
             self.assertEquals(course.name, name, "Correct course name")
             self.assertEquals(course.account_id, account_id, "Correct account ID")
+
+    def test_update_sis_id(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Courses()
+
+            course = canvas.update_sis_id(149650, "NEW_SIS_ID")
+
+            self.assertEquals(course.course_id, 149650, "Has proper course id")
+            self.assertEquals(course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
+            self.assertEquals(course.sis_course_id, "NEW_SIS_ID")
