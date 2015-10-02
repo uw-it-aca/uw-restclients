@@ -1,6 +1,8 @@
 """
 Contains GWS DAO implementations.
 """
+import re
+from time import time
 from django.conf import settings
 from restclients.mock_http import MockHTTP
 from restclients.dao_implementation.live import get_con_pool, get_live_url
@@ -30,6 +32,16 @@ class File(object):
                 response.status = 201  # create
             response.headers = {"X-Data-Source": "GWS file mock data",
                                 "Content-Type": headers["Content-Type"]}
+
+            # insert response.data time values
+            now = int(round(time() * 1000))
+            for t in ['createtime', 'modifytime', 'membermodifytime']:
+                span = '<span class="%s">' % t
+                if not re.search(r'%s' % span, body):
+                    body = re.sub(r'(<div class="group">)',
+                                  r'\1\n  %s%s</span>\n' % (span, now),
+                                  body)
+
             response.data = body
         else:
             response.status = 400

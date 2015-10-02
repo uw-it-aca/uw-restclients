@@ -8,6 +8,7 @@ from restclients.exceptions import InvalidGroupID
 from restclients.exceptions import DataFailureException
 from restclients.models.gws import Group, CourseGroup, GroupReference
 from restclients.models.gws import GroupUser, GroupMember
+from datetime import datetime
 from urllib import urlencode
 from lxml import etree
 import re
@@ -275,6 +276,8 @@ class GWS(object):
         group.title = root.find('.//*[@class="title"]').text
         group.description = root.find('.//*[@class="description"]').text
         group.contact = root.find('.//*[@class="contact"]').text
+        group.membership_modified = datetime.fromtimestamp(
+            float(root.find('.//*[@class="membermodifytime"]').text)/1000)
         group.authnfactor = root.find('.//*[@class="authnfactor"]').text
         group.classification = root.find('.//*[@class="classification"]').text
         group.emailenabled = root.find('.//*[@class="emailenabled"]').text
