@@ -1,8 +1,6 @@
 from restclients.sws.v5.term import get_term_by_year_and_quarter,\
     get_current_term, get_next_term, get_previous_term, get_term_before,\
     get_term_after, get_term_by_date
-from restclients.util.datetime_convertor import convert_to_begin_of_day,\
-    convert_to_end_of_day
 
 
 def get_specific_term(year, quarter):
