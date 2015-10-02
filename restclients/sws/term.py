@@ -1,10 +1,6 @@
-from restclients.sws.v5.term import get_term_by_year_and_quarter
-from restclients.sws.v5.term import get_current_term
-from restclients.sws.v5.term import get_next_term
-from restclients.sws.v5.term import get_previous_term
-from restclients.sws.v5.term import get_term_before
-from restclients.sws.v5.term import get_term_after
-from restclients.sws.v5.term import get_term_by_date
+from restclients.sws.v5.term import get_term_by_year_and_quarter,\
+    get_current_term, get_next_term, get_previous_term, get_term_before,\
+    get_term_after, get_term_by_date
 from restclients.util.datetime_convertor import convert_to_begin_of_day,\
     convert_to_end_of_day
 
@@ -13,7 +9,7 @@ def get_specific_term(year, quarter):
     """
     Rename the get_term_by_year_and_quarter to a short name.
     """
-    return get_term_by_year_and_quarter(year, quarter)
+    return get_term_by_year_and_quarter(year, quarter.lower())
 
 
 """
@@ -90,15 +86,6 @@ def get_eod_grade_submission(term):
     return convert_to_end_of_day(term.grade_submission_deadline)
 
 
-def get_eod_grade_submission_term_after(term):
-    """
-    Return the datetime object of the end of the day of
-    the grade submission deadline of the term after the given term.
-    Only the summer full term is relevant.
-    """
-    return get_eod_grade_submission(get_term_after(term))
-
-
 def get_eod_aterm_last_day_add(term):
     """
     Return the datetime object of the end of
@@ -137,15 +124,6 @@ def get_eod_last_final_exam(term):
     return convert_to_end_of_day(term.last_final_exam_date)
 
 
-def get_eod_last_final_exam_term_after(term):
-    """
-    @return the datetime object of the end of
-    the last final exam day of the term after the given term.
-    Only the summer full term is relevant.
-    """
-    return get_eod_last_final_exam(get_term_after(term))
-
-
 def get_eod_last_instruction(term):
     """
     Return the datetime object of the end of the last instruction day
@@ -153,15 +131,6 @@ def get_eod_last_instruction(term):
     Only the summer full term is relevant.
     """
     return convert_to_end_of_day(term.last_day_instruction)
-
-
-def get_eod_last_instruction_term_after(term):
-    """
-    Return the datetime object of the end of the last instruction day
-    of the term after the given term.
-    Only the summer full term is relevant.
-    """
-    return get_eod_last_instruction(get_term_after(term))
 
 
 def get_eod_summer_aterm(term):

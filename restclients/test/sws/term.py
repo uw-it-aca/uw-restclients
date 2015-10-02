@@ -9,10 +9,9 @@ from restclients.sws.term import get_term_by_year_and_quarter,\
     get_eod_last_day_add, get_eod_last_day_drop, get_bod_aterm_grading_period,\
     get_bod_grading_period, get_bod_reg_period1_start,\
     get_bod_reg_period2_start, get_bod_reg_period3_start,\
-    get_eod_grade_submission, get_eod_grade_submission_term_after,\
-    get_eod_last_final_exam, get_eod_last_final_exam_term_after,\
-    get_eod_last_instruction, get_eod_last_instruction_term_after,\
-    get_eod_summer_aterm, get_next_autumn_term, get_next_non_summer_term,\
+    get_eod_grade_submission, get_eod_last_final_exam,\
+    get_eod_last_instruction, get_eod_summer_aterm,\
+    get_next_autumn_term, get_next_non_summer_term,\
     is_a_term, is_b_term, is_half_summer_term, is_full_summer_term,\
     is_same_summer_term, is_summer_term
 
@@ -123,23 +122,14 @@ class SWSTestTerm(TestCase):
             self.assertEquals(get_bod_reg_period3_start(term),
                               datetime(2013, 4, 1, 0, 0, 0))
 
-            self.assertEquals(get_eod_grade_submission_term_after(term),
-                              datetime(2013, 8, 28, 0, 0, 0))
-
             self.assertEquals(get_eod_last_final_exam(term),
                               datetime(2013, 6, 15, 0, 0, 0))
-
-            self.assertEquals(get_eod_last_final_exam_term_after(term),
-                              datetime(2013, 8, 24, 0, 0, 0))
 
             self.assertEquals(term.last_day_instruction.year, 2013)
             self.assertEquals(term.last_day_instruction.month, 6)
             self.assertEquals(term.last_day_instruction.day, 7)
             self.assertEquals(get_eod_last_instruction(term),
                               datetime(2013, 6, 8, 0, 0, 0))
-
-            self.assertEquals(get_eod_last_instruction_term_after(term),
-                              datetime(2013, 8, 24, 0, 0, 0))
 
             next_autumn_term = get_next_autumn_term(term)
             self.assertEquals(next_autumn_term.year, 2013)
@@ -209,14 +199,9 @@ class SWSTestTerm(TestCase):
             self.assertEquals(get_eod_last_final_exam(term),
                               datetime(2013, 3, 23, 0, 0, 0))
 
-            self.assertEquals(get_eod_last_final_exam_term_after(term),
-                              datetime(2013, 6, 15, 0, 0, 0))
-
             self.assertEquals(get_eod_last_instruction(term),
                               datetime(2013, 3, 16, 0, 0, 0))
 
-            self.assertEquals(get_eod_last_instruction_term_after(term),
-                              datetime(2013, 6, 8, 0, 0, 0))
             self.assertFalse(is_summer_term(term))
             self.assertEquals(term.aterm_last_date, None)
             self.assertEquals(term.bterm_first_date, None)
@@ -280,9 +265,6 @@ class SWSTestTerm(TestCase):
             self.assertEquals(get_eod_last_instruction(term),
                               datetime(2013, 8, 24, 0, 0, 0))
 
-            self.assertEquals(get_eod_last_instruction_term_after(term),
-                              datetime(2013, 12, 7, 0, 0, 0))
-
             self.assertEquals(term.aterm_last_date.year, 2013)
             self.assertEquals(term.aterm_last_date.month, 7)
             self.assertEquals(term.aterm_last_date.day, 24)
@@ -317,9 +299,6 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.grade_submission_deadline.time().minute, 0)
             self.assertEquals(get_eod_grade_submission(term),
                               datetime(2013, 8, 28, 0, 0, 0))
-
-            self.assertEquals(get_eod_grade_submission_term_after(term),
-                              datetime(2013, 12, 18, 0, 0, 0))
 
             self.assertEquals(term.aterm_grading_period_open.date().year, 2013)
             self.assertEquals(term.aterm_grading_period_open.date().month, 7)
