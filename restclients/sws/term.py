@@ -18,8 +18,8 @@ def get_specific_term(year, quarter):
 
 """
 The following are utility function:
-bod: the beginning of day.
-eod: the end of day.
+(Note, the acronym "bod" stands for the midnight at the beginning of day
+and "eod" the midnight at the end of day)
 """
 
 
