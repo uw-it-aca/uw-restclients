@@ -5,8 +5,8 @@ from restclients.sws.v5.term import get_previous_term
 from restclients.sws.v5.term import get_term_before
 from restclients.sws.v5.term import get_term_after
 from restclients.sws.v5.term import get_term_by_date
-from restclients.util.datetime_convertor import convert_to_bof_day,\
-    convert_to_eof_day
+from restclients.util.datetime_convertor import convert_to_begin_of_day,\
+    convert_to_end_of_day
 
 
 def get_specific_term(year, quarter):
@@ -18,28 +18,28 @@ def get_specific_term(year, quarter):
 
 """
 in the utility functions below,
-"bof" stands for the beginning of the day
-"eof" for the end of the day.
+"bod" stands for the beginning of day.
+"eod" stands for the end of day.
 """
 
 
-def get_bof_1st_day(term):
+def get_bod_1st_day(term):
     """
-    @return the datetime object of the begining of the 1st/start day
-    of instruction for the given (full) term.
+    @return the datetime object of the begining of the 1st
+    instruction day for the given (full) term.
     """
-    return convert_to_bof_day(term.first_day_quarter)
+    return convert_to_begin_of_day(term.first_day_quarter)
 
 
-def get_bof_1st_day_term_after(term):
+def get_bod_1st_day_term_after(term):
     """
     Return the datetime object of the beginning of
-    the first day in the term after the given (full) term.
+    the first instruction day in the term after the given (full) term.
     """
-    return get_bof_1st_day(get_term_after(term))
+    return get_bod_1st_day(get_term_after(term))
 
 
-def get_bof_aterm_grading_period(term):
+def get_bod_aterm_grading_period(term):
     """
     Return the datetime object of the beginning of
     the summer A-term grading period openning day of the given term.
@@ -47,59 +47,59 @@ def get_bof_aterm_grading_period(term):
     """
     if not is_summer_term(term):
         return None
-    return convert_to_bof_day(term.aterm_grading_period_open)
+    return convert_to_begin_of_day(term.aterm_grading_period_open)
 
 
-def get_bof_grading_period(term):
+def get_bod_grading_period(term):
     """
     Return the datetime object of the beginning of
     the grading period openning day of the given full term.
     """
-    return convert_to_bof_day(term.grading_period_open)
+    return convert_to_begin_of_day(term.grading_period_open)
 
 
-def get_bof_reg_period1_start(term):
+def get_bod_reg_period1_start(term):
     """
     Return the datetime object of the beginning of
     the registration period1 start day for the given term.
     """
-    return convert_to_bof_day(term.registration_period1_start)
+    return convert_to_begin_of_day(term.registration_period1_start)
 
 
-def get_bof_reg_period2_start(term):
+def get_bod_reg_period2_start(term):
     """
     Return the datetime object of the beginning of
     the registration period2 start day for the given term.
     """
-    return convert_to_bof_day(term.registration_period2_start)
+    return convert_to_begin_of_day(term.registration_period2_start)
 
 
-def get_bof_reg_period3_start(term):
+def get_bod_reg_period3_start(term):
     """
     Return the datetime object of the beginning of
     the registration period3 start day for the given term.
     """
-    return convert_to_bof_day(term.registration_period3_start)
+    return convert_to_begin_of_day(term.registration_period3_start)
 
 
-def get_eof_grade_submission(term):
+def get_eod_grade_submission(term):
     """
     Return the datetime object of the end of the day of
     the grade submission deadline for the given term.
     """
-    return convert_to_eof_day(term.grade_submission_deadline)
+    return convert_to_end_of_day(term.grade_submission_deadline)
 
 
-def get_eof_grade_submission_term_after(term):
+def get_eod_grade_submission_term_after(term):
     """
     Return the datetime object of the end of the day of
     the grade submission deadline of the term after the given term.
     Only the summer full term is relevant.
     """
-    return get_eof_grade_submission(get_term_after(term))
+    return get_eod_grade_submission(get_term_after(term))
 
 
-def get_eof_aterm_last_day_add(term):
+def get_eod_aterm_last_day_add(term):
     """
     Return the datetime object of the end of the day of
     the last day in summer A-term to add class of the given term.
@@ -107,64 +107,64 @@ def get_eof_aterm_last_day_add(term):
     """
     if not is_summer_term(term):
         return None
-    return convert_to_eof_day(term.aterm_last_day_add)
+    return convert_to_end_of_day(term.aterm_last_day_add)
 
 
-def get_eof_last_day_add(term):
+def get_eod_last_day_add(term):
     """
     Return the datetime object of the end of the day of
     the last day to add class of the term after the given term.
     Only the summer full term is relevant.
     """
-    return convert_to_eof_day(term.last_day_add)
+    return convert_to_end_of_day(term.last_day_add)
 
 
-def get_eof_last_day_drop(term):
+def get_eod_last_day_drop(term):
     """
     Return the datetime object of the end of the day of
     the last day to drop class of the term after the given term.
     Only the summer full term is relevant.
     """
-    return convert_to_eof_day(term.last_day_drop)
+    return convert_to_end_of_day(term.last_day_drop)
 
 
-def get_eof_last_final_exam(term):
+def get_eod_last_final_exam(term):
     """
     @return the datetime object of the end of the last final exam day
     of the given term.
     Only the summer full term is relevant.
     """
-    return convert_to_eof_day(term.last_final_exam_date)
+    return convert_to_end_of_day(term.last_final_exam_date)
 
 
-def get_eof_last_final_exam_term_after(term):
+def get_eod_last_final_exam_term_after(term):
     """
     @return the datetime object of the end of the last final exam day
     of the term after the given term.
     Only the summer full term is relevant.
     """
-    return get_eof_last_final_exam(get_term_after(term))
+    return get_eod_last_final_exam(get_term_after(term))
 
 
-def get_eof_last_instruction(term):
+def get_eod_last_instruction(term):
     """
     Return the datetime object of the end of the last instruction day
     for the given term.
     Only the summer full term is relevant.
     """
-    return convert_to_eof_day(term.last_day_instruction)
+    return convert_to_end_of_day(term.last_day_instruction)
 
 
-def get_eof_last_instruction_term_after(term):
+def get_eod_last_instruction_term_after(term):
     """
     Return the datetime object of the end of the last instruction day
     of the term after the given term.
     Only the summer full term is relevant.
     """
-    return get_eof_last_instruction(get_term_after(term))
+    return get_eod_last_instruction(get_term_after(term))
 
 
-def get_eof_summer_aterm(term):
+def get_eod_summer_aterm(term):
     """
     @return the datetime (or date if to is False )object
     of the end of the summer quarter A-term
@@ -173,7 +173,7 @@ def get_eof_summer_aterm(term):
     """
     if not is_summer_term(term):
         return None
-    return convert_to_eof_day(term.aterm_last_date)
+    return convert_to_end_of_day(term.aterm_last_date)
 
 
 def get_next_autumn_term(term):
