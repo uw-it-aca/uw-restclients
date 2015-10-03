@@ -14,21 +14,6 @@ def get_specific_term(year, quarter):
     return get_term_by_year_and_quarter(year, quarter.lower())
 
 
-"""
-The following are utility function:
-(Note, the acronym "bod" stands for the midnight at the beginning of day
-and "eod" the midnight at the end of day)
-"""
-
-
-def get_bod_1st_day_term_after(term):
-    """
-    Return the datetime object of the beginning of
-    the first instruction day in the term after the given term.
-    """
-    return get_term_after(term).get_bod_first_day()
-
-
 def get_next_autumn_term(term):
     """
     Return the Term object for the next autumn quarter

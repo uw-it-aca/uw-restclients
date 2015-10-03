@@ -5,8 +5,7 @@ from restclients.exceptions import DataFailureException
 from restclients.sws.term import get_term_by_year_and_quarter,\
     get_term_before, get_term_after, get_current_term, get_next_term,\
     get_previous_term, get_term_by_date, get_specific_term,\
-    get_bod_1st_day_term_after, get_next_autumn_term,\
-    get_next_non_summer_term, is_same_summer_term,\
+    get_next_autumn_term, get_next_non_summer_term, is_same_summer_term,\
     is_a_term, is_b_term, is_half_summer_term, is_full_summer_term
 
 
@@ -104,9 +103,6 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.get_bod_first_day(),
                               datetime(2013, 4, 1, 0, 0, 0))
 
-            self.assertEquals(get_bod_1st_day_term_after(term),
-                              datetime(2013, 6, 24, 0, 0, 0))
-
             self.assertEquals(term.get_bod_reg_period1_start(),
                               datetime(2013, 2, 15, 0, 0, 0))
 
@@ -158,9 +154,6 @@ class SWSTestTerm(TestCase):
 
             self.assertEquals(term.get_bod_first_day(),
                               datetime(2013, 1, 7, 0, 0, 0))
-
-            self.assertEquals(get_bod_1st_day_term_after(term),
-                              datetime(2013, 4, 1, 0, 0, 0))
 
             self.assertEquals(term.grading_period_open.date().year, 2013)
             self.assertEquals(term.grading_period_open.date().month, 2)
@@ -247,9 +240,6 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.first_day_quarter.day, 24)
             self.assertEquals(term.get_bod_first_day(),
                               datetime(2013, 6, 24, 0, 0, 0))
-
-            self.assertEquals(get_bod_1st_day_term_after(term),
-                              datetime(2013, 9, 25, 0, 0, 0))
 
             self.assertEquals(term.last_day_instruction.year, 2013)
             self.assertEquals(term.last_day_instruction.month, 8)
