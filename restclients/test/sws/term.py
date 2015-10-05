@@ -5,8 +5,7 @@ from restclients.exceptions import DataFailureException
 from restclients.sws.term import get_term_by_year_and_quarter,\
     get_term_before, get_term_after, get_current_term, get_next_term,\
     get_previous_term, get_term_by_date, get_specific_term,\
-    get_next_autumn_term, get_next_non_summer_term, is_same_summer_term,\
-    is_a_term, is_b_term, is_half_summer_term, is_full_summer_term
+    get_next_autumn_term, get_next_non_summer_term
 
 
 SWSF = 'restclients.dao_implementation.sws.File'
@@ -300,13 +299,6 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.is_grading_period_past(), True,
                               "Grading period is past")
             self.assertEquals(term.term_label(), "2013,summer", "Term label")
-
-            self.assertTrue(is_a_term("A-term"))
-            self.assertTrue(is_b_term("B-term"))
-            self.assertTrue(is_half_summer_term("A-term"))
-            self.assertTrue(is_half_summer_term("B-term"))
-            self.assertTrue(is_full_summer_term("Full-term"))
-            self.assertTrue(is_same_summer_term("A-term", "a-term"))
 
     def test_term_before(self):
         with self.settings(
