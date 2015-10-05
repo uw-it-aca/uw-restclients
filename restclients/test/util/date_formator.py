@@ -10,7 +10,7 @@ from restclients.util.date_formator import get_past_years_count
 from restclients.util.date_formator import past_datetime_str
 
 
-class formatorTest(TestCase):
+class FormatorTest(TestCase):
 
 
     def test_full_month_date_str(self):

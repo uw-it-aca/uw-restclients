@@ -1,7 +1,8 @@
 from django.utils import unittest
 
 from restclients.test.uwnetid.subscription import EmailForwardingTest
-from restclients.test.util.date_formator import formatorTest
+from restclients.test.util.date_formator import FormatorTest
+from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
 from restclients.test.digitlib.curric import DigitLibTest
