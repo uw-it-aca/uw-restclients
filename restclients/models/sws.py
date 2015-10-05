@@ -6,6 +6,8 @@ from datetime import datetime
 from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.exceptions import InvalidCanvasIndependentStudyCourse
 from restclients.exceptions import InvalidCanvasSection
+from restclients.util.datetime_convertor import convert_to_begin_of_day,\
+    convert_to_end_of_day
 
 
 # PWS Person
@@ -249,6 +251,53 @@ class Term(models.Model):
             return (days / 7) + 1
 
         return (days / 7)
+
+    def is_summer_quarter(self):
+        return self.quarter.lower() == "summer"
+
+    def get_bod_first_day(self):
+        # returns a datetime object of the midnight at begining of day
+        return convert_to_begin_of_day(self.first_day_quarter)
+
+    def get_bod_reg_period1_start(self):
+        return convert_to_begin_of_day(self.registration_period1_start)
+
+    def get_bod_reg_period2_start(self):
+        return convert_to_begin_of_day(self.registration_period2_start)
+
+    def get_bod_reg_period3_start(self):
+        return convert_to_begin_of_day(self.registration_period3_start)
+
+    def get_eod_grade_submission(self):
+        # returns a datetime object of the midnight at end of day
+        return convert_to_end_of_day(self.grade_submission_deadline)
+
+    def get_eod_aterm_last_day_add(self):
+        if not self.is_summer_quarter():
+            return None
+        return convert_to_end_of_day(self.aterm_last_day_add)
+
+    def get_eod_bterm_last_day_add(self):
+        if not self.is_summer_quarter():
+            return None
+        return convert_to_end_of_day(self.bterm_last_day_add)
+
+    def get_eod_last_day_add(self):
+        return convert_to_end_of_day(self.last_day_add)
+
+    def get_eod_last_day_drop(self):
+        return convert_to_end_of_day(self.last_day_drop)
+
+    def get_eod_last_final_exam(self):
+        return convert_to_end_of_day(self.last_final_exam_date)
+
+    def get_eod_last_instruction(self):
+        return convert_to_end_of_day(self.last_day_instruction)
+
+    def get_eod_summer_aterm(self):
+        if not self.is_summer_quarter():
+            return None
+        return convert_to_end_of_day(self.aterm_last_date)
 
     def term_label(self):
         return "%s,%s" % (self.year, self.quarter)
