@@ -12,8 +12,7 @@ from restclients.sws.section import get_section_by_label,\
     get_sections_by_instructor_and_term,\
     get_sections_by_curriculum_and_term,\
     get_changed_sections_by_term,\
-    get_sections_by_delegate_and_term, is_same_summer_term,\
-    is_a_term, is_b_term, is_half_summer_term, is_full_summer_term
+    get_sections_by_delegate_and_term
 
 
 SWSF = 'restclients.dao_implementation.sws.File'
@@ -447,14 +446,14 @@ class SWSTestSectionData(TestCase):
                 'Canvas section SIS ID')
 
     def test_summer_terms(self):
-        self.assertTrue(is_a_term("A-term"))
-        self.assertTrue(is_b_term("B-term"))
-        self.assertTrue(is_half_summer_term("A-term"))
-        self.assertTrue(is_half_summer_term("B-term"))
-        self.assertTrue(is_full_summer_term("Full-term"))
-        self.assertFalse(is_full_summer_term("A-term"))
-        self.assertFalse(is_full_summer_term("B-term"))
-        self.assertTrue(is_same_summer_term("A-term", "a-term"))
-        self.assertTrue(is_same_summer_term("B-term", "b-term"))
-        self.assertFalse(is_same_summer_term("B-term", "a-term"))
-        self.assertFalse(is_same_summer_term("B-term", "full-term"))
+        with self.settings(
+            RESTCLIENTS_SWS_DAO_CLASS=SWSF,
+            RESTCLIENTS_PWS_DAO_CLASS=PWSF):
+
+            section = get_section_by_label('2013,summer,B BIO,180/A')
+            self.assertFalse(section.is_summer_a_term())
+            self.assertFalse(section.is_summer_b_term())
+            self.assertFalse(section.is_half_summer_term())
+            self.assertTrue(section.is_full_summer_term())
+            self.assertTrue(section.is_same_summer_term("full-term"))
+            self.assertFalse(section.is_same_summer_term("a-term"))

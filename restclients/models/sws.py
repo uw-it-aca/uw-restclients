@@ -3,11 +3,13 @@ from django.db import models
 from django.template import Context, loader
 from base64 import b64encode, b64decode
 from datetime import datetime
-from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.exceptions import InvalidCanvasIndependentStudyCourse
 from restclients.exceptions import InvalidCanvasSection
+from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.datetime_convertor import convert_to_begin_of_day,\
     convert_to_end_of_day
+from restclients.util.summer_term import is_same_summer_term,\
+    is_a_term, is_b_term, is_full_summer_term
 
 
 # PWS Person
@@ -534,6 +536,22 @@ class Section(models.Model):
         if self.grade_date is not None:
             return str(self.grade_date)
         return None
+
+    def is_summer_a_term(self):
+        return is_a_term(self.summer_term)
+
+    def is_summer_b_term(self):
+        return is_b_term(self.summer_term)
+
+    def is_half_summer_term(self):
+        return (self.is_summer_a_term() or
+                self.is_summer_b_term())
+
+    def is_full_summer_term(self):
+        return is_full_summer_term(self.summer_term)
+
+    def is_same_summer_term(self, summer_term):
+        return is_same_summer_term(self.summer_term, summer_term)
 
     def json_data(self):
         data = {
