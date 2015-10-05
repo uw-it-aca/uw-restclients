@@ -8,8 +8,8 @@ from restclients.exceptions import InvalidCanvasSection
 from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.datetime_convertor import convert_to_begin_of_day,\
     convert_to_end_of_day
-from restclients.util.summer_term import is_same_summer_term,\
-    is_a_term, is_b_term, is_full_summer_term
+from restclients.util.summer_term import is_a_term, is_b_term,\
+    is_full_summer_term
 
 
 # PWS Person
@@ -551,7 +551,10 @@ class Section(models.Model):
         return is_full_summer_term(self.summer_term)
 
     def is_same_summer_term(self, summer_term):
-        return is_same_summer_term(self.summer_term, summer_term)
+        return (self.summer_term is None or len(self.summer_term) == 0) and\
+            (summer_term is None or len(self.summer_term) == 0) or\
+            self.summer_term is not None and summer_term is not None and\
+            self.summer_term.lower() == summer_term.lower()
 
     def json_data(self):
         data = {

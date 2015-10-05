@@ -455,5 +455,16 @@ class SWSTestSectionData(TestCase):
             self.assertFalse(section.is_summer_b_term())
             self.assertFalse(section.is_half_summer_term())
             self.assertTrue(section.is_full_summer_term())
+
             self.assertTrue(section.is_same_summer_term("full-term"))
             self.assertFalse(section.is_same_summer_term("a-term"))
+            self.assertFalse(section.is_same_summer_term("B-term"))
+            self.assertFalse(section.is_same_summer_term(None))
+
+            section = get_section_by_label('2013,summer,PHIL,600/A')
+            # section.summer_term is ""
+            self.assertFalse(section.is_summer_a_term())
+            self.assertFalse(section.is_summer_b_term())
+            self.assertFalse(section.is_full_summer_term())
+            self.assertTrue(section.is_same_summer_term(None))
+            self.assertTrue(section.is_same_summer_term(""))
