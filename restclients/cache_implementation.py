@@ -7,6 +7,8 @@ from restclients.cache_manager import store_cache_entry
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware, get_current_timezone
 from django.conf import settings
+import json
+import bmemcached
 
 
 class NoCache(object):
@@ -184,3 +186,67 @@ class ETagCache(object):
             store_cache_entry(cache_entry)
 
         return
+
+
+class MemcachedCache(object):
+    """
+    Cache resources in memcached.
+    """
+    client = None
+
+    def getCache(self, service, url, headers):
+        client = self._get_client()
+
+        data = client.get(self._get_key(service, url))
+
+        if not data:
+            return
+
+        values = json.loads(data)
+        response = MockHTTP()
+        response.status = values["status"]
+        response.data = values["data"]
+        response.headers = values["headers"]
+
+        return {"response": response}
+
+    def processResponse(self, service, url, response):
+        if response.status != 200:
+            # don't cache errors, at least for now...
+            return
+
+        header_data = {}
+        for header in response.headers:
+            header_data[header] = response.getheader(header)
+
+        data = json.dumps({"status": response.status,
+                           "data": response.data,
+                           "headers": header_data})
+
+        time_to_store = self._get_time(service, url)
+        key = self._get_key(service, url)
+
+        client = self._get_client()
+        client.set(key, data, time=time_to_store)
+        return
+
+    def _get_time(self, service, url):
+        # Defaults to 4 hours.  Your subclass probably wants to be smarter!
+        return 60 * 60 * 4
+
+    def _get_key(self, service, url):
+        return "%s-%s" % (service, url)
+
+    def _get_client(self):
+        if self.client:
+            return self.client
+
+        servers = settings.RESTCLIENTS_MEMCACHED_SERVERS
+        username = getattr(settings, "RESTCLIENTS_MEMCACHED_USER", "")
+        password = getattr(settings, "RESTCLIENTS_MEMCACHED_PASS", "")
+
+        client = bmemcached.Client(servers, username, password)
+
+        self.client = client
+
+        return client
