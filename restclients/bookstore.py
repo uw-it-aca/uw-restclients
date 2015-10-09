@@ -16,29 +16,25 @@ class Bookstore(object):
     """
     Get book information for courses.
     """
-
-    def get_books_for_schedule(self, schedule):
-        """
-        Returns a dictionary of data.  SLNs are the keys, an array of Book
-        objects are the values.
-        """
+    def get_books_by_quarter_sln(self, quarter, sln):
         dao = Book_DAO()
-
-        url = self.get_books_url(schedule)
-
+        sln_string = self._get_sln_string(sln)
+        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&%s" % (
+            quarter,
+            sln_string,
+            )
         response = dao.getURL(url, {"Accept": "application/json"})
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
 
         data = json.loads(response.data)
 
-        response = {}
+        books = []
 
-        for section in schedule.sections:
-            response[section.sln] = []
-            try:
-                sln_data = data[section.sln]
-                for book_data in sln_data:
+        sln_data = data[str(sln)]
+
+        if len(sln_data) > 0:
+            for book_data in sln_data:
                     book = Book()
                     book.isbn = book_data["isbn"]
                     book.title = book_data["title"]
@@ -54,12 +50,28 @@ class Bookstore(object):
                         author.name = author_data["name"]
                         book.authors.append(author)
 
-                    response[section.sln].append(book)
-            except KeyError as err:
-                # do nothing if bookstore has no record of book
-                pass
+                    books.append(book)
+        return books
 
-        return response
+    def get_books_for_schedule(self, schedule):
+        """
+        Returns a dictionary of data.  SLNs are the keys, an array of Book
+        objects are the values.
+        """
+        slns = self._get_slns(schedule)
+
+        books = {}
+
+        for sln in slns:
+            try:
+                section_books = self.get_books_by_quarter_sln(
+                    schedule.term.quarter, sln
+                )
+                books[sln] = section_books
+            except DataFailureException:
+                # do nothing if bookstore doesn't have sln
+                pass
+        return books
 
     def get_verba_link_for_schedule(self, schedule):
         """
@@ -83,15 +95,6 @@ class Bookstore(object):
                                             key,
                                             schedule.term.quarter)
 
-    def get_books_url(self, schedule):
-        sln_string = self._get_slns_string(schedule)
-        url = "/myuw/myuw_mobile_beta.ubs?quarter=%s&%s" % (
-            schedule.term.quarter,
-            sln_string,
-            )
-
-        return url
-
     def get_verba_url(self, schedule):
         sln_string = self._get_slns_string(schedule)
         url = "/myuw/myuw_mobile_v.ubs?quarter=%s&%s" % (
@@ -100,6 +103,21 @@ class Bookstore(object):
             )
 
         return url
+
+    def _get_sln_string(self, sln):
+        return "sln1=%s" % sln
+
+    def _get_slns(self, schedule):
+        slns = []
+        # Prevent dupes - mainly for mock data
+        seen_slns = {}
+        for section in schedule.sections:
+            sln = section.sln
+            if sln not in seen_slns:
+                seen_slns[sln] = True
+                slns.append(sln)
+
+        return slns
 
     def _get_slns_string(self, schedule):
         slns = []
