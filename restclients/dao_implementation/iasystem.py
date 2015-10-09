@@ -44,10 +44,10 @@ class Live(object):
                 key_file=settings.RESTCLIENTS_IASYSTEM_KEY_FILE,
                 cert_file=settings.RESTCLIENTS_IASYSTEM_CERT_FILE,
                 socket_timeout=getattr(settings,
-                                       RESTCLIENTS_IASYSTEM_SOCKET_TIMEOUT,
+                                       "RESTCLIENTS_IASYSTEM_SOCKET_TIMEOUT",
                                        IAS_SOCKET_TIMEOUT),
                 max_pool_size=getattr(settings,
-                                      RESTCLIENTS_IASYSTEM_MAX_POOL_SIZE,
+                                      "RESTCLIENTS_IASYSTEM_MAX_POOL_SIZE",
                                       IAS_MAX_POOL_SIZE))
 
         return get_live_url(Live.pool[subdomain], "GET",
