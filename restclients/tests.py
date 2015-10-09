@@ -55,6 +55,7 @@ from restclients.test.gws.search import GWSGroupSearch
 from restclients.test.cache.none import NoCacheTest
 from restclients.test.cache.time import TimeCacheTest
 from restclients.test.cache.etag import ETagCacheTest
+from restclients.test.cache.memcached import MemcachedCacheTest
 
 from restclients.test.book.by_schedule import BookstoreScheduleTest
 
