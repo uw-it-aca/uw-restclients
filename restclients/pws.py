@@ -234,9 +234,9 @@ class PWS(object):
         person.full_name = person_data["RegisteredName"]
         person.display_name = person_data["DisplayName"]
 
-        person.student_number = (person_data["PersonAffiliations"]
-                                           ["StudentPersonAffiliation"]
-                                           ["StudentNumber"])
+        person.student_number = (person_data.get('PersonAffiliations')
+                                 .get('StudentPersonAffiliation')
+                                 .get('StudentNumber'))
 
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":
