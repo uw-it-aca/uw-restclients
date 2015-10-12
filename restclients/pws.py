@@ -235,16 +235,20 @@ class PWS(object):
         person.display_name = person_data["DisplayName"]
 
         person_affiliations = person_data.get('PersonAffiliations')
-        if person_affiliations != None:
-            student_affiliations = person_affiliations.get('StudentPersonAffiliation')
-            if student_affiliations != None:
-                person.student_number = student_affiliations.get('StudentNumber')
+        if person_affiliations is not None:
+            student_affiliations = (person_affiliations
+                                    .get('StudentPersonAffiliation'))
+            if student_affiliations is not None:
+                person.student_number = (student_affiliations
+                                         .get('StudentNumber'))
             else:
                 person.student_number = None
 
-            employee_affiliations = person_affiliations.get('EmployeePersonAffiliation')
-            if employee_affiliations != None:
-                person.employee_id = employee_affiliations.get('EmployeeID')
+            employee_affiliations = (person_affiliations
+                                     .get('EmployeePersonAffiliation'))
+            if employee_affiliations is not None:
+                person.employee_id = (employee_affiliations
+                                      .get('EmployeeID'))
             else:
                 person.employee_id = None
         else:
