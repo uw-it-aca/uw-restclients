@@ -234,12 +234,22 @@ class PWS(object):
         person.full_name = person_data["RegisteredName"]
         person.display_name = person_data["DisplayName"]
 
-        person.student_number = (person_data.get('PersonAffiliations')
-                                 .get('StudentPersonAffiliation')
-                                 .get('StudentNumber'))
-        person.employee_id = (person_data.get('PersonAffiliations')
-                              .get('EmployeePersonAffiliation')
-                              .get('EmployeeID'))
+        person_affiliations = person_data.get('PersonAffiliations')
+        if person_affiliations != None:
+            student_affiliations = person_affiliations.get('StudentPersonAffiliation')
+            if student_affiliations != None:
+                person.student_number = student_affiliations.get('StudentNumber')
+            else:
+                person.student_number = None
+
+            employee_affiliations = person_affiliations.get('EmployeePersonAffiliation')
+            if employee_affiliations != None:
+                person.employee_id = employee_affiliations.get('EmployeeID')
+            else:
+                person.employee_id = None
+        else:
+            person.student_number = None
+            person.employee_id = None
 
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":
