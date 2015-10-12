@@ -237,6 +237,9 @@ class PWS(object):
         person.student_number = (person_data.get('PersonAffiliations')
                                  .get('StudentPersonAffiliation')
                                  .get('StudentNumber'))
+        person.employee_id = (person_data.get('PersonAffiliations')
+                              .get('EmployeePersonAffiliation')
+                              .get('EmployeeID'))
 
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":
