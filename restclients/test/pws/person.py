@@ -140,6 +140,14 @@ class PWSTestPersonData(TestCase):
              self.assertEquals(person1.student_number, "1033334")
              self.assertEquals(person1.employee_id, "123456789")
 
+    def test_missing_person_affiliations(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            pws = PWS()
+
+            person = pws.get_person_by_netid("bill")
+            self.assertEquals(person.employee_id, None)
+            self.assertEquals(person.student_number, None)
 
     def _test_regid(self, netid, regid):
         with self.settings(
