@@ -16,7 +16,7 @@ class Admins(Canvas):
         url = "/api/v1/accounts/%s/admins" % (account_id)
 
         admins = []
-        for data in self._get_paged_resource(url, params):
+        for data in self._get_paged_resource(url, params=params):
             admins.append(self._admin_from_json(data))
         return admins
 
