@@ -13,7 +13,7 @@ class Admins(Canvas):
 
         https://canvas.instructure.com/doc/api/admins.html#method.admins.index
         """
-        url = "/api/v1/accounts/%s/admins%s" % (account_id)
+        url = "/api/v1/accounts/%s/admins" % (account_id)
 
         admins = []
         for data in self._get_paged_resource(url, params):
