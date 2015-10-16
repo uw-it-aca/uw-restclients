@@ -89,7 +89,7 @@ class Canvas(object):
             p = []
             for key, val in params.iteritems():
                 if isinstance(val, list):
-                    p.extend([key + '=' + str(v) for v in val])
+                    p.extend([key + '[]=' + str(v) for v in val])
                 else:
                     p.append(key + '=' + str(val))
 
