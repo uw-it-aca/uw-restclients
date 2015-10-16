@@ -30,14 +30,14 @@ class Submissions(Canvas):
         course_type = "courses"
         if is_section:
             course_type = "sections"
-        params = ""
+        params = {}
         if students is not None:
-            params = "?student_ids=%s" % students
+            params["student_ids"] = students
         if assignments is not None:
-            params = "%s&assignments=%s" % (params, assignments)
+            params["assignments"] = assignments
 
-        url = "/api/v1/%s/%s/students/submissions%s" % (course_type, course_id, params)
-        data = self._get_resource(url)
+        url = "/api/v1/%s/%s/students/submissions" % (course_type, course_id)
+        data = self._get_resource(url, params=params)
         submissions = []
         for submission in data:
             sub = self._submission_from_json(submission)

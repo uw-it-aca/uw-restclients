@@ -7,18 +7,16 @@ from urllib import quote, unquote
 
 
 class Admins(Canvas):
-    def get_admins(self, account_id):
+    def get_admins(self, account_id, params={}):
         """
         Return a list of the admins in the account.
 
         https://canvas.instructure.com/doc/api/admins.html#method.admins.index
         """
-        params = self._pagination({})
-        url = "/api/v1/accounts/%s/admins%s" % (account_id,
-                                                self._params(params))
+        url = "/api/v1/accounts/%s/admins" % (account_id)
 
         admins = []
-        for data in self._get_resource(url):
+        for data in self._get_paged_resource(url, params=params):
             admins.append(self._admin_from_json(data))
         return admins
 

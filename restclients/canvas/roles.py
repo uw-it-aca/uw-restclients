@@ -10,10 +10,10 @@ class Roles(Canvas):
 
         https://canvas.instructure.com/doc/api/roles.html#method.role_overrides.api_index
         """
-        url = "/api/v1/accounts/%s/roles%s" % (account_id,
-                                               self._params(params))
+        url = "/api/v1/accounts/%s/roles" % (account_id)
+
         roles = []
-        for datum in self._get_resource(url):
+        for datum in self._get_resource(url, params=params):
             roles.append(self._role_from_json(datum))
         return roles
 

@@ -49,9 +49,9 @@ class Canvas(object):
         Return a term resource for the passed SIS ID.
         """
         params = {"workflow_state": "all", "per_page": 500}
-        url = "/api/v1/accounts/%s/terms%s" % (
-            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID, self._params(params))
-        data = self._get_resource(url)
+        url = "/api/v1/accounts/%s/terms" % (
+            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID)
+        data = self._get_resource(url, params=params)
 
         for term in data["enrollment_terms"]:
             if term["sis_term_id"] == sis_term_id:
@@ -75,6 +75,9 @@ class Canvas(object):
     def sis_user_id(self, sis_id):
         return self._sis_id(sis_id, sis_field="user")
 
+    def sis_login_id(self, sis_id):
+        return self._sis_id(sis_id, sis_field="login")
+
     def _sis_id(self, sis_id, sis_field='account'):
         """
         generate sis_id object reference
@@ -94,12 +97,6 @@ class Canvas(object):
 
         return ""
 
-    def _pagination(self, params):
-        if self._per_page != DEFAULT_PAGINATION:
-            params["per_page"] = self._per_page
-
-        return params
-
     def _next_page(self, response):
         """
         return url path to next page of paginated data
@@ -112,14 +109,11 @@ class Canvas(object):
             except:
                 return
 
-    def _get_resource(self, url, data_key=None):
+    def _get_resource_url(self, url, auto_page, data_key):
         """
-        Canvas GET method. Return representation of the requested resource,
-        chasing pagination links to coalesce resources.
+        Canvas GET method on a full url. Return representation of the requested resource,
+        chasing pagination links to coalesce resources if indicated.
         """
-        if(self._as_user is not None):
-            url = url + "?as_user_id=" + self.sis_user_id(self._as_user)
-
         response = Canvas_DAO().getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
@@ -127,17 +121,50 @@ class Canvas(object):
 
         data = json.loads(response.data)
 
-        if isinstance(data, list):
-            next_page = self._next_page(response)
-            if next_page:
-                data.extend(self._get_resource(next_page))
-
-        elif isinstance(data, dict) and data_key is not None:
-            next_page = self._next_page(response)
-            if next_page:
-                data[data_key].extend(self._get_resource(next_page, data_key=data_key)[data_key])
+        self.next_page_url = self._next_page(response)
+        if auto_page and self.next_page_url:
+            if isinstance(data, list):
+                data.extend(self._get_resource_url(self.next_page_url, True, data_key))
+            elif isinstance(data, dict) and data_key is not None:
+                data[data_key].extend(self._get_resource_url(
+                    self.next_page_url, True, data_key)[data_key])
 
         return data
+
+    def _set_as_user(self, params):
+        if 'as_user_id' not in params and self._as_user:
+            params['as_user_id'] = self.sis_user_id(self._as_user)
+
+    def _get_paged_resource(self, url, params=None, data_key=None):
+        """
+        Canvas GET method. Return representation of the requested paged resource,
+        either the requested page, or chase pagination links to coalesce resources.
+        """
+        if not params:
+            params = {}
+
+        self._set_as_user(params)
+
+        auto_page = not ('page' in params or 'per_page' in params)
+
+        if 'per_page' not in params and self._per_page != DEFAULT_PAGINATION:
+            params["per_page"] = self._per_page
+
+        full_url = '%s%s' % (url, self._params(params))
+        return self._get_resource_url(full_url, auto_page, data_key)
+
+    def _get_resource(self, url, params=None, data_key=None):
+        """
+        Canvas GET method. Return representation of the requested resource.
+        """
+        if not params:
+            params = {}
+
+        self._set_as_user(params)
+
+        full_url = '%s%s' % (url, self._params(params))
+
+        return self._get_resource_url(full_url, True, data_key)
 
     def _put_resource(self, url, body):
         """

@@ -19,12 +19,12 @@ class Users(Canvas):
         """
         return self.get_user(self._sis_id(sis_user_id, sis_field="user"))
 
-    def get_users_for_sis_course_id(self, sis_course_id):
+    def get_users_for_sis_course_id(self, sis_course_id, params={}):
         """
         Returns a list of users for the given sis course id.
         """
         url = "/api/v1/courses/%s/users" % (self._sis_id(sis_course_id, sis_field="course"))
-        data = self._get_resource(url)
+        data = self._get_paged_resource(url, params=params)
         users = []
         for entry in data:
             users.append(self._user_from_json(entry))
@@ -45,7 +45,7 @@ class Users(Canvas):
         data = self._post_resource(url, user.post_data())
         return self._user_from_json(data)
 
-    def get_user_logins(self, user_id):
+    def get_user_logins(self, user_id, params={}):
         """
         Return a user's logins for the given user_id.
 
@@ -53,7 +53,7 @@ class Users(Canvas):
         """
         url = "/api/v1/users/%s/logins" % user_id
 
-        data = self._get_resource(url)
+        data = self._get_paged_resource(url, params=params)
 
         logins = []
         for login_data in data:
