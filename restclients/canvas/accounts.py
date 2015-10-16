@@ -18,18 +18,16 @@ class Accounts(Canvas):
         """
         return self.get_account(self._sis_id(sis_id))
 
-    def get_sub_accounts(self, account_id, params):
+    def get_sub_accounts(self, account_id, params={}):
         """
         Return list of subaccounts within the account with the passed canvas id.
 
         https://canvas.instructure.com/doc/api/accounts.html#method.accounts.sub_accounts
         """
-        params = self._pagination(params)
-        url = "/api/v1/accounts/%s/sub_accounts%s" % (account_id,
-                                                      self._params(params))
+        url = "/api/v1/accounts/%s/sub_accounts" % (account_id)
 
         accounts = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             accounts.append(self._account_from_json(datum))
 
         return accounts
