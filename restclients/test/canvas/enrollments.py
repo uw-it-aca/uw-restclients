@@ -20,6 +20,23 @@ class CanvasTestEnrollment(TestCase):
 
             self.assertEquals(len(students), 2, "Has 2 student enrollments")
 
+    def test_search_enrollments_for_course_id(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Enrollments()
+
+            enrollments = canvas.search_enrollments_for_course("862539", "jav")
+
+            self.assertEquals(len(enrollments), 3, "Found 3 canvas enrollments")
+
+            enrollment = enrollments[0]
+            self.assertEquals(enrollment.sis_course_id, "2015-summer-TRAIN-100-A")
+            self.assertEquals(enrollment.login_id, "javerage", "Login ID")
+            self.assertEquals(enrollment.sis_user_id, "15AE3883B6EC44C349E04E5FE089ABEB", "SIS User ID")
+            self.assertEquals(enrollment.name, "JAMES AVERAGE", "Name")
+            self.assertEquals(enrollment.sortable_name, "AVERAGE, JAMES", "Sortable Name")
+            self.assertEquals(enrollment.role, "DesignerEnrollment", "Role")
+
     def test_enrollments_for_section_id(self):
         with self.settings(
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):

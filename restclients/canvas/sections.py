@@ -45,12 +45,10 @@ class Sections(Canvas):
         """
         Return list of sections including students for the passed course ID.
         """
-        if "include" in params and params["include"] is not None:
-            includes = params["include"].split(",")
-            if "student" not in includes:
-                params["include"] = ",".join(includes.append("students"))
-        else:
-            params["include"] = "students"
+        include = params.get("include", [])
+        if "students" not in include:
+            include.append("students")
+        params["include"] = include
 
         return self.get_sections_in_course(course_id, params)
 
