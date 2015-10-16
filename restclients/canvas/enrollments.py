@@ -28,6 +28,31 @@ class Enrollments(Canvas):
         return self.get_enrollments_for_course(
             self._sis_id(sis_course_id, sis_field="course"), params)
 
+    def search_enrollments_for_course(self, course_id, search_term, params={}):
+        """
+        Return a list of all enrollments for the passed course_id and search_term.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.users
+        """
+        params["search_term"] = search_term
+        if "include" in params and params["include"] is not None:
+            includes = params["include"].split(",")
+            if "enrollments" not in includes:
+                params["include"] = ",".join(includes.append("enrollments"))
+        else:
+            params["include"] = "enrollments"
+
+        url = "/api/v1/courses/%s/users" % (course_id)
+
+        enrollments = []
+        for datum in self._get_paged_resource(url, params=params):
+            for enrollment_datum in datum["enrollments"]:
+                enrollment_datum["user"] = datum
+                enrollment = self._enrollment_from_json(enrollment_datum)
+                enrollments.append(enrollment)
+
+        return enrollments
+
     def get_enrollments_for_section(self, section_id, params={}):
         """
         Return a list of all enrollments for the passed section_id.
@@ -101,6 +126,8 @@ class Enrollments(Canvas):
         if data["last_activity_at"] is not None:
             date_str = data["last_activity_at"]
             enrollment.last_activity_at = dateutil.parser.parse(date_str)
+        if "sis_course_id" in data:
+            enrollment.sis_course_id = data["sis_course_id"]
         if "sis_section_id" in data:
             enrollment.sis_section_id = data["sis_section_id"]
         if "user" in data:
