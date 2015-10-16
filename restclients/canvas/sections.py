@@ -10,8 +10,8 @@ class Sections(Canvas):
 
         https://canvas.instructure.com/doc/api/sections.html#method.sections.show
         """
-        url = "/api/v1/sections/%s%s" % (section_id, self._params(params))
-        return self._section_from_json(self._get_resource(url))
+        url = "/api/v1/sections/%s" % (section_id)
+        return self._section_from_json(self._get_resource(url, params=params))
 
     def get_section_by_sis_id(self, sis_section_id, params={}):
         """
@@ -26,11 +26,10 @@ class Sections(Canvas):
 
         https://canvas.instructure.com/doc/api/sections.html#method.sections.index
         """
-        params = self._pagination(params)
-        url = "/api/v1/courses/%s/sections%s" % (course_id, self._params(params))
+        url = "/api/v1/courses/%s/sections" % (course_id)
 
         sections = []
-        for data in self._get_resource(url):
+        for data in self._get_paged_resource(url, params=params):
             sections.append(self._section_from_json(data))
 
         return sections

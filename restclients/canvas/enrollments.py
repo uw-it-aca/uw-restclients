@@ -12,11 +12,10 @@ class Enrollments(Canvas):
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/courses/%s/enrollments%s" % (course_id,
-                                                    self._params(params))
+        url = "/api/v1/courses/%s/enrollments" % (course_id)
 
         enrollments = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             enrollment = self._enrollment_from_json(datum)
             enrollments.append(enrollment)
 
@@ -35,11 +34,10 @@ class Enrollments(Canvas):
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/sections/%s/enrollments%s" % (section_id,
-                                                     self._params(params))
+        url = "/api/v1/sections/%s/enrollments" % (section_id)
 
         enrollments = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             enrollment = self._enrollment_from_json(datum)
             enrollments.append(enrollment)
 
@@ -58,14 +56,13 @@ class Enrollments(Canvas):
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/users/%s/enrollments%s" % (
-            self._sis_id(regid, sis_field="user"),
-            self._params(params))
+        url = "/api/v1/users/%s/enrollments" % (
+            self._sis_id(regid, sis_field="user"))
 
         courses = Courses()
 
         enrollments = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             course_id = datum["course_id"]
             course = courses.get_course(course_id)
 
