@@ -10,9 +10,9 @@ class Courses(Canvas):
 
         https://canvas.instructure.com/doc/api/courses.html#method.courses.show
         """
-        include = params.get("include", None)
-        if include is None:
-            include = "term"
+        include = params.get("include", [])
+        if "term" not in include:
+            include.append("term")
         params["include"] = include
 
         url = "/api/v1/courses/%s" % (course_id)

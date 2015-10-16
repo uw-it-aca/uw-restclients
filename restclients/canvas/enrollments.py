@@ -35,12 +35,11 @@ class Enrollments(Canvas):
         https://canvas.instructure.com/doc/api/courses.html#method.courses.users
         """
         params["search_term"] = search_term
-        if "include" in params and params["include"] is not None:
-            includes = params["include"].split(",")
-            if "enrollments" not in includes:
-                params["include"] = ",".join(includes.append("enrollments"))
-        else:
-            params["include"] = "enrollments"
+
+        include = params.get("include", [])
+        if "enrollments" not in include:
+            include.append("enrollments")
+        params["include"] = include
 
         url = "/api/v1/courses/%s/users" % (course_id)
 
