@@ -131,13 +131,19 @@ class Canvas(object):
 
         return data
 
-    def _get_paged_resource(self, url, params={}, data_key=None):
+    def _set_as_user(self, params):
+        if 'as_user_id' not in params and self._as_user:
+            params['as_user_id'] = self.sis_user_id(self._as_user)
+
+    def _get_paged_resource(self, url, params=None, data_key=None):
         """
         Canvas GET method. Return representation of the requested paged resource,
         either the requested page, or chase pagination links to coalesce resources.
         """
-        if self._as_user is not None:
-            params['as_user_id'] = self.sis_user_id(self._as_user)
+        if not params:
+            params = {}
+
+        self._set_as_user(params)
 
         auto_page = not ('page' in params or 'per_page' in params)
 
@@ -147,12 +153,14 @@ class Canvas(object):
         full_url = '%s%s' % (url, self._params(params))
         return self._get_resource_url(full_url, auto_page, data_key)
 
-    def _get_resource(self, url, params={}, data_key=None):
+    def _get_resource(self, url, params=None, data_key=None):
         """
         Canvas GET method. Return representation of the requested resource.
         """
-        if self._as_user is not None:
-            params['as_user_id'] = self.sis_user_id(self._as_user)
+        if not params:
+            params = {}
+
+        self._set_as_user(params)
 
         full_url = '%s%s' % (url, self._params(params))
 
