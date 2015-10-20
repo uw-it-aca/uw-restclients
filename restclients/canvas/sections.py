@@ -73,6 +73,24 @@ class Sections(Canvas):
         data = self._post_resource(url, body)
         return self._section_from_json(data)
 
+    def update_section(self, section_id, name, sis_section_id):
+        """
+        Update a canvas section with the given section id.
+
+        https://canvas.instructure.com/doc/api/sections.html#method.sections.update
+        """
+        url = "/api/v1/sections/%s" % section_id
+        body = {"course_section": {}}
+
+        if name:
+            body["course_section"]["name"] = name
+
+        if sis_section_id:
+            body["course_section"]["sis_section_id"] = sis_section_id
+
+        data = self._put_resource(url, body)
+        return self._section_from_json(data)
+
     def _section_from_json(self, data):
         section = CanvasSection()
         section.section_id = data["id"]
