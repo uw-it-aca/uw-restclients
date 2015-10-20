@@ -48,6 +48,25 @@ class CanvasTestUsers(TestCase):
                               "Has correct sis id")
             self.assertEquals(user.email, "testid99@foo.com", "Has correct email")
 
+    def test_get_users_for_course_id(self):
+        with self.settings(
+                RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
+            canvas = Users()
+
+            users = canvas.get_users_for_course("862539",
+                params={"search_term": "jav", "include": ["enrollments"]})
+
+            self.assertEquals(len(users), 3, "Found 3 canvas users")
+
+            user = users[0]
+            self.assertEquals(user.login_id, "javerage", "Login ID")
+            self.assertEquals(user.sis_user_id, "15AE3883B6EC44C349E04E5FE089ABEB", "SIS User ID")
+            self.assertEquals(user.name, "JAMES AVERAGE", "Name")
+            self.assertEquals(user.sortable_name, "AVERAGE, JAMES", "Sortable Name")
+            enrollment = user.enrollments[0]
+            self.assertEquals(enrollment.sis_course_id, "2015-summer-TRAIN-100-A")
+            self.assertEquals(enrollment.role, "DesignerEnrollment", "Role")
+
     def test_get_logins(self):
         with self.settings(
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):

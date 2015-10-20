@@ -28,30 +28,6 @@ class Enrollments(Canvas):
         return self.get_enrollments_for_course(
             self._sis_id(sis_course_id, sis_field="course"), params)
 
-    def search_enrollments_for_course(self, course_id, search_term, params={}):
-        """
-        Return a list of all enrollments for the passed course_id and search_term.
-
-        https://canvas.instructure.com/doc/api/courses.html#method.courses.users
-        """
-        params["search_term"] = search_term
-
-        include = params.get("include", [])
-        if "enrollments" not in include:
-            include.append("enrollments")
-        params["include"] = include
-
-        url = "/api/v1/courses/%s/users" % (course_id)
-
-        enrollments = []
-        for datum in self._get_paged_resource(url, params=params):
-            for enrollment_datum in datum["enrollments"]:
-                enrollment_datum["user"] = datum
-                enrollment = self._enrollment_from_json(enrollment_datum)
-                enrollments.append(enrollment)
-
-        return enrollments
-
     def get_enrollments_for_section(self, section_id, params={}):
         """
         Return a list of all enrollments for the passed section_id.
