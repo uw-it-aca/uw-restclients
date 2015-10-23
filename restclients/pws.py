@@ -288,6 +288,15 @@ class PWS(object):
                 person.touchdial = white_pages["TouchDial"]
                 person.address1 = white_pages["Address1"]
                 person.address2 = white_pages["Address2"]
+        if "StudentPersonAffiliation" in affiliations and person.is_student:
+            student = affiliations["StudentPersonAffiliation"]
+            if "StudentWhitePages" in student:
+                white_pages = student["StudentWhitePages"]
+                if "Class" in white_pages and \
+                   white_pages["Class"] is not "null":
+                    person.student_class = white_pages["Class"]
+        else:
+            person.student_class = None
 
         return person
 
