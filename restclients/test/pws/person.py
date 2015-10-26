@@ -141,6 +141,9 @@ class PWSTestPersonData(TestCase):
                                "HomeDepartment")
              self.assertEquals(person1.student_number, "1033334")
              self.assertEquals(person1.employee_id, "123456789")
+             self.assertEquals(person1.student_department1, "Informatics")
+             self.assertEquals(person1.student_department2, None)
+             self.assertEquals(person1.student_department3, None)
 
              person2 = pws.get_person_by_netid("finals1")
              self.assertEquals(person2.is_student, True)
@@ -154,16 +157,18 @@ class PWSTestPersonData(TestCase):
              self.assertEquals(person2.student_number, "1033334")
              self.assertEquals(person2.employee_id, "123456789")
              self.assertEquals(person2.student_class, None)
+             self.assertEquals(person2.student_department1, None)
+             self.assertEquals(person2.student_department2, None)
+             self.assertEquals(person2.student_department3, None)
 
     def test_missing_person_affiliations(self):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             pws = PWS()
-
             person = pws.get_person_by_netid("bill")
             self.assertEquals(person.employee_id, None)
             self.assertEquals(person.student_number, None)
-            self.assertEquals(person.student_class, None)
+            self.assertEquals(person.student_class, u'')
 
     def _test_regid(self, netid, regid):
         with self.settings(

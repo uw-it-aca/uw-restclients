@@ -292,11 +292,17 @@ class PWS(object):
             student = affiliations["StudentPersonAffiliation"]
             if "StudentWhitePages" in student:
                 white_pages = student["StudentWhitePages"]
-                if "Class" in white_pages and \
-                   white_pages["Class"] is not "null":
+                if "Class" in white_pages:
                     person.student_class = white_pages["Class"]
-        else:
-            person.student_class = None
+                if "Department1" in white_pages:
+                    person.student_department1 = (white_pages
+                                                  .get('Department1'))
+                if "Department2" in white_pages:
+                    person.student_department2 = (white_pages
+                                                  .get('Department2'))
+                if "Department3" in white_pages:
+                    person.student_department3 = (white_pages
+                                                  .get('Department3'))
 
         return person
 
