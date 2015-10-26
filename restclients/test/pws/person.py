@@ -166,8 +166,8 @@ class PWSTestPersonData(TestCase):
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
             pws = PWS()
             person = pws.get_person_by_netid("bill")
-            self.assertEquals(person.employee_id, None)
-            self.assertEquals(person.student_number, None)
+            self.assertEquals(person.employee_id, u'')
+            self.assertEquals(person.student_number, u'')
             self.assertEquals(person.student_class, u'')
 
     def _test_regid(self, netid, regid):
