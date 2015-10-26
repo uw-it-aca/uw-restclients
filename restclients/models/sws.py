@@ -52,6 +52,11 @@ class Person(models.Model):
     title2 = models.CharField(max_length=255)
     home_department = models.CharField(max_length=255)
 
+    student_class = models.CharField(max_length=255)
+    student_department1 = models.CharField(max_length=255)
+    student_department2 = models.CharField(max_length=255)
+    student_department3 = models.CharField(max_length=255)
+
     def json_data(self):
         return {'uwnetid': self.uwnetid,
                 'uwregid': self.uwregid,
