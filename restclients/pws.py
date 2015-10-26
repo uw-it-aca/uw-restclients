@@ -241,19 +241,11 @@ class PWS(object):
             if student_affiliations is not None:
                 person.student_number = (student_affiliations
                                          .get('StudentNumber'))
-            else:
-                person.student_number = None
-
             employee_affiliations = (person_affiliations
                                      .get('EmployeePersonAffiliation'))
             if employee_affiliations is not None:
                 person.employee_id = (employee_affiliations
                                       .get('EmployeeID'))
-            else:
-                person.employee_id = None
-        else:
-            person.student_number = None
-            person.employee_id = None
 
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":
