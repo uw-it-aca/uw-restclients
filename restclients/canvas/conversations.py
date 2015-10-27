@@ -5,7 +5,7 @@ class Conversations(Canvas):
         url = "/api/v1/conversations"
 
         params = {
-            "as_user_id": self.sis_login_id(sis_login_id)
+            "as_user_id": self.sis_login_id(sis_login_id),
             "include_all_conversation_ids": "true"
         }
 
