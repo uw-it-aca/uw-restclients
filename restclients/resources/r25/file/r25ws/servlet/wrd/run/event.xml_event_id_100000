@@ -20,6 +20,7 @@
         <r25:cabinet_id xl:href="event.xml?event_id=100000">100000</r25:cabinet_id>
         <r25:cabinet_name>BOTHELL WINTER 2013 CABINET</r25:cabinet_name>
         <r25:profile id="ByJDMTA2NTEHEkMxMDkzOQ==" crc="00000023" status="est">
+            <r25:profile_name>Some reservation profile</r25:profile_name>
             <r25:reservation xl:href="reservation.xml?rsrv_id=431304" id="CBJDNDMxMzA0" crc="00000021" status="est">
                 <r25:reservation_id>431304</r25:reservation_id>
                 <r25:reservation_state>1</r25:reservation_state>

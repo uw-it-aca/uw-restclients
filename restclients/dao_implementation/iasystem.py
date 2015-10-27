@@ -24,6 +24,10 @@ class File(object):
         return get_mockdata_url("iasystem", subdomain, url, headers)
 
 
+IAS_MAX_POOL_SIZE = 10
+IAS_SOCKET_TIMEOUT = 5
+
+
 class Live(object):
     """
     This DAO provides real data.  It requires further configuration, e.g.
@@ -38,7 +42,13 @@ class Live(object):
             Live.pool[subdomain] = get_con_pool(
                 host,
                 key_file=settings.RESTCLIENTS_IASYSTEM_KEY_FILE,
-                cert_file=settings.RESTCLIENTS_IASYSTEM_CERT_FILE)
+                cert_file=settings.RESTCLIENTS_IASYSTEM_CERT_FILE,
+                socket_timeout=getattr(settings,
+                                       "RESTCLIENTS_IASYSTEM_SOCKET_TIMEOUT",
+                                       IAS_SOCKET_TIMEOUT),
+                max_pool_size=getattr(settings,
+                                      "RESTCLIENTS_IASYSTEM_MAX_POOL_SIZE",
+                                      IAS_MAX_POOL_SIZE))
 
         return get_live_url(Live.pool[subdomain], "GET",
                             host, url, headers=headers,
