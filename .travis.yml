@@ -13,6 +13,7 @@ before_script:
   - python manage.py syncdb --noinput
 script:
   - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/sms.py,restclients/library/ restclients/
+  - python -m compileall restclients/
   - coverage run --source=restclients manage.py test restclients
 after_script:
   - coveralls
