@@ -59,11 +59,12 @@ def _json_to_evaluation(data):
                 evaluation.eval_open_date = get_open_date(delivery_data)
                 evaluation.eval_close_date = get_close_date(delivery_data)
                 evaluation.eval_url = get_eval_url(item.get('links'))
-                section, instructors = \
-                    get_section_and_instructors(_get_child_ids(item_meta),
-                                                collection_items)
+                section, instructors, completion =\
+                    _get_child_items(_get_child_ids(item_meta),
+                                     collection_items)
                 evaluation.section_sln = get_section_sln(section)
                 evaluation.instructor_ids = instructors
+                evaluation.is_completed = get_is_complete(completion)
                 evaluations.append(evaluation)
     return evaluations
 
@@ -73,14 +74,21 @@ def get_section_sln(section):
     return int(sln)
 
 
+def get_is_complete(completion):
+    if completion is None:
+        return None
+    return get_value_by_name(completion.get('data'), 'isCompleted')
+
+
 def get_instructor_id(instructor):
     id = get_value_by_name(instructor.get('data'), 'instInstructorId')
     return int(id)
 
 
-def get_section_and_instructors(child_ids, collection_items):
+def _get_child_items(child_ids, collection_items):
     section = None
     instructors = []  # array of intergers
+    completion = None
     for item in collection_items:
         id = get_value_by_name(item.get('meta'), 'id')
         if id in child_ids:
@@ -89,7 +97,9 @@ def get_section_and_instructors(child_ids, collection_items):
                 instructors.append(get_instructor_id(item))
             if type == "section":
                 section = item
-    return section, instructors
+            if type == "evaluation completion":
+                completion = item
+    return section, instructors, completion
 
 
 def _get_child_ids(meta_data):
