@@ -82,6 +82,7 @@ from restclients.test.canvas.users import CanvasTestUsers
 from restclients.test.canvas.submissions import CanvasTestSubmissions
 from restclients.test.canvas.assignments import CanvasTestAssignments
 from restclients.test.canvas.quizzes import CanvasTestQuizzes
+from restclients.test.canvas.external_tools import CanvasTestExternalTools
 
 from restclients.test.catalyst.gradebook import CatalystTestGradebook
 
