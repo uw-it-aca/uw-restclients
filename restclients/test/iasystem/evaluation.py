@@ -73,6 +73,7 @@ class IASystemTest(TestCase):
                                            tzinfo=pytz.utc))
         self.assertEqual(evals[0].eval_url,
                          "https://uw.iasystem.org/survey/141412")
+        self.assertIsNone(evals[0].is_completed)
 
     def test_evaluation_completion(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS=FDAO_SWS,
@@ -108,7 +109,7 @@ class IASystemTest(TestCase):
             self.assertEqual(evals[0].instructor_ids[1], 987654321)
             self.assertFalse(evals[0].is_completed)
 
-    def test_multiple_instructor(self):
+    def test_multiple_evals(self):
         with self.settings(RESTCLIENTS_SWS_DAO_CLASS=FDAO_SWS,
                            RESTCLIENTS_PWS_DAO_CLASS=FDAO_PWS,
                            RESTCLIENTS_IASYSTEM_DAO_CLASS=FDAO_IAS):
