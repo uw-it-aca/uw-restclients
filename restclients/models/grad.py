@@ -35,6 +35,12 @@ class GradTerm(models.Model):
 
 
 class GradDegree(models.Model):
+    AWAITING_STATUS_PREFIX = "Awaiting "
+    CANDIDACY_STATUS = "candidacy granted"
+    DEPT_RECOMMENDED_STATUS = "recommended by dept"
+    GRADUATED_STATUS = "graduated by grad school"
+    NOT_GRADUATE_STATUS = "did not graduate"
+
     req_type = models.CharField(max_length=100)
     submit_date = models.DateTimeField()
     degree_title = models.CharField(max_length=255)
@@ -48,13 +54,13 @@ class GradDegree(models.Model):
             max_length=6, choices=GradTerm.QUARTERNAME_CHOICES)
 
     def is_status_graduated(self):
-        return self.status.lower() == "graduated by grad school"
+        return self.status.lower() == self.GRADUATED_STATUS
 
     def is_status_candidacy(self):
-        return self.status.lower() == "candidacy granted"
+        return self.status.lower() == self.CANDIDACY_STATUS
 
     def is_status_not_graduate(self):
-        return self.status.lower() == "did not graduate"
+        return self.status.lower() == self.NOT_GRADUATE_STATUS
 
     def is_status_await(self):
         """
@@ -63,10 +69,10 @@ class GradDegree(models.Model):
         Awaiting Dept Action (Final Exam),
         Awaiting Dept Action (General Exam)
         """
-        return self.status.startswith("Awaiting ")
+        return self.status.startswith(self.AWAITING_STATUS_PREFIX)
 
     def is_status_recommended(self):
-        return self.status.lower() == "recommended by dept"
+        return self.status.lower() == self.DEPT_RECOMMENDED_STATUS
 
     def json_data(self):
         return {
@@ -87,50 +93,63 @@ class GradDegree(models.Model):
 
 
 class GradCommitteeMember(models.Model):
+    CHAIR = "chair"
+    GSR = "gsr"
+    MEMBER = "member"
+    MEMBER_TYPE_CHOICES = (
+        (CHAIR, "Chair"),
+        (GSR, "GSR"),
+        (MEMBER, "Member"),
+    )
+    READING_TYPE_CHOICES = (
+        (CHAIR, "Reading Committee Chair"),
+        (MEMBER, "Reading Committee Member"),
+    )
+
     first_name = models.CharField(max_length=96)
     last_name = models.CharField(max_length=96)
-    member_type = models.CharField(max_length=64)
-    reading_type = models.CharField(max_length=64)
+    member_type = models.CharField(max_length=64,
+                                   choices=MEMBER_TYPE_CHOICES)
+    reading_type = models.CharField(max_length=64,
+                                    choices=READING_TYPE_CHOICES)
     dept = models.CharField(max_length=128, null=True)
     email = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=64)
 
     def is_member_type_gsr(self):
         return self.member_type is not None and\
-            self.member_type.lower() == "gsr"
+            self.member_type.lower() == self.GSR
 
     def is_member_type_chair(self):
         return self.member_type is not None and\
-            self.member_type.lower() == "chair"
+            self.member_type.lower() == self.CHAIR
 
-    def get_member_type_display(self):
-        if self.is_member_type_gsr():
-            return "GSR"
-        if self.is_member_type_chair():
-            return "Chair"
+    def get_type_display(self):
+        if self.is_member_type_gsr() or\
+                self.is_member_type_chair():
+            return self.get_member_type_display()
         return None
 
     def is_reading_committee_member(self):
         return self.reading_type is not None and\
-            self.reading_type.lower() == "member"
+            self.reading_type.lower() == self.MEMBER
 
     def is_reading_committee_chair(self):
         return self.reading_type is not None and\
-            self.reading_type.lower() == "chair"
+            self.reading_type.lower() == self.CHAIR
 
-    def get_reading_type_display(self):
-        if self.is_reading_committee_chair():
-            return "Reading Committee Chair"
-        if self.is_reading_committee_member():
-            return "Reading Committee Member"
+    def get_reading_display(self):
+        if self.is_reading_committee_chair() or\
+                self.is_reading_committee_member():
+            return self.get_reading_type_display()
         return None
 
     def json_data(self):
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "member_type": self.get_member_type_display(),
-            "reading_type": self.get_reading_type_display(),
+            "member_type": self.get_type_display(),
+            "reading_type": self.get_reading_display(),
             "dept": self.dept,
             "email": self.email,
             "status": self.status,
@@ -208,6 +227,11 @@ class GradLeave(models.Model):
 
 
 class GradPetition(models.Model):
+    APPROVE = "approve"
+    DENY = "deny"
+    PENDING = "pending"
+    WITHDRAW = "withdraw"
+
     description = models.CharField(max_length=100,
                                    db_index=True)
     submit_date = models.DateTimeField()
@@ -219,19 +243,19 @@ class GradPetition(models.Model):
     # gradschool decision date
 
     def is_dept_approve(self):
-        return self.dept_recommend.lower() == "approve"
+        return self.dept_recommend.lower() == self.APPROVE
 
     def is_dept_deny(self):
-        return self.dept_recommend.lower() == "deny"
+        return self.dept_recommend.lower() == self.DENY
 
     def is_dept_pending(self):
-        return self.dept_recommend.lower() == "pending"
+        return self.dept_recommend.lower() == self.PENDING
 
     def is_dept_withdraw(self):
-        return self.dept_recommend.lower() == "withdraw"
+        return self.dept_recommend.lower() == self.WITHDRAW
 
     def is_gs_pending(self):
-        return self.gradschool_decision.lower() == "pending"
+        return self.gradschool_decision.lower() == self.PENDING
 
     def json_data(self):
         data = {
