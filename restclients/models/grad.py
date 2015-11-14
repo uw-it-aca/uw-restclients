@@ -116,19 +116,22 @@ class GradCommitteeMember(models.Model):
     email = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=64)
 
-    def is_member_type_gsr(self):
-        return self.member_type is not None and\
-            self.member_type.lower() == self.GSR
-
-    def is_member_type_chair(self):
+    def is_type_chair(self):
         return self.member_type is not None and\
             self.member_type.lower() == self.CHAIR
 
+    def is_type_gsr(self):
+        return self.member_type is not None and\
+            self.member_type.lower() == self.GSR
+
+    def is_type_member(self):
+        return self.member_type is not None and\
+            self.member_type.lower() == self.MEMBER
+
     def get_type_display(self):
-        if self.is_member_type_gsr() or\
-                self.is_member_type_chair():
-            return self.get_member_type_display()
-        return None
+        if self.is_type_member():
+            return None
+        return self.get_member_type_display()
 
     def is_reading_committee_member(self):
         return self.reading_type is not None and\
@@ -184,7 +187,14 @@ class GradCommittee(models.Model):
             "members": [],
             }
         for member in self.members:
-            data["members"].append(member.json_data())
+            if member.is_type_chair():
+                data["members"].append(member.json_data())
+        for member in self.members:
+            if member.is_type_gsr():
+                data["members"].append(member.json_data())
+        for member in self.members:
+            if member.is_type_member():
+                data["members"].append(member.json_data())
         return data
 
 
