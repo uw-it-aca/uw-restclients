@@ -1,5 +1,6 @@
 from restclients.models.sws import Section
 
+
 def is_a_term(str):
     return str is not None and len(str) > 0 and\
         str.lower() == Section.SUMMER_A_TERM
