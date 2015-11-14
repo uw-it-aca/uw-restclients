@@ -38,8 +38,8 @@ class CommitteeTest(TestCase):
             self.assertEqual(len(members), 3)
             self.assertEqual(members[0].first_name, "Nina L.")
             self.assertEqual(members[0].last_name, "Patrick")
-            self.assertEqual(members[0].member_type, "chair")
-            self.assertEqual(members[0].reading_type, "chair")
+            self.assertTrue(members[0].is_type_chair())
+            self.assertTrue(members[0].is_reading_committee_chair())
             self.assertEqual(members[0].dept, "Epidemiology - Public Health")
             self.assertEqual(members[0].email, "nnn@u.washington.edu")
             self.assertEqual(members[0].status, "active")
@@ -48,13 +48,36 @@ class CommitteeTest(TestCase):
                              "Chair")
             self.assertEqual(json_data["reading_type"],
                              "Reading Committee Chair")
+            self.assertFalse(members[1].is_type_chair())
+            self.assertFalse(members[1].is_reading_committee_chair())
+            self.assertTrue(members[1].is_type_member())
+            self.assertTrue(members[1].is_reading_committee_member())
+            self.assertTrue(members[2].is_type_gsr())
+            self.assertTrue(members[2].is_reading_committee_member())
+            json_data = committee.json_data()
+            members_json_data = json_data["members"]
+            self.assertEqual(members_json_data[0]["member_type"],
+                             "Chair")
+            self.assertEqual(members_json_data[1]["member_type"],
+                             "GSR")
+            self.assertEqual(members_json_data[2]["member_type"],
+                             None)
 
             committee = requests[2]
             self.assertEqual(committee.committee_type,
                              "Doctoral Supervisory Committee")
             members = committee.members
             self.assertEqual(len(members), 4)
-
+            json_data = committee.json_data()
+            members_json_data = json_data["members"]
+            self.assertEqual(members_json_data[0]["member_type"],
+                             "Chair")
+            self.assertEqual(members_json_data[1]["member_type"],
+                             "Chair")
+            self.assertEqual(members_json_data[2]["member_type"],
+                             "GSR")
+            self.assertEqual(members_json_data[3]["member_type"],
+                             None)
 
     def test_empty_system(self):
          with self.settings(
