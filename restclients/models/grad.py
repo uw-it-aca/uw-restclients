@@ -303,7 +303,7 @@ class GradPetition(models.Model):
     gradschool_decision = models.CharField(max_length=50,
                                            null=True,
                                            blank=True,
-                                           default = "",
+                                           default="",
                                            choices=DECISION_CHOICES)
     decision_date = models.DateTimeField(null=True)
     # gradschool decision date
