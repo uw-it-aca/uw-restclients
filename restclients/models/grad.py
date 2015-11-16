@@ -161,7 +161,7 @@ class GradCommitteeMember(models.Model):
     def __lt__(self, other):
         return self.member_type == other.member_type and\
             self.last_name < other.last_name or\
-            self.member_type.lower() < other.member_type.lower()
+            self.member_type < other.member_type
 
     def __str__(self):
         return "%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s" %\

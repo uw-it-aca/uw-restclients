@@ -52,8 +52,10 @@ def _process_json(data):
             com_mem = GradCommitteeMember()
             com_mem.first_name = member.get('nameFirst')
             com_mem.last_name = member.get('nameLast')
-            com_mem.member_type = member.get('memberType')
-            com_mem.reading_type = member.get('readingType')
+            if member.get('memberType') is not None:
+                com_mem.member_type = member.get('memberType').lower()
+            if member.get('readingType') is not None:
+                com_mem.reading_type = member.get('readingType').lower()
             com_mem.dept = member.get('dept')
             com_mem.email = member.get('email')
             com_mem.status = member.get('status')
