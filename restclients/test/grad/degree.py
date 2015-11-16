@@ -39,6 +39,7 @@ class DegreeTest(TestCase):
             degree = requests[5]
             self.assertEqual(degree.status,
                              "Did Not Graduate")
+            self.assertTrue(degree.is_status_not_graduate())
 
     def test_empty_system_key(self):
          with self.settings(
