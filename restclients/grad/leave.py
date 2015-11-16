@@ -38,11 +38,12 @@ def _process_json(data):
         leave = GradLeave()
         leave.reason = item.get('leaveReason')
         leave.submit_date = datetime_from_string(item.get('submitDate'))
-        leave.status = item.get('status')
+        if item.get('status') is not None and len(item.get('status')) > 0:
+            leave.status = item.get('status').lower()
 
         for quarter in item.get('quarters'):
             term = GradTerm()
-            term.quarter = quarter.get('quarter')
+            term.quarter = quarter.get('quarter').lower()
             term.year = quarter.get('year')
             leave.terms.append(term)
         requests.append(leave)

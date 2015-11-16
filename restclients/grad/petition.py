@@ -44,7 +44,13 @@ def _process_json(data):
         else:
             petition.decision_date = None
 
-        petition.dept_recommend = item.get('deptRecommend')
-        petition.gradschool_decision = item.get('gradSchoolDecision')
+        if item.get('deptRecommend') is not None and\
+                len(item.get('deptRecommend')) > 0:
+            petition.dept_recommend = item.get('deptRecommend').lower()
+
+        if item.get('gradSchoolDecision') is not None and\
+                len(item.get('gradSchoolDecision')) > 0:
+            petition.gradschool_decision =\
+                item.get('gradSchoolDecision').lower()
         requests.append(petition)
     return requests
