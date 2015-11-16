@@ -163,13 +163,6 @@ class GradCommitteeMember(models.Model):
             self.member_type == other.member_type and\
             self.last_name < other.last_name
 
-    def __cmp__(self, other):
-        if self.__eq__(other):
-            return 0
-        if self.__le__(other):
-            return -1
-        return 1
-
     def __str__(self):
         return "%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s" %\
             (
