@@ -111,6 +111,7 @@ class GradCommitteeMember(models.Model):
     member_type = models.CharField(max_length=64,
                                    choices=MEMBER_TYPE_CHOICES)
     reading_type = models.CharField(max_length=64,
+                                    null=True,
                                     choices=READING_TYPE_CHOICES)
     dept = models.CharField(max_length=128, null=True)
     email = models.CharField(max_length=255, null=True)
@@ -146,6 +147,39 @@ class GradCommitteeMember(models.Model):
                 self.is_reading_committee_member():
             return self.get_reading_type_display()
         return None
+
+    def __eq__(self, other):
+        return self.member_type == other.member_type and\
+            self.last_name == other.last_name and\
+            self.first_name == other.first_name
+
+    def __ne__(self, other):
+        return self.member_type != other.member_type or\
+            self.last_name != other.last_name or\
+            self.first_name != other.first_name
+
+    def __lt__(self, other):
+        return self.member_type < other.member_type or\
+            self.member_type == other.member_type and\
+            self.last_name < other.last_name
+
+    def __cmp__(self, other):
+        if self.__eq__(other):
+            return 0
+        if self.__le__(other):
+            return -1
+        return 1
+
+    def __str__(self):
+        return "%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s" %\
+            (
+             "member_type", self.member_type,
+             "reading_type", self.reading_type,
+             "last_name", self.last_name,
+             "first_name", self.first_name,
+             "dept", self.dept,
+             "email", self.email,
+             "status", self.status)
 
     def json_data(self):
         return {
@@ -186,15 +220,8 @@ class GradCommittee(models.Model):
             if self.end_date is not None else None,
             "members": [],
             }
-        for member in self.members:
-            if member.is_type_chair():
-                data["members"].append(member.json_data())
-        for member in self.members:
-            if member.is_type_gsr():
-                data["members"].append(member.json_data())
-        for member in self.members:
-            if member.is_type_member():
-                data["members"].append(member.json_data())
+        for member in sorted(self.members):
+            data["members"].append(member.json_data())
         return data
 
 
