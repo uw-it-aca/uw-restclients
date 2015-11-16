@@ -67,7 +67,10 @@ class CommitteeTest(TestCase):
                              "Doctoral Supervisory Committee")
             members = committee.members
             self.assertEqual(len(members), 4)
-
+            self.assertFalse(members[0].__eq__(members[1]))
+            self.assertFalse(members[0] == members[1])
+            self.assertTrue(members[0].__ne__(members[1]))
+            self.assertTrue(members[0] != members[1])
             json_data = committee.json_data()
             self.assertEqual(len(json_data["members"]), 4)
             member_json = json_data["members"][0]
