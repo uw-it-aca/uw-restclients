@@ -48,7 +48,8 @@ def _process_json(json_data):
                 item.get('decisionDate'))
         degree.status = item["status"]
         degree.target_award_year = item["targetAwardYear"]
-        degree.target_award_quarter = item["targetAwardQuarter"]
+        if item.get("targetAwardQuarter") is not None:
+            degree.target_award_quarter = item["targetAwardQuarter"].lower()
 
         requests.append(degree)
     return requests

@@ -46,9 +46,9 @@ class GradDegree(models.Model):
     degree_title = models.CharField(max_length=255)
     major_full_name = models.CharField(max_length=255)
     status = models.CharField(max_length=64)
-    decision_date = models.DateTimeField(null=True)
-    exam_place = models.CharField(max_length=255, null=True)
-    exam_date = models.DateTimeField(null=True)
+    decision_date = models.DateTimeField(null=True, default=None)
+    exam_place = models.CharField(max_length=255, null=True, default=None)
+    exam_date = models.DateTimeField(null=True, default=None)
     target_award_year = models.PositiveSmallIntegerField()
     target_award_quarter = models.CharField(
             max_length=6, choices=GradTerm.QUARTERNAME_CHOICES)
@@ -99,7 +99,7 @@ class GradCommitteeMember(models.Model):
     MEMBER_TYPE_CHOICES = (
         (CHAIR, "Chair"),
         (GSR, "GSR"),
-        (MEMBER, "Member"),
+        (MEMBER, None),
     )
     READING_TYPE_CHOICES = (
         (CHAIR, "Reading Committee Chair"),
@@ -112,41 +112,15 @@ class GradCommitteeMember(models.Model):
                                    choices=MEMBER_TYPE_CHOICES)
     reading_type = models.CharField(max_length=64,
                                     null=True,
+                                    default=None,
                                     choices=READING_TYPE_CHOICES)
-    dept = models.CharField(max_length=128, null=True)
-    email = models.CharField(max_length=255, null=True)
+    dept = models.CharField(max_length=128,
+                            null=True,
+                            default=None)
+    email = models.CharField(max_length=255,
+                             null=True,
+                             default=None)
     status = models.CharField(max_length=64)
-
-    def is_type_chair(self):
-        return self.member_type is not None and\
-            self.member_type.lower() == self.CHAIR
-
-    def is_type_gsr(self):
-        return self.member_type is not None and\
-            self.member_type.lower() == self.GSR
-
-    def is_type_member(self):
-        return self.member_type is not None and\
-            self.member_type.lower() == self.MEMBER
-
-    def get_type_display(self):
-        if self.is_type_member():
-            return None
-        return self.get_member_type_display()
-
-    def is_reading_committee_member(self):
-        return self.reading_type is not None and\
-            self.reading_type.lower() == self.MEMBER
-
-    def is_reading_committee_chair(self):
-        return self.reading_type is not None and\
-            self.reading_type.lower() == self.CHAIR
-
-    def get_reading_display(self):
-        if self.is_reading_committee_chair() or\
-                self.is_reading_committee_member():
-            return self.get_reading_type_display()
-        return None
 
     def __eq__(self, other):
         return self.member_type == other.member_type and\
@@ -159,9 +133,32 @@ class GradCommitteeMember(models.Model):
             self.first_name != other.first_name
 
     def __lt__(self, other):
-        return self.member_type < other.member_type or\
-            self.member_type == other.member_type and\
-            self.last_name < other.last_name
+        return self.member_type == other.member_type and\
+            self.last_name < other.last_name or\
+            self.member_type < other.member_type
+
+    def is_type_chair(self):
+        return self.member_type == self.CHAIR
+
+    def is_type_gsr(self):
+        return self.member_type == self.GSR
+
+    def is_type_member(self):
+        return self.member_type == self.MEMBER
+
+    def is_reading_committee_member(self):
+        return self.reading_type is not None and\
+            self.reading_type == self.MEMBER
+
+    def is_reading_committee_chair(self):
+        return self.reading_type is not None and\
+            self.reading_type == self.CHAIR
+
+    def get_reading_display(self):
+        if self.is_reading_committee_chair() or\
+                self.is_reading_committee_member():
+            return self.get_reading_type_display()
+        return None
 
     def __str__(self):
         return "%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s" %\
@@ -178,7 +175,7 @@ class GradCommitteeMember(models.Model):
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "member_type": self.get_type_display(),
+            "member_type": self.get_member_type_display(),
             "reading_type": self.get_reading_display(),
             "dept": self.dept,
             "email": self.email,
@@ -219,36 +216,52 @@ class GradCommittee(models.Model):
 
 
 class GradLeave(models.Model):
+    APPROVED = "approved"
+    DENIED = "denied"
+    PAID = "paid"
+    REQUESTED = "requested"
+    WITHDRAWN = "withdrawn"
+
+    STATUS_CHOICES = (
+        ("", None),
+        (APPROVED, "Approved"),
+        (DENIED, "Denied"),
+        (PAID, "Paid"),
+        (REQUESTED, "Requested"),
+        (WITHDRAWN, "Withdrawn"),
+    )
     reason = models.CharField(max_length=100,
                               db_index=True)
     submit_date = models.DateTimeField()
     status = models.CharField(max_length=50,
-                              blank=True)
+                              blank=True,
+                              default="",
+                              choices=STATUS_CHOICES)
 
     def __init__(self):
         self.terms = []
 
     def is_status_approved(self):
-        return self.status.lower() == "approved"
+        return self.status == self.APPROVED
 
     def is_status_denied(self):
-        return self.status.lower() == "denied"
+        return self.status == self.DENIED
 
     def is_status_paid(self):
-        return self.status.lower() == "paid"
+        return self.status == self.PAID
 
     def is_status_requested(self):
-        return self.status.lower() == "requested"
+        return self.status == self.REQUESTED
 
     def is_status_withdrawn(self):
-        return self.status.lower() == "withdrawn"
+        return self.status == self.WITHDRAWN
 
     def json_data(self):
         data = {
             'reason': self.reason,
             'submit_date': get_datetime_str(self.submit_date)
             if self.submit_date is not None else None,
-            'status': self.status,
+            'status': self.get_status_display(),
             'terms': [],
         }
         for term in self.terms:
@@ -258,34 +271,57 @@ class GradLeave(models.Model):
 
 class GradPetition(models.Model):
     APPROVE = "approve"
+    APPROVED = "approved"
     DENY = "deny"
+    NOT_APPROVED = "not approved"
     PENDING = "pending"
     WITHDRAW = "withdraw"
+    WITHDRAWN = "withdrawn"
+
+    RECOMMEND_CHOICES = (
+        ("", None),
+        (APPROVE, "Approve"),
+        (DENY, "Deny"),
+        (PENDING, "Pending"),
+        (WITHDRAW, "Withdraw"),
+    )
+
+    DECISION_CHOICES = (
+        ("", None),
+        (APPROVED, "Approved"),
+        (NOT_APPROVED, "Not approved"),
+        (PENDING, "Pending"),
+        (WITHDRAW, "Withdraw"),
+        (WITHDRAWN, "Withdrawn"),
+    )
 
     description = models.CharField(max_length=100,
                                    db_index=True)
     submit_date = models.DateTimeField()
-    dept_recommend = models.CharField(max_length=50)
+    dept_recommend = models.CharField(max_length=50,
+                                      choices=RECOMMEND_CHOICES)
     gradschool_decision = models.CharField(max_length=50,
                                            null=True,
-                                           blank=True)
+                                           blank=True,
+                                           default="",
+                                           choices=DECISION_CHOICES)
     decision_date = models.DateTimeField(null=True)
     # gradschool decision date
 
     def is_dept_approve(self):
-        return self.dept_recommend.lower() == self.APPROVE
+        return self.dept_recommend == self.APPROVE
 
     def is_dept_deny(self):
-        return self.dept_recommend.lower() == self.DENY
+        return self.dept_recommend == self.DENY
 
     def is_dept_pending(self):
-        return self.dept_recommend.lower() == self.PENDING
+        return self.dept_recommend == self.PENDING
 
     def is_dept_withdraw(self):
-        return self.dept_recommend.lower() == self.WITHDRAW
+        return self.dept_recommend == self.WITHDRAW
 
     def is_gs_pending(self):
-        return self.gradschool_decision.lower() == self.PENDING
+        return self.gradschool_decision == self.PENDING
 
     def json_data(self):
         data = {
@@ -293,7 +329,7 @@ class GradPetition(models.Model):
             'submit_date': get_datetime_str(self.submit_date),
             'decision_date': get_datetime_str(self.decision_date)
             if self.decision_date is not None else None,
-            'dept_recommend': self.dept_recommend,
-            'gradschool_decision': self.gradschool_decision,
+            'dept_recommend': self.get_dept_recommend_display(),
+            'gradschool_decision': self.get_gradschool_decision_display(),
             }
         return data
