@@ -12,7 +12,8 @@ from restclients.sws.section import get_section_by_label,\
     get_sections_by_instructor_and_term,\
     get_sections_by_curriculum_and_term,\
     get_changed_sections_by_term,\
-    get_sections_by_delegate_and_term
+    get_sections_by_delegate_and_term,\
+    is_a_term, is_b_term, is_full_summer_term
 
 
 SWSF = 'restclients.dao_implementation.sws.File'
@@ -468,3 +469,10 @@ class SWSTestSectionData(TestCase):
             self.assertFalse(section.is_full_summer_term())
             self.assertTrue(section.is_same_summer_term(None))
             self.assertTrue(section.is_same_summer_term(""))
+
+    def test_summer_term_statics(self):
+        self.assertTrue(is_a_term("A-term"))
+        self.assertTrue(is_b_term("B-term"))
+        self.assertTrue(is_full_summer_term("Full-term"))
+        self.assertFalse(is_full_summer_term("A-term"))
+        self.assertFalse(is_full_summer_term("B-term"))
