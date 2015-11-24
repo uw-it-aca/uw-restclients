@@ -91,3 +91,4 @@ STATIC_URL = '/static/'
 
 # Test the memcached cache code
 RESTCLIENTS_TEST_MEMCACHED = True
+RESTCLIENTS_MEMCACHED_SERVERS = ('127.0.0.1:11211', )
