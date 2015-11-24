@@ -1,6 +1,6 @@
 sudo: false
 language: python
-sevices:
+services:
   - memcached
 python:
   - "2.7"
