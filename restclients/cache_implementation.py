@@ -9,6 +9,10 @@ from django.utils.timezone import make_aware, get_current_timezone
 from django.conf import settings
 import json
 import bmemcached
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class NoCache(object):
@@ -197,7 +201,12 @@ class MemcachedCache(object):
     def getCache(self, service, url, headers):
         client = self._get_client()
 
-        data = client.get(self._get_key(service, url))
+        try:
+            data = client.get(self._get_key(service, url))
+        except bmemcached.exceptions.MemcachedException as ex:
+            logger.warning("Error with url '%s' in memcached cache get: '%s'",
+                           url, str(ex))
+            return
 
         if not data:
             return
@@ -227,7 +236,11 @@ class MemcachedCache(object):
         key = self._get_key(service, url)
 
         client = self._get_client()
-        client.set(key, data, time=time_to_store)
+        try:
+            client.set(key, data, time=time_to_store)
+        except bmemcached.exceptions.MemcachedException as ex:
+            logger.warning("Error with url '%s' in memcached cache set: '%s'",
+                           url, str(ex))
         return
 
     def _get_time(self, service, url):
@@ -242,8 +255,8 @@ class MemcachedCache(object):
             return self.client
 
         servers = settings.RESTCLIENTS_MEMCACHED_SERVERS
-        username = getattr(settings, "RESTCLIENTS_MEMCACHED_USER", "")
-        password = getattr(settings, "RESTCLIENTS_MEMCACHED_PASS", "")
+        username = getattr(settings, "RESTCLIENTS_MEMCACHED_USER", None)
+        password = getattr(settings, "RESTCLIENTS_MEMCACHED_PASS", None)
 
         client = bmemcached.Client(servers, username, password)
 
