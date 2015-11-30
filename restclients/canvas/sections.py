@@ -10,8 +10,8 @@ class Sections(Canvas):
 
         https://canvas.instructure.com/doc/api/sections.html#method.sections.show
         """
-        url = "/api/v1/sections/%s%s" % (section_id, self._params(params))
-        return self._section_from_json(self._get_resource(url))
+        url = "/api/v1/sections/%s" % (section_id)
+        return self._section_from_json(self._get_resource(url, params=params))
 
     def get_section_by_sis_id(self, sis_section_id, params={}):
         """
@@ -26,11 +26,10 @@ class Sections(Canvas):
 
         https://canvas.instructure.com/doc/api/sections.html#method.sections.index
         """
-        params = self._pagination(params)
-        url = "/api/v1/courses/%s/sections%s" % (course_id, self._params(params))
+        url = "/api/v1/courses/%s/sections" % (course_id)
 
         sections = []
-        for data in self._get_resource(url):
+        for data in self._get_paged_resource(url, params=params):
             sections.append(self._section_from_json(data))
 
         return sections
@@ -46,12 +45,10 @@ class Sections(Canvas):
         """
         Return list of sections including students for the passed course ID.
         """
-        if "include" in params and params["include"] is not None:
-            includes = params["include"].split(",")
-            if "student" not in includes:
-                params["include"] = ",".join(includes.append("students"))
-        else:
-            params["include"] = "students"
+        include = params.get("include", [])
+        if "students" not in include:
+            include.append("students")
+        params["include"] = include
 
         return self.get_sections_in_course(course_id, params)
 
@@ -74,6 +71,24 @@ class Sections(Canvas):
                                    "sis_section_id": sis_section_id}}
 
         data = self._post_resource(url, body)
+        return self._section_from_json(data)
+
+    def update_section(self, section_id, name, sis_section_id):
+        """
+        Update a canvas section with the given section id.
+
+        https://canvas.instructure.com/doc/api/sections.html#method.sections.update
+        """
+        url = "/api/v1/sections/%s" % section_id
+        body = {"course_section": {}}
+
+        if name:
+            body["course_section"]["name"] = name
+
+        if sis_section_id:
+            body["course_section"]["sis_section_id"] = sis_section_id
+
+        data = self._put_resource(url, body)
         return self._section_from_json(data)
 
     def _section_from_json(self, data):

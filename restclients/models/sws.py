@@ -8,8 +8,6 @@ from restclients.exceptions import InvalidCanvasSection
 from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.datetime_convertor import convert_to_begin_of_day,\
     convert_to_end_of_day
-from restclients.util.summer_term import is_a_term, is_b_term,\
-    is_full_summer_term
 
 
 # PWS Person
@@ -28,6 +26,9 @@ class Person(models.Model):
     surname = models.CharField(max_length=100)
     full_name = models.CharField(max_length=250)
     display_name = models.CharField(max_length=250)
+
+    student_number = models.CharField(max_length=9)
+    employee_id = models.CharField(max_length=9)
 
     is_student = models.NullBooleanField()
     is_staff = models.NullBooleanField()
@@ -48,6 +49,11 @@ class Person(models.Model):
     title1 = models.CharField(max_length=255)
     title2 = models.CharField(max_length=255)
     home_department = models.CharField(max_length=255)
+
+    student_class = models.CharField(max_length=255)
+    student_department1 = models.CharField(max_length=255)
+    student_department2 = models.CharField(max_length=255)
+    student_department3 = models.CharField(max_length=255)
 
     def json_data(self):
         return {'uwnetid': self.uwnetid,
@@ -346,7 +352,9 @@ class FinalExam(models.Model):
 
 
 class Section(models.Model):
-    SUMMER_A_TERM = "A-term"
+    SUMMER_A_TERM = "a-term"
+    SUMMER_B_TERM = "b-term"
+    SUMMER_FULL_TERM = "full-term"
 
     LMS_CANVAS = "CANVAS"
     LMS_CATALYST = "CATALYST"
@@ -480,7 +488,7 @@ class Section(models.Model):
 
     def is_grading_period_open(self):
         now = datetime.now()
-        if self.summer_term == self.SUMMER_A_TERM:
+        if self.is_summer_a_term():
             open_date = self.term.aterm_grading_period_open
         else:
             open_date = self.term.grading_period_open
@@ -538,17 +546,23 @@ class Section(models.Model):
         return None
 
     def is_summer_a_term(self):
-        return is_a_term(self.summer_term)
+        return self.summer_term is not None and\
+            len(self.summer_term) > 0 and\
+            self.summer_term.lower() == self.SUMMER_A_TERM
 
     def is_summer_b_term(self):
-        return is_b_term(self.summer_term)
+        return self.summer_term is not None and\
+            len(self.summer_term) > 0 and\
+            self.summer_term.lower() == self.SUMMER_B_TERM
 
     def is_half_summer_term(self):
         return (self.is_summer_a_term() or
                 self.is_summer_b_term())
 
     def is_full_summer_term(self):
-        return is_full_summer_term(self.summer_term)
+        return self.summer_term is not None and\
+            len(self.summer_term) > 0 and\
+            self.summer_term.lower() == self.SUMMER_FULL_TERM
 
     def is_same_summer_term(self, summer_term):
         return (self.summer_term is None or len(self.summer_term) == 0) and\

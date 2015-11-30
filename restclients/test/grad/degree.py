@@ -10,8 +10,8 @@ class DegreeTest(TestCase):
          with self.settings(
              RESTCLIENTS_GRAD_DAO_CLASS=\
                  'restclients.dao_implementation.grad.File',
-             RESTCLIENTS_PWS_DAO_CLASS=\
-                 'restclients.dao_implementation.iasystem.File'):
+             RESTCLIENTS_SWS_DAO_CLASS=\
+                 'restclients.dao_implementation.sws.File'):
             requests = get_degree_by_regid(
                 "9136CCB8F66711D5BE060004AC494FFE")
 
@@ -39,12 +39,11 @@ class DegreeTest(TestCase):
             degree = requests[5]
             self.assertEqual(degree.status,
                              "Did Not Graduate")
+            self.assertTrue(degree.is_status_not_graduate())
 
     def test_empty_system_key(self):
          with self.settings(
-             RESTCLIENTS_GRAD_DAO_CLASS=\
-                 'restclients.dao_implementation.grad.File',
-             RESTCLIENTS_PWS_DAO_CLASS=\
-                 'restclients.dao_implementation.iasystem.File'):
+             RESTCLIENTS_SWS_DAO_CLASS=\
+                 'restclients.dao_implementation.sws.File'):
              self.assertIsNone(get_degree_by_regid(
                      "00000000000000000000000000000001"))

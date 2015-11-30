@@ -5,6 +5,7 @@ from restclients.exceptions import InvalidRegID, InvalidNetID,\
     InvalidEmployeeID, InvalidStudentNumber
 from restclients.exceptions import DataFailureException
 
+
 class PWSTestPersonData(TestCase):
 
     def test_by_regid(self):
@@ -63,6 +64,9 @@ class PWSTestPersonData(TestCase):
             self.assertEquals(person.first_name, 'JAMES AVERAGE')
             self.assertEquals(person.full_name, 'JAMES AVERAGE STUDENT')
             self.assertEquals(person.display_name, 'James Student')
+            self.assertEquals(person.student_number, "1033334")
+            self.assertEquals(person.employee_id, "123456789")
+            self.assertEquals(person.student_class, "Junior")
 
     def test_bad_netids(self):
         with self.settings(
@@ -135,6 +139,36 @@ class PWSTestPersonData(TestCase):
              self.assertEquals(person1.mailstop, None, "MailStop")
              self.assertEquals(person1.home_department, "C&C TEST BUDGET",
                                "HomeDepartment")
+             self.assertEquals(person1.student_number, "1033334")
+             self.assertEquals(person1.employee_id, "123456789")
+             self.assertEquals(person1.student_department1, "Informatics")
+             self.assertEquals(person1.student_department2, None)
+             self.assertEquals(person1.student_department3, None)
+
+             person2 = pws.get_person_by_netid("finals1")
+             self.assertEquals(person2.is_student, True)
+             self.assertEquals(person2.is_alum, True)
+             self.assertEquals(person2.is_staff, True)
+             self.assertEquals(person2.is_faculty, None)
+             self.assertEquals(person2.is_employee, True)
+
+             self.assertEquals(person2.home_department, "C&C TEST BUDGET",
+                               "HomeDepartment")
+             self.assertEquals(person2.student_number, "1033334")
+             self.assertEquals(person2.employee_id, "123456789")
+             self.assertEquals(person2.student_class, None)
+             self.assertEquals(person2.student_department1, None)
+             self.assertEquals(person2.student_department2, None)
+             self.assertEquals(person2.student_department3, None)
+
+    def test_missing_person_affiliations(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            pws = PWS()
+            person = pws.get_person_by_netid("bill")
+            self.assertEquals(person.employee_id, u'')
+            self.assertEquals(person.student_number, u'')
+            self.assertEquals(person.student_class, u'')
 
     def _test_regid(self, netid, regid):
         with self.settings(

@@ -12,11 +12,10 @@ class Enrollments(Canvas):
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/courses/%s/enrollments%s" % (course_id,
-                                                    self._params(params))
+        url = "/api/v1/courses/%s/enrollments" % (course_id)
 
         enrollments = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             enrollment = self._enrollment_from_json(datum)
             enrollments.append(enrollment)
 
@@ -35,11 +34,10 @@ class Enrollments(Canvas):
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/sections/%s/enrollments%s" % (section_id,
-                                                     self._params(params))
+        url = "/api/v1/sections/%s/enrollments" % (section_id)
 
         enrollments = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             enrollment = self._enrollment_from_json(datum)
             enrollments.append(enrollment)
 
@@ -58,14 +56,13 @@ class Enrollments(Canvas):
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
         """
-        url = "/api/v1/users/%s/enrollments%s" % (
-            self._sis_id(regid, sis_field="user"),
-            self._params(params))
+        url = "/api/v1/users/%s/enrollments" % (
+            self._sis_id(regid, sis_field="user"))
 
         courses = Courses()
 
         enrollments = []
-        for datum in self._get_resource(url):
+        for datum in self._get_paged_resource(url, params=params):
             course_id = datum["course_id"]
             course = courses.get_course(course_id)
 
@@ -104,10 +101,13 @@ class Enrollments(Canvas):
         if data["last_activity_at"] is not None:
             date_str = data["last_activity_at"]
             enrollment.last_activity_at = dateutil.parser.parse(date_str)
+        if "sis_course_id" in data:
+            enrollment.sis_course_id = data["sis_course_id"]
         if "sis_section_id" in data:
             enrollment.sis_section_id = data["sis_section_id"]
         if "user" in data:
             enrollment.name = data["user"]["name"]
+            enrollment.sortable_name = data["user"]["sortable_name"]
             if "login_id" in data["user"]:
                 enrollment.login_id = data["user"]["login_id"]
             if "sis_user_id" in data["user"]:

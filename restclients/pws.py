@@ -234,6 +234,19 @@ class PWS(object):
         person.full_name = person_data["RegisteredName"]
         person.display_name = person_data["DisplayName"]
 
+        person_affiliations = person_data.get('PersonAffiliations')
+        if person_affiliations is not None:
+            student_affiliations = (person_affiliations
+                                    .get('StudentPersonAffiliation'))
+            if student_affiliations is not None:
+                person.student_number = (student_affiliations
+                                         .get('StudentNumber'))
+            employee_affiliations = (person_affiliations
+                                     .get('EmployeePersonAffiliation'))
+            if employee_affiliations is not None:
+                person.employee_id = (employee_affiliations
+                                      .get('EmployeeID'))
+
         for affiliation in person_data["EduPersonAffiliations"]:
             if affiliation == "student":
                 person.is_student = True
@@ -267,6 +280,21 @@ class PWS(object):
                 person.touchdial = white_pages["TouchDial"]
                 person.address1 = white_pages["Address1"]
                 person.address2 = white_pages["Address2"]
+        if "StudentPersonAffiliation" in affiliations and person.is_student:
+            student = affiliations["StudentPersonAffiliation"]
+            if "StudentWhitePages" in student:
+                white_pages = student["StudentWhitePages"]
+                if "Class" in white_pages:
+                    person.student_class = white_pages["Class"]
+                if "Department1" in white_pages:
+                    person.student_department1 = (white_pages
+                                                  .get('Department1'))
+                if "Department2" in white_pages:
+                    person.student_department2 = (white_pages
+                                                  .get('Department2'))
+                if "Department3" in white_pages:
+                    person.student_department3 = (white_pages
+                                                  .get('Department3'))
 
         return person
 

@@ -10,8 +10,8 @@ class CommitteeTest(TestCase):
          with self.settings(
              RESTCLIENTS_GRAD_DAO_CLASS=\
                  'restclients.dao_implementation.grad.File',
-             RESTCLIENTS_PWS_DAO_CLASS=\
-                 'restclients.dao_implementation.iasystem.File'):
+             RESTCLIENTS_SWS_DAO_CLASS=\
+                 'restclients.dao_implementation.sws.File'):
             requests = get_committee_by_regid(
                 "9136CCB8F66711D5BE060004AC494FFE")
 
@@ -38,29 +38,61 @@ class CommitteeTest(TestCase):
             self.assertEqual(len(members), 3)
             self.assertEqual(members[0].first_name, "Nina L.")
             self.assertEqual(members[0].last_name, "Patrick")
-            self.assertEqual(members[0].member_type, "chair")
-            self.assertEqual(members[0].reading_type, "chair")
+            self.assertTrue(members[0].is_type_chair())
+            self.assertTrue(members[0].is_reading_committee_chair())
             self.assertEqual(members[0].dept, "Epidemiology - Public Health")
             self.assertEqual(members[0].email, "nnn@u.washington.edu")
             self.assertEqual(members[0].status, "active")
-            json_data = members[0].json_data()
-            self.assertEqual(json_data["member_type"],
-                             "Chair")
-            self.assertEqual(json_data["reading_type"],
+
+            self.assertFalse(members[1].is_type_chair())
+            self.assertFalse(members[1].is_reading_committee_chair())
+            self.assertTrue(members[1].is_type_member())
+            self.assertTrue(members[1].is_reading_committee_member())
+            self.assertTrue(members[2].is_type_gsr())
+            self.assertTrue(members[2].is_reading_committee_member())
+
+            json_data = committee.json_data()
+            self.assertEqual(len(json_data["members"]), 3)
+            member_json = json_data["members"][0]
+            self.assertEqual(member_json["member_type"], "Chair")
+            self.assertEqual(member_json["reading_type"],
                              "Reading Committee Chair")
+            member_json = json_data["members"][1]
+            self.assertEqual(member_json["member_type"], "GSR")
+            member_json = json_data["members"][2]
+            self.assertEqual(member_json["member_type"], None)
 
             committee = requests[2]
             self.assertEqual(committee.committee_type,
                              "Doctoral Supervisory Committee")
             members = committee.members
             self.assertEqual(len(members), 4)
-
+            self.assertFalse(members[0].__eq__(members[1]))
+            self.assertFalse(members[0] == members[1])
+            self.assertTrue(members[0].__ne__(members[1]))
+            self.assertTrue(members[0] != members[1])
+            json_data = committee.json_data()
+            self.assertEqual(len(json_data["members"]), 4)
+            member_json = json_data["members"][0]
+            self.assertEqual(member_json["member_type"],
+                             "Chair")
+            self.assertEqual(member_json["last_name"],
+                             "Duncan")
+            member_json = json_data["members"][1]
+            self.assertEqual(member_json["member_type"],
+                             "Chair")
+            self.assertEqual(member_json["last_name"],
+                             "Goodman")
+            member_json = json_data["members"][2]
+            self.assertEqual(member_json["member_type"],
+                             "GSR")
+            member_json = json_data["members"][3]
+            self.assertEqual(member_json["member_type"],
+                             None)
 
     def test_empty_system(self):
          with self.settings(
-             RESTCLIENTS_GRAD_DAO_CLASS=\
-                 'restclients.dao_implementation.grad.File',
-             RESTCLIENTS_PWS_DAO_CLASS=\
-                 'restclients.dao_implementation.iasystem.File'):
+             RESTCLIENTS_SWS_DAO_CLASS=\
+                'restclients.dao_implementation.sws.File'):
              self.assertIsNone(get_committee_by_regid(
                      "00000000000000000000000000000001"))

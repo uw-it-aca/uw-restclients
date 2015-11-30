@@ -8,7 +8,7 @@ class CanvasTestSections(TestCase):
                 RESTCLIENTS_CANVAS_DAO_CLASS='restclients.dao_implementation.canvas.File'):
             canvas = Sections()
 
-            sections = canvas.get_sections_in_course_by_sis_id('2013-spring-CSE-142-A', {'include': 'students'})
+            sections = canvas.get_sections_in_course_by_sis_id('2013-spring-CSE-142-A', {'include': ['students']})
 
             self.assertEquals(len(sections), 16, "Too few sections")
 

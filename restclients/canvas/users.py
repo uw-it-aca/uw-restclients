@@ -1,5 +1,6 @@
 from django.conf import settings
 from restclients.canvas import Canvas
+from restclients.canvas.enrollments import Enrollments
 from restclients.models.canvas import CanvasUser, Login
 
 
@@ -16,20 +17,28 @@ class Users(Canvas):
     def get_user_by_sis_id(self, sis_user_id):
         """
         Returns user profile data for the passed user sis id.
+
+        https://canvas.instructure.com/doc/api/courses.html#method.courses.users
         """
         return self.get_user(self._sis_id(sis_user_id, sis_field="user"))
 
-    def get_users_for_sis_course_id(self, sis_course_id):
+    def get_users_for_course(self, course_id, params={}):
+        """
+        Returns a list of users for the given course id.
+        """
+        url = "/api/v1/courses/%s/users" % course_id
+        data = self._get_paged_resource(url, params=params)
+        users = []
+        for datum in data:
+            users.append(self._user_from_json(datum))
+        return users
+
+    def get_users_for_sis_course_id(self, sis_course_id, params={}):
         """
         Returns a list of users for the given sis course id.
         """
-        url = "/api/v1/courses/%s/users" % (self._sis_id(sis_course_id, sis_field="course"))
-        data = self._get_resource(url)
-        users = []
-        for entry in data:
-            users.append(self._user_from_json(entry))
-
-        return users
+        return self.get_users_for_course(
+            self._sis_id(sis_course_id, sis_field="course"), params)
 
     def create_user(self, user, account_id=None):
         """
@@ -45,7 +54,7 @@ class Users(Canvas):
         data = self._post_resource(url, user.post_data())
         return self._user_from_json(data)
 
-    def get_user_logins(self, user_id):
+    def get_user_logins(self, user_id, params={}):
         """
         Return a user's logins for the given user_id.
 
@@ -53,7 +62,7 @@ class Users(Canvas):
         """
         url = "/api/v1/users/%s/logins" % user_id
 
-        data = self._get_resource(url)
+        data = self._get_paged_resource(url, params=params)
 
         logins = []
         for login_data in data:
@@ -93,6 +102,11 @@ class Users(Canvas):
         user.time_zone = data["time_zone"] if "time_zone" in data else None
         user.locale = data["locale"] if "locale" in data else None
         user.avatar_url = data["avatar_url"] if "avatar_url" in data else None
+        if "enrollments" in data:
+            enrollments = Enrollments()
+            user.enrollments = []
+            for enr_datum in data["enrollments"]:
+                user.enrollments.append(enrollments._enrollment_from_json(enr_datum))
         return user
 
     def _login_from_json(self, data):
