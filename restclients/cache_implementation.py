@@ -232,7 +232,7 @@ class MemcachedCache(object):
                            "data": response.data,
                            "headers": header_data})
 
-        time_to_store = self._get_time(service, url)
+        time_to_store = self.get_cache_expiration_time(service, url)
         key = self._get_key(service, url)
 
         client = self._get_client()
@@ -243,8 +243,8 @@ class MemcachedCache(object):
                            url, str(ex))
         return
 
-    def _get_time(self, service, url):
-        # Defaults to 4 hours.  Your subclass probably wants to be smarter!
+    def get_cache_expiration_time(self, service, url):
+        # Over-ride this to define your own.
         return 60 * 60 * 4
 
     def _get_key(self, service, url):
