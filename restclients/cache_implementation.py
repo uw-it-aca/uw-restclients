@@ -200,12 +200,12 @@ class MemcachedCache(object):
 
     def getCache(self, service, url, headers):
         client = self._get_client()
-
+        key = self._get_key(service, url)
         try:
-            data = client.get(self._get_key(service, url))
+            data = client.get(key)
         except bmemcached.exceptions.MemcachedException as ex:
-            logger.warning("Error with url '%s' in memcached cache get: '%s'",
-                           url, str(ex))
+            logger.warning("MemCached Err on get with key '%s' ==> '%s'",
+                           key, str(ex))
             return
 
         if not data:
@@ -238,9 +238,11 @@ class MemcachedCache(object):
         client = self._get_client()
         try:
             client.set(key, data, time=time_to_store)
+            logger.info("MemCached set with key '%s', %d seconds",
+                        key, time_to_store)
         except bmemcached.exceptions.MemcachedException as ex:
-            logger.warning("Error with url '%s' in memcached cache set: '%s'",
-                           url, str(ex))
+            logger.warning("MemCached Err on set with key '%s' ==> '%s'",
+                           key, str(ex))
         return
 
     def get_cache_expiration_time(self, service, url):
