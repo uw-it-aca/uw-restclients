@@ -253,8 +253,8 @@ class MemcachedCache(object):
         return "%s-%s" % (service, url)
 
     def _get_client(self):
-        if self.client:
-            return self.client
+        if MemcachedCache.client:
+            return MemcachedCache.client
 
         servers = settings.RESTCLIENTS_MEMCACHED_SERVERS
         username = getattr(settings, "RESTCLIENTS_MEMCACHED_USER", None)
@@ -262,6 +262,6 @@ class MemcachedCache(object):
 
         client = bmemcached.Client(servers, username, password)
 
-        self.client = client
+        MemcachedCache.client = client
 
         return client
