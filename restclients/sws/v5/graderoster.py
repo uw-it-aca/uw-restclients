@@ -5,9 +5,26 @@ from restclients.exceptions import DataFailureException
 from restclients.models.sws import GradeRoster, GradeRosterItem
 from restclients.models.sws import GradeSubmissionDelegate
 from lxml import etree
+import time
 import re
 
+
 graderoster_url = "/student/v5/graderoster"
+
+
+def _request(f):
+    max_retries = 3
+    n = 0
+    while True:
+        try:
+            return f()
+        except SSLError as err:
+            if n < max_retries and "EVP_DecryptFinal_ex:bad decrypt" in err:
+                n += 1
+                time.sleep(0.5)
+            else:
+                raise
+
 
 def get_graderoster(section, instructor):
     """
@@ -19,7 +36,8 @@ def get_graderoster(section, instructor):
     url = "%s/%s" % (graderoster_url, encode_section_label(label))
     headers = {"Accept": "text/xhtml",
                "X-UW-Act-as": instructor.uwnetid}
-    response = SWS_DAO().getURL(url, headers)
+
+    response = _request(lambda: SWS_DAO().getURL(url, headers))
 
     if response.status != 200:
         root = etree.fromstring(response.data)
@@ -41,7 +59,7 @@ def update_graderoster(graderoster):
                "X-UW-Act-as": graderoster.instructor.uwnetid}
     body = graderoster.xhtml()
 
-    response = SWS_DAO().putURL(url, headers, body)
+    response = _request(lambda: SWS_DAO().putURL(url, headers, body))
 
     if response.status != 200:
         root = etree.fromstring(response.data)
