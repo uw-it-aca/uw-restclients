@@ -14,7 +14,8 @@ import re
 from restclients.models.trumba import TrumbaCalendar, Permission,\
     is_bot, is_sea, is_tac
 from restclients.exceptions import DataFailureException
-import restclients.trumba as Trumba
+from restclients.trumba import post_bot_resource, post_sea_resource,\
+    post_tac_resource
 from restclients.trumba.exceptions import CalendarOwnByDiffAccount,\
     CalendarNotExist, NoDataReturned, UnknownError, UnexpectedError
 
@@ -53,7 +54,7 @@ def get_bot_calendars():
     """
     return _process_get_cal_resp(
         get_calendarlist_url,
-        Trumba.post_bot_resource(get_calendarlist_url, "{}"),
+        post_bot_resource(get_calendarlist_url, "{}"),
         TrumbaCalendar.BOT_CAMPUS_CODE)
 
 
@@ -66,7 +67,7 @@ def get_sea_calendars():
     """
     return _process_get_cal_resp(
         get_calendarlist_url,
-        Trumba.post_sea_resource(get_calendarlist_url, "{}"),
+        post_sea_resource(get_calendarlist_url, "{}"),
         TrumbaCalendar.SEA_CAMPUS_CODE)
 
 
@@ -79,7 +80,7 @@ def get_tac_calendars():
     """
     return _process_get_cal_resp(
         get_calendarlist_url,
-        Trumba.post_tac_resource(get_calendarlist_url, "{}"),
+        post_tac_resource(get_calendarlist_url, "{}"),
         TrumbaCalendar.TAC_CAMPUS_CODE)
 
 
@@ -120,7 +121,7 @@ def get_bot_permissions(calendar_id):
     """
     return _process_get_perm_resp(
         get_permissions_url,
-        Trumba.post_bot_resource(get_permissions_url,
+        post_bot_resource(get_permissions_url,
                                  _create_get_perm_body(calendar_id)),
         TrumbaCalendar.BOT_CAMPUS_CODE,
         calendar_id)
@@ -138,7 +139,7 @@ def get_sea_permissions(calendar_id):
     """
     return _process_get_perm_resp(
         get_permissions_url,
-        Trumba.post_sea_resource(get_permissions_url,
+        post_sea_resource(get_permissions_url,
                                  _create_get_perm_body(calendar_id)),
         TrumbaCalendar.SEA_CAMPUS_CODE,
         calendar_id)
@@ -156,7 +157,7 @@ def get_tac_permissions(calendar_id):
     """
     return _process_get_perm_resp(
         get_permissions_url,
-        Trumba.post_tac_resource(get_permissions_url,
+        post_tac_resource(get_permissions_url,
                                  _create_get_perm_body(calendar_id)),
         TrumbaCalendar.TAC_CAMPUS_CODE,
         calendar_id)

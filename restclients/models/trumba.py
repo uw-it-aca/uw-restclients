@@ -25,10 +25,11 @@ class TrumbaCalendar(models.Model):
     SEA_CAMPUS_CODE = 'sea'
     BOT_CAMPUS_CODE = 'bot'
     TAC_CAMPUS_CODE = 'tac'
-    CAMPUS_CHOICES = ((SEA_CAMPUS_CODE, 'Seattle'),
-                      (BOT_CAMPUS_CODE, 'Bothell'),
-                      (TAC_CAMPUS_CODE, 'Tacoma')
-                      )
+    CAMPUS_CHOICES = (
+        (SEA_CAMPUS_CODE, 'Seattle'),
+        (BOT_CAMPUS_CODE, 'Bothell'),
+        (TAC_CAMPUS_CODE, 'Tacoma')
+        )
     calendarid = models.PositiveIntegerField(primary_key=True)
     campus = models.CharField(max_length=3,
                               choices=CAMPUS_CHOICES,
@@ -160,13 +161,30 @@ def is_republish_permission(level):
     return level is not None and level == Permission.REPUBLISH
 
 
+def is_view_permission(level):
+    return level is not None and level == Permission.VIEW
+
+
+def is_higher_permission(level1, level2):
+    """
+    Return True if the level1 is higher than level2
+    """
+    return (is_publish_permission(level1) and
+            not is_publish_permission(level2) or
+            (is_edit_permission(level1) and
+             not is_publish_permission(level2) and
+             not is_edit_permission(level2)) or
+            (is_showon_permission(level1) and
+             is_view_permission(level2)))
+
+
 class Permission(models.Model):
-    EDIT = 'EDIT'
-    NONE = 'NONE'
     PUBLISH = 'PUBLISH'
+    EDIT = 'EDIT'
     REPUBLISH = 'REPUBLISH'
     SHOWON = 'SHOWON'
     VIEW = 'VIEW'
+    NONE = 'NONE'
     LEVEL_CHOICES = ((EDIT, 'Can add, delete and change content'),
                      (PUBLISH, 'Can view, edit and publish'),
                      (REPUBLISH, 'Can view, edit and republish'),
@@ -185,13 +203,18 @@ class Permission(models.Model):
     def get_trumba_userid(self):
         return "%s@washington.edu" % self.uwnetid
 
+    def is_publish(self):
+        return is_publish_permission(self.level)
+
     def is_edit(self):
-        return is_edit_permission(self.level) or\
-            is_publish_permission(self.level)
+        return is_edit_permission(self.level) or self.is_publish()
 
     def is_showon(self):
         return is_showon_permission(self.level) or\
             is_republish_permission(self.level)
+
+    def is_gt_level(self, perm_level):
+        return is_higher_permission(self.level, perm_level)
 
     def is_bot(self):
         return is_bot(self.campus)
@@ -206,6 +229,12 @@ class Permission(models.Model):
         return self.calendarid == other.calendarid and\
             self.uwnetid == other.uwnetid and\
             self.name == other.name and self.level == other.level
+
+    def __lt__(self, other):
+        return self.calendarid == other.calendarid and\
+            self.uwnetid == other.uwnetid and\
+            self.name == other.name and\
+            is_higher_permission(other.level, self.level)
 
     def __str__(self):
         return "{calendarid: %s, campus: %s, uwnetid: %s, level: %s}" % (
