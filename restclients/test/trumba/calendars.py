@@ -102,7 +102,7 @@ class TrumbaTestCalendars(TestCase):
             self.assertTrue(perm3.is_sea())
             self.assertFalse(perm3.is_bot())
             self.assertFalse(perm3.is_tac())
-            self.assertFalse(perm2.is_gt_level('SHOWON'))
+            self.assertFalse(perm3.is_gt_level('SHOWON'))
 
     def test_get_sea_permissions_error_cases(self):
         with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
