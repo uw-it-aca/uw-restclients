@@ -23,7 +23,7 @@ SET_PERM_URL = "/service/calendars.asmx/SetPermissions?"
 
 class TrumbaTestAccounts(TestCase):
 
-    def test_make_add_editor_url(self):
+    def test_make_add_account_url(self):
         with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
                                'restclients.dao_implementation.trumba.FileSea'
                            ):
