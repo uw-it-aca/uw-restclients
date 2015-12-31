@@ -10,6 +10,7 @@ from django.conf import settings
 import json
 import bmemcached
 import logging
+import threading
 
 
 logger = logging.getLogger(__name__)
@@ -253,8 +254,12 @@ class MemcachedCache(object):
         return "%s-%s" % (service, url)
 
     def _get_client(self):
-        if MemcachedCache.client:
-            return MemcachedCache.client
+        thread_id = threading.current_thread().ident
+        if not hasattr(MemcachedCache, "_memcached_cache"):
+            MemcachedCache._memcached_cache = {}
+
+        if thread_id in MemcachedCache._memcached_cache:
+            return MemcachedCache._memcached_cache[thread_id]
 
         servers = settings.RESTCLIENTS_MEMCACHED_SERVERS
         username = getattr(settings, "RESTCLIENTS_MEMCACHED_USER", None)
@@ -262,6 +267,6 @@ class MemcachedCache(object):
 
         client = bmemcached.Client(servers, username, password)
 
-        MemcachedCache.client = client
+        MemcachedCache._memcached_cache[thread_id] = client
 
         return client
