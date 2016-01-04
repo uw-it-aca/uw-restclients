@@ -13,7 +13,9 @@ import re
 from lxml import etree, objectify
 from urllib import quote, unquote
 from restclients.exceptions import DataFailureException
-import restclients.trumba as Trumba
+from restclients.models.trumba import Permission
+from restclients.trumba import get_bot_resource, get_sea_resource,\
+    get_tac_resource
 from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist,\
     AccountUsedByDiffUser, CalendarNotExist, CalendarOwnByDiffAccount,\
     InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher,\
@@ -21,18 +23,18 @@ from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist,\
     UnexpectedError, UnknownError
 
 
-add_editor_url_prefix = "/service/accounts.asmx/CreateEditor"
-del_editor_url_prefix = "/service/accounts.asmx/CloseEditor"
+add_account_url_prefix = "/service/accounts.asmx/CreateEditor"
+del_account_url_prefix = "/service/accounts.asmx/CloseEditor"
 set_permission_url_prefix = "/service/calendars.asmx/SetPermissions"
 
 
-def _make_add_editor_url(name, userid):
+def _make_add_account_url(name, userid):
     """
     :return: the URL string for the GET request call to
     Trumba CreateEditor method
     """
     return "%s?Name=%s&Email=%s@washington.edu&Password=" % (
-        add_editor_url_prefix, re.sub(' ', '%20', name), userid)
+        add_account_url_prefix, re.sub(' ', '%20', name), userid)
 
 
 def add_editor(name, userid):
@@ -43,19 +45,19 @@ def add_editor(name, userid):
     raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
-    url = _make_add_editor_url(name, userid)
+    url = _make_add_account_url(name, userid)
     return _process_resp(url,
-                         Trumba.get_sea_resource(url),
+                         get_sea_resource(url),
                          _is_editor_added
                          )
 
 
-def _make_del_editor_url(userid):
+def _make_del_account_url(userid):
     """
     :return: the URL string for GET request call to
     Trumba CloseEditor method
     """
-    return "%s?Email=%s@washington.edu" % (del_editor_url_prefix, userid)
+    return "%s?Email=%s@washington.edu" % (del_account_url_prefix, userid)
 
 
 def delete_editor(userid):
@@ -65,9 +67,9 @@ def delete_editor(userid):
     raise DataFailureException or a corresponding TrumbaException
     if the request failed or an error code has been returned.
     """
-    url = _make_del_editor_url(userid)
+    url = _make_del_account_url(userid)
     return _process_resp(url,
-                         Trumba.get_sea_resource(url),
+                         get_sea_resource(url),
                          _is_editor_deleted
                          )
 
@@ -79,6 +81,18 @@ def _make_set_permissions_url(calendar_id, userid, level):
     """
     return "%s?CalendarID=%s&Email=%s@washington.edu&Level=%s" % (
         set_permission_url_prefix, calendar_id, userid, level)
+
+
+def set_bot_editor(calendar_id, userid):
+    return set_bot_permissions(calendar_id, userid, Permission.EDIT)
+
+
+def set_bot_showon(calendar_id, userid):
+    return set_bot_permissions(calendar_id, userid, Permission.SHOWON)
+
+
+def set_bot_none(calendar_id, userid):
+    return set_bot_permissions(calendar_id, userid, Permission.NONE)
 
 
 def set_bot_permissions(calendar_id, userid, level):
@@ -93,9 +107,21 @@ def set_bot_permissions(calendar_id, userid, level):
     url = _make_set_permissions_url(
         calendar_id, userid, level)
     return _process_resp(url,
-                         Trumba.get_bot_resource(url),
+                         get_bot_resource(url),
                          _is_permission_set
                          )
+
+
+def set_sea_editor(calendar_id, userid):
+    return set_sea_permissions(calendar_id, userid, Permission.EDIT)
+
+
+def set_sea_showon(calendar_id, userid):
+    return set_sea_permissions(calendar_id, userid, Permission.SHOWON)
+
+
+def set_sea_none(calendar_id, userid):
+    return set_sea_permissions(calendar_id, userid, Permission.NONE)
 
 
 def set_sea_permissions(calendar_id, userid, level):
@@ -110,9 +136,21 @@ def set_sea_permissions(calendar_id, userid, level):
     url = _make_set_permissions_url(
         calendar_id, userid, level)
     return _process_resp(url,
-                         Trumba.get_sea_resource(url),
+                         get_sea_resource(url),
                          _is_permission_set
                          )
+
+
+def set_tac_editor(calendar_id, userid):
+    return set_tac_permissions(calendar_id, userid, Permission.EDIT)
+
+
+def set_tac_showon(calendar_id, userid):
+    return set_tac_permissions(calendar_id, userid, Permission.SHOWON)
+
+
+def set_tac_none(calendar_id, userid):
+    return set_tac_permissions(calendar_id, userid, Permission.NONE)
 
 
 def set_tac_permissions(calendar_id, userid, level):
@@ -127,7 +165,7 @@ def set_tac_permissions(calendar_id, userid, level):
     url = _make_set_permissions_url(
         calendar_id, userid, level)
     return _process_resp(url,
-                         Trumba.get_tac_resource(url),
+                         get_tac_resource(url),
                          _is_permission_set
                          )
 
