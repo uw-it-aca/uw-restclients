@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse
 from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO, \
@@ -80,7 +81,11 @@ def proxy(request, service, url):
     url = "/%s" % quote(url)
 
     if request.GET:
-        url = "%s?%s" % (url, urlencode(request.GET))
+        try:
+            url = "%s?%s" % (url, urlencode(request.GET))
+        except UnicodeEncodeError:
+            err = "Bad URL param given to the restclients browser"
+            return HttpResponse(err)
 
     start = time()
     try:
