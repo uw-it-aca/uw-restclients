@@ -4,7 +4,8 @@ import time
 
 def retry(ExceptionToCheck, tries=4, delay=3, backoff=2):
     """
-    Retry calling the decorated function using an exponential or fixed backoff.
+    Decorator function for retrying the decorated function,
+    using an exponential or fixed backoff.
 
     Original: https://wiki.python.org/moin/PythonDecoratorLibrary#Retry
 
