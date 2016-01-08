@@ -4,7 +4,6 @@ from restclients.dao import SWS_DAO
 from restclients.exceptions import DataFailureException
 from restclients.models.sws import GradeRoster, GradeRosterItem
 from restclients.models.sws import GradeSubmissionDelegate
-from restclients.util.retry import retry
 from lxml import etree
 import re
 
