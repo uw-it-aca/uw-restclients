@@ -3,7 +3,8 @@ import math
 import time
 
 
-def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[]):
+def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[],
+          logger=None):
     """
     Decorator function for retrying the decorated function,
     using an exponential or fixed backoff.
@@ -17,6 +18,7 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[]):
     backoff: backoff multiplier
     status_codes: list of http status codes to check for retrying, only applies
          when ExceptionToCheck is a DataFailureException
+    logger: logging.Logger instance
     """
     if backoff is None or backoff <= 0:
         raise ValueError("backoff must be a number greater than 0")
@@ -37,18 +39,17 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[]):
 
                 except ExceptionToCheck as err:
                     if (type(err) is DataFailureException and
-                            len(status_codes)):
-                        if err.status in status_codes:
-                            time.sleep(mdelay)
-                            mtries -= 1
-                            mdelay *= backoff
-                        else:
-                            raise
+                            len(status_codes) and
+                            err.status not in status_codes):
+                        raise
 
-                    else:
-                        time.sleep(mdelay)
-                        mtries -= 1
-                        mdelay *= backoff
+                    if logger:
+                        logger.warning('%s: %s, Retrying in %s seconds.' % (
+                            f.__name__, err, mdelay))
+
+                    time.sleep(mdelay)
+                    mtries -= 1
+                    mdelay *= backoff
 
             return f(*args, **kwargs)
 

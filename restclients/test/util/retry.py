@@ -92,6 +92,17 @@ class RetryTest(TestCase):
         self.assertRaises(UnexpectedError, raise_unexpected_error)
         self.assertEqual(self.counter, 1)
 
+    def test_dfe_with_no_status(self):
+        self.counter = 0
+
+        @retry(DataFailureException, tries=4, delay=0.1)
+        def not_found():
+            self.counter += 1
+            raise DataFailureException('/', 404, '')
+
+        self.assertRaises(DataFailureException, not_found)
+        self.assertEqual(self.counter, 4)
+
     def test_no_retry_with_status(self):
         self.counter = 0
 
