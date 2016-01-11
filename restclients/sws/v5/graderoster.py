@@ -7,7 +7,9 @@ from restclients.models.sws import GradeSubmissionDelegate
 from lxml import etree
 import re
 
+
 graderoster_url = "/student/v5/graderoster"
+
 
 def get_graderoster(section, instructor):
     """
@@ -19,6 +21,7 @@ def get_graderoster(section, instructor):
     url = "%s/%s" % (graderoster_url, encode_section_label(label))
     headers = {"Accept": "text/xhtml",
                "X-UW-Act-as": instructor.uwnetid}
+
     response = SWS_DAO().getURL(url, headers)
 
     if response.status != 200:
