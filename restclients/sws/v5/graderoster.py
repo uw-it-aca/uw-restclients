@@ -20,6 +20,7 @@ def get_graderoster(section, instructor):
                         instructor=instructor).graderoster_label()
     url = "%s/%s" % (graderoster_url, encode_section_label(label))
     headers = {"Accept": "text/xhtml",
+               "Connection": "keep-alive",
                "X-UW-Act-as": instructor.uwnetid}
 
     response = SWS_DAO().getURL(url, headers)
@@ -41,6 +42,7 @@ def update_graderoster(graderoster):
     label = graderoster.graderoster_label()
     url = "%s/%s" % (graderoster_url, encode_section_label(label))
     headers = {"Content-Type": "application/xhtml+xml",
+               "Connection": "keep-alive",
                "X-UW-Act-as": graderoster.instructor.uwnetid}
     body = graderoster.xhtml()
 

@@ -48,6 +48,8 @@ from restclients.test.pws.err500.pws import PWSTest500
 from restclients.test.pws.invalid_dao import PWSTestInvalidDAO
 from restclients.test.pws.file_implementation.dao import PWSTestFileDAO
 
+from restclients.test.kws.key import KWSTestKeyData
+
 from restclients.test.gws.group import GWSGroupBasics
 from restclients.test.gws.course_group import GWSCourseGroupBasics
 from restclients.test.gws.search import GWSGroupSearch
