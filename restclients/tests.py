@@ -1,5 +1,3 @@
-from django.utils import unittest
-
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
