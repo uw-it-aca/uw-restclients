@@ -8,10 +8,11 @@ from restclients.exceptions import InvalidCanvasSection
 from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.datetime_convertor import convert_to_begin_of_day,\
     convert_to_end_of_day
+from restclients.models.base import RestClientsModel
 
 
 # PWS Person
-class Person(models.Model):
+class Person(RestClientsModel):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
                                unique=True)
@@ -81,12 +82,9 @@ class Person(models.Model):
     def __eq__(self, other):
         return self.uwregid == other.uwregid
 
-    class Meta:
-        app_label = "restclients"
-
 
 # PWS Person
-class Entity(models.Model):
+class Entity(RestClientsModel):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
                                unique=True)
@@ -105,7 +103,7 @@ class Entity(models.Model):
         return self.uwregid == other.uwregid
 
 
-class LastEnrolled(models.Model):
+class LastEnrolled(RestClientsModel):
     href = models.CharField(max_length=200)
     quarter = models.CharField(max_length=16)
     year = models.PositiveSmallIntegerField()
@@ -117,7 +115,7 @@ class LastEnrolled(models.Model):
                 }
 
 
-class StudentAddress(models.Model):
+class StudentAddress(RestClientsModel):
     city = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     street_line1 = models.CharField(max_length=255)
@@ -143,7 +141,7 @@ def get_student_address_json(address):
     return None
 
 
-class SwsPerson(models.Model):
+class SwsPerson(RestClientsModel):
     uwregid = models.CharField(max_length=32,
                                db_index=True,
                                unique=True)
@@ -196,7 +194,7 @@ class SwsPerson(models.Model):
                 }
 
 
-class Term(models.Model):
+class Term(RestClientsModel):
     SPRING = 'spring'
     SUMMER = 'summer'
     AUTUMN = 'autumn'
@@ -234,8 +232,7 @@ class Term(models.Model):
     registration_period3_start = models.DateTimeField()
     registration_period3_end = models.DateTimeField()
 
-    class Meta:
-        app_label = "restclients"
+    class Meta(RestClientsModel.Meta):
         unique_together = ("year", "quarter")
 
     def __eq__(self, other):
@@ -330,16 +327,13 @@ class Term(models.Model):
         }
 
 
-class FinalExam(models.Model):
+class FinalExam(RestClientsModel):
     is_confirmed = models.NullBooleanField()
     no_exam_or_nontraditional = models.NullBooleanField()
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
     building = models.CharField(max_length=20, null=True, blank=True)
     room_number = models.CharField(max_length=10, null=True, blank=True)
-
-    class Meta:
-        app_label = "restclients"
 
     def json_data(self):
         data = {
@@ -356,7 +350,7 @@ class FinalExam(models.Model):
         return data
 
 
-class Section(models.Model):
+class Section(RestClientsModel):
     SUMMER_A_TERM = "a-term"
     SUMMER_B_TERM = "b-term"
     SUMMER_FULL_TERM = "full-term"
@@ -450,8 +444,7 @@ class Section(models.Model):
     student_grade = models.CharField(max_length=6, null=True, blank=True)
     grade_date = models.DateField(null=True, blank=True, default=None)
 
-    class Meta:
-        app_label = "restclients"
+    class Meta(RestClientsModel.Meta):
         unique_together = ('term',
                            'curriculum_abbr',
                            'course_number',
@@ -606,7 +599,7 @@ class Section(models.Model):
         return data
 
 
-class SectionReference(models.Model):
+class SectionReference(RestClientsModel):
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
     curriculum_abbr = models.CharField(max_length=6)
@@ -622,7 +615,7 @@ class SectionReference(models.Model):
             self.course_number, self.section_id)
 
 
-class SectionStatus(models.Model):
+class SectionStatus(RestClientsModel):
     add_code_required = models.NullBooleanField()
     current_enrollment = models.IntegerField()
     current_registration_period = models.IntegerField()
@@ -633,9 +626,6 @@ class SectionStatus(models.Model):
     sln = models.PositiveIntegerField()
     space_available = models.IntegerField()
     is_open = models.CharField(max_length=6)
-
-    class Meta:
-        app_label = "restclients"
 
     def json_data(self):
         data = {
@@ -654,7 +644,7 @@ class SectionStatus(models.Model):
         return data
 
 
-class Registration(models.Model):
+class Registration(RestClientsModel):
     section = models.ForeignKey(Section,
                                 on_delete=models.PROTECT)
     person = models.ForeignKey(Person,
@@ -662,7 +652,7 @@ class Registration(models.Model):
     is_active = models.NullBooleanField()
 
 
-class SectionMeeting(models.Model):
+class SectionMeeting(RestClientsModel):
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
     section = models.ForeignKey(Section,
@@ -686,8 +676,7 @@ class SectionMeeting(models.Model):
     meets_sunday = models.NullBooleanField()
     # instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
 
-    class Meta:
-        app_label = "restclients"
+    class Meta(RestClientsModel.Meta):
         unique_together = ('term',
                            'section',
                            'meeting_index')
@@ -721,7 +710,7 @@ class SectionMeeting(models.Model):
         return data
 
 
-class StudentGrades(models.Model):
+class StudentGrades(RestClientsModel):
     user = models.ForeignKey(Person)
     term = models.ForeignKey(Term)
 
@@ -730,14 +719,14 @@ class StudentGrades(models.Model):
     non_grade_credits = models.DecimalField(max_digits=3, decimal_places=1)
 
 
-class StudentCourseGrade(models.Model):
+class StudentCourseGrade(RestClientsModel):
     grade = models.CharField(max_length=10)
     credits = models.DecimalField(max_digits=3, decimal_places=1)
     section = models.ForeignKey(Section,
                                 on_delete=models.PROTECT)
 
 
-class ClassSchedule(models.Model):
+class ClassSchedule(RestClientsModel):
     user = models.ForeignKey(Person)
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
@@ -755,49 +744,34 @@ class ClassSchedule(models.Model):
 
         return data
 
-    class Meta:
-        app_label = "restclients"
 
-
-class Campus(models.Model):
+class Campus(RestClientsModel):
     label = models.SlugField(max_length=15, unique=True)
     name = models.CharField(max_length=20)
     full_name = models.CharField(max_length=60)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class College(models.Model):
+class College(RestClientsModel):
     campus_label = models.SlugField(max_length=15)
     label = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class Department(models.Model):
+class Department(RestClientsModel):
     college_label = models.CharField(max_length=15)
     label = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class Curriculum(models.Model):
+class Curriculum(RestClientsModel):
     label = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=60)
     full_name = models.CharField(max_length=60)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class GradeRoster(models.Model):
+class GradeRoster(RestClientsModel):
     section = models.ForeignKey(Section,
                                 on_delete=models.PROTECT)
     instructor = models.ForeignKey(Person,
@@ -822,11 +796,8 @@ class GradeRoster(models.Model):
         })
         return template.render(context)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class GradeRosterItem(models.Model):
+class GradeRosterItem(RestClientsModel):
     student_uwregid = models.CharField(max_length=32)
     student_first_name = models.CharField(max_length=100)
     student_surname = models.CharField(max_length=100)
@@ -862,28 +833,19 @@ class GradeRosterItem(models.Model):
         return (self.student_uwregid == other.student_uwregid and
                 self.duplicate_code == other.duplicate_code)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class GradeSubmissionDelegate(models.Model):
+class GradeSubmissionDelegate(RestClientsModel):
     person = models.ForeignKey(Person,
                                on_delete=models.PROTECT)
     delegate_level = models.CharField(max_length=20)
 
-    class Meta:
-        app_label = "restclients"
 
-
-class TimeScheduleConstruction(models.Model):
+class TimeScheduleConstruction(RestClientsModel):
     campus = models.SlugField(max_length=15)
     is_on = models.NullBooleanField()
 
-    class Meta:
-        app_label = "restclients"
 
-
-class NoticeAttribute(models.Model):
+class NoticeAttribute(RestClientsModel):
     name = models.CharField(max_length=100)
     data_type = models.CharField(max_length=100)
 
@@ -905,7 +867,7 @@ class NoticeAttribute(models.Model):
         return None
 
 
-class Notice(models.Model):
+class Notice(RestClientsModel):
     notice_category = models.CharField(max_length=100)
     notice_content = models.TextField()
     notice_type = models.CharField(max_length=100)
@@ -942,7 +904,7 @@ class Notice(models.Model):
         return data
 
 
-class Finance(models.Model):
+class Finance(RestClientsModel):
     tuition_accbalance = models.FloatField()
     pce_accbalance = models.FloatField()
 
@@ -956,20 +918,15 @@ class Finance(models.Model):
             self.tuition_accbalance, self.pce_accbalance)
 
 
-class Enrollment(models.Model):
+class Enrollment(RestClientsModel):
     is_honors = models.NullBooleanField()
     class_level = models.CharField(max_length=100)
     regid = models.CharField(max_length=32,
                              db_index=True,
                              unique=True)
 
-    # majors
-    # minors
-    class Meta:
-        app_label = "restclients"
 
-
-class Major(models.Model):
+class Major(RestClientsModel):
     degree_name = models.CharField(max_length=100)
     degree_abbr = models.CharField(max_length=100)
     full_name = models.CharField(max_length=100)
@@ -987,7 +944,7 @@ class Major(models.Model):
                 }
 
 
-class Minor(models.Model):
+class Minor(RestClientsModel):
     abbr = models.CharField(max_length=50)
     campus = models.CharField(max_length=8)
     name = models.CharField(max_length=100)
