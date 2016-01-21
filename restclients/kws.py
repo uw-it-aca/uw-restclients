@@ -9,21 +9,35 @@ from datetime import datetime
 import json
 
 
-ENCRYPTION_KEY_PREFIX = '/key/v1/type'
+ENCRYPTION_KEY_PREFIX = '/key/v1'
 
 
 class KWS(object):
     """
     The KWS object has methods for getting key information.
     """
+    def get_key(self, key_id):
+        """
+        Returns a restclients.Key object for the given key ID.  If the
+        key ID isn't found, or if there is an error communicating with the
+        KWS, a DataFailureException will be thrown.
+        """
+        url = "%s/encryption/%s.json" % (ENCRYPTION_KEY_PREFIX, key_id)
+        response = KWS_DAO().getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        return self._key_from_json(response.data)
+
     def get_current_key(self, resource_name):
         """
         Returns a restclients.Key object for the given resource.  If the
         resource isn't found, or if there is an error communicating with the
         KWS, a DataFailureException will be thrown.
         """
-        url = "%s/%s/encryption/current.json" % (ENCRYPTION_KEY_PREFIX,
-                                                 resource_name)
+        url = "%s/type/%s/encryption/current.json" % (ENCRYPTION_KEY_PREFIX,
+                                                      resource_name)
         response = KWS_DAO().getURL(url, {"Accept": "application/json"})
 
         if response.status != 200:
