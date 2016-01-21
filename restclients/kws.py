@@ -39,10 +39,10 @@ class KWS(object):
         key = Key()
         key.algorithm = key_data["Algorithm"]
         key.cipher_mode = key_data["CipherMode"]
-        key.expiration = datetime.strptime(key_data["Expiration"],
-                                           "%Y-%m-%dT%H:%M:%S")
+        key.expiration = datetime.strptime(
+            key_data["Expiration"].split(".")[0], "%Y-%m-%dT%H:%M:%S")
         key.key_id = key_data["ID"]
         key.key = key_data["Key"]
-        key.key_size = key_data["KeySize"]
-        key.key_url = key_data["KeyUrl"]
+        key.size = key_data["KeySize"]
+        key.url = key_data["KeyUrl"]
         return key

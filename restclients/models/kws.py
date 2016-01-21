@@ -7,5 +7,5 @@ class Key(models.Model):
     expiration = models.DateTimeField()
     key_id = models.CharField(max_length=100)
     key = models.CharField(max_length=100)
-    key_size = models.SmallIntegerField(max_length=5)
-    key_url = models.CharField(max_length=1000)
+    size = models.SmallIntegerField(max_length=5)
+    url = models.CharField(max_length=1000)
