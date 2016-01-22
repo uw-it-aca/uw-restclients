@@ -49,6 +49,10 @@ class TrumbaCalendar(models.Model):
     def __eq__(self, other):
         return self.calendarid == other.calendarid
 
+    def __lt__(self, other):
+        return self.campus == other.campus and\
+            self.name < other.name
+
     def __str__(self):
         return "{name: %s, campus: %s, calendarid: %s}" % (
             self.name, self.campus, self.calendarid)
@@ -232,9 +236,9 @@ class Permission(models.Model):
 
     def __lt__(self, other):
         return self.calendarid == other.calendarid and\
-            self.uwnetid == other.uwnetid and\
-            self.name == other.name and\
-            is_higher_permission(other.level, self.level)
+            (is_higher_permission(self.level, other.level) or
+             self.level == other.level and
+             self.uwnetid < other.uwnetid)
 
     def __str__(self):
         return "{calendarid: %s, campus: %s, uwnetid: %s, level: %s}" % (

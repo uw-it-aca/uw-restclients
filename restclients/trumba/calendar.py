@@ -86,7 +86,7 @@ def get_tac_calendars():
 
 def get_campus_permissions(calendar_id, campus_code):
     """
-    :return: a list of trumba.Permission objects
+    :return: a list of sorted trumba.Permission objects
              corresponding to the given campus calendar.
              None if error, [] if not exists
     raise DataFailureException if the request failed.
@@ -111,7 +111,7 @@ def _create_get_perm_body(calendar_id):
 def get_bot_permissions(calendar_id):
     """
     :param calendar_id: an integer representing calendar ID
-    :return: a list of trumba.Permission objects
+    :return: a list of sorted trumba.Permission objects
              corresponding to the given campus calendar.
              None if error, [] if not exists
     Return a list of Permission objects representing
@@ -131,7 +131,7 @@ def get_sea_permissions(calendar_id):
     """
     Return a list of Permission objects representing
     the user permissions of a given Seattle calendar.
-    :return: a list of trumba.Permission objects
+    :return: a list sorted of trumba.Permission objects
              corresponding to the given campus calendar.
              None if error, [] if not exists
     raise DataFailureException or a corresponding TrumbaException
@@ -147,7 +147,7 @@ def get_sea_permissions(calendar_id):
 
 def get_tac_permissions(calendar_id):
     """
-    Return a list of Permission objects representing
+    Return a list of sorted Permission objects representing
     the user permissions of a given Tacoma calendar.
     :return: a list of trumba.Permission objects
              corresponding to the given campus calendar.
@@ -230,7 +230,7 @@ def _extract_uwnetid(email):
 
 def _load_permissions(campus, calendarid, resp_fragment, permission_list):
     """
-    :return: a list of trumba.Permission objects
+    :return: a list of sorted trumba.Permission objects
              None if error, [] if not exists
     """
     for record in resp_fragment:
@@ -249,6 +249,7 @@ def _load_permissions(campus, calendarid, resp_fragment, permission_list):
 def _process_get_perm_resp(url, post_response, campus, calendarid):
     """
     :return: a list of trumba.Permission objects
+             sorted by descending level and ascending uwnetid
              None if error, [] if not exists
     If the response is successful, process the response data
     and load into the return objects
@@ -261,7 +262,7 @@ def _process_get_perm_resp(url, post_response, campus, calendarid):
         _load_permissions(campus, calendarid,
                           data['d']['Users'],
                           permission_list)
-    return permission_list
+    return sorted(permission_list)
 
 
 def _check_err(data):
