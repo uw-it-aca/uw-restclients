@@ -41,6 +41,19 @@ class TrumbaTestCalendars(TestCase):
                                            ' child calendar3 >> Seattle',
                                            ' child-sub-calendar32 >> Seattle',
                                            ' child-sub-sub-calendar321'))
+            sorted_cals = sorted(result.values())
+            self.assertEqual(sorted_cals[0].name, "Seattle calendar")
+            self.assertEqual(sorted_cals[1].name,
+                             "Seattle calendar >> Seattle child calendar1")
+            self.assertEqual(sorted_cals[4].name,
+                             "Seattle calendar >> Seattle child calendar2")
+            self.assertEqual(sorted_cals[5].name,
+                             "Seattle calendar >> Seattle child calendar3")
+            self.assertEqual(sorted_cals[9].name,
+                             "%s%s%s%s" % ("Seattle calendar >> Seattle",
+                                           " child calendar3 >> Seattle",
+                                           " child-sub-calendar32 >> Seattle",
+                                           " child-sub-sub-calendar322"))
             self.assertTrue(trumba_cal.is_sea())
             self.assertFalse(trumba_cal.is_bot())
             self.assertFalse(trumba_cal.is_tac())
@@ -103,6 +116,15 @@ class TrumbaTestCalendars(TestCase):
             self.assertFalse(perm3.is_bot())
             self.assertFalse(perm3.is_tac())
             self.assertFalse(perm3.is_gt_level('SHOWON'))
+
+            unordered_list = []
+            unordered_list.append(perm3)
+            unordered_list.append(perm2)
+            unordered_list.append(perm)
+            sorted_list = sorted(unordered_list)
+            self.assertEqual(sorted_list[0].uwnetid, 'dummyp')
+            self.assertEqual(sorted_list[1].uwnetid, 'dummye')
+            self.assertEqual(sorted_list[2].uwnetid, 'dummys')
 
     def test_get_sea_permissions_error_cases(self):
         with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
