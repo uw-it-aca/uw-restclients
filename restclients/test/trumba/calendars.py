@@ -117,6 +117,15 @@ class TrumbaTestCalendars(TestCase):
             self.assertFalse(perm3.is_tac())
             self.assertFalse(perm3.is_gt_level('SHOWON'))
 
+            unordered_list = []
+            unordered_list.append(perm3)
+            unordered_list.append(perm2)
+            unordered_list.append(perm)
+            sorted_list = sorted(unordered_list)
+            self.assertEqual(sorted_list[0].uwnetid, 'dummyp')
+            self.assertEqual(sorted_list[1].uwnetid, 'dummye')
+            self.assertEqual(sorted_list[2].uwnetid, 'dummys')
+
     def test_get_sea_permissions_error_cases(self):
         with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
                                'restclients.dao_implementation.trumba.FileSea'
