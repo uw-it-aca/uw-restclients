@@ -41,6 +41,19 @@ class TrumbaTestCalendars(TestCase):
                                            ' child calendar3 >> Seattle',
                                            ' child-sub-calendar32 >> Seattle',
                                            ' child-sub-sub-calendar321'))
+            sorted_cals = sorted(result.values())
+            self.assertEqual(sorted_cals[0].name, "Seattle calendar")
+            self.assertEqual(sorted_cals[1].name,
+                             "Seattle calendar >> Seattle child calendar1")
+            self.assertEqual(sorted_cals[4].name,
+                             "Seattle calendar >> Seattle child calendar2")
+            self.assertEqual(sorted_cals[5].name,
+                             "Seattle calendar >> Seattle child calendar3")
+            self.assertEqual(sorted_cals[9].name,
+                             "%s%s%s%s" % ("Seattle calendar >> Seattle",
+                                           " child calendar3 >> Seattle",
+                                           " child-sub-calendar32 >> Seattle",
+                                           " child-sub-sub-calendar322"))
             self.assertTrue(trumba_cal.is_sea())
             self.assertFalse(trumba_cal.is_bot())
             self.assertFalse(trumba_cal.is_tac())

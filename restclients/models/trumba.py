@@ -49,6 +49,10 @@ class TrumbaCalendar(models.Model):
     def __eq__(self, other):
         return self.calendarid == other.calendarid
 
+    def __lt__(self, other):
+        return self.campus == other.campus and\
+            self.name < other.name
+
     def __str__(self):
         return "{name: %s, campus: %s, calendarid: %s}" % (
             self.name, self.campus, self.calendarid)
