@@ -3,7 +3,20 @@ from restclients.models.canvas import GradingStandard
 
 
 class GradingStandards(Canvas):
-    def create_grading_standard_for_course(self, course_id, name, grading_scheme, creator):
+    def get_grading_standards_for_course(self, course_id):
+        """
+        List the grading standards available to a course
+        https://canvas.instructure.com/doc/api/grading_standards.html#method.grading_standards_api.context_index
+        """
+        url = "/api/v1/courses/%s/grading_standards" % course_id
+
+        standards = []
+        for data in self._get_resource(url):
+            standards.append(self._grading_standard_from_json(data))
+        return standards
+
+    def create_grading_standard_for_course(self, course_id, name,
+                                           grading_scheme, creator):
         """
         Create a new grading standard for the passed course.
 
