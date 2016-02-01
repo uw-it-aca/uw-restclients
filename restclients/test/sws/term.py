@@ -102,6 +102,12 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.get_bod_first_day(),
                               datetime(2013, 4, 1, 0, 0, 0))
 
+            self.assertEquals(term.census_day.year, 2013)
+            self.assertEquals(term.census_day.month, 4)
+            self.assertEquals(term.census_day.day, 12)
+            self.assertEquals(term.get_eod_census_day(),
+                              datetime(2013, 4, 13, 0, 0, 0))
+
             self.assertEquals(term.get_bod_reg_period1_start(),
                               datetime(2013, 2, 15, 0, 0, 0))
 
@@ -221,6 +227,12 @@ class SWSTestTerm(TestCase):
             self.assertEquals(term.quarter, expected_quarter,
                               "Return %s for the next quarter" %
                               expected_quarter)
+
+            self.assertEquals(term.census_day.year, 2013)
+            self.assertEquals(term.census_day.month, 7)
+            self.assertEquals(term.census_day.day, 5)
+            self.assertEquals(term.get_eod_census_day(),
+                              datetime(2013, 7, 6, 0, 0, 0))
 
             self.assertEquals(term.last_day_add.year, 2013)
             self.assertEquals(term.last_day_add.month, 7)
