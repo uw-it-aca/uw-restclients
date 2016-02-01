@@ -214,6 +214,7 @@ class Term(models.Model):
     last_day_add = models.DateField()
     last_day_drop = models.DateField()
     first_day_quarter = models.DateField(db_index=True)
+    census_day = models.DateField()
     last_day_instruction = models.DateField(db_index=True)
     aterm_last_date = models.DateField(blank=True)
     bterm_first_date = models.DateField(blank=True)
@@ -295,6 +296,9 @@ class Term(models.Model):
 
     def get_eod_last_day_drop(self):
         return convert_to_end_of_day(self.last_day_drop)
+
+    def get_eod_census_day(self):
+        return convert_to_end_of_day(self.census_day)
 
     def get_eod_last_final_exam(self):
         return convert_to_end_of_day(self.last_final_exam_date)
