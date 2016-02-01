@@ -139,6 +139,8 @@ def _json_to_term_model(term_data):
 
     term.last_day_drop = parse_sws_date(term_data["LastDropDay"])
 
+    term.census_day = parse_sws_date(term_data["CensusDay"])
+
     if term_data["ATermLastDay"] is not None:
         term.aterm_last_date = parse_sws_date(term_data["ATermLastDay"])
 
