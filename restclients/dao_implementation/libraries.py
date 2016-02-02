@@ -41,6 +41,10 @@ class Live(object):
                 settings.RESTCLIENTS_LIBRARIES_KEY_FILE,
                 settings.RESTCLIENTS_LIBRARIES_CERT_FILE,
                 max_pool_size=LIB_MAX_POOL_SIZE)
+
+        # For rest router...
+        url_prefix = getattr(settings, "RESTCLIENTS_LIBRARIES_PREFIX", "")
+        url = "%s%s" % (url_prefix, url)
         return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_LIBRARIES_HOST,
