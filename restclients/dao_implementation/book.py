@@ -4,6 +4,7 @@ Contains UW Bookstore DAO implementations.
 
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
+from django.conf import settings
 
 
 class File(object):
@@ -25,9 +26,18 @@ class Live(object):
     pool = None
 
     def getURL(self, url, headers):
-        host = 'http://www3.bookstore.washington.edu/'
+        host = getattr(settings,
+                       "RESTCLIENTS_BOOKSTORE_HOST",
+                       'http://www3.bookstore.washington.edu/')
         if Live.pool is None:
-            Live.pool = get_con_pool(host, None, None)
+            cert = getattr(settings, "RESTCLIENTS_BOOKSTORE_CERT", None)
+            key = getattr(settings, "RESTCLIENTS_BOOKSTORE_KEY", None)
+            Live.pool = get_con_pool(host, key, cert)
+
+        # For rest router...
+        url_prefix = getattr(settings, "RESTCLIENTS_BOOKSTORE_PREFIX", "")
+        url = "%s%s" % (url_prefix, url)
+
         return get_live_url(Live.pool, 'GET',
                             host, url, headers=headers,
                             service_name='book')
