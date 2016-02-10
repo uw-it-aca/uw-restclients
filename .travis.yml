@@ -33,4 +33,4 @@ deploy:
     all_branches: true
     tags: true
   password:
-    secure: RIONOUX6G14pasacIuUaUljrwZfgnlboKuZ4lepVtVKXG7lyO1ZqM4aoRzGrYMQzgSZcwOrMml0V0nU85UiON6NmxLvDg6JGrd7vjg2gGMGFY5L0cSBlofBx4aVgFJ/vKqI6r44oVSSfDBjzovi7+N31u+ZLLICTeCeV+9/1VNA=
+    secure: r73n4HjZXrvZODPl52ESwnol33KUNEOQnIQ2ikmiT522mKPomJBUpdwicaJdguqvQ9KBOSS3ycrgsavZOBvrK7JAtKf+ChCokqcJKIfJ5detKZrVaImpYXV8qZ9JxGoKADv/Q35Qwzwc8UYeuxZlwuptF8tyKGDgPcHPWSwd4hM=
