@@ -11,7 +11,7 @@ setup(name='UW-RestClients',
       version=os.environ["TRAVIS_TAG"], # Deployments to PyPI happen via travis-ci
       license = "Apache 2.0",
       author = "UW-IT ACA",
-      author_email = "pmichaud@uw.edu",
+      author_email = "aca-it@uw.edu",
       packages=setuptools.find_packages(exclude=["project"]),
       include_package_data=True,  # use MANIFEST.in during install
       url='https://github.com/uw-it-aca/uw-restclients',
