@@ -1,26 +1,35 @@
 sudo: false
 language: python
 services:
-  - memcached
+- memcached
 python:
-  - "2.7"
-  - "2.6"
+- '2.7'
+- '2.6'
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then pip install -r travis-ci/python-2.6-require-django-1.6.txt; fi
-  - pip install -r restclients/requirements.txt
+- if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then pip install -r travis-ci/python-2.6-require-django-1.6.txt;
+  fi
+- pip install -r restclients/requirements.txt
 before_script:
-  - pip install coverage
-  - pip install python-coveralls
-  - pip install pep8
-  - cp travis-ci/manage.py manage.py
-  - python manage.py syncdb --noinput
+- pip install coverage
+- pip install python-coveralls
+- pip install pep8
+- cp travis-ci/manage.py manage.py
+- python manage.py syncdb --noinput
 script:
-  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/sms.py,restclients/library/ restclients/
-  - python -m compileall restclients/
-  - coverage run --source=restclients manage.py test restclients
+- pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/sms.py,restclients/library/
+  restclients/
+- python -m compileall restclients/
+- coverage run --source=restclients manage.py test restclients
 after_script:
-  - coveralls
+- coveralls
 notifications:
   webhooks:
-      urls:
-        - https://yarn.cac.washington.edu/rest/botalyst/v1/travis-ci
+    urls:
+    - https://yarn.cac.washington.edu/rest/botalyst/v1/travis-ci
+deploy:
+  provider: pypi
+  user: uw-it-aca
+  on:
+    tags: true
+  password:
+    secure: RIONOUX6G14pasacIuUaUljrwZfgnlboKuZ4lepVtVKXG7lyO1ZqM4aoRzGrYMQzgSZcwOrMml0V0nU85UiON6NmxLvDg6JGrd7vjg2gGMGFY5L0cSBlofBx4aVgFJ/vKqI6r44oVSSfDBjzovi7+N31u+ZLLICTeCeV+9/1VNA=
