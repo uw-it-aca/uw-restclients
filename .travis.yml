@@ -10,7 +10,6 @@ install:
   fi
 - pip install -r restclients/requirements.txt
 before_script:
-- echo "Before script: $TRAVIS_TAG"
 - pip install coverage
 - pip install python-coveralls
 - pip install pep8
@@ -27,8 +26,6 @@ notifications:
   webhooks:
     urls:
     - https://yarn.cac.washington.edu/rest/botalyst/v1/travis-ci
-before_deploy: echo "Version: $TRAVIS_TAG"
-after_deploy: echo "Done with Deploy"
 deploy:
   provider: pypi
   user: uw-it-aca
