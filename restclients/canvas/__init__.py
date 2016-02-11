@@ -35,7 +35,7 @@ class Canvas(object):
 
         if as_user:
             self._as_user = as_user if self.valid_canvas_id(as_user) \
-                            else self.sis_user_id(user_id)
+                            else self.sis_user_id(as_user)
 
     def get_courses_for_regid(self, regid):
         deprecation("Use restclients.canvas.courses.get_courses_for_regid")
