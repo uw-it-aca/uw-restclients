@@ -26,6 +26,7 @@ notifications:
   webhooks:
     urls:
     - https://yarn.cac.washington.edu/rest/botalyst/v1/travis-ci
+before_deploy: sed -i "s/TRAVIS_TAG/$TRAVIS_TAG/" setup.py
 deploy:
   provider: pypi
   user: uw-it-aca
