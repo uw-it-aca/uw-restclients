@@ -75,7 +75,9 @@ class Enrollments(Canvas):
 
         return enrollments
 
-    def enroll_user_in_course(self, course_id, user_id, role, status="active"):
+    def enroll_user_in_course(self, course_id, user_id, enrollment_type,
+                              course_section_id=None, role_id=None,
+                              status="active"):
         """
         Enroll a user into a course.
 
@@ -83,8 +85,14 @@ class Enrollments(Canvas):
         """
         url = "/api/v1/courses/%s/enrollments" % course_id
         body = {"enrollment": {"user_id": user_id,
-                               "type": role,
+                               "type": enrollment_type,
                                "enrollment_state": status}}
+
+        if course_section_id:
+            body['enrollment']['course_section_id'] = course_section_id
+
+        if role_id:
+            body['enrollment']['role_id'] = role_id
 
         data = self._post_resource(url, body)
         return self._enrollment_from_json(data)
