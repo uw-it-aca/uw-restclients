@@ -8,7 +8,7 @@ from distutils.core import setup
 import setuptools
 
 setup(name='UW-RestClients',
-      version=TRAVIS_TAG, # This is replaced during the travis-ci deployment process
+      version="TRAVIS_TAG", # This is replaced during the travis-ci deployment process
       license = "Apache 2.0",
       author = "UW-IT ACA",
       author_email = "aca-it@uw.edu",
