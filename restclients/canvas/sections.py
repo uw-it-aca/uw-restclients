@@ -103,7 +103,7 @@ class Sections(Canvas):
             users = Users()
             section.students = []
             for student_data in data["students"]:
-                user = users._user_from_json(data)
+                user = users._user_from_json(student_data)
                 section.students.append(user)
 
         return section

@@ -75,7 +75,9 @@ class Enrollments(Canvas):
 
         return enrollments
 
-    def enroll_user_in_course(self, course_id, user_id, role, status="active"):
+    def enroll_user_in_course(self, course_id, user_id, enrollment_type,
+                              course_section_id=None, role_id=None,
+                              status="active"):
         """
         Enroll a user into a course.
 
@@ -83,8 +85,14 @@ class Enrollments(Canvas):
         """
         url = "/api/v1/courses/%s/enrollments" % course_id
         body = {"enrollment": {"user_id": user_id,
-                               "type": role,
+                               "type": enrollment_type,
                                "enrollment_state": status}}
+
+        if course_section_id:
+            body['enrollment']['course_section_id'] = course_section_id
+
+        if role_id:
+            body['enrollment']['role_id'] = role_id
 
         data = self._post_resource(url, body)
         return self._enrollment_from_json(data)
@@ -98,24 +106,27 @@ class Enrollments(Canvas):
         enrollment.status = data["enrollment_state"]
         enrollment.html_url = data["html_url"]
         enrollment.total_activity_time = data["total_activity_time"]
+        enrollment.limit_privileges_to_course_section = data.get(
+            "limit_privileges_to_course_section", False)
         if data["last_activity_at"] is not None:
             date_str = data["last_activity_at"]
             enrollment.last_activity_at = dateutil.parser.parse(date_str)
-        if "sis_course_id" in data:
-            enrollment.sis_course_id = data["sis_course_id"]
-        if "sis_section_id" in data:
-            enrollment.sis_section_id = data["sis_section_id"]
+
+        enrollment.sis_course_id = data.get("sis_course_id", None)
+        enrollment.sis_section_id = data.get("sis_section_id", None)
+
         if "user" in data:
-            enrollment.name = data["user"]["name"]
-            enrollment.sortable_name = data["user"]["sortable_name"]
-            if "login_id" in data["user"]:
-                enrollment.login_id = data["user"]["login_id"]
-            if "sis_user_id" in data["user"]:
-                enrollment.sis_user_id = data["user"]["sis_user_id"]
+            user_data = data["user"]
+            enrollment.name = user_data.get("name", None)
+            enrollment.sortable_name = user_data.get("sortable_name", None)
+            enrollment.login_id = user_data.get("login_id", None)
+            enrollment.sis_user_id = user_data.get("sis_user_id", None)
+
         if "grades" in data:
-            enrollment.current_score = data["grades"]["current_score"]
-            enrollment.final_score = data["grades"]["final_score"]
-            enrollment.current_grade = data["grades"]["current_grade"]
-            enrollment.final_grade = data["grades"]["final_grade"]
-            enrollment.grade_html_url = data["grades"]["html_url"]
+            grade_data = data["grades"]
+            enrollment.current_score = grade_data.get("current_score", None)
+            enrollment.final_score = grade_data.get("final_score", None)
+            enrollment.current_grade = grade_data.get("current_grade", None)
+            enrollment.final_grade = grade_data.get("final_grade", None)
+            enrollment.grade_html_url = grade_data.get("html_url", None)
         return enrollment
