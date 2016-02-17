@@ -77,16 +77,20 @@ class Enrollments(Canvas):
 
     def enroll_user_in_course(self, course_id, user_id, enrollment_type,
                               course_section_id=None, role_id=None,
-                              status="active"):
+                              status="active",
+                              limit_privileges_to_course_section=False):
         """
         Enroll a user into a course.
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.create
         """
         url = "/api/v1/courses/%s/enrollments" % course_id
-        body = {"enrollment": {"user_id": user_id,
-                               "type": enrollment_type,
-                               "enrollment_state": status}}
+        body = {"enrollment": {
+            "user_id": user_id,
+            "type": enrollment_type,
+            "enrollment_state": status,
+            "limit_privileges_to_course_section": limit_privileges_to_course_section,
+        }}
 
         if course_section_id:
             body['enrollment']['course_section_id'] = course_section_id
