@@ -75,31 +75,39 @@ class Enrollments(Canvas):
 
         return enrollments
 
-    def enroll_user_in_course(self, course_id, user_id, enrollment_type,
-                              course_section_id=None, role_id=None,
-                              status="active",
-                              limit_privileges_to_course_section=False):
+    def enroll_user(self, course_id, user_id, enrollment_type, params=None):
         """
         Enroll a user into a course.
 
         https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.create
         """
         url = "/api/v1/courses/%s/enrollments" % course_id
-        body = {"enrollment": {
+
+        if not params:
+            params = {}
+
+        params["user_id"] = user_id
+        params["type"] = enrollment_type
+
+        data = self._post_resource(url, {"enrollment": params})
+        return self._enrollment_from_json(data)
+
+    def enroll_user_in_course(self, course_id, user_id, enrollment_type,
+                              course_section_id=None, role_id=None,
+                              status="active"):
+        params = {
             "user_id": user_id,
             "type": enrollment_type,
-            "enrollment_state": status,
-            "limit_privileges_to_course_section": limit_privileges_to_course_section,
-        }}
+            "enrollment_state": status
+        }
 
         if course_section_id:
-            body['enrollment']['course_section_id'] = course_section_id
+            params['course_section_id'] = course_section_id
 
         if role_id:
-            body['enrollment']['role_id'] = role_id
+            params['role_id'] = role_id
 
-        data = self._post_resource(url, body)
-        return self._enrollment_from_json(data)
+        return self.enroll_user(course_id, user_id, enrollment_type, params)
 
     def _enrollment_from_json(self, data):
         enrollment = CanvasEnrollment()
