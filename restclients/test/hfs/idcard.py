@@ -84,8 +84,15 @@ class HfsTest(TestCase):
                               get_hfs_accounts, "invalidnetid123")
 
             try:
+                get_hfs_accounts("jerror")
+            except DataFailureException as ex:
+                self.assertEquals(ex.status, 500)
+                self.assertEquals(ex.msg,
+                                  "An error has occurred.")
+            try:
                 get_hfs_accounts("none")
             except DataFailureException as ex:
+                self.assertEquals(ex.status, 404)
                 self.assertEquals(ex.msg,
                                   "UWNetID none not found in IDCard Database.")
 
@@ -96,6 +103,7 @@ class HfsTest(TestCase):
             try:
                 get_hfs_accounts("invalidnetid")
             except DataFailureException as ex:
+                self.assertEquals(ex.status, 400)
                 self.assertEquals(
                     ex.msg, MSG)
 
