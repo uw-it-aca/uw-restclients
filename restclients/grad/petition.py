@@ -23,9 +23,6 @@ def get_petition_by_regid(regid):
 
 
 def get_petition_by_syskey(system_key):
-    if system_key is None:
-        logger.info("get_petition_by_syskey abort, key is None!")
-        return None
     url = "%s%s" % (PREFIX, system_key)
     return _process_json(json.loads(get_resource(url)))
 

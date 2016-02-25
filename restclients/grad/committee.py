@@ -16,14 +16,14 @@ logger = logging.getLogger(__name__)
 
 
 def get_committee_by_regid(regid):
+    """
+    raise: InvalidRegID, DataFailureException
+    """
     person = PWS().get_person_by_regid(regid)
     return get_committee_by_syskey(person.student_system_key)
 
 
 def get_committee_by_syskey(system_key):
-    if system_key is None:
-        logger.info("get_committee_by_syskey abort, key is None!")
-        return None
     url = "%s%s%s" % (PREFIX, system_key, SUFFIX)
     return _process_json(json.loads(get_resource(url)))
 
