@@ -1,6 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.conf import settings
+from restclients.exceptions import DataFailureException
 from restclients.grad.degree import get_degree_by_regid
 
 
@@ -41,9 +42,10 @@ class DegreeTest(TestCase):
                              "Did Not Graduate")
             self.assertTrue(degree.is_status_not_graduate())
 
-    def test_empty_system_key(self):
+    def test_error(self):
          with self.settings(
              RESTCLIENTS_SWS_DAO_CLASS=\
                  'restclients.dao_implementation.sws.File'):
-             self.assertIsNone(get_degree_by_regid(
-                     "00000000000000000000000000000001"))
+             self.assertRaises(DataFailureException,
+                               get_degree_by_regid,
+                               "00000000000000000000000000000001")
