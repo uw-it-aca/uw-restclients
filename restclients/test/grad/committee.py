@@ -1,6 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.conf import settings
+from restclients.exceptions import DataFailureException
 from restclients.grad.committee import get_committee_by_regid
 
 
@@ -90,9 +91,10 @@ class CommitteeTest(TestCase):
             self.assertEqual(member_json["member_type"],
                              None)
 
-    def test_empty_system(self):
+    def test_error(self):
          with self.settings(
              RESTCLIENTS_SWS_DAO_CLASS=\
                 'restclients.dao_implementation.sws.File'):
-             self.assertIsNone(get_committee_by_regid(
-                     "00000000000000000000000000000001"))
+             self.assertRaises(DataFailureException,
+                               get_committee_by_regid,
+                               "00000000000000000000000000000001")
