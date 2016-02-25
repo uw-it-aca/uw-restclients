@@ -1,6 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.conf import settings
+from restclients.exceptions import DataFailureException
 from restclients.grad.petition import get_petition_by_regid
 
 
@@ -78,9 +79,10 @@ class PetitionTest(TestCase):
             self.assertEqual(json_data['gradschool_decision'],
                              "Withdrawn")
 
-    def test_empty_system_key(self):
+    def test_error(self):
          with self.settings(
              RESTCLIENTS_SWS_DAO_CLASS=\
                  'restclients.dao_implementation.sws.File'):
-             self.assertIsNone(get_petition_by_regid(
-                     "00000000000000000000000000000001"))
+             self.assertRaises(DataFailureException,
+                               get_petition_by_regid,
+                               "00000000000000000000000000000001")
