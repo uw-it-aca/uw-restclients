@@ -27,8 +27,18 @@ class Person(models.Model):
     full_name = models.CharField(max_length=250)
     display_name = models.CharField(max_length=250)
 
-    student_number = models.CharField(max_length=9)
-    employee_id = models.CharField(max_length=9)
+    student_number = models.CharField(max_length=9,
+                                      null=True,
+                                      blank=True,
+                                      default=None)
+    student_system_key = models.SlugField(max_length=10,
+                                          null=True,
+                                          blank=True,
+                                          default=None)
+    employee_id = models.CharField(max_length=9,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
 
     is_student = models.NullBooleanField()
     is_staff = models.NullBooleanField()

@@ -4,7 +4,7 @@ Interfacing with the Grad Scho Degree Request API
 import logging
 import json
 from restclients.models.grad import GradDegree
-from restclients.sws.person import get_person_by_regid
+from restclients.pws import PWS
 from restclients.grad import get_resource, datetime_from_string
 
 
@@ -16,10 +16,11 @@ logger = logging.getLogger(__name__)
 
 
 def get_degree_by_regid(regid):
-    sws_person = get_person_by_regid(regid)
-    if sws_person is None:
-        return None
-    return get_degree_by_syskey(sws_person.student_system_key)
+    """
+    raise: InvalidRegID, DataFailureException
+    """
+    person = PWS().get_person_by_regid(regid)
+    return get_degree_by_syskey(person.student_system_key)
 
 
 def get_degree_by_syskey(system_key):

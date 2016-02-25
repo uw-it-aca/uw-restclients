@@ -1,6 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.conf import settings
+from restclients.exceptions import DataFailureException
 from restclients.grad.leave import get_leave_by_regid
 
 
@@ -33,9 +34,10 @@ class LeaveTest(TestCase):
             self.assertEqual(leave.terms[0].year, 2012)
 
 
-    def test_empty_ysytem_key(self):
+    def test_error(self):
          with self.settings(
              RESTCLIENTS_SWS_DAO_CLASS=\
                  'restclients.dao_implementation.sws.File'):
-             self.assertIsNone(get_leave_by_regid(
-                     "00000000000000000000000000000001"))
+             self.assertRaises(DataFailureException,
+                               get_leave_by_regid,
+                               "00000000000000000000000000000001")
