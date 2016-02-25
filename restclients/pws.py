@@ -242,7 +242,7 @@ class PWS(object):
                 person.student_number = (student_affiliations
                                          .get('StudentNumber'))
                 person.student_system_key = (student_affiliations
-                                         .get('StudentSystemKey'))
+                                             .get('StudentSystemKey'))
             employee_affiliations = (person_affiliations
                                      .get('EmployeePersonAffiliation'))
             if employee_affiliations is not None:
