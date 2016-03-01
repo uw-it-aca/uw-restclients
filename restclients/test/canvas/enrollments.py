@@ -47,7 +47,7 @@ class CanvasTestEnrollment(TestCase):
 
             enrollment = enrollments[0]
 
-            self.assertEquals(enrollment.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
+            self.assertEquals(enrollment.course.course_url, "https://canvas.uw.edu/courses/149650", "Has proper course url")
             self.assertEquals(enrollment.sis_course_id, "2013-spring-PHYS-121-A")
             self.assertEquals(enrollment.sws_course_id(), "2013,spring,PHYS,121/A")
 
