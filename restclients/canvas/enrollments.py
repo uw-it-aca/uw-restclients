@@ -68,6 +68,9 @@ class Enrollments(Canvas):
 
             if course.sis_course_id is not None:
                 enrollment = self._enrollment_from_json(datum)
+                enrollment.course = course
+                # the following 3 lines are not removed
+                # to be backward compatible.
                 enrollment.course_url = course.course_url
                 enrollment.course_name = course.name
                 enrollment.sis_course_id = course.sis_course_id

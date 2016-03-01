@@ -56,6 +56,9 @@ class CanvasCourse(models.Model):
     public_syllabus = models.NullBooleanField()
     syllabus_body = models.TextField(null=True)
 
+    def is_unpublished(self):
+        return self.workflow_state.lower() == "unpublished"
+
     def sws_course_id(self):
         if self.sis_course_id is None:
             return None
