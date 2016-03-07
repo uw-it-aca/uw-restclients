@@ -9,7 +9,11 @@ import socket
 from urllib import quote, unquote, urlencode
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
+try:
+    from importlib import import_module
+except:
+    # python 2.6
+    from django.utils.importlib import import_module
 from restclients.signals.rest_request import rest_request
 from restclients.signals.success import rest_request_passfail
 from restclients.mock_http import MockHTTP
