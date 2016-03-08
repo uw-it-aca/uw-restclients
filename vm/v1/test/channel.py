@@ -21,6 +21,9 @@ class ChannelModel(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True, blank=True)
     modified_by = models.CharField(max_length=80, null=True)
+
+    class Meta:
+        app_label = 'vm'
  
 class ExampleChannel(object):
     
@@ -270,6 +273,4 @@ class ChannelDetailViewModelTest(TestCase):
         #self.assertEqual(channel_model.template_surrogate_id, view_model.template_surrogate_id)
         self.assertEqual(channel_model.description, view_model.description)
         self.assertEqual(channel_model.expires, view_model.expires)
-        
 
-        

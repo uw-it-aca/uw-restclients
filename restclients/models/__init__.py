@@ -3,6 +3,7 @@ import pickle
 from base64 import b64encode, b64decode
 import warnings
 
+from restclients.models.base import RestClientsModel
 from restclients.models.sws import Term as swsTerm
 from restclients.models.sws import Person as swsPerson
 from restclients.models.sws import FinalExam as swsFinalExam
@@ -112,7 +113,7 @@ def CanvasEnrollment(*args, **kwargs):
     return canvasEnrollment(*args, **kwargs)
 
 
-class CacheEntry(models.Model):
+class CacheEntry(RestClientsModel):
     service = models.CharField(max_length=50, db_index=True)
     url = models.CharField(max_length=255, unique=True, db_index=True)
     status = models.PositiveIntegerField()
@@ -120,7 +121,7 @@ class CacheEntry(models.Model):
     content = models.TextField()
     headers = None
 
-    class Meta:
+    class Meta(RestClientsModel.Meta):
         unique_together = ('service', 'url')
 
     def getHeaders(self):
@@ -153,7 +154,7 @@ class CacheEntryExpires(CacheEntry):
     time_expires = models.DateTimeField()
 
 
-class Book(models.Model):
+class Book(RestClientsModel):
     isbn = models.CharField(max_length=15)
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=7, decimal_places=2)
@@ -179,7 +180,7 @@ class Book(models.Model):
         return data
 
 
-class BookAuthor(models.Model):
+class BookAuthor(RestClientsModel):
     name = models.CharField(max_length=255)
 
     def json_data(self):
@@ -188,7 +189,7 @@ class BookAuthor(models.Model):
         return data
 
 
-class MockAmazonSQSQueue(models.Model):
+class MockAmazonSQSQueue(RestClientsModel):
     name = models.CharField(max_length=80, unique=True, db_index=True)
 
     def new_message(self, body=""):
@@ -223,7 +224,7 @@ class MockAmazonSQSQueue(models.Model):
         pass
 
 
-class MockAmazonSQSMessage(models.Model):
+class MockAmazonSQSMessage(RestClientsModel):
     body = models.CharField(max_length=8192)
     queue = models.ForeignKey(MockAmazonSQSQueue,
                               on_delete=models.PROTECT)
@@ -232,7 +233,7 @@ class MockAmazonSQSMessage(models.Model):
         return self.body
 
 
-class SMSRequest(models.Model):
+class SMSRequest(RestClientsModel):
     body = models.CharField(max_length=8192)
     to = models.CharField(max_length=40)
     from_number = models.CharField(max_length=40)
@@ -247,7 +248,7 @@ class SMSRequest(models.Model):
         return self.from_number
 
 
-class SMSResponse(models.Model):
+class SMSResponse(RestClientsModel):
     body = models.TextField(max_length=8192)
     to = models.TextField(max_length=40)
     status = models.TextField(max_length=8192)
@@ -267,13 +268,13 @@ class SMSResponse(models.Model):
         return self.id
 
 
-class Notification(models.Model):
+class Notification(RestClientsModel):
     subject = models.CharField(max_length=8192)
     short = models.CharField(max_length=140)  # SMS max body length
     full = models.CharField(max_length=8192)
 
 
-class CourseAvailableEvent(models.Model):
+class CourseAvailableEvent(RestClientsModel):
     event_id = models.CharField(max_length=40)
     event_create_date = models.CharField(max_length=40)
     message_timestamp = models.CharField(max_length=40)

@@ -1,3 +1,8 @@
+try:
+    from importlib import import_module
+except:
+    # python 2.6
+    from django.utils.importlib import import_module
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
