@@ -6,6 +6,7 @@ from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
+from restclients.test.library.currics import CurricsTest
 from restclients.test.digitlib.curric import DigitLibTest
 from restclients.test.grad.committee import CommitteeTest
 from restclients.test.grad.degree import DegreeTest

@@ -6,12 +6,35 @@ from datetime import datetime
 import logging
 import json
 from restclients.models.library import MyLibAccount
-from restclients.library import get_resource
+from restclients.dao import MyLibInfo_DAO
+from restclients.exceptions import DataFailureException
+from restclients.util.timer import Timer
+from restclients.util.log import log_info
 
 
+INVALID_USER_MSG = "User not found"
 RESPONSE_STYLES = ['html', 'json']
 url_prefix = "/mylibinfo/v1/?id="
 logger = logging.getLogger(__name__)
+
+
+def get_resource(url):
+    timer = Timer()
+    response = MyLibInfo_DAO().getURL(url, {})
+    log_info(logger,
+             "%s ==status==> %s" % (url, response.status),
+             timer)
+
+    if response.status != 200:
+        raise DataFailureException(url, response.status, response.data)
+
+    # 'Bug' with lib API causing requests with no/invalid user to return a 200
+    if INVALID_USER_MSG in response.data:
+        raise DataFailureException(url, 404, response.data)
+
+    logger.debug("%s ==data==> %s" % (url, response.data))
+
+    return response.data
 
 
 def get_account(netid, timestamp=None):
@@ -49,7 +72,7 @@ def _account_from_json(body):
         account_data = json.loads(body)
     except Exception as ex:
         raise Exception("Unable to parse library data: %s.  Exception: %s" % (
-                            body, ex))
+            body, ex))
     account = MyLibAccount()
     account.fines = account_data["fines"]
     account.holds_ready = account_data["holds_ready"]

@@ -9,7 +9,7 @@ class MyLibInfoTest(TestCase):
     def test_get_account(self):
         with self.settings(
             RESTCLIENTS_LIBRARIES_DAO_CLASS =
-            'restclients.dao_implementation.libraries.File'):
+            'restclients.dao_implementation.library.mylibinfo.File'):
 
             account = get_account("javerage")
             self.assertEquals(account.next_due, date(2014, 5, 27))
@@ -29,7 +29,7 @@ class MyLibInfoTest(TestCase):
     def test_html_response(self):
         with self.settings(
             RESTCLIENTS_LIBRARIES_DAO_CLASS =
-            'restclients.dao_implementation.libraries.File'):
+            'restclients.dao_implementation.library.mylibinfo.File'):
 
             response = get_account_html("javerage")
             self.assertEquals(response, '<p>You have 7 items checked out.<br>\nYou have items due back on 2014-04-29.<br>\nYou don\'t owe any fines.</p>\n<a href="http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlBasketGet.do?vid=UW&redirectTo=myAccount">Go to your account</a>')
@@ -37,7 +37,7 @@ class MyLibInfoTest(TestCase):
     def test_bad_json(self):
         with self.settings(
             RESTCLIENTS_LIBRARIES_DAO_CLASS =
-            'restclients.dao_implementation.libraries.File'):
+            'restclients.dao_implementation.library.mylibinfo.File'):
 
             self.assertRaises(Exception, get_account, "badjsonuser")
 
@@ -52,7 +52,7 @@ class MyLibInfoTest(TestCase):
     def test_invalid_user(self):
         with self.settings(
             RESTCLIENTS_LIBRARIES_DAO_CLASS =
-            'restclients.dao_implementation.libraries.File'):
+            'restclients.dao_implementation.library.mylibinfo.File'):
 
             #Testing error message in a 200 response
             self.assertRaises(DataFailureException, get_account, "invalidnetid")
@@ -68,7 +68,7 @@ class MyLibInfoTest(TestCase):
     def test_with_timestamp(self):
         with self.settings(
             RESTCLIENTS_LIBRARIES_DAO_CLASS=
-            'restclients.dao_implementation.libraries.File'):
+            'restclients.dao_implementation.library.mylibinfo.File'):
 
             response = get_account_html('javerage', timestamp=1391122522900)
             self.assertEquals(response, '<p>You have 7 items checked out.<br>\n You have items due back on 2014-04-29.<br>\n You don\'t owe any fines.</p>\n <a href="http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlBasketGet.do?vid=UW&amp;redirectTo=myAccount">Go to your account</a>')
