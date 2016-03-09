@@ -21,7 +21,10 @@ from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.digitlib import File as DigitlibFile
 from restclients.dao_implementation.grad import File as GradFile
-from restclients.dao_implementation.libraries import File as LibrariesFile
+from restclients.dao_implementation.library.mylibinfo import (
+    File as MyLibInfoFile)
+from restclients.dao_implementation.library.currics import (
+    File as LibCurricsFile)
 from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
@@ -265,13 +268,22 @@ class Hfs_DAO(MY_DAO):
         return self._getModule('RESTCLIENTS_HFS_DAO_CLASS', HfsFile)
 
 
-class Libraries_DAO(MY_DAO):
+class MyLibInfo_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('libraries', url, headers)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_LIBRARIES_DAO_CLASS',
-                               LibrariesFile)
+                               MyLibInfoFile)
+
+
+class LibCurrics_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('libcurrics', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_LIBCURRICS_DAO_CLASS',
+                               LibCurricsFile)
 
 
 class MyPlan_DAO(MY_DAO):

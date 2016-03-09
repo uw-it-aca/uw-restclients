@@ -10,9 +10,9 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.http import HttpResponse
 from django.template import loader, RequestContext, TemplateDoesNotExist
 from django.shortcuts import render_to_response
-from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO, \
-    Book_DAO, Canvas_DAO, Uwnetid_DAO, Libraries_DAO, TrumbaCalendar_DAO, \
-    MyPlan_DAO, IASYSTEM_DAO, Grad_DAO
+from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO,\
+    Book_DAO, Canvas_DAO, Uwnetid_DAO, MyLibInfo_DAO, LibCurrics_DAO,\
+    TrumbaCalendar_DAO, MyPlan_DAO, IASYSTEM_DAO, Grad_DAO
 from restclients.mock_http import MockHTTP
 from authz_group import Group
 from userservice.user import UserService
@@ -63,7 +63,9 @@ def proxy(request, service, url):
     elif service == "uwnetid":
         dao = Uwnetid_DAO()
     elif service == "libraries":
-        dao = Libraries_DAO()
+        dao = MyLibInfo_DAO()
+    elif service == "libcurrics":
+        dao = LibCurrics_DAO()
     elif service == "myplan":
         dao = MyPlan_DAO()
     elif service == "iasystem":
