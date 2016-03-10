@@ -1,5 +1,3 @@
-from django.utils import unittest
-
 from vm.v1.test.channel import ChannelDetailViewModelTest
 from vm.v1.test.endpoint import EndpointDetailViewModelTest
 from vm.v1.test.message import MessageTest

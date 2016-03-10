@@ -1,7 +1,8 @@
 from django.db import models
+from restclients.models.base import RestClientsModel
 
 
-class GroupReference(models.Model):
+class GroupReference(RestClientsModel):
     uwregid = models.CharField(max_length=32)
     name = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
@@ -13,7 +14,7 @@ class GroupReference(models.Model):
             self.uwregid, self.name, self.title, self.description)
 
 
-class Group(models.Model):
+class Group(RestClientsModel):
     CLASSIFICATION_NONE = "u"
     CLASSIFICATION_PUBLIC = "p"
     CLASSIFICATION_RESTRICTED = "r"
@@ -92,7 +93,7 @@ class CourseGroup(Group):
     sln = models.PositiveIntegerField()
 
 
-class GroupUser(models.Model):
+class GroupUser(RestClientsModel):
     UWNETID_TYPE = "uwnetid"
     EPPN_TYPE = "eppn"
     GROUP_TYPE = "group"
@@ -131,7 +132,7 @@ class GroupUser(models.Model):
             self.name, self.user_type)
 
 
-class GroupMember(models.Model):
+class GroupMember(RestClientsModel):
     UWNETID_TYPE = "uwnetid"
     EPPN_TYPE = "eppn"
     GROUP_TYPE = "group"
