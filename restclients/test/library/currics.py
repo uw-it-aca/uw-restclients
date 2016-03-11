@@ -19,6 +19,17 @@ class CurricsTest(TestCase):
             # Missing params
             self.assertRaises(TypeError, get_subject_guide_for_section_params)
 
+            # URL capitalization and quoting
+            try:
+                # Using a non-existant section so we can inspect the url
+                guide = get_subject_guide_for_section_params(
+                    year=1990, quarter='aut', curriculum_abbr='A B&C',
+                    course_number='101', section_id='a')
+            except DataFailureException as ex:
+                self.assertEquals(ex.url,
+                    '/currics_db/api/v1/data/course/1990/AUT/A%20B%26C/101/A',
+                    'Quoted curriculum abbr')
+
     def test_subject_guide_for_section_params(self):
         with self.settings(
             RESTCLIENTS_LIBCURRICS_DAO_CLASS =
