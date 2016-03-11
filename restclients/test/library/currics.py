@@ -6,6 +6,18 @@ from restclients.library.currics import get_subject_guide_for_section_params,\
 from restclients.exceptions import DataFailureException
 
 class CurricsTest(TestCase):
+    def test_subject_guide_with_bad_section_params(self):
+        with self.settings(
+            RESTCLIENTS_LIBCURRICS_DAO_CLASS =
+            'restclients.dao_implementation.library.currics.File'):
+
+            # Valid curriculum, with no file
+            self.assertRaises(DataFailureException, get_subject_guide_for_section_params,
+                year=2012, quarter='aut', curriculum_abbr='B ARTS',
+                course_number='197', section_id='A')
+
+            # Missing params
+            self.assertRaises(TypeError, get_subject_guide_for_section_params)
 
     def test_subject_guide_for_section_params(self):
         with self.settings(

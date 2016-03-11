@@ -5,6 +5,7 @@ Web Service.
 
 import json
 from restclients.dao import LibCurrics_DAO
+from restclients.exceptions import DataFailureException
 from restclients.models.library import SubjectGuide, Library, Librarian
 
 
