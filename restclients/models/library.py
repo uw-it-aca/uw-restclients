@@ -1,6 +1,37 @@
 from django.db import models
 
 
+class Library(models.Model):
+    """ Represents a library.
+    """
+    name = models.CharField(max_length=250, null=True)
+    description = models.CharField(max_length=1000, null=True)
+    url = models.CharField(max_length=250, null=True)
+
+
+class Librarian(models.Model):
+    """ Represents a librarian.
+    """
+    name = models.CharField(max_length=250, null=True)
+    email = models.CharField(max_length=100, null=True)
+    phone = models.CharField(max_length=20, null=True)
+    url = models.CharField(max_length=250, null=True)
+
+
+class SubjectGuide(models.Model):
+    contact_url = models.CharField(max_length=250, null=True)
+    contact_text = models.CharField(max_length=1000, null=True)
+    discipline = models.CharField(max_length=250, null=True)
+    librarian_url = models.CharField(max_length=250, null=True)
+    librarian_text = models.CharField(max_length=1000, null=True)
+    guide_url = models.CharField(max_length=250, null=True)
+    guide_text = models.CharField(max_length=1000, null=True)
+    faq_url = models.CharField(max_length=250, null=True)
+    faq_text = models.CharField(max_length=1000, null=True)
+    writing_guide_url = models.CharField(max_length=250, null=True)
+    writing_guide_text = models.CharField(max_length=1000, null=True)
+
+
 class MyLibAccount(models.Model):
     holds_ready = models.IntegerField(max_length=8)
     fines = models.DecimalField(max_digits=8, decimal_places=2)

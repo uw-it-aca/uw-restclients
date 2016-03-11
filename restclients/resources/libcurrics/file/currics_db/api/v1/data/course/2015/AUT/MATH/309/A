@@ -1,0 +1,36 @@
+{
+    "subjectGuide": {
+        "askUsLink": "http://www.lib.washington.edu/about/contact",
+        "askUsText": "UW librarians are also available to help answer your general questions by email, phone, text, or 24/7 real-time chat.",
+        "discipline": "Mathematics",
+        "findLibrarianLink": "http://guides.lib.uw.edu/research/subject-librarians",
+        "findLibrarianText": "At UW Libraries, there's a dedicated librarian for Mathematics who can help you with your research needs. Get in touch with them by phone or email.",
+        "guideLink": "http://guides.lib.uw.edu/friendly.php?s=research/math",
+        "guideText": "Mathematics, Pure and Applied",
+        "howDoILink": "http://guides.lib.uw.edu/research/faq",
+        "howDoIText": "This online guide addresses common research and library tasks with short video tutorials and links to other UW help guides.",
+        "librarians": [
+            {
+                "email": "javerage@uw.edu",
+                "name": "J Average",
+                "telephone": "111-111-1111",
+                "url": "http://guides.lib.washington.edu/Javerage"
+            },
+            {
+                "email": "baverage@uw.edu",
+                "name": "B Average",
+                "telephone": "111-111-1112",
+                "url": "http://guides.lib.washington.edu/Baverage"
+            }
+        ],
+        "libraries": [
+            {
+                "description": "The Mathematics Research Library provides research help and access to materials in Applied Mathematics, Mathematics, and Statistics.",
+                "name": "Mathematics Research Library",
+                "url": "http://www.lib.washington.edu/math"
+            }
+        ],
+        "writingGuideLink": "http://guides.lib.uw.edu/research/citations",
+        "writingGuideText": "Find citation style guides, citation management tools, and writing/grammar help."
+    }
+}
