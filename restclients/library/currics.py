@@ -4,7 +4,9 @@ Web Service.
 """
 
 import json
+from urllib import quote
 from restclients.dao import LibCurrics_DAO
+from restclients.exceptions import DataFailureException
 from restclients.models.library import SubjectGuide, Library, Librarian
 
 
@@ -23,9 +25,8 @@ def get_subject_guide_for_section_params(year, quarter, curriculum_abbr,
     section_id: course section identifier (optional)
     """
     url = '%s/%s/%s/%s/%s/%s' % (
-        subject_guide_url_prefix, year,
-        quarter.upper(), curriculum_abbr.upper(), course_number,
-        section_id.upper())
+        subject_guide_url_prefix, year, quarter.upper(),
+        quote(curriculum_abbr.upper()), course_number, section_id.upper())
     headers = {'Accept': 'application/json'}
 
     response = LibCurrics_DAO().getURL(url, headers)
