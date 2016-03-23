@@ -34,8 +34,8 @@ class Canvas(object):
         self._re_canvas_id = re.compile(r'^\d{2,12}$')
 
         if as_user:
-            self._as_user = as_user if self.valid_canvas_id(as_user) \
-                            else self.sis_user_id(as_user)
+            self._as_user = as_user if (
+                self.valid_canvas_id(as_user)) else self.sis_user_id(as_user)
 
     def get_courses_for_regid(self, regid):
         deprecation("Use restclients.canvas.courses.get_courses_for_regid")
@@ -43,7 +43,8 @@ class Canvas(object):
         return Courses().get_courses_for_regid(regid)
 
     def get_enrollments_for_regid(self, regid):
-        deprecation("Use restclients.canvas.enrollments.get_enrollments_for_regid")
+        deprecation(
+            "Use restclients.canvas.enrollments.get_enrollments_for_regid")
         from restclients.canvas.enrollments import Enrollments
         return Enrollments().get_enrollments_for_regid(regid)
 
@@ -59,8 +60,8 @@ class Canvas(object):
         for term in data["enrollment_terms"]:
             if term["sis_term_id"] == sis_term_id:
                 term = CanvasTerm(term_id=term["id"],
-                            sis_term_id=term["sis_term_id"],
-                            name=term["name"])
+                                  sis_term_id=term["sis_term_id"],
+                                  name=term["name"])
                 return term
 
     def valid_canvas_id(self, canvas_id):
@@ -114,10 +115,12 @@ class Canvas(object):
 
     def _get_resource_url(self, url, auto_page, data_key):
         """
-        Canvas GET method on a full url. Return representation of the requested resource,
-        chasing pagination links to coalesce resources if indicated.
+        Canvas GET method on a full url. Return representation of the
+        requested resource, chasing pagination links to coalesce resources
+        if indicated.
         """
-        response = Canvas_DAO().getURL(url, {"Accept": "application/json"})
+        response = Canvas_DAO().getURL(url, {'Accept': 'application/json',
+                                             'Connection': 'keep-alive'})
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -127,7 +130,8 @@ class Canvas(object):
         self.next_page_url = self._next_page(response)
         if auto_page and self.next_page_url:
             if isinstance(data, list):
-                data.extend(self._get_resource_url(self.next_page_url, True, data_key))
+                data.extend(self._get_resource_url(self.next_page_url, True,
+                                                   data_key))
             elif isinstance(data, dict) and data_key is not None:
                 data[data_key].extend(self._get_resource_url(
                     self.next_page_url, True, data_key)[data_key])
@@ -140,8 +144,9 @@ class Canvas(object):
 
     def _get_paged_resource(self, url, params=None, data_key=None):
         """
-        Canvas GET method. Return representation of the requested paged resource,
-        either the requested page, or chase pagination links to coalesce resources.
+        Canvas GET method. Return representation of the requested paged
+        resource, either the requested page, or chase pagination links to
+        coalesce resources.
         """
         if not params:
             params = {}
@@ -173,8 +178,9 @@ class Canvas(object):
         """
         Canvas PUT method.
         """
-        headers = {"Content-Type": "application/json",
-                   "Accept": "application/json"}
+        headers = {'Content-Type': 'application/json',
+                   'Accept': 'application/json',
+                   'Connection': 'keep-alive'}
         response = Canvas_DAO().putURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 201 or
@@ -187,8 +193,9 @@ class Canvas(object):
         """
         Canvas POST method.
         """
-        headers = {"Content-Type": "application/json",
-                   "Accept": "application/json"}
+        headers = {'Content-Type': 'application/json',
+                   'Accept': 'application/json',
+                   'Connection': 'keep-alive'}
         response = Canvas_DAO().postURL(url, headers, json.dumps(body))
 
         if not (response.status == 200 or response.status == 204):

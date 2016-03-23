@@ -30,7 +30,8 @@ def get_resource(url):
     and return a response in json format.
     :returns: http response with content in json
     """
-    response = SWS_DAO().getURL(url, {"Accept": "application/json"})
+    response = SWS_DAO().getURL(url, {'Accept': 'application/json',
+                                      'Connection': 'keep-alive'})
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
     return json.loads(response.data)
