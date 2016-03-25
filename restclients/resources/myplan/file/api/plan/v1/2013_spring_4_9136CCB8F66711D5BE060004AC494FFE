@@ -1,8 +1,15 @@
 [
     {
         "Term":{"Quarter":"Spring","Year":2013},
-        "RegistrationHref":"http://example.com/RegistrationHref",
-        "MyPlanHref":"http://example.com/MyPlan",
+        "RegistrationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/registration/20132",
+        "MyPlanHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/plan/20132",
+        "AuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit",
+        "PlanAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/plan",
+        "DegreeAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/degree",
+        "PlanValidationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/planValidation/20132",
+        "CourseSearchHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/course",
+        "RegisteredCoursesCount":0,
+        "RegisteredSectionsCount":0,
         "Courses":[
             {
                 "CurriculumAbbreviation":"CSE",
@@ -23,8 +30,15 @@
                     {"SectionId":"C"}]}]},
     {
         "Term":{"Quarter":"Summer","Year":2013},
-        "RegistrationHref":"http://example.com/RegistrationHref",
-        "MyPlanHref":"http://example.com/MyPlan",
+        "RegistrationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/registration/20133",
+        "MyPlanHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/plan/20133",
+        "AuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit",
+        "PlanAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/plan",
+        "DegreeAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/degree",
+        "PlanValidationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/planValidation/20133",
+        "CourseSearchHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/course",
+        "RegisteredCoursesCount":0,
+        "RegisteredSectionsCount":0,
         "Courses":[
             {
                 "CurriculumAbbreviation":"CSE",
@@ -37,15 +51,29 @@
     },
     {
         "Term":{"Quarter":"Autumn","Year":2013},
-        "RegistrationHref":"http://example.com/RegistrationHref",
-        "MyPlanHref":"http://example.com/MyPlan",
+        "RegistrationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/registration/20134",
+        "MyPlanHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/plan/20134",
+        "AuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit",
+        "PlanAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/plan",
+        "DegreeAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/degree",
+        "PlanValidationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/planValidation/20134",
+        "CourseSearchHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/course",
+        "RegisteredCoursesCount":0,
+        "RegisteredSectionsCount":0,
         "Courses":[
         ]
     },
     {
         "Term":{"Quarter":"Winter","Year":2014},
-        "RegistrationHref":"http://example.com/RegistrationHref",
-        "MyPlanHref":"http://example.com/MyPlan",
+        "RegistrationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/registration/20141",
+        "MyPlanHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/plan/20141",
+        "AuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit",
+        "PlanAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/plan",
+        "DegreeAuditHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/audit/degree",
+        "PlanValidationHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/planValidation/20141",
+        "CourseSearchHref":"https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/course",
+        "RegisteredCoursesCount":0,
+        "RegisteredSectionsCount":0,
         "Courses":[
         ]
     }
