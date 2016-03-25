@@ -27,14 +27,15 @@ class MyPlanTerm(models.Model):
         (AUTUMN, 'Autumn'),
         (WINTER, 'Winter'),
     )
+
     course_search_href = models.CharField(max_length=512)
     degree_audit_href = models.CharField(max_length=512)
     myplan_href = models.CharField(max_length=512)
     registration_href = models.CharField(max_length=512)
-    registered_courses_count = models.SmallIntegerField(max_length=3,
-                                                        default=0)
-    registered_sections_count = models.SmallIntegerField(max_length=3,
-                                                        default=0)
+    registered_courses_count = models.SmallIntegerField(
+        max_length=3, default=0)
+    registered_sections_count = models.SmallIntegerField(
+        max_length=3, default=0)
 
     def __init__(self):
         self.courses = []
