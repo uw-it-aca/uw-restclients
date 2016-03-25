@@ -28,6 +28,15 @@ def get_plan(regid, year, quarter, terms=4):
         term.year = term_data["Term"]["Year"]
         term.quarter = term_data["Term"]["Quarter"]
 
+        term.course_search_href = term_data["CourseSearchHref"]
+        term.degree_audit_href = term_data["DegreeAuditHref"]
+        term.myplan_href = term_data["MyPlanHref"]
+        term.registration_href = term_data["RegistrationHref"]
+        term.registered_courses_count = int(
+            term_data["RegisteredCoursesCount"])
+        term.registered_sections_count = int(
+            term_data["RegisteredSectionsCount"])
+
         for course_data in term_data["Courses"]:
             course = MyPlanCourse()
             course.curriculum_abbr = course_data["CurriculumAbbreviation"]
