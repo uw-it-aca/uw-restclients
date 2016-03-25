@@ -27,6 +27,14 @@ class MyPlanTerm(models.Model):
         (AUTUMN, 'Autumn'),
         (WINTER, 'Winter'),
     )
+    course_search_href = models.CharField(max_length=512)
+    degree_audit_href = models.CharField(max_length=512)
+    myplan_href = models.CharField(max_length=512)
+    registration_href = models.CharField(max_length=512)
+    registered_courses_count = models.SmallIntegerField(max_length=3,
+                                                        default=0)
+    registered_sections_count = models.SmallIntegerField(max_length=3,
+                                                        default=0)
 
     def __init__(self):
         self.courses = []
@@ -39,6 +47,12 @@ class MyPlanTerm(models.Model):
         data = {
             "year": self.year,
             "quarter": self.quarter,
+            "course_search_href": self.course_search_href,
+            "degree_audit_href": self.degree_audit_href,
+            "myplan_href": self.myplan_href,
+            "registration_href": self.registration_href,
+            "registered_courses_count": self.registered_courses_count,
+            "registered_sections_count": self.registered_sections_count,
             "courses": [],
         }
 
