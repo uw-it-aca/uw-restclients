@@ -44,4 +44,11 @@ class MyPlanTestData(TestCase):
                         year=2013, quarter="spring",
                         terms=4)
         json_data = plan.json_data()
-        self.assertEquals(json_data["terms"][0]["courses"][0]["sections"][1]["section_id"], "AA")
+        term_data = json_data["terms"][0]
+        self.assertEquals(term_data["courses"][0]["sections"][1]["section_id"], "AA")
+        self.assertEquals(term_data["registered_courses_count"], 0)
+        self.assertEquals(term_data["registration_href"],
+                          "https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/registration/20132")
+        self.assertEquals(term_data["course_search_href"],
+                          "https://uwkseval.cac.washington.edu/student/myplan/mplogin/netid?rd=/student/myplan/course")
+        self.assertEquals(term_data["quarter"], "Spring")
