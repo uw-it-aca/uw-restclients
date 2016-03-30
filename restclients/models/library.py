@@ -22,14 +22,16 @@ class SubjectGuide(models.Model):
     contact_url = models.CharField(max_length=250, null=True)
     contact_text = models.CharField(max_length=1000, null=True)
     discipline = models.CharField(max_length=250, null=True)
-    librarian_url = models.CharField(max_length=250, null=True)
-    librarian_text = models.CharField(max_length=1000, null=True)
+    find_librarian_url = models.CharField(max_length=250, null=True)
+    find_librarian_text = models.CharField(max_length=1000, null=True)
     guide_url = models.CharField(max_length=250, null=True)
     guide_text = models.CharField(max_length=1000, null=True)
     faq_url = models.CharField(max_length=250, null=True)
     faq_text = models.CharField(max_length=1000, null=True)
     writing_guide_url = models.CharField(max_length=250, null=True)
     writing_guide_text = models.CharField(max_length=1000, null=True)
+    is_default_guide = models.NullBooleanField()
+    default_guide_campus = models.CharField(max_length=50, null=True)
 
 
 class MyLibAccount(models.Model):
