@@ -56,4 +56,4 @@ def get_plan(regid, year, quarter, terms=4):
 
 
 def get_plan_url(regid, year, quarter, terms):
-    return "/api/plan/v1/%s,%s,%s,%s" % (year, quarter, terms, regid)
+    return "/student/api/plan/v1/%s,%s,%s,%s" % (year, quarter, terms, regid)
