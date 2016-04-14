@@ -45,9 +45,8 @@ class Courses(Canvas):
         """
         Return a list of courses for the passed account SIS ID.
         """
-        return self.get_courses_in_account(self._sis_id(sis_account_id,
-                                                        sis_field="account"),
-                                           params)
+        return self.get_courses_in_account(
+            self._sis_id(sis_account_id, sis_field="account"), params)
 
     def get_published_courses_in_account(self, account_id, params={}):
         """
@@ -56,7 +55,8 @@ class Courses(Canvas):
         params["published"] = True
         return self.get_courses_in_account(account_id, params)
 
-    def get_published_courses_in_account_by_sis_id(self, sis_account_id, params={}):
+    def get_published_courses_in_account_by_sis_id(self, sis_account_id,
+                                                   params={}):
         """
         Return a list of published courses for the passed account SIS ID.
         """
@@ -113,7 +113,7 @@ class Courses(Canvas):
     def _course_from_json(self, data):
         course = CanvasCourse()
         course.course_id = data["id"]
-        course.sis_course_id = data["sis_course_id"] if "sis_course_id" in data else None
+        course.sis_course_id = data.get("sis_course_id", None)
         course.account_id = data["account_id"]
         course.code = data["course_code"]
         course.name = data["name"]
@@ -126,9 +126,11 @@ class Courses(Canvas):
 
         # Optional attributes specified in the course URL
         if "term" in data:
-            course.term = CanvasTerm(term_id=data["term"]["id"],
-                               sis_term_id=data["term"]["sis_term_id"],
-                               name=data["term"]["name"])
+            canvas_term = data["term"]
+            course.term = CanvasTerm(
+                term_id=canvas_term.get("id"),
+                sis_term_id=canvas_term.get("sis_term_id", None),
+                name=canvas_term.get("name"))
 
         if "syllabus_body" in data:
             course.syllabus_body = data["syllabus_body"]
