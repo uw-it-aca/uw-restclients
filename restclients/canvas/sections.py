@@ -94,10 +94,10 @@ class Sections(Canvas):
     def _section_from_json(self, data):
         section = CanvasSection()
         section.section_id = data["id"]
-        section.sis_section_id = data["sis_section_id"] if "sis_section_id" in data else None
+        section.sis_section_id = data.get("sis_section_id", None)
         section.name = data["name"]
         section.course_id = data["course_id"]
-        section.nonxlist_course_id = data["nonxlist_course_id"] if "nonxlist_course_id" in data else None
+        section.nonxlist_course_id = data.get("nonxlist_course_id", None)
 
         if "students" in data:
             users = Users()
