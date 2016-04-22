@@ -1,11 +1,9 @@
 from django.conf import settings
 from restclients.canvas import Canvas
-from restclients.dao import Canvas_DAO
 from restclients.exceptions import DataFailureException
 from restclients.models.canvas import Report, ReportType, Attachment
 from urllib3 import PoolManager
 from time import sleep
-import json
 import re
 
 
@@ -176,13 +174,8 @@ class Reports(Canvas):
         url = "/api/v1/accounts/%s/reports/%s/%s" % (
             report.account_id, report.type, report.report_id)
 
-        response = Canvas_DAO().deleteURL(url, {"Accept": "application/json"})
-
-        if response.status != 200:
-            raise DataFailureException(url, response.status, response.data)
-
-        return self._report_from_json(report.account_id,
-                                      json.loads(response.data))
+        response = self._delete_resource(url)
+        return True
 
     def _get_report_file(self, url):
         # Ensure file url matches the hostname in settings,

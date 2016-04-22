@@ -1,8 +1,6 @@
 from restclients.canvas import Canvas
 from restclients.canvas.users import Users
 from restclients.models.canvas import CanvasAdmin
-from restclients.exceptions import DataFailureException
-from restclients.dao import Canvas_DAO
 from urllib import quote, unquote
 
 
@@ -56,11 +54,7 @@ class Admins(Canvas):
         url = "/api/v1/accounts/%s/admins/%s?role=%s" % (account_id, user_id,
                                                          quote(role))
 
-        response = Canvas_DAO().deleteURL(url, {"Accept": "application/json"})
-
-        if not (response.status == 200 or response.status == 204):
-            raise DataFailureException(url, response.status, response.data)
-
+        response = self._delete_resource(url)
         return True
 
     def delete_admin_by_sis_id(self, sis_account_id, user_id, role):
