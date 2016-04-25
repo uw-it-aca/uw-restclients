@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from restclients.models.base import RestClientsModel
 
 
@@ -36,9 +37,9 @@ class Group(RestClientsModel):
     description = models.CharField(max_length=2000, null=True)
     contact = models.CharField(max_length=120, null=True)
     membership_modified = models.DateTimeField()
-    authnfactor = models.PositiveSmallIntegerField(max_length=1,
-                                                   choices=((1, ""), (2, "")),
-                                                   default=1)
+    authnfactor = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(2)],
+        choices=((1, ""), (2, "")), default=1)
     classification = models.CharField(max_length=1,
                                       choices=CLASSIFICATION_TYPES,
                                       default=CLASSIFICATION_NONE)
@@ -48,7 +49,9 @@ class Group(RestClientsModel):
                                     default="disabled")
     dependson = models.CharField(max_length=500, null=True)
     publishemail = models.CharField(max_length=120, null=True)
-    reporttoorig = models.SmallIntegerField(max_length=1, null=True,
+    reporttoorig = models.SmallIntegerField(validators=[MinValueValidator(0),
+                                                        MaxValueValidator(1)],
+                                            null=True,
                                             choices=((1, "Yes"), (0, "No")),
                                             default=0)
 
