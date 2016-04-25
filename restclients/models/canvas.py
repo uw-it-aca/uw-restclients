@@ -13,6 +13,24 @@ class CanvasAccount(models.Model):
         db_table = "restclients_canvas_account"
 
 
+class CanvasSSOSettings(models.Model):
+    login_handle_name = models.CharField(max_length=100, null=True)
+    change_password_url = models.CharField(max_length=500, null=True)
+    auth_discovery_url = models.CharField(max_length=500, null=True)
+    unknown_user_url = models.CharField(max_length=500, null=True)
+
+    def json_data(self):
+        return {'sso_settings': {
+            'login_handle_name': self.login_handle_name,
+            'change_password_url': self.change_password_url,
+            'auth_discovery_url': self.auth_discovery_url,
+            'unknown_user_url': self.unknown_user_url
+        }}
+
+    class Meta:
+        db_table = "restclients_canvas_sso_settings"
+
+
 class CanvasRole(models.Model):
     role_id = models.IntegerField()
     label = models.CharField(max_length=200)
