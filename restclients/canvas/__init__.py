@@ -119,8 +119,9 @@ class Canvas(object):
         requested resource, chasing pagination links to coalesce resources
         if indicated.
         """
-        response = Canvas_DAO().getURL(url, {'Accept': 'application/json',
-                                             'Connection': 'keep-alive'})
+        headers = {'Accept': 'application/json',
+                   'Connection': 'keep-alive'}
+        response = Canvas_DAO().getURL(url, headers)
 
         if response.status != 200:
             raise DataFailureException(url, response.status, response.data)
@@ -202,3 +203,16 @@ class Canvas(object):
             raise DataFailureException(url, response.status, response.data)
 
         return json.loads(response.data)
+
+    def _delete_resource(self, url):
+        """
+        Canvas DELETE method.
+        """
+        headers = {'Accept': 'application/json',
+                   'Connection': 'keep-alive'}
+        response = Canvas_DAO().deleteURL(url, headers)
+
+        if not (response.status == 200 or response.status == 204):
+            raise DataFailureException(url, response.status, response.data)
+
+        return response

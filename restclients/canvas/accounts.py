@@ -1,5 +1,5 @@
 from restclients.canvas import Canvas
-from restclients.models.canvas import CanvasAccount
+from restclients.models.canvas import CanvasAccount, CanvasSSOSettings
 
 
 class Accounts(Canvas):
@@ -66,10 +66,41 @@ class Accounts(Canvas):
         data = self._put_resource(url, body)
         return self._account_from_json(data)
 
+    def get_auth_settings(self, account_id):
+        """
+        Return the authentication settings for the passed account_id.
+
+        https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.show_sso_settings
+        """
+        url = '/api/v1/accounts/%s/sso_settings' % account_id
+
+        data = self._get_resource(url)
+        return self._auth_settings_from_json(data)
+
+    def update_auth_settings(self, account_id, auth_settings):
+        """
+        Update the authentication settings for the passed account_id.
+
+        https://canvas.instructure.com/doc/api/authentication_providers.html#method.account_authorization_configs.update_sso_settings
+        """ 
+        url = '/api/v1/accounts/%s/sso_settings' % account_id
+
+        data = self._put_resource(url, auth_settings.json_data())
+        return self._auth_settings_from_json(data)
+
+    def _auth_settings_from_json(self, data):
+        sso_data = data['sso_settings']
+        auth_settings = CanvasSSOSettings()
+        auth_settings.change_password_url = sso_data['change_password_url'] 
+        auth_settings.login_handle_name = sso_data['login_handle_name']
+        auth_settings.unknown_user_url = sso_data['unknown_user_url']
+        auth_settings.auth_discovery_url = sso_data['auth_discovery_url']
+        return auth_settings
+
     def _account_from_json(self, data):
         account = CanvasAccount()
         account.account_id = data["id"]
-        account.sis_account_id = data["sis_account_id"] if "sis_account_id" in data else None
+        account.sis_account_id = data.get("sis_account_id", None)
         account.name = data["name"]
         account.parent_account_id = data["parent_account_id"]
         account.root_account_id = data["root_account_id"]
