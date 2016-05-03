@@ -97,6 +97,9 @@ from restclients.test.r25.spaces import R25TestSpaces
 
 from restclients.test.myplan import MyPlanTestData
 
+from restclients.test.o365.user import O365TestUser
+from restclients.test.o365.license import O365TestLicense
+
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
 from restclients.test.dao_implementation.mock import TestMock
