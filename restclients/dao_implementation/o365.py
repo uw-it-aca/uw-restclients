@@ -44,10 +44,16 @@ class Live(object):
     """
     This DAO provides real data.  It requires the following configuration:
 
-    RESTCLIENTS_O365_AUTH_HOST='https://login.windows.net'
-    RESTCLIENTS_O365_API_HOST='https://graph.windows.net'
+    RESTCLIENTS_O365_PRINCIPLE_DOMAIAN='mumble.com'
+    RESTCLIENTS_O365_TENANT='mumble.onmicrosoft.com'
     RESTCLIENTS_O365_CLIENT_ID='<uuid>'
     RESTCLIENTS_O365_CLIENT_SECRET='Base64Secret=='
+
+    The following configuration can be overriden:
+
+    RESTCLIENTS_O365_AUTH_HOST defauls to 'https://login.windows.net'
+    RESTCLIENTS_O365_API_HOST defaults to 'https://graph.windows.net'
+
     """
     pool = None
     authorization = None
