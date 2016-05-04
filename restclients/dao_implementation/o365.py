@@ -152,8 +152,9 @@ class Live(object):
     def _expired_auth_token(self, response):
         try:
             if response.status == 401:
-                odata_error = json.loads(response.data)['odata.error']
-                if err_text['code'] == 'Authentication_ExpiredToken':
+                json_data = json.loads(response.data)
+                odata_error = json_data['odata.error']
+                if odata_error['code'] == 'Authentication_ExpiredToken':
                     Live.authorization = None
                     return True
         except:
