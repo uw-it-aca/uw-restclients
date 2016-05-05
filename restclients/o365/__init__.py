@@ -42,10 +42,11 @@ class O365(object):
 
         return json_loads(response.data)
 
-    def post_resource(self, url, body=None, json=None):
+    def post_resource(self, path, body=None, json=None):
         """
         O365 POST method.
         """
+        url = '%s%s' % (path, self._params())
         headers = {
             'Accept': 'application/json;odata=minimalmetadata'
         }
@@ -62,11 +63,16 @@ class O365(object):
 
         return json_loads(response.data)
 
+    def user_principal(self, netid, domain='test'):
+        return '%s@%s' % (netid, getattr(settings,
+                                         'RESTCLIENTS_O365_PRINCIPLE_DOMAIAN',
+                                         domain))
+
     def _url(self, url):
         return '/%s%s' % (
             getattr(settings, 'RESTCLIENTS_O365_TENANT', 'test'), url)
 
-    def _params(self, params):
+    def _params(self, params=None):
         p = ['api-version=%s' % (self._api_version)]
         if params and len(params):
             for key, val in params.iteritems():

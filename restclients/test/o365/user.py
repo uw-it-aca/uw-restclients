@@ -14,6 +14,11 @@ class O365TestUser(TestCase):
             self.assertEquals(len(u.assigned_plans), 7)
             self.assertEquals(u.user_principal_name, 'javerage@dogfood.com')
 
+    def test_netid_info(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.o365.File'):
+
+            user = User()
             u = user.get_user_by_netid('javerage')
             self.assertEquals(u.dir_sync_enabled, True)
             self.assertEquals(len(u.assigned_plans), 0)

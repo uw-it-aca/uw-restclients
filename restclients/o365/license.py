@@ -17,14 +17,6 @@ class License(O365):
 
         return skus
 
-    def get_user_licenses(self, user):
-        user = User().get_user(user)
-        return user.assigned_licenses
-
-    def get_licenses_for_netid(self, netid):
-        user = User().get_user_by_netid(netid)
-        return user.assigned_licenses
-
     def set_user_licenses(self, user, add=None, remove=None):
         """Implements: assignLicense
         https://msdn.microsoft.com/library/azure/ad/graph/api/functions-and-actions#assignLicense
@@ -36,7 +28,7 @@ class License(O365):
              remove = ['<license-sku-id'>, ...]
 
         """  # noqa
-        url = '/users/%s' % (user)
+        url = '/users/%s/assignLicense' % (user)
         add_licenses = []
         if add:
             for l in add:
@@ -50,10 +42,10 @@ class License(O365):
             'removeLicenses': remove if remove else []
         }
 
-        data = self._put_resource(url, headers, json=body)
+        data = self.post_resource(url, json=body)
         return data
 
-    def set_licenses_for_netid(self, netid, add=None, remove=None):
-        user = '%s@%s' % (
-            netid, settings.RESTCLIENTS_O365_PRINCIPLE_DOMAIAN)
-        return self.set_user_licenses(user, add=add, remove=remove)
+    def set_licenses_for_netid(self, netid, add=None,
+                               remove=None, domain='test'):
+        return self.set_user_licenses(
+            self.user_principal(netid, domain), add=add, remove=remove)

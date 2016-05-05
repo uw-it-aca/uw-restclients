@@ -4,7 +4,7 @@ Office 365 DAO implementations.
 
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url, \
-    put_mockdata_url
+    post_mockdata_url, convert_to_platform_safe
 from restclients.exceptions import DataFailureException
 from django.conf import settings
 from os.path import abspath, dirname
@@ -31,7 +31,7 @@ class File(object):
                        url + ".POST")
 
         try:
-            handle = open(path)
+            handle = open(convert_to_platform_safe(path))
             response.data = handle.read()
             response.status = 200
         except IOError:

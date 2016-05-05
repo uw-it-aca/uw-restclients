@@ -14,9 +14,4 @@ class User(O365):
         return UserModel().from_json(data)
 
     def get_user_by_netid(self, netid, domain='test'):
-        return self.get_user(self._user_principal(netid, domain))
-
-    def _user_principal(self, netid, domain='test'):
-        return '%s@%s' % (netid, getattr(settings,
-                                         'RESTCLIENTS_O365_PRINCIPLE_DOMAIAN',
-                                         domain))
+        return self.get_user(self.user_principal(netid, domain))
