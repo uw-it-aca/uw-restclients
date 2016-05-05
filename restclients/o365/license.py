@@ -5,6 +5,7 @@ from django.conf import settings
 from restclients.o365 import O365
 from restclients.o365.user import User
 from restclients.models.o365 import SKU
+from restclients.models.o365 import License as LicenseModel
 
 
 class License(O365):
@@ -16,6 +17,18 @@ class License(O365):
             skus.append(SKU().from_json(sku))
 
         return skus
+
+    def get_user_licenses(self, user):
+        url = '/users/%s/assignedLicenses' % (user)
+        data = self.get_resource(url)
+        licenses = []
+        for l in data.get('value'):
+            licenses.append(LicenseModel().from_json(l))
+
+        return licenses
+
+    def get_licenses_for_netid(self, netid, domain='test'):
+        return self.get_user_licenses(self.user_principal(netid, domain))
 
     def set_user_licenses(self, user, add=None, remove=None):
         """Implements: assignLicense
