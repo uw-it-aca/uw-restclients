@@ -30,6 +30,7 @@ from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
+from restclients.dao_implementation.o365 import File as O365File
 from restclients.cache_implementation import NoCache
 
 
@@ -358,3 +359,14 @@ class IASYSTEM_DAO(Subdomain_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASystemFile)
+
+
+class O365_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('o365', url, headers)
+
+    def postURL(self, url, headers, body):
+        return self._postURL('o365', url, headers, body)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_O365_DAO_CLASS', O365File)
