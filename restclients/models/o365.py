@@ -48,13 +48,14 @@ class User(models.Model):
         self.state = data.get('state')
         self.postal_code = data.get('postalCode')
         self.country = data.get('country')
-        self.physical_delivery_office_name = data.get('physicalDeliveryOfficeName')
+        self.physical_delivery_office_name = data.get(
+            'physicalDeliveryOfficeName')
         self.telephone_number = data.get('telephoneNumber')
         self.mobile = data.get('mobile')
         self.password_policies = data.get('passwordPolicies')
         self.display_name = data.get('displayName')
         self.preferred_language = data.get('preferredLanguage')
-        
+
         self.assigned_licenses = []
         for license_data in data.get('assignedLicenses', []):
             self.assigned_licenses.append(License().from_json(license_data))
@@ -171,9 +172,11 @@ class ServicePlan(models.Model):
     assigned_timestamp = models.TimeField(null=True)
 
     def from_json(self, data):
-        self.service=data.get('service')
+        self.service = data.get('service')
         self.capability_status = data.get('capabilityStatus')
         self.service_plan_id = data.get('servicePlanId')
         self.service_plan_name = data.get('servicePlanName')
-        self.assigned_timestamp = date_parse(data['assignedTimestamp']) if 'assignedTimestamp' in data else None
+        self.assigned_timestamp = date_parse(data['assignedTimestamp']) \
+            if 'assignedTimestamp' in data else None
+
         return self

@@ -65,12 +65,12 @@ class Live(object):
         verify_https = False
 
     def __init__(self):
-        self._auth_host = getattr(
-            settings, 'RESTCLIENTS_O365_AUTH_HOST', 'https://login.windows.net')
-        self._api_host = getattr(
-            settings, 'RESTCLIENTS_O365_API_HOST', 'https://graph.windows.net')
-        'https://login.windows.net'
-        
+        self._auth_host = getattr(settings,
+                                  'RESTCLIENTS_O365_AUTH_HOST',
+                                  'https://login.windows.net')
+        self._api_host = getattr(settings,
+                                 'RESTCLIENTS_O365_API_HOST',
+                                 'https://graph.windows.net')
 
     def getURL(self, url, headers):
         if Live.authorization is None:
@@ -87,7 +87,6 @@ class Live(object):
             return self.getURL(url, headers)
 
         return response
-
 
     def postURL(self, url, headers, body):
         if Live.authorization is None:
@@ -106,7 +105,6 @@ class Live(object):
 
         return response
 
-
     def _get_pool(self, host):
         socket_timeout = 15  # default values
         if hasattr(settings, "RESTCLIENTS_O365_SOCKET_TIMEOUT"):
@@ -121,11 +119,15 @@ class Live(object):
         """
         url = '/%s/oauth2/token' % getattr(
             settings, 'RESTCLIENTS_O365_TENANT', 'test')
-        headers={ 'Accept': 'application/json' }
-        data= {
+        headers = {'Accept': 'application/json'}
+        data = {
             "grant_type": "client_credentials",
-            "client_id": getattr(settings, 'RESTCLIENTS_O365_CLIENT_ID', None),
-            "client_secret": getattr(settings, 'RESTCLIENTS_O365_CLIENT_SECRET', None),
+            "client_id": getattr(settings,
+                                 'RESTCLIENTS_O365_CLIENT_ID',
+                                 None),
+            "client_secret": getattr(settings,
+                                     'RESTCLIENTS_O365_CLIENT_SECRET',
+                                     None),
             "resource": self._api_host
         }
         body = urlencode(data)
@@ -140,13 +142,13 @@ class Live(object):
                     json_data['token_type'], json_data['access_token'])
             else:
                 raise DataFailureException(
-                    url, response.status, 
+                    url, response.status,
                     'Auth token failure: %s - %s' % (
                         json_data.get('error', 'unknown'),
                         json_data.get('error_description', 'no description')))
         except ValueError:
             raise DataFailureException(
-                url, response.status, 
+                url, response.status,
                 'Auth token failure: %s' % (response.data))
 
     def _expired_auth_token(self, response):

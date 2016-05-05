@@ -63,7 +63,8 @@ class O365(object):
         return json_loads(response.data)
 
     def _url(self, url):
-        return '/%s%s' % (getattr(settings, 'RESTCLIENTS_O365_TENANT', 'test'), url)
+        return '/%s%s' % (
+            getattr(settings, 'RESTCLIENTS_O365_TENANT', 'test'), url)
 
     def _params(self, params):
         p = ['api-version=%s' % (self._api_version)]

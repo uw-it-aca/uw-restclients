@@ -26,12 +26,16 @@ class License(O365):
         return user.assigned_licenses
 
     def set_user_licenses(self, user, add=None, remove=None):
-        """Implements: https://msdn.microsoft.com/library/azure/ad/graph/api/functions-and-actions#assignLicense
-        takes "add" as a dictionary of licence sku id's that reference an array of disabled plan id's
+        """Implements: assignLicense
+        https://msdn.microsoft.com/library/azure/ad/graph/api/functions-and-actions#assignLicense
+
+        "add" is a dictionary of licence sku id's that reference an
+        array of disabled plan id's
              add = { '<license-sku-id>': ['<disabled-plan-id'>, ...]
-        and "remove" as an array of license sku id's
+        "remove" is an array of license sku id's
              remove = ['<license-sku-id'>, ...]
-        """
+
+        """  # noqa
         url = '/users/%s' % (user)
         add_licenses = []
         if add:
@@ -53,4 +57,3 @@ class License(O365):
         user = '%s@%s' % (
             netid, settings.RESTCLIENTS_O365_PRINCIPLE_DOMAIAN)
         return self.set_user_licenses(user, add=add, remove=remove)
-        
