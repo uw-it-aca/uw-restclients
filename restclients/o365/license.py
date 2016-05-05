@@ -27,12 +27,25 @@ class License(O365):
 
     def set_user_licenses(self, user, add=None, remove=None):
         """Implements: https://msdn.microsoft.com/library/azure/ad/graph/api/functions-and-actions#assignLicense
+        takes "add" as a dictionary of licence sku id's that reference an array of disabled plan id's
+             add = { '<license-sku-id>': ['<disabled-plan-id'>, ...]
+        and "remove" as an array of license sku id's
+             remove = ['<license-sku-id'>, ...]
         """
         url = '/users/%s' % (user)
+        add_licenses = []
+        if add:
+            for l in add:
+                add_licenses.append({
+                    'skuId': l,
+                    'disabledPlans': add[l]
+                })
+
         body = {
-            'addLicenses': add if add else null,
-            'removeLicenses': remove if remove else null
+            'addLicenses': add_licenses,
+            'removeLicenses': remove if remove else []
         }
+
         data = self._put_resource(url, headers, json=body)
         return data
 
