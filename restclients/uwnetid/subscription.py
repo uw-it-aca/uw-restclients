@@ -1,5 +1,5 @@
 """
-This is the interface for interacting with the UWNetID Subscription Web Service.
+Interface for interacting with the UWNetID Subscription Web Service.
 """
 
 from datetime import datetime
@@ -79,41 +79,10 @@ def _json_to_subscriptions(response_body):
     """
     Returns a list of Subscription objects
     """
-    subscriptions = []
     data = json.loads(response_body)
+    subscriptions = []
     for subscription_data in data.get("subscriptionList", []):
-        subscription = Subscription(
-            uwnetid=data.get('uwNetID'),
-            subscription_code=subscription_data['subscriptionCode'],
-            subscription_name=subscription_data['subscriptionName'],
-            permitted=subscription_data['permitted'],
-            status_code=subscription_data['statusCode'],
-            status_name=subscription_data['statusName'])
-
-        if 'dataField' in subscription_data:
-            subscription.data_field = subscription_data['dataField']
-
-        if 'dataValue' in subscription_data:
-            subscription.data_value = subscription_data['dataValue']
-
-        for action_data in subscription_data.get('actions', []):
-            action = SubscriptionAction(
-                action=action_data)
-            subscription.actions.append(action)
-
-        for permit_data in subscription_data.get('permits', []):
-            permit = SubscriptionPermit(
-                mode=permit_data['mode'],
-                category_code=permit_data['categoryCode'],
-                category_name=permit_data['categoryName'],
-                status_code=permit_data['statusCode'],
-                status_name=permit_data['statusName'])
-
-            if 'dataValue' in permit_data:
-                permit.data_value=permit_data['dataValue']
-
-            subscription.permits.append(permit)
-
-        subscriptions.append(subscription)
+        subscriptions.append(Subscription().from_json(
+            data.get('uwNetID'), subscription_data))
 
     return subscriptions

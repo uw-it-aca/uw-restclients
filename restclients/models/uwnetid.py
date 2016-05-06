@@ -31,13 +31,31 @@ class UwEmailForwarding(models.Model):
 
 
 class Subscription(RestClientsModel):
+    STATUS_ACTIVE = 20
+    STATUS_EXPIRED = 21
+    STATUS_DISUSERED = 22
+    STATUS_PENDING = 23
+    STATUS_INACTIVE = 24
+    STATUS_CANCELLING = 25
+    STATUS_SUSPENDED = 29
+
+    STATUS_CHOICES = (
+        (STATUS_ACTIVE, "Active"),
+        (STATUS_EXPIRED, "Expired"),
+        (STATUS_DISUSERED, "Disusered"),
+        (STATUS_PENDING, "Pending"),
+        (STATUS_INACTIVE, "Inactive"),
+        (STATUS_CANCELLING, "Cancelling"),
+        (STATUS_SUSPENDED, "Suspended"),
+    )
+
     uwnetid = models.SlugField(max_length=16,
                                db_index=True,
                                unique=True)
     subscription_code = models.SmallIntegerField()
     subscription_name = models.CharField(max_length=64)
     permitted = models.BooleanField(default=False)
-    status_code = models.SmallIntegerField()
+    status_code = models.SmallIntegerField(choices=STATUS_CHOICES)
     status_name = models.CharField(max_length=12)
     data_value = models.CharField(max_length=32, null=True)
     data_field = models.CharField(max_length=256, null=True)
@@ -46,6 +64,40 @@ class Subscription(RestClientsModel):
         super(Subscription, self).__init__(*args, **kwargs)
         self.actions = []
         self.permits = []
+
+    def from_json(self, uwnetid, data):
+        self.uwnetid = uwnetid
+        self.subscription_code = int(data['subscriptionCode'])
+        self.subscription_name = data['subscriptionName']
+        self.permitted = data['permitted']
+        self.status_code = int(data['statusCode'])
+        self.status_name = data['statusName']
+
+        if 'dataField' in data:
+            self.data_field = data['dataField']
+
+        if 'dataValue' in data:
+            self.data_value = data['dataValue']
+
+        for action_data in data.get('actions', []):
+            action = SubscriptionAction(
+                action=action_data)
+            self.actions.append(action)
+
+        for permit_data in data.get('permits', []):
+            permit = SubscriptionPermit(
+                mode=permit_data['mode'],
+                category_code=permit_data['categoryCode'],
+                category_name=permit_data['categoryName'],
+                status_code=permit_data['statusCode'],
+                status_name=permit_data['statusName'])
+
+            if 'dataValue' in permit_data:
+                permit.data_value = permit_data['dataValue']
+
+            self.permits.append(permit)
+
+        return self
 
     def json_data(self):
         data = {
