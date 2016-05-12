@@ -38,6 +38,7 @@ class Subscription(RestClientsModel):
     STATUS_INACTIVE = 24
     STATUS_CANCELLING = 25
     STATUS_SUSPENDED = 29
+    STATUS_UNPERMITTED = 101
 
     STATUS_CHOICES = (
         (STATUS_ACTIVE, "Active"),
@@ -47,6 +48,7 @@ class Subscription(RestClientsModel):
         (STATUS_INACTIVE, "Inactive"),
         (STATUS_CANCELLING, "Cancelling"),
         (STATUS_SUSPENDED, "Suspended"),
+        (STATUS_UNPERMITTED, "Unpermitted"),
     )
 
     uwnetid = models.SlugField(max_length=16,
@@ -126,7 +128,7 @@ class Subscription(RestClientsModel):
         return data
 
     def __str__(self):
-        return "{netid: %s, code: %s, status: %s, status_name: %s}" % (
+        return "{netid: %s, subscription_code: %s, status_code: %s, status_name: %s}" % (
             self.uwnetid, self.subscription_code,
             self.status_code, self.status_name)
 

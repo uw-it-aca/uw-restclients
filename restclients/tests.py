@@ -1,6 +1,6 @@
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.uwnetid.subscription import NetidSubscriptionTest
-from restclients.test.uwnetid.subscription import NetidPutSubscriptionTest
+from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest

@@ -1,8 +1,9 @@
 from datetime import date
 from django.test import TestCase
 from django.conf import settings
+from restclients.models.uwnetid import Subscription
 from restclients.uwnetid.subscription import get_email_forwarding, \
-    get_netid_subscriptions, put_netid_subscription
+    get_netid_subscriptions, modify_subscription_status, update_subscription
 from restclients.exceptions import DataFailureException
 
 class EmailForwardingTest(TestCase):
@@ -110,14 +111,23 @@ class NetidSubscriptionTest(TestCase):
                     self.assertFalse(subscription.permitted)
 
 
-class NetidPutSubscriptionTest(TestCase):
-    def test_put_netid_subscription(self):
+class NetidPostSubscriptionTest(TestCase):
+    def test_update_subscription(self):
         with self.settings(
                 RESTCLIENTS_NETID_DAO_CLASS =
                 'restclients.dao_implementation.netid.File'):
-            subscriptions = put_netid_subscription('javerage', 'Modify', 233)
+            subscriptions = update_subscription('javerage', 'Modify', 233)
             self.assertEquals(len(subscriptions), 1)
             self.assertEquals(subscriptions[0].subscription_code, 233)
             self.assertEquals(subscriptions[0].status_code, 20)
             self.assertEquals(len(subscriptions[0].actions), 1)
             self.assertEquals(len(subscriptions[0].permits), 2)
+
+    def test_modify_subscription_status(self):
+        with self.settings(
+                RESTCLIENTS_NETID_DAO_CLASS =
+                'restclients.dao_implementation.netid.File'):
+
+            subscriptions = modify_subscription_status(
+                'javerage', 233, Subscription.STATUS_ACTIVE)
+            self.assertEquals(len(subscriptions), 1)

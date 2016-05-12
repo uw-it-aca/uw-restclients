@@ -35,9 +35,9 @@ def get_resource(url):
     return response.data
 
 
-def put_resource(url, body):
+def post_resource(url, body):
     timer = Timer()
-    response = Uwnetid_DAO().putURL(url, {
+    response = Uwnetid_DAO().postURL(url, {
         'Content-Type': 'application/json',
         'Acept': 'application/json',
     }, body)
