@@ -299,8 +299,8 @@ class Uwnetid_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('uwnetid', url, headers)
 
-    def putURL(self, url, headers, body):
-        return self._putURL('uwnetid', url, headers, body)
+    def postURL(self, url, headers, body):
+        return self._postURL('uwnetid', url, headers, body)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_UWNETID_DAO_CLASS', UwnetidFile)

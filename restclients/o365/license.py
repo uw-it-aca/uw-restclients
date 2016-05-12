@@ -1,7 +1,6 @@
 """
 Provides Office 365 license services via graph web services.
 """
-from django.conf import settings
 from restclients.o365 import O365
 from restclients.o365.user import User
 from restclients.models.o365 import SKU

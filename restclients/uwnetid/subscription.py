@@ -7,7 +7,7 @@ import logging
 import json
 from restclients.models.uwnetid import UwEmailForwarding, \
     Subscription, SubscriptionAction, SubscriptionPermit
-from restclients.uwnetid import get_resource, put_resource
+from restclients.uwnetid import get_resource, post_resource
 
 
 u_forwarding_subscription = 105
@@ -42,25 +42,37 @@ def get_netid_subscriptions(netid, subscription_codes):
     return _json_to_subscriptions(response)
 
 
-def put_netid_subscription(netid, action, subscription_code, data_field=None):
+def modify_subscription_status(netid, subscription_code, status):
     """
-    Put a subscription action for the given netid and subscription_code
+    Post a subscription 'modify' action for the given netid
+    and subscription_code
     """
     url = _netid_subscription_url(netid, subscription_code)
     body = {
-        'actionList': [
-            {
-                'action': action,
-                'subscriptionCode': str(subscription_code),
-                'uwNetID': netid
-            }
-        ]
+        'action': 'modify',
+        'value': status
     }
 
-    if data_field:
-        body.get('message').get('message')['dataField'] = str(data_field)
+    response = post_resource(url, json.dumps(body))
+    return _json_to_subscriptions(response)
 
-    response = put_resource(url, json.dumps(body))
+
+def update_subscription(netid, action, subscription_code, data_field=None):
+    """
+    Post a subscription action for the given netid and subscription_code
+    """
+    url = '/nws/v1/subscription.json'
+    action = {
+        'uwNetID': netid,
+        'action': action,
+        'subscriptionCode': str(subscription_code)
+    }
+
+    if isinstance(data_field, tuple) and len(data_field) == 2:
+        action[data_field[0]] = str(data_field[1])
+
+    body = {'actionList': [action]}
+    response = post_resource(url, json.dumps(body))
     return _json_to_subscriptions(response)
 
 
