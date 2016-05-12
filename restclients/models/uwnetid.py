@@ -128,9 +128,9 @@ class Subscription(RestClientsModel):
         return data
 
     def __str__(self):
-        return "{netid: %s, subscription_code: %s, status_code: %s, status_name: %s}" % (
-            self.uwnetid, self.subscription_code,
-            self.status_code, self.status_name)
+        return "{netid: %s, %s: %s, %s: %s, status_name: %s}" % (
+            self.uwnetid, "subscription_code", self.subscription_code,
+            "status_code", self.status_code, self.status_name)
 
 
 class SubscriptionPermit(RestClientsModel):
