@@ -4,7 +4,7 @@ Office 365 DAO implementations.
 
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url, \
-    post_mockdata_url, convert_to_platform_safe
+    post_mockdata_url, patch_mockdata_url, convert_to_platform_safe
 from restclients.exceptions import DataFailureException
 from django.conf import settings
 from os.path import abspath, dirname
@@ -34,6 +34,23 @@ class File(object):
             handle = open(convert_to_platform_safe(path))
             response.data = handle.read()
             response.status = 200
+        except IOError:
+            response.status = 404
+
+        return response
+
+    def patchURL(self, url, headers, body):
+        response = patch_mockdata_url("o365", "file", url, headers, body)
+        if response.status == 400:
+            return response
+
+        path = abspath(dirname(__file__) + "/../resources/o365/file" +
+                       url + ".PATCH")
+
+        try:
+            handle = open(convert_to_platform_safe(path))
+            response.data = handle.read()
+            response.status = 204
         except IOError:
             response.status = 404
 
@@ -102,6 +119,23 @@ class Live(object):
 
         if self._expired_auth_token(response):
             return self.postURL(url, headers, body)
+
+        return response
+
+    def patchURL(self, url, headers, body):
+        if Live.authorization is None:
+            Live.authorization = self._get_auth_token()
+
+        headers['Authorization'] = Live.authorization
+        if Live.pool is None:
+            Live.pool = self._get_pool(self._api_host)
+
+        response = get_live_url(Live.pool, 'PATCH', self._api_host,
+                                url, headers=headers, body=body,
+                                service_name='o365')
+
+        if self._expired_auth_token(response):
+            return self.patchURL(url, headers, body)
 
         return response
 

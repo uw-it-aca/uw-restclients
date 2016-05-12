@@ -93,6 +93,11 @@ class MY_DAO(DAO_BASE):
         response = dao.putURL(url, headers, body)
         return response
 
+    def _patchURL(self, service, url, headers, body=None):
+        dao = self._getDAO()
+        response = dao.patchURL(url, headers, body)
+        return response
+
 
 class Subdomain_DAO(MY_DAO):
     def _getURL(self, service, url, headers, subdomain):
@@ -370,6 +375,9 @@ class O365_DAO(MY_DAO):
 
     def postURL(self, url, headers, body):
         return self._postURL('o365', url, headers, body)
+
+    def patchURL(self, url, headers, body):
+        return self._patchURL('o365', url, headers, body)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_O365_DAO_CLASS', O365File)
