@@ -50,7 +50,7 @@ def modify_subscription_status(netid, subscription_code, status):
     url = _netid_subscription_url(netid, subscription_code)
     body = {
         'action': 'modify',
-        'value': status
+        'status': status
     }
 
     response = post_resource(url, json.dumps(body))
