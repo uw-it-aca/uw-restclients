@@ -65,7 +65,7 @@ def get_live_url(con_pool,
     :param headers:
         headers to include with the request
     :param body:
-        the POST, PUT body of the request
+        the POST, PUT, PATCH body of the request
     """
     timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", con_pool.timeout)
     start_time = time.time()

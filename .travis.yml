@@ -20,7 +20,7 @@ before_script:
   - if [[ $TRAVIS_PYTHON_VERSION != 2.6* ]]; then python manage.py migrate --noinput; fi
   - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then python manage.py syncdb --noinput; fi
 script:
-  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/hfs/,restclients/r25,restclients/nws.py,restclients/sms.py,restclients/library/ restclients/
+  - pep8 --exclude=migrations,restclients/sws/,restclients/canvas/,restclients/uwnetid/,restclients/test/,restclients/signals/,restclients/hfs/,restclients/r25,restclients/o365/,restclients/nws.py,restclients/sms.py,restclients/library/ restclients/
   - python -m compileall restclients/
   - coverage run --source=restclients manage.py test restclients
 after_script:
