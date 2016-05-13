@@ -6,9 +6,6 @@ from restclients.models.sws import SectionStatus
 course_res_url_prefix = "/student/v5/course"
 
 def get_section_status_by_label(label):
-    import warnings
-    warnings.warn("Totally untested against live resources!  Don't count on get_section_status_by_label in v5!")
-
     if not section_label_pattern.match(label):
         raise InvalidSectionID(label)
 
