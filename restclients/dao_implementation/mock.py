@@ -222,6 +222,30 @@ def put_mockdata_url(service_name, implementation_name,
     return response
 
 
+def patch_mockdata_url(service_name, implementation_name,
+                       url, headers, body,
+                       dir_base=dirname(__file__)):
+    """
+    :param service_name:
+        possible "sws", "pws", "book", "hfs", etc.
+    :param implementation_name:
+        possible values: "file", etc.
+    """
+    # Currently this patch method does not return a response body
+    response = MockHTTP()
+    if body is not None:
+        if "dispatch" in url:
+            response.status = 200
+        else:
+            response.status = 201
+        response.headers = {"X-Data-Source": service_name + " file mock data",
+                            "Content-Type": headers['Content-Type']}
+    else:
+        response.status = 400
+        response.data = "Bad Request: no PATCH body"
+    return response
+
+
 def delete_mockdata_url(service_name, implementation_name,
                         url, headers,
                         dir_base=dirname(__file__)):

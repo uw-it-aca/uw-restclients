@@ -1,0 +1,170 @@
+{
+  "uwNetID" : "javerage",
+  "subscriptionList" : [
+    {
+      "subscriptionCode" : 60,
+      "subscriptionName" : "A Kerberos Principal",
+      "permitted" : true,
+      "statusCode" : 20,
+      "statusName" : "Active",
+      "actions" : [
+        "Show",
+        "Disuser",
+        "Deactivate",
+        "Permit",
+        "Deny"
+      ],
+      "dataField" : "KPW",
+      "permits" : [
+        {
+          "type" : "permit",
+          "mode" : "implicit",
+          "categoryCode" : 11,
+          "categoryName" : "Department",
+          "statusCode" : 1,
+          "statusName" : "current"
+        }
+      ]
+    },
+    {
+      "subscriptionCode" : 20,
+      "subscriptionName" : "Homer Account",
+      "permitted" : true,
+      "statusCode" : 20,
+      "statusName" : "Active",
+      "actions" : [
+        "Show",
+        "Disuser",
+        "Deactivate",
+        "Permit",
+        "Deny",
+        "Activate"
+      ],
+      "permits" : [
+        {
+          "type" : "permit",
+          "mode" : "implicit",
+          "categoryCode" : 11,
+          "categoryName" : "Department",
+          "statusCode" : 1,
+          "statusName" : "current"
+        }
+      ]
+    },
+    {
+      "subscriptionCode" : 100,
+      "subscriptionName" : "UW Email Inbox",
+      "permitted" : true,
+      "statusCode" : 20,
+      "statusName" : "Active",
+      "actions" : [
+        "Show",
+        "Disuser",
+        "Deactivate",
+        "Permit",
+        "Deny",
+        "Activate"
+      ],
+      "permits" : [
+        {
+          "type" : "permit",
+          "mode" : "implicit",
+          "categoryCode" : 11,
+          "categoryName" : "Department",
+          "statusCode" : 1,
+          "statusName" : "current"
+        }
+      ]
+    },
+    {
+      "subscriptionCode" : 105,
+      "subscriptionName" : "U Forwarding",
+      "permitted" : true,
+      "statusCode" : 20,
+      "statusName" : "Active",
+      "actions" : [
+        "Show",
+        "Disuser",
+        "Modify",
+        "Deactivate",
+        "Permit",
+        "Deny",
+        "Activate"
+      ],
+      "dataField" : "FWD",
+      "dataValue" : "javerage@javerage.deskmail.washington.edu",
+      "permits" : [
+        {
+          "type" : "permit",
+          "mode" : "implicit",
+          "categoryCode" : 11,
+          "categoryName" : "Department",
+          "statusCode" : 1,
+          "statusName" : "current"
+        }
+      ]
+    },
+    {
+      "subscriptionCode" : 137,
+      "subscriptionName" : "Web Publishing Limits",
+      "permitted" : true,
+      "statusCode" : 20,
+      "statusName" : "Active",
+      "actions" : [
+        "Show",
+        "Disuser",
+        "Modify",
+        "Deactivate",
+        "Permit",
+        "Deny",
+        "Activate",
+        "Unpermit"
+      ],
+      "dataField" : "LMT",
+      "dataValue" : "disk=1024",
+      "permits" : [
+        {
+          "type" : "permit",
+          "mode" : "explicit",
+          "categoryCode" : 0,
+          "categoryName" : "Any Category",
+          "statusCode" : 1,
+          "statusName" : "current",
+          "dataValue" : "disk=1024"
+        },
+        {
+          "type" : "permit",
+          "mode" : "implicit",
+          "categoryCode" : 0,
+          "categoryName" : "Any Category",
+          "statusCode" : 1,
+          "statusName" : "current",
+          "dataValue" : "rate=4.17"
+        },
+        {
+          "type" : "permit",
+          "mode" : "implicit",
+          "categoryCode" : 11,
+          "categoryName" : "Department",
+          "statusCode" : 1,
+          "statusName" : "current",
+          "dataValue" : "max=1024.0 disk=1024.0"
+        }
+      ]
+    },
+    {
+      "subscriptionCode" : 41,
+      "subscriptionName" : "Melville Account",
+      "permitted" : false,
+      "statusCode" : 101,
+      "statusName" : "Unpermitted",
+      "actions" : [
+        "Show",
+        "Activate",
+        "Permit",
+        "Deny"
+      ]
+    }
+  ],
+  "timeStamp" : "Wed, 18 Feb 2015 17:21:55 -0800"
+}

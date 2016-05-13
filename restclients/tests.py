@@ -1,4 +1,6 @@
 from restclients.test.uwnetid.subscription import EmailForwardingTest
+from restclients.test.uwnetid.subscription import NetidSubscriptionTest
+from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
@@ -96,6 +98,9 @@ from restclients.test.r25.events import R25TestEvents
 from restclients.test.r25.spaces import R25TestSpaces
 
 from restclients.test.myplan import MyPlanTestData
+
+from restclients.test.o365.user import O365TestUser
+from restclients.test.o365.license import O365TestLicense
 
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
