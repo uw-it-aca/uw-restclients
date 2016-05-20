@@ -134,12 +134,29 @@ class Subscription(RestClientsModel):
 
 
 class SubscriptionPermit(RestClientsModel):
+    STAFF_CATEGORY_CODE = 4
+    FACULTY_CATEGORY_CODE = 5
+    CURRENT_STATUS_CODE = 1
+    IMPLICIT_MODE = "implicit"
+
     mode = models.CharField(max_length=16)
     category_code = models.SmallIntegerField()
     category_name = models.CharField(max_length=32)
     status_code = models.SmallIntegerField()
     status_name = models.CharField(max_length=16)
     data_value = models.CharField(max_length=256, null=True)
+
+    def is_mode_implicit(self):
+        return self.mode == SubscriptionPermit.IMPLICIT_MODE
+
+    def is_category_staff(self):
+        return self.category_code == SubscriptionPermit.STAFF_CATEGORY_CODE
+
+    def is_category_faculty(self):
+        return self.category_code == SubscriptionPermit.FACULTY_CATEGORY_CODE
+
+    def is_status_current(self):
+        return self.status_code == SubscriptionPermit.CURRENT_STATUS_CODE
 
     def json_data(self):
         data = {
