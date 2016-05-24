@@ -355,6 +355,18 @@ class SWSTestSectionData(TestCase):
 
             self.assertEquals(len(sections), 2)
 
+    def test_changed_sections_by_term_and_kwargs(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS=SWSF,
+                RESTCLIENTS_PWS_DAO_CLASS=PWSF):
+
+            changed_date = datetime(2013, 12, 12).date()
+            term = Term(quarter="winter", year=2013)
+            sections = get_changed_sections_by_term(changed_date, term,
+                curriculum_abbreviation="ENDO", transcriptable_course="all")
+
+            self.assertEquals(len(sections), 3)
+
     def test_instructor_published(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS=SWSF,
