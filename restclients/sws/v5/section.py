@@ -19,13 +19,14 @@ from restclients.sws.term import get_term_by_year_and_quarter
 course_url_pattern = re.compile(r'^\/student\/v5\/course\/')
 course_res_url_prefix = "/student/v5/course"
 section_res_url_prefix = "/student/v5/section.json"
-section_label_pattern = re.compile('^\d{4},'                           # year
-                                   '(?:winter|spring|summer|autumn),'  # quarter
-                                   '[\w& ]+,'                          # curriculum
-                                   '\d{3}\/'                           # course number
-                                   '[A-Z][A-Z0-9]?$',                  # section id
-                                   re.VERBOSE
-                                   )
+section_label_pattern = re.compile(
+    '^\d{4},'                           # year
+    '(?:winter|spring|summer|autumn),'  # quarter
+    '[\w& ]+,'                          # curriculum
+    '\d{3}\/'                           # course number
+    '[A-Z][A-Z0-9]?$',                  # section id
+    re.VERBOSE
+)
 logger = logging.getLogger(__name__)
 
 
@@ -59,12 +60,12 @@ def get_sections_by_curriculum_and_term(curriculum, term):
     return _json_to_sectionref(get_resource(url), term)
 
 
-def get_changed_sections_by_term(changed_since_date, term):
-    url = "%s?%s" % (section_res_url_prefix,
-                     urlencode({"year": term.year,
-                                "quarter": term.quarter.lower(),
-                                "changed_since_date": changed_since_date,
-                                "page_size": 1000}))
+def get_changed_sections_by_term(changed_since_date, term, **kwargs):
+    kwargs.update({"year": term.year,
+                   "quarter": term.quarter.lower(),
+                   "changed_since_date": changed_since_date,
+                   "page_size": 1000})
+    url = "%s?%s" % (section_res_url_prefix, urlencode(kwargs))
 
     sections = []
     while url is not None:
@@ -124,7 +125,8 @@ def get_section_by_url(url,
 
     return _json_to_section(
         get_resource(url),
-        include_instructor_not_on_time_schedule=include_instructor_not_on_time_schedule)
+        include_instructor_not_on_time_schedule=(
+            include_instructor_not_on_time_schedule))
 
 
 def get_section_by_label(label,
@@ -185,8 +187,9 @@ def _json_to_section(section_data,
     pws = PWS()
     section = Section()
 
-    if term is not None and (term.year == int(section_data["Course"]["Year"]) and
-                             term.quarter == section_data["Course"]["Quarter"]):
+    if term is not None and (
+            term.year == int(section_data["Course"]["Year"]) and
+            term.quarter == section_data["Course"]["Quarter"]):
         section.term = term
     else:
         section.term = get_term_by_year_and_quarter(
@@ -203,7 +206,8 @@ def _json_to_section(section_data,
     section.institute_name = section_data.get("InstituteName", "")
     section.primary_lms = section_data.get("PrimaryLMS", None)
     section.lms_ownership = section_data.get("LMSOwnership", None)
-    section.is_independent_start = section_data.get("IsIndependentStart", False)
+    section.is_independent_start = section_data.get("IsIndependentStart",
+                                                    False)
 
     section.section_type = section_data["SectionType"]
     if "independent study" == section.section_type:
@@ -295,15 +299,16 @@ def _json_to_section(section_data,
         for instructor_data in meeting_data["Instructors"]:
             # TSPrint: True
             # Instructor information currently listed on the Time Schedule
-            if instructor_data["TSPrint"] or include_instructor_not_on_time_schedule:
+            if (instructor_data["TSPrint"] or
+                    include_instructor_not_on_time_schedule):
                 pdata = instructor_data["Person"]
 
                 if "RegID" in pdata and pdata["RegID"] is not None:
                     try:
                         instructor = pws.get_person_by_regid(pdata["RegID"])
                     except:
-                        instructor = Person(uwregid = pdata["RegID"],
-                                            display_name = pdata["Name"])
+                        instructor = Person(uwregid=pdata["RegID"],
+                                            display_name=pdata["Name"])
                     instructor.TSPrint = instructor_data["TSPrint"]
                     meeting.instructors.append(instructor)
 
@@ -332,7 +337,8 @@ def _json_to_section(section_data,
                 if final_data["StartTime"]:
                     start_string = "%s : %s" % (final_data["Date"],
                                                 final_data["StartTime"])
-                    final_exam.start_date = strptime(start_string, final_format)
+                    final_exam.start_date = strptime(start_string,
+                                                     final_format)
 
                 if final_data["EndTime"]:
                     end_string = "%s : %s" % (final_data["Date"],
