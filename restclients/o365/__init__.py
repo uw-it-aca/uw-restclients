@@ -6,6 +6,7 @@ from restclients.dao import O365_DAO
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
 from urllib3 import PoolManager
+from urllib import urlencode
 import warnings
 from json import loads as json_loads
 from json import dumps as json_dumps
@@ -24,7 +25,7 @@ class O365(object):
     The O365 Management API
     """
 
-    _api_version = '1.5'
+    _api_version = '1.6'
 
     def get_resource(self, path, params=None):
         """
@@ -94,12 +95,13 @@ class O365(object):
             getattr(settings, 'RESTCLIENTS_O365_TENANT', 'test'), url)
 
     def _params(self, params=None):
-        p = ['api-version=%s' % (self._api_version)]
-        if params and len(params):
+        query_string = [urlencode({'api-version': self._api_version})]
+        if params:
             for key, val in params.iteritems():
                 if isinstance(val, list):
-                    p.extend([key + '[]=' + str(v) for v in val])
+                    query_string.extend(
+                        [urlencode({"%s[]" % key: str(v)}) for v in val])
                 else:
-                    p.append(key + '=' + str(val))
+                    query_string.append(urlencode({key: str(val)}))
 
-        return "?%s" % ('&'.join(p))
+        return "?%s" % "&".join(query_string)
