@@ -24,6 +24,9 @@ class User(O365):
                 qs = parse_qs(parsed_url.query)
                 if '$skiptoken' in qs:
                     url = "/%s" % parsed_url.path
+                    if not params:
+                        params = {}
+
                     params['$skiptoken'] = qs['$skiptoken'][0]
 
         return all_users
