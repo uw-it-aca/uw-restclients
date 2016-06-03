@@ -79,6 +79,7 @@ def proxy(request, service, url):
             else:
                 subdomain = url[:2]
                 url = url[3:]
+
     elif service == "calendar":
         dao = TrumbaCalendar_DAO()
         use_pre = True
@@ -99,6 +100,19 @@ def proxy(request, service, url):
         if service == "iasystem" and subdomain is not None:
             response = dao.getURL(url, headers, subdomain)
         else:
+            if service == "libcurrics":
+                if "?campus=" in url:
+                    url = url.replace("?campus=", "/")
+                elif "course?" in url:
+                    url_prefix = re.sub(r'\?.*$', "", url)
+                    url = "%s/%s/%s/%s/%s/%s" % (
+                        url_prefix,
+                        request.GET["year"],
+                        request.GET["quarter"],
+                        request.GET["curriculum_abbr"],
+                        request.GET["course_number"],
+                        request.GET["section_id"])
+
             response = dao.getURL(url, headers)
     except Exception as ex:
         response = MockHTTP()

@@ -1,0 +1,29 @@
+<h1>Course Subject Guide Request (Proxy)</h1>
+    <form method="GET" action="course">
+
+        <div class="form-group">
+        Year: <input name="year" type="number" maxlength="4">
+        <br>&nbsp;<br>
+        Term: <select name="quarter" maxlength="6">
+            <option value="SPR">spring</option>
+            <option value="SUM">summer</option>
+            <option value="AUT">autumn</option>
+            <option value="WIN">winter</option>
+        </select>
+        <br>&nbsp;<br>
+
+        Curriculum abbr:
+            <input type="text" name="curriculum_abbr" maxlength="10">
+        <br>&nbsp;<br>
+
+        Course number:
+            <input type="number" name="course_number" maxlength="6">
+        <br>&nbsp;<br>
+
+        Section id:
+            <input type="text" name="section_id" maxlength="3">
+        <br>&nbsp;<br>
+
+        <input type="submit" value="Go" class="btn btn-primary btn-sm">
+        </div>
+    </form>

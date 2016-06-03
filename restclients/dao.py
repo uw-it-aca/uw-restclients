@@ -19,7 +19,6 @@ from restclients.dao_implementation.trumba import FileSea
 from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
-from restclients.dao_implementation.digitlib import File as DigitlibFile
 from restclients.dao_implementation.grad import File as GradFile
 from restclients.dao_implementation.library.mylibinfo import (
     File as MyLibInfoFile)
