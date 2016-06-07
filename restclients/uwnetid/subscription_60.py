@@ -42,3 +42,13 @@ def is_current_faculty(netid):
         if permit.is_category_faculty() and permit.is_status_current():
             return True
     return False
+
+
+def has_current_permit(netid):
+    permits = _get_kerberos_subs_permits(netid)
+    if permits is None:
+        return False
+    for permit in permits:
+        if permit.is_status_current():
+            return True
+    return False
