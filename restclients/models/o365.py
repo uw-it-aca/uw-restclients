@@ -105,7 +105,8 @@ class User(models.Model):
             'state': self.state,
             'postal_code': self.postal_code,
             'country': self.country,
-            'physical_delivery_office_name': self.physical_delivery_office_name,
+            'physical_delivery_office_name': getattr(
+                self, 'physical_delivery_office_name'),
             'telephone_number': self.telephone_number,
             'mobile': self.mobile,
             'password_policies': self.password_policies,
