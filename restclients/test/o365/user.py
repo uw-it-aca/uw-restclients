@@ -17,6 +17,21 @@ class O365TestUser(TestCase):
             self.assertEquals(len(users[0].assigned_plans), 1)
             self.assertEquals(users[0].assigned_plans[0].service_plan_name, 'MUMBLE')
 
+    def test_users_generator_info(self):
+        with self.settings(
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.o365.File'):
+
+            users = []
+            user = User()
+            for u in user.get_users_generator():
+                users.append(u)
+
+            self.assertEquals(len(users), 2)
+            self.assertEquals(len(users[0].assigned_licenses), 1)
+            self.assertEquals(users[0].assigned_licenses[0].sku_id, 'aaaaaaaa-1111-2222-3333-4444-ffffffffffff')
+            self.assertEquals(len(users[0].assigned_plans), 1)
+            self.assertEquals(users[0].assigned_plans[0].service_plan_name, 'MUMBLE')
+
     def test_user_info(self):
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.o365.File'):

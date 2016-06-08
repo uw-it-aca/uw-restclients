@@ -8,37 +8,62 @@ from urlparse import urlparse, parse_qs
 
 
 class User(O365):
-    def get_users(self, params=None, page_callback=None):
-        url = '/users'
+    def __init__(self, *args, **kwargs):
+        super(User, self).__init__(*args, **kwargs)
+        self._per_page = None
+        if 'per_page' in kwargs:
+            self._per_page = kwargs['per_page']
+
+    def get_users(self, params=None):
         all_users = []
+        url = '/users'
         while url:
             users, nextlink = self._get_users_from_url(url, params=params)
-            if page_callback:
-                page_callback(users)
-            else:
-                all_users.extend(users)
-
-            url = None
-            if nextlink:
-                parsed_url = urlparse(nextlink)
-                qs = parse_qs(parsed_url.query)
-                if '$skiptoken' in qs:
-                    url = "/%s" % parsed_url.path
-                    if not params:
-                        params = {}
-
-                    params['$skiptoken'] = qs['$skiptoken'][0]
+            all_users.extend(users)
+            url, params = self._next_page(nextlink, params)
 
         return all_users
 
+    def get_users_generator(self, params=None, formatter=None):
+        url = '/users'
+        while url:
+            users, nextlink = self._get_users_from_url(url, params=params)
+            for user in users:
+                yield formatter(user) if formatter else user
+
+            url, params = self._next_page(nextlink, params)
+
     def _get_users_from_url(self, url, params=None):
-        data = self.get_resource(url, params=params)
+        data = self.get_resource(url, params=self._params(params))
         users = []
         for user_data in data.get('value', []):
             users.append(UserModel().from_json(user_data))
 
         nextlink = data['odata.nextLink'] if 'odata.nextLink' in data else None
         return users, nextlink
+
+    def _next_page(self, nextlink, params=None):
+        url = None
+        if nextlink:
+            parsed_url = urlparse(nextlink)
+            qs = parse_qs(parsed_url.query)
+            if '$skiptoken' in qs:
+                url = "/%s" % parsed_url.path
+                if not params:
+                    params = {}
+
+                params['$skiptoken'] = qs['$skiptoken'][0]
+
+        return url, params
+
+    def _params(self, params):
+        if not params:
+            params = {}
+
+        if self._per_page:
+            params['$top'] = self._per_page
+
+        return params
 
     def get_user(self, user):
         url = '/users/%s' % (user)

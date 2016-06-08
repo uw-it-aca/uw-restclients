@@ -27,11 +27,14 @@ class O365(object):
 
     _api_version = '1.6'
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     def get_resource(self, path, params=None):
         """
         O365 GET method. Return representation of the requested resource.
         """
-        url = '%s%s' % (path, self._params(params))
+        url = '%s%s' % (path, self._param_list(params))
         headers = {
             'Accept': 'application/json;odata=minimalmetadata'
         }
@@ -47,7 +50,7 @@ class O365(object):
         """
         O365 POST method.
         """
-        url = '%s%s' % (path, self._params())
+        url = '%s%s' % (path, self._param_list())
         headers = {
             'Accept': 'application/json;odata=minimalmetadata'
         }
@@ -68,7 +71,7 @@ class O365(object):
         """
         O365 PATCH method.
         """
-        url = '%s%s' % (path, self._params())
+        url = '%s%s' % (path, self._param_list())
         headers = {
             'Accept': 'application/json;odata=minimalmetadata'
         }
@@ -94,7 +97,7 @@ class O365(object):
         return '/%s%s' % (
             getattr(settings, 'RESTCLIENTS_O365_TENANT', 'test'), url)
 
-    def _params(self, params=None):
+    def _param_list(self, params=None):
         query_string = [urlencode({'api-version': self._api_version})]
         if params:
             for key, val in params.iteritems():

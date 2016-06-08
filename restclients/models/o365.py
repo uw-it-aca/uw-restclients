@@ -17,7 +17,7 @@ class User(models.Model):
     given_name = models.CharField(max_length=32, null=True)
     surname = models.CharField(max_length=32, null=True)
     department = models.CharField(max_length=36, null=True)
-    last_dir_sync_time = models.TimeField()
+    last_dir_sync_time = models.TimeField(null=True)
     object_type = models.CharField(max_length=16, null=True)
     street_address = models.CharField(max_length=256, null=True)
     state = models.CharField(max_length=32, null=True)
@@ -42,7 +42,6 @@ class User(models.Model):
         self.mail = data.get('mail')
         self.surname = data.get('surname')
         self.given_name = data.get('givenName')
-        self.last_dir_sync_time = date_parse(data.get('lastDirSyncTime'))
         self.object_type = data.get('objectType')
         self.street_address = data.get('streetAddress')
         self.state = data.get('state')
@@ -55,6 +54,10 @@ class User(models.Model):
         self.password_policies = data.get('passwordPolicies')
         self.display_name = data.get('displayName')
         self.preferred_language = data.get('preferredLanguage')
+
+        last_dir_sync = data.get('lastDirSyncTime')
+        self.last_dir_sync_time = date_parse(
+            last_dir_sync) if last_dir_sync else None
 
         self.assigned_licenses = []
         for license_data in data.get('assignedLicenses', []):
@@ -82,6 +85,60 @@ class User(models.Model):
 
         return self
 
+    def json_data(self):
+        json_data = {
+            'object_id': self.object_id,
+            'immutable_id': self.immutable_id,
+            'user_type': self.user_type,
+            'account_enabled': self.account_enabled,
+            'dir_sync_enabled': self.dir_sync_enabled,
+            'user_principal_name': self.user_principal_name,
+            'mail_nick_name': self.mail_nick_name,
+            'job_title': self.job_title,
+            'department': self.department,
+            'mail': self.mail,
+            'surname': self.surname,
+            'given_name': self.given_name,
+            'last_dir_sync_time': self.last_dir_sync_time.isoformat(),
+            'object_type': self.object_type,
+            'street_address': self.street_address,
+            'state': self.state,
+            'postal_code': self.postal_code,
+            'country': self.country,
+            'physical_delivery_office_name': self.physical_delivery_office_name,
+            'telephone_number': self.telephone_number,
+            'mobile': self.mobile,
+            'password_policies': self.password_policies,
+            'display_name': self.display_name,
+            'preferred_language': self.preferred_language
+        }
+
+        json_data['assigned_licenses'] = []
+        for license_data in self.assigned_licenses:
+            json_data['assigned_licenses'].append(license_data.json_data())
+
+        json_data['assigned_plans'] = []
+        for plan in self.assigned_plans:
+            json_data['assigned_plans'].append(plan.json_data())
+
+        json_data['provisioned_plans'] = []
+        for plan in self.provisioned_plans:
+            json_data['provisioned_plans'].append(plan.json_data())
+
+        json_data['other_mails'] = []
+        for mail in self.other_mails:
+            json_data['other_mails'].append(mail)
+
+        json_data['proxy_addresses'] = []
+        for addr in self.proxy_addresses:
+            json_data['proxy_addresses'].append("%s" % addr)
+
+        json_data['provisioning_errors'] = []
+        for err in self.provisioning_errors:
+            json_data['provisioning_errors'].append("%s" % err)
+
+        return json_data
+
 
 class License(models.Model):
     sku_id = models.CharField(max_length=36)
@@ -99,9 +156,9 @@ class License(models.Model):
             'skuId': self.sku_id
         }
 
-        data[disabledPlans] = []
+        data['disabledPlans'] = []
         for plan in self.disabled_plans:
-            data['disabledPlans'].append(plan.json_data())
+            data['disabledPlans'].append(plan)
 
         return data
 
@@ -109,8 +166,11 @@ class License(models.Model):
 class Mail(models.Model):
     mail = models.CharField(max_length=256, null=True)
 
-    def _json_to_mail(self, data):
+    def from_json(self, data):
         return Mail(mail=data)
+
+    def json_data(self):
+        return self.mail
 
 
 class Plan(models.Model):
@@ -125,6 +185,9 @@ class Plan(models.Model):
 
         return self
 
+    def json_data(self):
+        return self.sku_id
+
 
 class PrepaidUnits(models.Model):
     warning = models.PositiveSmallIntegerField()
@@ -135,8 +198,14 @@ class PrepaidUnits(models.Model):
         self.warning = int(data.get('warning'))
         self.enabled = int(data.get('enabled'))
         self.suspended = int(data.get('suspended'))
-
         return self
+
+    def json_data(self):
+        return {
+            'warning': self.warning,
+            'enabled': self.enabled,
+            'suspended': self.suspended
+        }
 
 
 class SKU(models.Model):
@@ -163,6 +232,23 @@ class SKU(models.Model):
 
         return self
 
+    def json_data(self):
+        json_data = {
+            'sku_id': self.sku_id,
+            'sku_part_number': self.sku_part_number,
+            'capability_status': self.capability_status,
+            'object_id': self.object_id,
+            'consumed_units': self.consumed_units,
+            'capability_status': self.capability_status,
+            'prepaid_units': self.prepaid_units.json_data()
+        }
+
+        json_data['service_plans'] = []
+        for plan in self.service_plans:
+            json_data['service_plans'].append(self.service_plans.json_data())
+
+        return json_data
+
 
 class ServicePlan(models.Model):
     service = models.CharField(max_length=64)
@@ -180,3 +266,12 @@ class ServicePlan(models.Model):
             if 'assignedTimestamp' in data else None
 
         return self
+
+    def json_data(self):
+        return {
+            'service': self.service,
+            'capability_status': self.capability_status,
+            'service_plan_id': self.service_plan_id,
+            'service_plan_name': self.service_plan_name,
+            'assigned_timestamp': self.assigned_timestamp.isoformat()
+        }
