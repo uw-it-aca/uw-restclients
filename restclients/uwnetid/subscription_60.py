@@ -11,21 +11,32 @@ u_kerberos_subscription_code = 60
 logger = logging.getLogger(__name__)
 
 
-def _get_kerberos_subs_permits(netid):
+def get_kerberos_subs(netid):
+    """
+    Return a restclients.models.uwnetid.Subscription objects
+    on the given uwnetid
+    """
+    subs = get_netid_subscriptions(netid, u_kerberos_subscription_code)
+    if subs is not None:
+        for subscription in subs:
+            if subscription.subscription_code == u_kerberos_subscription_code:
+                return subscription
+    return None
+
+
+def get_kerberos_subs_permits(netid):
     """
     Return a list of restclients.models.uwnetid.SubscriptionPermit objects
     on the given uwnetid
     """
-    subscriptions = get_netid_subscriptions(netid,
-                                            u_kerberos_subscription_code)
-    for subscription in subscriptions:
-        if subscription.subscription_code == u_kerberos_subscription_code:
-            return subscription.permits
+    subs = get_kerberos_subs(netid)
+    if subs is not None:
+        return subs.permits
     return None
 
 
 def is_current_staff(netid):
-    permits = _get_kerberos_subs_permits(netid)
+    permits = get_kerberos_subs_permits(netid)
     if permits is None:
         return False
     for permit in permits:
@@ -35,7 +46,7 @@ def is_current_staff(netid):
 
 
 def is_current_faculty(netid):
-    permits = _get_kerberos_subs_permits(netid)
+    permits = get_kerberos_subs_permits(netid)
     if permits is None:
         return False
     for permit in permits:
@@ -44,11 +55,11 @@ def is_current_faculty(netid):
     return False
 
 
-def has_current_permit(netid):
-    permits = _get_kerberos_subs_permits(netid)
-    if permits is None:
+def has_active_kerberos_subs(netid):
+    """
+    Return true if the kerberos subscription is active and permitted
+    """
+    subs = get_kerberos_subs(netid)
+    if subs is None:
         return False
-    for permit in permits:
-        if permit.is_status_current():
-            return True
-    return False
+    return subs.is_status_active() and subs.permitted

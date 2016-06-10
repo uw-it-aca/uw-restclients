@@ -67,6 +67,9 @@ class Subscription(RestClientsModel):
         self.actions = []
         self.permits = []
 
+    def is_status_active(self):
+        return self.status_code == Subscription.STATUS_ACTIVE
+
     def from_json(self, uwnetid, data):
         self.uwnetid = uwnetid
         self.subscription_code = int(data['subscriptionCode'])
@@ -86,18 +89,19 @@ class Subscription(RestClientsModel):
                 action=action_data)
             self.actions.append(action)
 
-        for permit_data in data.get('permits', []):
-            permit = SubscriptionPermit(
-                mode=permit_data['mode'],
-                category_code=permit_data['categoryCode'],
-                category_name=permit_data['categoryName'],
-                status_code=permit_data['statusCode'],
-                status_name=permit_data['statusName'])
+        if 'permits' in data:
+            for permit_data in data.get('permits', []):
+                permit = SubscriptionPermit(
+                    mode=permit_data['mode'],
+                    category_code=permit_data['categoryCode'],
+                    category_name=permit_data['categoryName'],
+                    status_code=permit_data['statusCode'],
+                    status_name=permit_data['statusName'])
 
-            if 'dataValue' in permit_data:
-                permit.data_value = permit_data['dataValue']
+                if 'dataValue' in permit_data:
+                    permit.data_value = permit_data['dataValue']
 
-            self.permits.append(permit)
+                self.permits.append(permit)
 
         return self
 
@@ -128,9 +132,12 @@ class Subscription(RestClientsModel):
         return data
 
     def __str__(self):
-        return "{netid: %s, %s: %s, %s: %s, status_name: %s}" % (
-            self.uwnetid, "subscription_code", self.subscription_code,
-            "status_code", self.status_code, self.status_name)
+        return "{netid: %s, %s: %s, %s: %s, %s: %s, %s: %s}" % (
+            self.uwnetid,
+            "subscription_code", self.subscription_code,
+            "permitted", self.permitted,
+            "status_code", self.status_code,
+            "status_name", self.status_name)
 
 
 class SubscriptionPermit(RestClientsModel):
