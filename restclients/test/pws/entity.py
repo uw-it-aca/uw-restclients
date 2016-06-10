@@ -26,7 +26,9 @@ class PWSTestEntityData(TestCase):
             self.assertRaises(InvalidNetID, pws.get_entity_by_netid, " ")
             self.assertRaises(InvalidNetID, pws.get_entity_by_netid, "one two")
             self.assertRaises(InvalidNetID, pws.get_entity_by_netid, "</html>")
-            self.assertRaises(InvalidNetID, pws.get_entity_by_netid, "aaaaaaaaa")
+            self.assertRaises(InvalidNetID,
+                              pws.get_entity_by_netid,
+                              "notareal_uwnetid")
             self.assertRaises(DataFailureException, pws.get_entity_by_netid, "hello")
 
     def test_bad_regids(self):
