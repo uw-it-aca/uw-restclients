@@ -17,8 +17,9 @@ class SWSTestGradeRoster(TestCase):
 
             section = get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
+            requestor = instructor
 
-            graderoster = get_graderoster(section, instructor)
+            graderoster = get_graderoster(section, instructor, requestor)
 
             self.assertEquals(graderoster.graderoster_label(),
                               "2013,summer,CSS,161,A,%s" % instructor.uwregid,
@@ -44,8 +45,9 @@ class SWSTestGradeRoster(TestCase):
 
             section = get_section_by_label('2013,summer,CSS,161/A')
             instructor = section.meetings[0].instructors[0]
+            requestor = instructor
 
-            graderoster = get_graderoster(section, instructor)
+            graderoster = get_graderoster(section, instructor, requestor)
 
             for item in graderoster.items:
                 new_grade = str(round(random.uniform(1, 4), 1))
@@ -53,7 +55,7 @@ class SWSTestGradeRoster(TestCase):
 
             orig_xhtml = split_xhtml(graderoster.xhtml())
 
-            new_graderoster = update_graderoster(graderoster)
+            new_graderoster = update_graderoster(graderoster, requestor)
             new_xhtml = split_xhtml(new_graderoster.xhtml())
             self.assertEquals(orig_xhtml, new_xhtml, "XHTML is equal")
 
