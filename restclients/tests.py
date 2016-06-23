@@ -1,5 +1,6 @@
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.uwnetid.subscription_60 import KerberosSubsTest
+from restclients.test.uwnetid.subscription_233 import Office365EduSubsTest
 from restclients.test.uwnetid.subscription import NetidSubscriptionTest
 from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest

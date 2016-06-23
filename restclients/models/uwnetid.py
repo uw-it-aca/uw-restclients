@@ -67,6 +67,9 @@ class Subscription(RestClientsModel):
         self.actions = []
         self.permits = []
 
+    def is_status_inactive(self):
+        return self.status_code == Subscription.STATUS_INACTIVE
+
     def is_status_active(self):
         return self.status_code == Subscription.STATUS_ACTIVE
 

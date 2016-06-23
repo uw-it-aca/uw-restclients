@@ -53,13 +53,3 @@ def is_current_faculty(netid):
         if permit.is_category_faculty() and permit.is_status_current():
             return True
     return False
-
-
-def has_active_kerberos_subs(netid):
-    """
-    Return true if the kerberos subscription is active and permitted
-    """
-    subs = get_kerberos_subs(netid)
-    if subs is None:
-        return False
-    return subs.is_status_active() and subs.permitted
