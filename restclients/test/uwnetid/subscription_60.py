@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.uwnetid.subscription_60 import is_current_staff,\
-    is_current_faculty, get_kerberos_subs
+    is_current_faculty, get_kerberos_subs, is_current_clinician
 from restclients.exceptions import DataFailureException
 
 
@@ -18,8 +18,13 @@ class KerberosSubsTest(TestCase):
             self.assertFalse(is_current_staff("phil"))
             self.assertTrue(is_current_faculty("phil"))
 
+            self.assertTrue(is_current_clinician("james"))
+            self.assertTrue(is_current_clinician("fred"))
+            self.assertFalse(is_current_clinician("bill"))
+
             subs = get_kerberos_subs("bill")
             self.assertTrue(subs.is_status_active())
+
             subs = get_kerberos_subs("phil")
             self.assertTrue(subs.is_status_active())
 

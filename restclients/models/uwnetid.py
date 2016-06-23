@@ -31,6 +31,15 @@ class UwEmailForwarding(models.Model):
 
 
 class Subscription(RestClientsModel):
+    SUBS_CODE_KERBEROS = 60
+    SUBS_CODE_U_FORWARDING = 105
+    SUBS_CODE_GOOGLE_APPS = 144
+    SUBS_CODE_GOOGLE_APPS_TEST = 145
+    SUBS_CODE_OFFICE_365 = 233
+    SUBS_CODE_OFFICE_365_TEST = 234
+    SUBS_CODE_PROJECT_SERVER_ONLINE_USER_ACCESS = 237
+    SUBS_CODE_PROJECT_SERVER_ONLINE_USER_ACCESS_TEST = 238
+
     STATUS_ACTIVE = 20
     STATUS_EXPIRED = 21
     STATUS_DISUSERED = 22
@@ -144,8 +153,10 @@ class Subscription(RestClientsModel):
 
 
 class SubscriptionPermit(RestClientsModel):
-    STAFF_CATEGORY_CODE = 4
-    FACULTY_CATEGORY_CODE = 5
+    STAFF_C_CODE = 4
+    FACULTY_C_CODE = 5
+    CLINICIAN_C_CODE = 13
+    CLINICIAN_NETID_C_CODE = 17
     CURRENT_STATUS_CODE = 1
     IMPLICIT_MODE = "implicit"
 
@@ -160,10 +171,16 @@ class SubscriptionPermit(RestClientsModel):
         return self.mode == SubscriptionPermit.IMPLICIT_MODE
 
     def is_category_staff(self):
-        return self.category_code == SubscriptionPermit.STAFF_CATEGORY_CODE
+        return self.category_code == SubscriptionPermit.STAFF_C_CODE
 
     def is_category_faculty(self):
-        return self.category_code == SubscriptionPermit.FACULTY_CATEGORY_CODE
+        return self.category_code == SubscriptionPermit.FACULTY_C_CODE
+
+    def is_category_clinician(self):
+        return self.category_code == SubscriptionPermit.CLINICIAN_C_CODE
+
+    def is_category_clinician_netid_only(self):
+        return self.category_code == SubscriptionPermit.CLINICIAN_NETID_C_CODE
 
     def is_status_current(self):
         return self.status_code == SubscriptionPermit.CURRENT_STATUS_CODE
