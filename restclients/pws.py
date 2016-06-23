@@ -24,8 +24,8 @@ class PWS(object):
     def __init__(self, actas=None):
         self.actas = actas
         self._re_regid = re.compile(r'^[A-F0-9]{32}$', re.I)
-        self._re_personal_netid = re.compile(r'^[a-z][a-z0-9]{0,7}$', re.I)
-        self._re_admin_netid = re.compile(r'^[a-z]adm_[a-z][a-z0-9]{0,7}$',
+        self._re_personal_netid = re.compile(r'^[a-z][a-z0-9]{0,14}$', re.I)
+        self._re_admin_netid = re.compile(r'^[a-z]adm_[a-z][a-z0-9]{0,14}$',
                                           re.I)
         self._re_application_netid = re.compile(r'^a_[a-z0-9\-\_\.$.]{1,18}$',
                                                 re.I)
