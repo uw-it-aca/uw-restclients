@@ -69,7 +69,9 @@ class AppointeePerson(models.Model):
             }
 
     def __str__(self):
-        return "{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s}" % (
+        return ("{%s: %s, %s: %s, %s: %s, %s: %s," +
+                " %s: %s, %s: %s, %s: %s, %s: %s,"
+                " %s: %s, %s: %s, %s: %s}") % (
             'regid', self.regid,
             'eid', self.eid,
             'status', self.status,
