@@ -29,7 +29,7 @@ def _get_appointee(id):
     """
     Return a restclients.models.hrp.AppointeePerson object
     """
-    url = "%s%s" % (URL_PREFIX, id)
+    url = "%s%s.json" % (URL_PREFIX, id)
     response = get_resource(url)
     return person_from_json(response)
 
