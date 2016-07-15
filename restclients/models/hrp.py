@@ -2,7 +2,65 @@ from django.db import models
 from restclients.models.base import RestClientsModel
 
 
-class AppointeePerson(models.Model):
+class Appointment(models.Model):
+    CURRENT_STATE = 'CURRENT'
+    ACTIVE_STATUS = 'A'
+
+    app_number = models.PositiveSmallIntegerField()
+    app_state = models.CharField(max_length=16)
+    dept_budget_name = models.CharField(max_length=64)
+    dept_budget_number = models.CharField(max_length=16)
+    job_class_code = models.CharField(max_length=16)
+    job_class_title = models.CharField(max_length=64)
+    org_code = models.CharField(max_length=16)
+    org_name = models.CharField(max_length=64)
+    paid_app_code = models.CharField(max_length=8)
+    status = models.CharField(max_length=8)
+    status_desc = models.CharField(max_length=16)
+
+    def is_active_app_status(self):
+        return self.status == Appointment.ACTIVE_STATUS
+
+    def is_current_app_state(self):
+        return self.app_state.upper() == Appointment.CURRENT_STATE
+
+    def json_data(self):
+        return {
+            'app_number': self.app_number,
+            'app_state': self.app_state,
+            'dept_budget_name': self.dept_budget_name,
+            'dept_budget_number': self.dept_budget_number,
+            'job_class_code': self.job_class_code,
+            'job_class_title': self.job_class_title,
+            'org_code': self.org_code,
+            'org_name': self.org_name,
+            'paid_app_code': self.paid_app_code,
+            'status': self.status,
+            'status_desc': self.status_desc,
+            }
+
+    def __str__(self):
+        return ("{%s: %s, %s: %s, %s: %s, %s: %s," +
+                " %s: %s, %s: %s, %s: %s, %s: %s,"
+                " %s: %s, %s: %s, %s: %s}") % (
+            'app_number', self.app_number,
+            'app_state', self.app_state,
+            'dept_budget_name', self.dept_budget_name,
+            'dept_budget_number', self.dept_budget_number,
+            'job_class_code', self.job_class_code,
+            'job_class_title', self.job_class_title,
+            'org_code', self.org_code,
+            'org_name', self.org_name,
+            'paid_app_code', self.paid_app_code,
+            'status', self.status,
+            'status_desc', self.status_desc
+            )
+
+    class Meta:
+        db_table = 'restclients_hrp_appointment'
+
+
+class Appointee(models.Model):
     # employment status codes
     STATUS_ACTIVE = "A"
 
@@ -33,12 +91,15 @@ class AppointeePerson(models.Model):
     UW_BOTHELL = "5"
     UW_TACOMA = "6"
 
+    netid = models.SlugField(max_length=32,
+                             db_index=True,
+                             unique=True)
     regid = models.CharField(max_length=32,
                              db_index=True,
                              unique=True)
-    eid = models.CharField(max_length=9,
-                           db_index=True,
-                           unique=True)
+    employee_id = models.CharField(max_length=9,
+                                   db_index=True,
+                                   unique=True)
     status = models.CharField(max_length=2)
     status_desc = models.CharField(max_length=16)
     home_dept_budget_number = models.CharField(max_length=16)
@@ -50,13 +111,21 @@ class AppointeePerson(models.Model):
     campus_code = models.CharField(max_length=2)
     campus_code_desc = models.CharField(max_length=32)
 
+    def __init__(self):
+        self.appointments = []
+
     def is_active_emp_status(self):
-        return self.status == AppointeePerson.STATUS_ACTIVE
+        return self.status == Appointee.STATUS_ACTIVE
 
     def json_data(self):
+        apps = []
+        for app in self.appointments:
+            apps.append(app.json_data())
+
         return {
+            "netid": self.netid,
             'regid': self.regid,
-            'eid': self.eid,
+            'employee_id': self.employee_id,
             'status': self.status,
             'is_active': self.is_active_emp_status(),
             'status_desc': self.status_desc,
@@ -65,15 +134,17 @@ class AppointeePerson(models.Model):
             'home_dept_org_code': self.home_dept_org_code,
             'home_dept_org_name': self.home_dept_org_name,
             'campus_code': self.campus_code,
-            'campus_code_desc': self.campus_code_desc
+            'campus_code_desc': self.campus_code_desc,
+            'appointments': apps
             }
 
     def __str__(self):
         return ("{%s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s,"
-                " %s: %s, %s: %s, %s: %s}") % (
+                " %s: %s, %s: %s, %s: %s, %s: %s, %s: [%s]}") % (
+            "netid", self.netid,
             'regid', self.regid,
-            'eid', self.eid,
+            'employee_id', self.employee_id,
             'status', self.status,
             'is_active', self.is_active_emp_status(),
             'status_desc', self.status_desc,
@@ -82,4 +153,9 @@ class AppointeePerson(models.Model):
             'home_dept_org_code', self.home_dept_org_code,
             'home_dept_org_name', self.home_dept_org_name,
             'campus_code', self.campus_code,
-            'campus_code_desc', self.campus_code_desc)
+            'campus_code_desc', self.campus_code_desc,
+            'appointments', ','.join(map(str,self.appointments))
+            )
+
+    class Meta:
+        db_table = 'restclients_hrp_appointee'

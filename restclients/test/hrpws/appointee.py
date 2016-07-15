@@ -19,9 +19,11 @@ class AppointeeTest(TestCase):
 
     def eval(self, ap):
         self.assertTrue(ap.is_active_emp_status())
+        self.assertEqual(ap.netid,
+                         "javerage")
         self.assertEqual(ap.regid,
                          "9136CCB8F66711D5BE060004AC494FFE")
-        self.assertEqual(ap.eid,
+        self.assertEqual(ap.employee_id,
                          "123456789")
         self.assertEqual(ap.status, "A")
         self.assertEqual(ap.status_desc, "ACTIVE")
@@ -32,6 +34,28 @@ class AppointeeTest(TestCase):
         self.assertEqual(ap.campus_code, "1")
         self.assertEqual(ap.campus_code_desc, "On Campus")
 
+        appointments = ap.appointments
+        self.assertEqual(len(appointments), 1)
+        self.assertEqual(appointments[0].app_number, 1)
+        self.assertEqual(appointments[0].app_state, "Current")
+        self.assertTrue(appointments[0].is_current_app_state())
+        self.assertEqual(appointments[0].dept_budget_name,
+                         "ACAD. & COLLAB. APP'S")
+        self.assertEqual(appointments[0].dept_budget_number,
+                         "100001")
+        self.assertEqual(appointments[0].job_class_code,
+                         "0875")
+        self.assertEqual(appointments[0].job_class_title,
+                         "STUDENT ASSISTANT")
+        self.assertEqual(appointments[0].org_code,
+                         "2101002000")
+        self.assertEqual(appointments[0].org_name,
+                         "ACAD. & COLLAB. APPL.")
+        self.assertEqual(appointments[0].paid_app_code, "P")
+        self.assertEqual(appointments[0].status, "A")
+        self.assertEqual(appointments[0].status_desc, "ACTIVE")
+
+
     def test_invalid_user(self):
         with self.settings(
                 RESTCLIENTS_HRPWS_DAO_CLASS =
@@ -39,8 +63,8 @@ class AppointeeTest(TestCase):
 
             self.assertRaises(DataFailureException,
                               get_appointee_by_regid,
-                              "0000000000000000000000000000000")
+                              "00000000000000000000000000000001")
 
             self.assertRaises(DataFailureException,
                               get_appointee_by_eid,
-                              "000000000")
+                              "100000000")
