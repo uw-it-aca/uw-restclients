@@ -31,8 +31,8 @@ class AppointeeTest(TestCase):
         self.assertEqual(ap.home_dept_budget_name, "UWIT GOF")
         self.assertEqual(ap.home_dept_org_code, "2100101000")
         self.assertEqual(ap.home_dept_org_name, "OVP - UW-IT")
-        self.assertEqual(ap.campus_code, "1")
-        self.assertEqual(ap.campus_code_desc, "On Campus")
+        self.assertEqual(ap.onoff_campus_code, "1")
+        self.assertEqual(ap.onoff_campus_code_desc, "On Campus")
 
         appointments = ap.appointments
         self.assertEqual(len(appointments), 1)

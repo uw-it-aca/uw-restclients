@@ -70,8 +70,8 @@ def create_appointee(person):
     ap.home_dept_budget_name = person.get("HomeDepartmentBudgetName")
     ap.home_dept_org_code = person.get("HomeDepartmentOrganizationCode")
     ap.home_dept_org_name = person.get("HomeDepartmentOrganizationName")
-    ap.campus_code = person.get("OnOffCampusCode")
-    ap.campus_code_desc = person.get("OnOffCampusCodeDescription")
+    ap.onoff_campus_code = person.get("OnOffCampusCode")
+    ap.onoff_campus_code_desc = person.get("OnOffCampusCodeDescription")
     return ap
 
 

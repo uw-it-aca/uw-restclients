@@ -108,8 +108,8 @@ class Appointee(models.Model):
     home_dept_org_code = models.CharField(max_length=16)
     home_dept_org_name = models.CharField(max_length=128,
                                           null=True)
-    campus_code = models.CharField(max_length=2)
-    campus_code_desc = models.CharField(max_length=32)
+    onoff_campus_code = models.CharField(max_length=2)
+    onoff_campus_code_desc = models.CharField(max_length=32)
 
     def __init__(self):
         self.appointments = []
@@ -133,8 +133,8 @@ class Appointee(models.Model):
             'home_dept_budget_name': self.home_dept_budget_name,
             'home_dept_org_code': self.home_dept_org_code,
             'home_dept_org_name': self.home_dept_org_name,
-            'campus_code': self.campus_code,
-            'campus_code_desc': self.campus_code_desc,
+            'onoff_campus_code': self.onoff_campus_code,
+            'onoff_campus_code_desc': self.onoff_campus_code_desc,
             'appointments': apps
             }
 
@@ -152,9 +152,9 @@ class Appointee(models.Model):
             'home_dept_budget_name', self.home_dept_budget_name,
             'home_dept_org_code', self.home_dept_org_code,
             'home_dept_org_name', self.home_dept_org_name,
-            'campus_code', self.campus_code,
-            'campus_code_desc', self.campus_code_desc,
-            'appointments', ','.join(map(str,self.appointments))
+            'onoff_campus_code', self.onoff_campus_code,
+            'onoff_campus_code_desc', self.onoff_campus_code_desc,
+            'appointments', ','.join(map(str, self.appointments))
             )
 
     class Meta:
