@@ -8,12 +8,12 @@ class Appointment(models.Model):
 
     app_number = models.PositiveSmallIntegerField()
     app_state = models.CharField(max_length=16)
-    dept_budget_name = models.CharField(max_length=64)
+    dept_budget_name = models.CharField(max_length=96)
     dept_budget_number = models.CharField(max_length=16)
     job_class_code = models.CharField(max_length=16)
-    job_class_title = models.CharField(max_length=64)
+    job_class_title = models.CharField(max_length=96)
     org_code = models.CharField(max_length=16)
-    org_name = models.CharField(max_length=64)
+    org_name = models.CharField(max_length=96)
     paid_app_code = models.CharField(max_length=8)
     status = models.CharField(max_length=8)
     status_desc = models.CharField(max_length=16)
@@ -63,6 +63,8 @@ class Appointment(models.Model):
 class Appointee(models.Model):
     # employment status codes
     STATUS_ACTIVE = "A"
+    STATUS_RETIREE = "R"
+    STATUS_SEPARATED = "S"
 
     # On Off Campus codes
     ON_SEATTLE_CAMPUS = "1"
@@ -103,10 +105,10 @@ class Appointee(models.Model):
     status = models.CharField(max_length=2)
     status_desc = models.CharField(max_length=16)
     home_dept_budget_number = models.CharField(max_length=16)
-    home_dept_budget_name = models.CharField(max_length=128,
+    home_dept_budget_name = models.CharField(max_length=96,
                                              null=True)
     home_dept_org_code = models.CharField(max_length=16)
-    home_dept_org_name = models.CharField(max_length=128,
+    home_dept_org_name = models.CharField(max_length=96,
                                           null=True)
     onoff_campus_code = models.CharField(max_length=2)
     onoff_campus_code_desc = models.CharField(max_length=32)
