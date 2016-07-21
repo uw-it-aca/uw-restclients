@@ -57,6 +57,8 @@ class CurricsTest(TestCase):
             self.assertEquals(guide.librarians[1].email, 'baverage@uw.edu')
             self.assertEquals(guide.librarians[1].name, 'B Average')
             self.assertEquals(guide.librarians[1].url, 'http://guides.lib.washington.edu/Baverage')
+            self.assertEquals(guide.course_guide.guide_url, 'http://guides.lib.uw.edu/seattle/math307smith')
+            self.assertEquals(guide.course_guide.guide_text, 'MATH 307: Introduction To Differential Equations (Smith)')
 
     def test_subject_guide_for_section(self):
         with self.settings(RESTCLIENTS_LIBCURRICS_DAO_CLASS=currics_dao):
@@ -83,6 +85,8 @@ class CurricsTest(TestCase):
             self.assertEquals(guide.librarians[1].email, 'baverage@uw.edu')
             self.assertEquals(guide.librarians[1].name, 'B Average')
             self.assertEquals(guide.librarians[1].url, 'http://guides.lib.washington.edu/Baverage')
+            self.assertEquals(guide.course_guide.guide_url, 'http://guides.lib.uw.edu/seattle/math307smith')
+            self.assertEquals(guide.course_guide.guide_text, 'MATH 307: Introduction To Differential Equations (Smith)')
 
     def test_subject_guide_for_canvas_course_sis_id(self):
         with self.settings(RESTCLIENTS_LIBCURRICS_DAO_CLASS=currics_dao):
@@ -106,6 +110,8 @@ class CurricsTest(TestCase):
             self.assertEquals(guide.librarians[1].email, 'baverage@uw.edu')
             self.assertEquals(guide.librarians[1].name, 'B Average')
             self.assertEquals(guide.librarians[1].url, 'http://guides.lib.washington.edu/Baverage')
+            self.assertEquals(guide.course_guide.guide_url, 'http://guides.lib.uw.edu/seattle/math307smith')
+            self.assertEquals(guide.course_guide.guide_text, 'MATH 307: Introduction To Differential Equations (Smith)')
 
     def test_default_subject_guide(self):
         with self.settings(RESTCLIENTS_LIBCURRICS_DAO_CLASS=currics_dao):
