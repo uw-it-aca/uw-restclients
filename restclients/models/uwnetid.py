@@ -31,6 +31,15 @@ class UwEmailForwarding(models.Model):
 
 
 class Subscription(RestClientsModel):
+    SUBS_CODE_KERBEROS = 60
+    SUBS_CODE_U_FORWARDING = 105
+    SUBS_CODE_GOOGLE_APPS = 144
+    SUBS_CODE_GOOGLE_APPS_TEST = 145
+    SUBS_CODE_OFFICE_365 = 233
+    SUBS_CODE_OFFICE_365_TEST = 234
+    SUBS_CODE_PROJECT_SERVER_ONLINE_USER_ACCESS = 237
+    SUBS_CODE_PROJECT_SERVER_ONLINE_USER_ACCESS_TEST = 238
+
     STATUS_ACTIVE = 20
     STATUS_EXPIRED = 21
     STATUS_DISUSERED = 22
@@ -67,6 +76,12 @@ class Subscription(RestClientsModel):
         self.actions = []
         self.permits = []
 
+    def is_status_inactive(self):
+        return self.status_code == Subscription.STATUS_INACTIVE
+
+    def is_status_active(self):
+        return self.status_code == Subscription.STATUS_ACTIVE
+
     def from_json(self, uwnetid, data):
         self.uwnetid = uwnetid
         self.subscription_code = int(data['subscriptionCode'])
@@ -86,18 +101,19 @@ class Subscription(RestClientsModel):
                 action=action_data)
             self.actions.append(action)
 
-        for permit_data in data.get('permits', []):
-            permit = SubscriptionPermit(
-                mode=permit_data['mode'],
-                category_code=permit_data['categoryCode'],
-                category_name=permit_data['categoryName'],
-                status_code=permit_data['statusCode'],
-                status_name=permit_data['statusName'])
+        if 'permits' in data:
+            for permit_data in data.get('permits', []):
+                permit = SubscriptionPermit(
+                    mode=permit_data['mode'],
+                    category_code=permit_data['categoryCode'],
+                    category_name=permit_data['categoryName'],
+                    status_code=permit_data['statusCode'],
+                    status_name=permit_data['statusName'])
 
-            if 'dataValue' in permit_data:
-                permit.data_value = permit_data['dataValue']
+                if 'dataValue' in permit_data:
+                    permit.data_value = permit_data['dataValue']
 
-            self.permits.append(permit)
+                self.permits.append(permit)
 
         return self
 
@@ -128,18 +144,46 @@ class Subscription(RestClientsModel):
         return data
 
     def __str__(self):
-        return "{netid: %s, %s: %s, %s: %s, status_name: %s}" % (
-            self.uwnetid, "subscription_code", self.subscription_code,
-            "status_code", self.status_code, self.status_name)
+        return "{netid: %s, %s: %s, %s: %s, %s: %s, %s: %s}" % (
+            self.uwnetid,
+            "subscription_code", self.subscription_code,
+            "permitted", self.permitted,
+            "status_code", self.status_code,
+            "status_name", self.status_name)
 
 
 class SubscriptionPermit(RestClientsModel):
+    STAFF_C_CODE = 4
+    FACULTY_C_CODE = 5
+    CLINICIAN_C_CODE = 13
+    CLINICIAN_NETID_C_CODE = 17
+    CURRENT_STATUS_CODE = 1
+    IMPLICIT_MODE = "implicit"
+
     mode = models.CharField(max_length=16)
     category_code = models.SmallIntegerField()
     category_name = models.CharField(max_length=32)
     status_code = models.SmallIntegerField()
     status_name = models.CharField(max_length=16)
     data_value = models.CharField(max_length=256, null=True)
+
+    def is_mode_implicit(self):
+        return self.mode == SubscriptionPermit.IMPLICIT_MODE
+
+    def is_category_staff(self):
+        return self.category_code == SubscriptionPermit.STAFF_C_CODE
+
+    def is_category_faculty(self):
+        return self.category_code == SubscriptionPermit.FACULTY_C_CODE
+
+    def is_category_clinician(self):
+        return self.category_code == SubscriptionPermit.CLINICIAN_C_CODE
+
+    def is_category_clinician_netid_only(self):
+        return self.category_code == SubscriptionPermit.CLINICIAN_NETID_C_CODE
+
+    def is_status_current(self):
+        return self.status_code == SubscriptionPermit.CURRENT_STATUS_CODE
 
     def json_data(self):
         data = {

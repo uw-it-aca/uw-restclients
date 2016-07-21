@@ -32,5 +32,10 @@
         ],
         "writingGuideLink": "http://guides.lib.uw.edu/research/citations",
         "writingGuideText": "Find citation style guides, citation management tools, and writing/grammar help."
+    },
+    "courseGuide": {
+        "guideLink": "http://guides.lib.uw.edu/seattle/math307smith",
+        "guideText": "MATH 307: Introduction To Differential Equations (Smith)"
     }
+
 }

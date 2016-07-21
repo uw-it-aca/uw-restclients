@@ -18,6 +18,11 @@ class Librarian(models.Model):
     url = models.CharField(max_length=250, null=True)
 
 
+class CourseGuide(models.Model):
+    guide_url = models.CharField(max_length=250, null=True)
+    guide_text = models.CharField(max_length=1000, null=True)
+
+
 class SubjectGuide(models.Model):
     contact_url = models.CharField(max_length=250, null=True)
     contact_text = models.CharField(max_length=1000, null=True)
@@ -32,6 +37,7 @@ class SubjectGuide(models.Model):
     writing_guide_text = models.CharField(max_length=1000, null=True)
     is_default_guide = models.NullBooleanField()
     default_guide_campus = models.CharField(max_length=50, null=True)
+    course_guide = models.ForeignKey(CourseGuide, null=True)
 
 
 class MyLibAccount(models.Model):
