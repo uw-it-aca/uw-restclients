@@ -20,6 +20,7 @@ from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.grad import File as GradFile
+from restclients.dao_implementation.hrpws import File as HrpwsFile
 from restclients.dao_implementation.library.mylibinfo import (
     File as MyLibInfoFile)
 from restclients.dao_implementation.library.currics import (
@@ -197,12 +198,12 @@ class Catalyst_DAO(MY_DAO):
         return self._getModule('RESTCLIENTS_CATALYST_DAO_CLASS', CatalystFile)
 
 
-class DigitLib_DAO(MY_DAO):
+class Hrpws_DAO(MY_DAO):
     def getURL(self, url, headers):
-        return self._getURL('digitlib', url, headers)
+        return self._getURL('hrpws', url, headers)
 
     def _getDAO(self):
-        return self._getModule('RESTCLIENTS_DIGITLIB_DAO_CLASS', DigitlibFile)
+        return self._getModule('RESTCLIENTS_HRPWS_DAO_CLASS', HrpwsFile)
 
 
 class Grad_DAO(MY_DAO):

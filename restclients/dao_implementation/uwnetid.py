@@ -1,5 +1,5 @@
 """
-Contains UW Libraries DAO implementations.
+Contains UW NetID DAO implementations.
 """
 
 from django.conf import settings
@@ -22,7 +22,7 @@ class File(object):
         return get_mockdata_url("uwnetid", "file", url, headers)
 
     def postURL(self, url, headers, body):
-        response = post_mockdata_url("canvas", "file", url, headers, body)
+        response = post_mockdata_url("uwnetid", "file", url, headers, body)
         if response.status == 400:
             return response
 
