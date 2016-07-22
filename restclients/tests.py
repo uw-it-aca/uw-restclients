@@ -7,6 +7,7 @@ from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
 from restclients.test.hfs.idcard import HfsTest
+from restclients.test.hrpws.appointee import AppointeeTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
 from restclients.test.library.currics import CurricsTest
 from restclients.test.grad.committee import CommitteeTest
