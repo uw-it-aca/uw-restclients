@@ -1,0 +1,20 @@
+{
+  "uwNetID" : "bill",
+  "subscriptionList" : [
+    {
+      "subscriptionCode" : 233,
+      "subscriptionName" : "UW Office 365 Education",
+      "permitted" : false,
+      "statusCode" : 101,
+      "statusName" : "Unpermitted",
+      "actions" : [
+        "Show",
+        "Activate",
+        "Permit",
+        "Deny"
+      ],
+      "dataField" : "Value"
+    }
+  ],
+  "timeStamp" : "Thu, 23 Jun 2016 11:24:40 -0700"
+}

@@ -10,7 +10,6 @@ from restclients.models.uwnetid import UwEmailForwarding, \
 from restclients.uwnetid import get_resource, post_resource
 
 
-u_forwarding_subscription = 105
 logger = logging.getLogger(__name__)
 
 
@@ -19,9 +18,9 @@ def get_email_forwarding(netid):
     Return a restclients.models.uwnetid.UwEmailForwarding object
     on the given uwnetid
     """
-    subscriptions = get_netid_subscriptions(netid, u_forwarding_subscription)
+    subscriptions = get_netid_subscriptions(netid, Subscription.SUBS_CODE_U_FORWARDING)
     for subscription in subscriptions:
-        if subscription.subscription_code == u_forwarding_subscription:
+        if subscription.subscription_code == Subscription.SUBS_CODE_U_FORWARDING:
             return_obj = UwEmailForwarding()
             if subscription.data_value:
                 return_obj.fwd = subscription.data_value
