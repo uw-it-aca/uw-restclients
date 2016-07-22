@@ -7,7 +7,8 @@ import json
 from urllib import quote
 from restclients.dao import LibCurrics_DAO
 from restclients.exceptions import DataFailureException
-from restclients.models.library import SubjectGuide, Library, Librarian
+from restclients.models.library import SubjectGuide, CourseGuide,\
+    Library, Librarian
 
 
 subject_guide_url_prefix = '/currics_db/api/v1/data'
@@ -35,7 +36,7 @@ def get_subject_guide_for_section_params(year, quarter, curriculum_abbr,
         raise DataFailureException(url, response.status, response.data)
 
     data = json.loads(response.data)
-    return _subject_guide_from_json(data['subjectGuide'])
+    return _subject_guide_from_json(data)
 
 
 def get_subject_guide_for_section(section):
@@ -71,24 +72,29 @@ def get_default_subject_guide(campus='seattle'):
         raise DataFailureException(url, response.status, response.data)
 
     data = json.loads(response.data)
-    return _subject_guide_from_json(data['subjectGuide'])
+    return _subject_guide_from_json(data)
 
 
 def _subject_guide_from_json(data):
+    subject_data = data['subjectGuide']
     subject_guide = SubjectGuide()
-    subject_guide.contact_url = data.get('askUsLink', None)
-    subject_guide.contact_text = data.get('askUsText', None)
-    subject_guide.discipline = data.get('discipline', None)
-    subject_guide.find_librarian_url = data.get('findLibrarianLink', None)
-    subject_guide.find_librarian_text = data.get('findLibrarianText', None)
-    subject_guide.guide_url = data.get('guideLink', None)
-    subject_guide.guide_text = data.get('guideText', None)
-    subject_guide.faq_url = data.get('howDoILink', None)
-    subject_guide.faq_text = data.get('howDoIText', None)
-    subject_guide.writing_guide_url = data.get('writingGuideLink', None)
-    subject_guide.writing_guide_text = data.get('writingGuideText', None)
+    subject_guide.contact_url = subject_data.get('askUsLink', None)
+    subject_guide.contact_text = subject_data.get('askUsText', None)
+    subject_guide.discipline = subject_data.get('discipline', None)
+    subject_guide.find_librarian_url = subject_data.get(
+        'findLibrarianLink', None)
+    subject_guide.find_librarian_text = subject_data.get(
+        'findLibrarianText', None)
+    subject_guide.guide_url = subject_data.get('guideLink', None)
+    subject_guide.guide_text = subject_data.get('guideText', None)
+    subject_guide.faq_url = subject_data.get('howDoILink', None)
+    subject_guide.faq_text = subject_data.get('howDoIText', None)
+    subject_guide.writing_guide_url = subject_data.get(
+        'writingGuideLink', None)
+    subject_guide.writing_guide_text = subject_data.get(
+        'writingGuideText', None)
 
-    default_guide_campus = data.get('defaultGuideForCampus', None)
+    default_guide_campus = subject_data.get('defaultGuideForCampus', None)
     if default_guide_campus is not None:
         subject_guide.is_default_guide = True
         subject_guide.default_guide_campus = default_guide_campus
@@ -98,19 +104,27 @@ def _subject_guide_from_json(data):
     subject_guide.libraries = []
     subject_guide.librarians = []
 
-    for libdata in data.get('libraries', []):
+    for libdata in subject_data.get('libraries', []):
         library = Library()
         library.name = libdata.get('name', None)
         library.description = libdata.get('description', None)
         library.url = libdata.get('url', None)
         subject_guide.libraries.append(library)
 
-    for libdata in data.get('librarians', []):
+    for libdata in subject_data.get('librarians', []):
         librarian = Librarian()
         librarian.name = libdata.get('name', None)
         librarian.email = libdata.get('email', None)
         librarian.phone = libdata.get('telephone', None)
         librarian.url = libdata.get('url', None)
         subject_guide.librarians.append(librarian)
+
+    if 'courseGuide' in data:
+        course_data = data['courseGuide']
+        subject_guide.course_guide = CourseGuide()
+        subject_guide.course_guide.guide_url = course_data.get(
+            'guideLink', None)
+        subject_guide.course_guide.guide_text = course_data.get(
+            'guideText', None)
 
     return subject_guide
