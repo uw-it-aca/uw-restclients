@@ -18,6 +18,13 @@ class Appointment(models.Model):
     status = models.CharField(max_length=8)
     status_desc = models.CharField(max_length=16)
 
+    def __cmp__(self, other):
+        if other is not None:
+            return self.app_number.__cmp__(other.app_number)
+
+    def __lt__(self, other):
+        return self.app_number < other.app_number
+
     def is_active_app_status(self):
         return self.status == Appointment.ACTIVE_STATUS
 
