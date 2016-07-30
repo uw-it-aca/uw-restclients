@@ -54,7 +54,9 @@ def process_json(response_body):
     if json_data.get("Appointments"):
         apps = []
         for app in json_data.get("Appointments"):
-            apps.append(create_appointment(app))
+            if float(app.get("PayRate")) > 0.000:
+                # only those currently having a salary
+                apps.append(create_appointment(app))
         appointee.appointments = apps
     return appointee
 
