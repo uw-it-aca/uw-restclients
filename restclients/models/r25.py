@@ -18,15 +18,15 @@ class Event(models.Model):
         (CANCELLED_STATE, "Cancelled"),
     )
 
-    event_id = models.IntegerField(max_length=10)
+    event_id = models.IntegerField()
     alien_uid = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
-    parent_id = models.IntegerField(max_length=10, null=True)
-    cabinet_id = models.IntegerField(max_length=10, null=True)
+    parent_id = models.IntegerField(null=True)
+    cabinet_id = models.IntegerField(null=True)
     cabinet_name = models.CharField(max_length=100, null=True)
 
     def state_name(self):
@@ -59,7 +59,7 @@ class Event(models.Model):
 
 
 class Space(models.Model):
-    space_id = models.IntegerField(max_length=10)
+    space_id = models.IntegerField()
     name = models.CharField(max_length=100)
     formal_name = models.CharField(max_length=200)
 
@@ -82,11 +82,11 @@ class Reservation(models.Model):
         (CANCELLED_STATE, "Cancelled"),
     )
 
-    reservation_id = models.IntegerField(max_length=10)
+    reservation_id = models.IntegerField()
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
-    event_id = models.IntegerField(max_length=10)
+    event_id = models.IntegerField()
     event_name = models.CharField(max_length=64)
     profile_name = models.CharField(max_length=32)
     contact_name = models.CharField(max_length=64)
@@ -100,10 +100,10 @@ class Reservation(models.Model):
 
 
 class BindingReservation(models.Model):
-    bound_reservation_id = models.IntegerField(max_length=10)
-    primary_reservation = models.IntegerField(max_length=10)
+    bound_reservation_id = models.IntegerField()
+    primary_reservation = models.IntegerField()
     name = models.CharField(max_length=200)
-    bound_event_id = models.IntegerField(max_length=10)
+    bound_event_id = models.IntegerField()
 
     class Meta:
         db_table = "restclients_r25_binding_reservation"

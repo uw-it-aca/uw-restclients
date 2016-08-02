@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Evaluation(models.Model):
-    section_sln = models.IntegerField(max_length=5)
+    section_sln = models.IntegerField()
     eval_open_date = models.DateTimeField()
     eval_close_date = models.DateTimeField()
     is_completed = models.NullBooleanField()
