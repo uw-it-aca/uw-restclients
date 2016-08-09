@@ -3,7 +3,7 @@ from restclients.models.sws import Section
 
 
 class Gradebook(models.Model):
-    gradebook_id = models.IntegerField(max_length=10)
+    gradebook_id = models.IntegerField()
     name = models.CharField(max_length=250)
     url = models.CharField(max_length=250)
 
@@ -12,7 +12,7 @@ class Gradebook(models.Model):
 
 
 class GradebookParticipant(models.Model):
-    participant_id = models.IntegerField(max_length=10)
+    participant_id = models.IntegerField()
     person_id = models.CharField(max_length=100)
     class_grade = models.CharField(max_length=250)
     notes = models.CharField(max_length=5000)
