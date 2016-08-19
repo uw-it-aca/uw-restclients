@@ -412,8 +412,8 @@ class Section(RestClientsModel):
     auditors = models.IntegerField()
 
     # These are for non-standard start/end dates - don't have those yet
-    # start_date = models.DateField()
-    # end_date = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
     # We don't have final exam data yet :(
     # final_exam_date = models.DateField()
