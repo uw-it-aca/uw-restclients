@@ -488,3 +488,20 @@ class SWSTestSectionData(TestCase):
         self.assertTrue(is_full_summer_term("Full-term"))
         self.assertFalse(is_full_summer_term("A-term"))
         self.assertFalse(is_full_summer_term("B-term"))
+
+    def test_start_end_dates(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS=SWSF,
+                RESTCLIENTS_PWS_DAO_CLASS=PWSF):
+
+            section = get_section_by_label('2013,autumn,MATH,120/ZZ')
+            start = section.start_date
+            end = section.end_date
+
+            self.assertEquals(start.year, 2013)
+            self.assertEquals(start.month, 8)
+            self.assertEquals(start.day, 20)
+
+            self.assertEquals(end.year, 2013)
+            self.assertEquals(end.month, 9)
+            self.assertEquals(end.day, 18)

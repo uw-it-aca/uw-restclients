@@ -109,7 +109,7 @@ def proxy(request, service, url):
                         url_prefix,
                         request.GET["year"],
                         request.GET["quarter"],
-                        request.GET["curriculum_abbr"],
+                        request.GET["curriculum_abbr"].replace(" ", "%20"),
                         request.GET["course_number"],
                         request.GET["section_id"])
 
