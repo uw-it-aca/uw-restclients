@@ -51,17 +51,20 @@ def _registrations_for_section_with_active_flag(section, is_active,
     if is_active:
         activity_flag = "true"
 
-    url = "%s?%s" % (registration_res_url_prefix,
-                     urlencode(
-            {"year": section.term.year,
-             "quarter": section.term.quarter,
-             "curriculum_abbreviation": section.curriculum_abbr,
-             "course_number": section.course_number,
-             "section_id": section.section_id,
-             "instructor_reg_id": instructor_reg_id,
-             "transcriptable_course": transcriptable_course,
-             "is_active": activity_flag
-             }))
+    params = {
+        "year": section.term.year,
+        "quarter": section.term.quarter,
+        "curriculum_abbreviation": section.curriculum_abbr,
+        "course_number": section.course_number,
+        "section_id": section.section_id,
+        "instructor_reg_id": instructor_reg_id,
+        "is_active": activity_flag
+    }
+
+    if transcriptable_course != "":
+        params["transcriptable_course"] = transcriptable_course
+
+    url = "%s?%s" % (registration_res_url_prefix, urlencode(params))
 
     return _json_to_registrations(get_resource(url), section, is_active)
 
