@@ -22,6 +22,7 @@ registration_res_url_prefix = "/student/v5/registration.json"
 reg_credits_url_prefix = "/student/v5/registration/"
 logger = logging.getLogger(__name__)
 
+
 class SWSPersonByRegIDThread(Thread):
     regid = None
     person = None
@@ -33,7 +34,8 @@ class SWSPersonByRegIDThread(Thread):
         self.person = PWS().get_person_by_regid(self.regid)
 
 
-def _registrations_for_section_with_active_flag(section, is_active):
+def _registrations_for_section_with_active_flag(section, is_active,
+                                                transcriptable_course=""):
     """
     Returns a list of all restclients.models.sws.Registration objects
     for a section. There can be duplicates for a person.
@@ -57,7 +59,7 @@ def _registrations_for_section_with_active_flag(section, is_active):
              "course_number": section.course_number,
              "section_id": section.section_id,
              "instructor_reg_id": instructor_reg_id,
-             "transcriptable_course": "all",
+             "transcriptable_course": transcriptable_course,
              "is_active": activity_flag
              }))
 
@@ -104,17 +106,18 @@ def _json_to_registrations(data, section, is_active):
     return registrations
 
 
-def get_active_registrations_by_section(section):
+def get_active_registrations_by_section(section, transcriptable_course=""):
     """
     Returns a list of restclients.Registration objects, representing
     active registrations for the passed section. For independent study
     sections, section.independent_study_instructor_regid limits
     registrations to that instructor.
     """
-    return _registrations_for_section_with_active_flag(section, True)
+    return _registrations_for_section_with_active_flag(section, True,
+                                                       transcriptable_course)
 
 
-def get_all_registrations_by_section(section):
+def get_all_registrations_by_section(section, transcriptable_course=""):
     """
     Returns a list of restclients.models.sws.Registration objects,
     representing all (active and inactive) registrations
@@ -130,7 +133,7 @@ def get_all_registrations_by_section(section):
         seen_registrations[registration.person.uwregid] = True
 
     all_registrations = _registrations_for_section_with_active_flag(
-        section, False)
+        section, False, transcriptable_course)
 
     for registration in all_registrations:
         regid = registration.person.uwregid
@@ -151,7 +154,7 @@ def get_credits_by_section_and_regid(section, regid):
     for the section and regid passed in.
     """
     deprecation("Use get_credits_by_reg_url")
-    #note trailing comma in URL, it's required for the optional dup_code param
+    # note trailing comma in URL, it's required for the optional dup_code param
     url = "%s%s,%s,%s,%s,%s,%s,.json" % (
         reg_credits_url_prefix,
         section.term.year,
