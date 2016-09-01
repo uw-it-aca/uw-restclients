@@ -57,6 +57,7 @@ def _registrations_for_section_with_active_flag(section, is_active):
              "course_number": section.course_number,
              "section_id": section.section_id,
              "instructor_reg_id": instructor_reg_id,
+             "transcriptable_course": "all",
              "is_active": activity_flag
              }))
 
