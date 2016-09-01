@@ -129,7 +129,8 @@ def get_all_registrations_by_section(section, transcriptable_course=""):
     section.independent_study_instructor_regid
     limits registrations to that instructor.
     """
-    registrations = get_active_registrations_by_section(section)
+    registrations = get_active_registrations_by_section(
+        section, transcriptable_course)
 
     seen_registrations = {}
     for registration in registrations:
