@@ -14,6 +14,7 @@ from restclients.test.grad.committee import CommitteeTest
 from restclients.test.grad.degree import DegreeTest
 from restclients.test.grad.leave import LeaveTest
 from restclients.test.grad.petition import PetitionTest
+from restclients.test.bridge.user import BridgeTestUser
 
 from restclients.test.sws.compatible import SWSTest
 from restclients.test.sws.financial import SWSFinance
