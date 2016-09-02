@@ -1,3 +1,5 @@
+import json
+from datetime import datetime
 from django.test import TestCase
 from restclients.test.bridge import FBridgeWS
 from restclients.models.bridge import BridgeUser
@@ -18,6 +20,19 @@ class BridgeTestUser(TestCase):
             self.assertEquals(user.full_name, "James Student")
             self.assertEquals(user.sortable_name, "Student, James Average")
             self.assertEquals(user.email, "javerage@uw.edu")
+            self.assertEquals(user.uwnetid, "javerage")
+            self.assertEquals(user.get_uid(), "javerage@uw.edu")
+            self.assertEquals(
+                str(user.updated_at), '2016-07-25 16:24:42.131000-07:00')
+            self.assertEquals(
+                json.dumps(user.to_json_post()),
+                ('{"first_name": "James", "last_name": "Student", ' +
+                 '"uid": "javerage@uw.edu", "roles": [], ' +
+                 '"full_name": "James Student", "email": ' +
+                 '"javerage@uw.edu", "custom_fields": [{"value": ' +
+                 '"9136CCB8F66711D5BE060004AC494FFE", ' +
+                 '"custom_field_id": "5"}]}'))
+
             self.assertEquals(len(user.custom_fields), 1)
             cus_field = user.custom_fields[0]
             self.assertEquals(cus_field.value_id, "1")
