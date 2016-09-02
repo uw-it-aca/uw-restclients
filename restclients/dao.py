@@ -10,6 +10,7 @@ from restclients.dao_implementation.sws import File as SWSFile
 from restclients.dao_implementation.gws import File as GWSFile
 from restclients.dao_implementation.kws import File as KWSFile
 from restclients.dao_implementation.book import File as BookFile
+from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.canvas import File as CanvasFile
 from restclients.dao_implementation.catalyst import File as CatalystFile
 from restclients.dao_implementation.nws import File as NWSFile
@@ -171,6 +172,23 @@ class Book_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_BOOK_DAO_CLASS', BookFile)
+
+
+class Bridge_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('bridge', url, headers)
+
+    def putURL(self, url, headers, body):
+        return self._putURL('bridge', url, headers, body)
+
+    def postURL(self, url, headers, body):
+        return self._postURL('bridge', url, headers, body)
+
+    def deleteURL(self, url, headers):
+        return self._deleteURL('bridge', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_BRIDGE_DAO_CLASS', BridgeFile)
 
 
 class Canvas_DAO(MY_DAO):
