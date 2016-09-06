@@ -29,24 +29,37 @@ class BridgeCustomField(models.Model):
 
 class BridgeUser(models.Model):
     bridge_id = models.IntegerField()
-    uwnetid = models.CharField(max_length=100)
-    hris_id = models.CharField(max_length=100, null=True)
-    first_name = models.CharField(max_length=100, null=True)
-    full_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
-    name = models.CharField(max_length=100, null=True)
-    sortable_name = models.CharField(max_length=100, null=True)
-    email = models.CharField(max_length=100, null=True)
-    avatar_url = models.CharField(max_length=500, null=True)
-    locale = models.CharField(max_length=2, null=True)
-    deleted_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
-    unsubscribed = models.CharField(max_length=100, null=True)
+    uwnetid = models.CharField(max_length=128)
+    first_name = models.CharField(max_length=128)
+    full_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
+    sortable_name = models.CharField(max_length=128)
+    email = models.CharField(max_length=128)
+    avatar_url = models.CharField(max_length=512, null=True, default=None)
+    locale = models.CharField(max_length=2)
+    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+    logged_in_at = models.DateTimeField(null=True, blank=True, default=None)
+    updated_at = models.DateTimeField()
+    unsubscribed = models.CharField(max_length=128, null=True, default=None)
 
     def get_uid(self):
         return "%s@uw.edu" % self.uwnetid
 
     def to_json_post(self):
+        custom_fields_json = []
+        for field in self.custom_fields:
+            custom_fields_json.append(field.to_json())
+
+        return {"uid": self.get_uid(),
+                "first_name": self.first_name,
+                "last_name": self.last_name,
+                "full_name": self.full_name,
+                "email": self.email,
+                "custom_fields": custom_fields_json
+                }
+
+    def to_json(self):
         custom_fields_json = []
         for field in self.custom_fields:
             custom_fields_json.append(field.to_json())
@@ -65,7 +78,7 @@ class BridgeUser(models.Model):
                 }
 
     def __str__(self):
-        return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
+        return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s, %s: %s}") % (
             "id", self.bridge_id,
             "uwnetid", self.uwnetid,
@@ -75,9 +88,8 @@ class BridgeUser(models.Model):
             "sortable_name", self.sortable_name,
             "name", self.name,
             "updated_at", self.updated_at,
-            "deleted_at", '',
-            # self.deleted_at,
-            # 'BridgeUser' object has no attribute 'deleted_at'
+            "logged_in_at", self.logged_in_at,
+            "deleted_at", self.deleted_at,
             "email", self.email)
 
     def __init__(self):
@@ -89,8 +101,8 @@ class BridgeUser(models.Model):
 
 
 class BridgeUserRole(models.Model):
-    role_id = models.CharField(max_length=100)
-    name = models.CharField(max_length=200)
+    role_id = models.CharField(max_length=64)
+    name = models.CharField(max_length=64)
 
     def __init__(self):
         self.permissions = []

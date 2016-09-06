@@ -1,0 +1,46 @@
+{
+   "meta": {},
+   "linked": {
+       "custom_fields": [
+       {
+        "id": "5",
+        "name": "REGID"
+      }
+      ],
+    "custom_field_values": [
+      {
+        "id": "4",
+        "value": "00000000000000000000000000000001",
+        "links": {
+          "custom_field": {
+            "id": "5",
+            "type": "custom_fields"
+          }
+        }
+      }
+    ]
+   },
+   "users":[
+    {  "id":"17",
+       "uid":"none@uw.edu",
+       "hris_id":null,
+       "first_name":"None Average",
+       "last_name":"Student",
+       "full_name":"None Average Student",
+       "sortable_name":"Student, None Average",
+       "email":"none@u.washington.edu",
+       "locale":"en",
+       "roles":[],
+       "name":"None Average Student",
+       "avatar_url":null,
+       "updated_at":"2016-08-08T13:58:20.635-07:00",
+       "deleted_at":null,
+       "unsubscribed":null,
+       "welcomedAt":null,
+       "loggedInAt":null,
+       "links":{
+          "custom_field_values":["4"]
+       },
+       "meta":{"can_masquerade":true}
+    }
+]}

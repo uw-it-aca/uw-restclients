@@ -49,7 +49,7 @@ def get_user(uwnetid):
     """
     resp = get_resource(
         author_users_url(uwnetid, "includes=custom_fields"))
-    return get_user_from_json(json.loads(resp))
+    return process_json_get_users(resp)
 
 
 def get_all_users():
@@ -58,7 +58,7 @@ def get_all_users():
     """
     resp = get_resource(
         author_users_url(None, "includes=custom_fields&limit=1000"))
-    return get_user_from_json(json.loads(resp))
+    return process_json_get_users(resp)
 
 
 def restore_auser(bridge_user):
@@ -70,7 +70,103 @@ def update_auser(bridge_user):
                         json.dumps(bridge_user.to_json()))
 
 
-def get_custom_fields_dict(linked_data):
+def process_json_get_users(resp):
+    bridge_users = []
+    while True:
+        resp_data = json.loads(resp)
+        link_url = None
+        if "meta" in resp_data and\
+                "next" in resp_data["meta"]:
+            link_url = resp_data["meta"]["next"]
+
+        bridge_users = _process_apage_of_users(resp_data, bridge_users)
+
+        if link_url is None:
+            break
+        resp = get_resource(link_url)
+
+    return bridge_users
+
+
+def _process_apage_of_users(resp_data, bridge_users):
+    if "linked" not in resp_data:
+        logger.error("Invalid response body (missing 'linked') %s", resp_data)
+        return bridge_users
+
+    if "custom_fields" not in resp_data["linked"] or\
+            "custom_field_values" not in resp_data["linked"]:
+        logger.error(
+            "Invalid response body (missing 'custom_fields') %s", resp_data)
+        return bridge_users
+
+    custom_fields_value_dict = _get_custom_fields_dict(resp_data["linked"])
+    # a dict of {custom_field_value_id: BridgeCustomField}
+
+    if "users" not in resp_data:
+        logger.error("Invalid response body (missing 'users') %s", resp_data)
+        return bridge_users
+
+    for user_data in resp_data["users"]:
+        user = BridgeUser()
+        user.bridge_id = user_data["id"]
+        user.uwnetid = re.sub('@uw.edu', '', user_data["uid"])
+
+        if "name" in user_data:
+            user.name = user_data["name"]
+
+        if "first_name" in user_data:
+            user.first_name = user_data["first_name"]
+
+        if "last_name" in user_data:
+            user.last_name = user_data["last_name"]
+
+        if "full_name" in user_data:
+            user.full_name = user_data["full_name"]
+
+        if "sortable_name" in user_data:
+            user.sortable_name = user_data["sortable_name"]
+
+        if "email" in user_data:
+            user.email = user_data["email"]
+
+        if "locale" in user_data:
+            user.locale = user_data["locale"]
+
+        if "avatar_url" in user_data:
+            user.avatar_url = user_data["avatar_url"]
+
+        if "deleted_at" in user_data and\
+                user_data["deleted_at"] is not None:
+            user.deleted_at = parse_datetime(user_data["deleted_at"])
+
+        if "loggedInAt" in user_data and\
+                user_data["loggedInAt"] is not None:
+            user.logged_in_at = parse_datetime(user_data["loggedInAt"])
+
+        if "updated_at" in user_data and\
+                user_data["updated_at"] is not None:
+            user.updated_at = parse_datetime(user_data["updated_at"])
+
+        if "unsubscribed" in user_data:
+            user.unsubscribed = user_data["unsubscribed"]
+
+        if "links" in user_data and\
+                "custom_field_values" in user_data["links"]:
+            values = user_data["links"]["custom_field_values"]
+            for custom_field_value in values:
+                user.custom_fields.append(
+                    custom_fields_value_dict[custom_field_value])
+
+        if "roles" in user_data:
+            for role_data in user_data["roles"]:
+                user.roles.append(_get_roles_from_json(role_data))
+
+        bridge_users.append(user)
+
+    return bridge_users
+
+
+def _get_custom_fields_dict(linked_data):
     custom_fields_name_dict = {}
     # a dict of {custom_field_id: name}
 
@@ -93,89 +189,9 @@ def get_custom_fields_dict(linked_data):
     return custom_fields_value_dict
 
 
-def get_user_from_json(resp_data):
-    if "linked" not in resp_data:
-        logger.error("Invalid response body (missing 'linked') %s", resp_data)
-        return
-
-    if "custom_fields" not in resp_data["linked"] or\
-            "custom_field_values" not in resp_data["linked"]:
-        logger.error(
-            "Invalid response body (missing 'custom_fields') %s", resp_data)
-        return
-
-    custom_fields_value_dict = get_custom_fields_dict(resp_data["linked"])
-    # a dict of {custom_field_value_id: BridgeCustomField}
-
-    if "users" not in resp_data:
-        logger.error("Invalid response body (missing 'users') %s", resp_data)
-        return
-
-    bridge_users = []
-    for user_data in resp_data["users"]:
-        user = BridgeUser()
-        user.bridge_id = user_data["id"]
-        user.uwnetid = re.sub('@uw.edu', '', user_data["uid"])
-
-        if "name" in user_data and\
-                user_data["name"] is not None:
-            user.name = user_data["name"]
-
-        if "first_name" in user_data and\
-                user_data["first_name"] is not None:
-            user.first_name = user_data["first_name"]
-
-        if "last_name" in user_data and\
-                user_data["last_name"] is not None:
-            user.last_name = user_data["last_name"]
-
-        if "full_name" in user_data and\
-                user_data["full_name"] is not None:
-            user.full_name = user_data["full_name"]
-
-        if "sortable_name" in user_data and\
-                user_data["sortable_name"] is not None:
-            user.sortable_name = user_data["sortable_name"]
-
-        if "email" in user_data and\
-                user_data["email"] is not None:
-            user.email = user_data["email"]
-
-        if "locale" in user_data and\
-                user_data["locale"] is not None:
-            user.locale = user_data["locale"]
-
-        if "avatar_url" in user_data and\
-                user_data["avatar_url"] is not None:
-            user.avatar_url = user_data["avatar_url"]
-
-        if "updated_at" in user_data and\
-                user_data["updated_at"] is not None:
-            user.updated_at = parse_datetime(user_data["updated_at"])
-
-        if "deleted_at" in user_data and\
-                user_data["deleted_at"] is not None:
-            user.deleted_at = parse_datetime(user_data["deleted_at"])
-
-        if "unsubscribed" in user_data and\
-                user_data["unsubscribed"] is not None:
-            user.unsubscribed = user_data["unsubscribed"]
-
-        if "links" in user_data and\
-                "custom_field_values" in user_data["links"]:
-            values = user_data["links"]["custom_field_values"]
-            for custom_field_value in values:
-                user.custom_fields.append(
-                    custom_fields_value_dict[custom_field_value])
-
-        if "roles" in user_data:
-            user_roles = BridgeUserRole()
-            for role_data in user_data["roles"]:
-                user.roles.append(_get_roles_from_json(role_data))
-        bridge_users.append(user)
-
-    return bridge_users
-
-
 def _get_roles_from_json(role_data):
-    pass
+    # roles in data is a list of strings currently.
+    role = BridgeUserRole()
+    role.role_id = role_data
+    role.name = role_data
+    return role

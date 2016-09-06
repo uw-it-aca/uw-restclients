@@ -1,6 +1,6 @@
 {
   "meta":{
-     "next":"https://uw.bridgeapp.com/api/author/users?after=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsaW1pdCI6MjAsIm9mZnNldCI6MjB9.gOLE7-KiUD4s1eQTBsZqVJHQAz43onZS1kDq_3KmoQU"},
+     "next":"/api/author/users?after=xxx\u0026includes=custom_fields"},
    "linked":{
        "custom_fields": [
        {
