@@ -57,12 +57,14 @@ class BridgeUser(models.Model):
         for field in self.custom_fields:
             custom_fields_json.append(field.to_json())
 
-        return {"uid": self.get_uid(),
-                "first_name": self.first_name,
-                "last_name": self.last_name,
-                "full_name": self.full_name,
-                "email": self.email,
-                "custom_fields": custom_fields_json
+        return {"users": [
+                {"uid": self.get_uid(),
+                 "first_name": self.first_name,
+                 "last_name": self.last_name,
+                 "full_name": self.full_name,
+                 "email": self.email,
+                 "custom_fields": custom_fields_json
+                 }]
                 }
 
     def to_json(self):
@@ -74,13 +76,15 @@ class BridgeUser(models.Model):
         for role in self.roles:
             roles_json.append(role.to_json())
 
-        return {"uid": self.get_uid(),
-                "first_name": self.first_name,
-                "last_name": self.last_name,
-                "full_name": self.full_name,
-                "email": self.email,
-                "custom_fields": custom_fields_json,
-                "roles": roles_json
+        return {"users": [
+                {"uid": self.get_uid(),
+                 "first_name": self.first_name,
+                 "last_name": self.last_name,
+                 "full_name": self.full_name,
+                 "email": self.email,
+                 "custom_fields": custom_fields_json,
+                 "roles": roles_json
+                 }]
                 }
 
     def __str__(self):

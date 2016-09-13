@@ -62,10 +62,7 @@ class File(object):
 
     def deleteURL(self, url, headers):
         del_url = convert_to_platform_safe(url) + ".DELETE"
-        response = delete_mockdata_url("bridge", "file", url, headers)
-        if response.status == 400:
-            return response
-        return make_resp_body(del_url, response)
+        return delete_mockdata_url("bridge", "file", del_url, headers)
 
 
 BRIDGE_MAX_POOL_SIZE = 5

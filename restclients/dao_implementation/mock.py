@@ -260,7 +260,25 @@ def delete_mockdata_url(service_name, implementation_name,
     # return an entity-body
     response = MockHTTP()
     response.status = 204
+    RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
+                            service_name + "/" + implementation_name)
+    path = RESOURCE_ROOT + url
+    try:
+        headers = open(path + '.http-headers')
+        file_values = json.loads(headers.read())
 
+        if "headers" in file_values:
+            response.headers = dict(response.headers.items() +
+                                    file_values['headers'].items())
+
+            if 'status' in file_values:
+                response.status = file_values['status']
+
+        else:
+            response.headers = dict(response.headers.items() +
+                                    file_values.items())
+    except IOError:
+        pass
     return response
 
 

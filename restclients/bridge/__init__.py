@@ -30,8 +30,7 @@ def delete_resource(url):
         log_err(logger, log_data, timer)
         raise DataFailureException(url, response.status, response.data)
 
-    log_info(logger, log_data, timer)
-    logger.debug("%s ==data==> %s" % (log_data, response.data))
+    _log_resp_time(logger, log_data, timer, response)
     return response
 
 
@@ -44,8 +43,7 @@ def get_resource(url):
         log_err(logger, log_data, timer)
         raise DataFailureException(url, response.status, response.data)
 
-    log_info(logger, log_data, timer)
-    logger.debug("%s ==data==> %s" % (log_data, response.data))
+    _log_resp_time(logger, log_data, timer, response)
     return response.data
 
 
@@ -62,8 +60,7 @@ def patch_resource(url, body):
         log_err(logger, log_data, timer)
         raise DataFailureException(url, response.status, response.data)
 
-    log_info(logger, log_data, timer)
-    logger.debug("%s ==data==> %s" % (log_data, response.data))
+    _log_resp_time(logger, log_data, timer, response)
     return response.data
 
 
@@ -81,6 +78,10 @@ def post_resource(url, body):
         log_err(logger, log_data, timer)
         raise DataFailureException(url, response.status, response.data)
 
-    log_info(logger, log_data, timer)
-    logger.debug("%s ==data==> %s" % (log_data, response.data))
+    _log_resp_time(logger, log_data, timer, response)
     return response.data
+
+
+def _log_resp_time(logger, log_data, timer, response):
+    log_info(logger, log_data, timer)
+    logger.info("%s ==data==> %s" % (log_data, response.data))
