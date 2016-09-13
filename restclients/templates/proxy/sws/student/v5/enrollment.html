@@ -1,6 +1,7 @@
 <h1>Enrollment Search (Proxy)</h1>
 <form method="get" action="enrollment.json">
 {% include 'proxy/sws/student/v5/includes/reg_id.html' %}
+{% include 'proxy/sws/student/v5/includes/transcriptable_course.html' %}
 <input class="verbose" id="verbose" name="verbose" value="true" type="hidden">
 <input value="Search" type="submit">
 </form>
