@@ -4,7 +4,10 @@ from django.db import models
 
 
 class BridgeCustomField(models.Model):
-    value_id = models.CharField(max_length=10)
+    REGID_FIELD_ID = "5"
+    REGID_NAME = "REGID"
+
+    value_id = models.CharField(max_length=10, null=True, default=None)
     field_id = models.CharField(max_length=10)
     name = models.CharField(max_length=64)
     value = models.CharField(max_length=256)
@@ -18,10 +21,12 @@ class BridgeCustomField(models.Model):
             )
 
     def to_json(self):
-        return {
-            "custom_field_id": self.field_id,
-            "value": self.value
-            }
+        value = {"custom_field_id": self.field_id,
+                 "value": self.value
+                 }
+        if self.value_id is not None:
+            value["id"] = self.value_id
+        return value
 
     class Meta:
         db_table = "restclients_bridge_custom_field"
@@ -38,10 +43,11 @@ class BridgeUser(models.Model):
     email = models.CharField(max_length=128)
     avatar_url = models.CharField(max_length=512, null=True, default=None)
     locale = models.CharField(max_length=2)
-    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
     logged_in_at = models.DateTimeField(null=True, blank=True, default=None)
     updated_at = models.DateTimeField()
     unsubscribed = models.CharField(max_length=128, null=True, default=None)
+    next_due_date = models.DateTimeField(null=True, blank=True, default=None)
+    completed_courses_count = models.IntegerField()
 
     def get_uid(self):
         return "%s@uw.edu" % self.uwnetid
@@ -79,7 +85,7 @@ class BridgeUser(models.Model):
 
     def __str__(self):
         return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
-                " %s: %s, %s: %s, %s: %s, %s: %s, %s: %s}") % (
+                " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
             "id", self.bridge_id,
             "uwnetid", self.uwnetid,
             "first_name", self.first_name,
@@ -87,10 +93,10 @@ class BridgeUser(models.Model):
             "full_name", self.full_name,
             "sortable_name", self.sortable_name,
             "name", self.name,
+            "email", self.email,
             "updated_at", self.updated_at,
             "logged_in_at", self.logged_in_at,
-            "deleted_at", self.deleted_at,
-            "email", self.email)
+            "completed_courses_count", self.completed_courses_count)
 
     def __init__(self):
         self.roles = []

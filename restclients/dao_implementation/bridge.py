@@ -3,10 +3,23 @@ Contains Bridge DAO implementations.
 """
 
 from restclients.dao_implementation.live import get_con_pool, get_live_url
-from restclients.dao_implementation.mock import get_mockdata_url, \
-    post_mockdata_url, delete_mockdata_url, put_mockdata_url
+from restclients.dao_implementation.mock import get_mockdata_url,\
+    convert_to_platform_safe, post_mockdata_url, delete_mockdata_url,\
+    put_mockdata_url, patch_mockdata_url
 from django.conf import settings
 from os.path import abspath, dirname
+
+
+def make_resp_body(url, response):
+    path = abspath(dirname(__file__) + "/../resources/bridge/file" +
+                   url)
+    try:
+        handle = open(path)
+        response.data = handle.read()
+        response.status = 200
+    except IOError:
+        response.status = 404
+    return response
 
 
 class File(object):
@@ -24,41 +37,35 @@ class File(object):
         new_url = url + ".GET"
         return get_mockdata_url("bridge", "file", url, headers)
 
-    def putURL(self, url, headers, body):
-        response = put_mockdata_url("bridge", "file", url, headers, body)
+    def patchURL(self, url, headers, body):
+        patch_url = convert_to_platform_safe(url) + ".PATCH"
+        response = patch_mockdata_url("bridge", "file",
+                                      patch_url, headers, body)
         if response.status == 400:
             return response
+        return make_resp_body(patch_url, response)
 
-        path = abspath(dirname(__file__) + "/../resources/bridge/file" +
-                       url + ".PUT")
-
-        try:
-            handle = open(path)
-            response.data = handle.read()
-            response.status = 200
-        except IOError:
-            response.status = 404
-
-        return response
+    def putURL(self, url, headers, body):
+        put_url = convert_to_platform_safe(url) + ".PUT"
+        response = put_mockdata_url("bridge", "file",
+                                    put_url, headers, body)
+        if response.status == 400:
+            return response
+        return make_resp_body(put_url, response)
 
     def postURL(self, url, headers, body):
-        response = post_mockdata_url("bridge", "file", url, headers, body)
+        post_url = convert_to_platform_safe(url) + ".POST"
+        response = post_mockdata_url("bridge", "file", post_url, headers, body)
         if response.status == 400:
             return response
-
-        path = abspath(dirname(__file__) + "/../resources/bridge/file" +
-                       url + ".POST")
-        try:
-            handle = open(path)
-            response.data = handle.read()
-            response.status = 200
-        except IOError:
-            response.status = 404
-
-        return response
+        return make_resp_body(post_url, response)
 
     def deleteURL(self, url, headers):
-        return delete_mockdata_url("bridge", "file", url, headers)
+        del_url = convert_to_platform_safe(url) + ".DELETE"
+        response = delete_mockdata_url("bridge", "file", url, headers)
+        if response.status == 400:
+            return response
+        return make_resp_body(del_url, response)
 
 
 BRIDGE_MAX_POOL_SIZE = 5
@@ -105,6 +112,14 @@ class Live(object):
         return get_live_url(Live.pool, 'GET',
                             self.host, url,
                             headers=self.add_basicauth_header(headers),
+                            service_name='bridge')
+
+    def patchURL(self, url, headers, body):
+        self.set_pool()
+        return get_live_url(Live.pool, 'PATCH',
+                            self.host, url,
+                            headers=self.add_basicauth_header(headers),
+                            body=body,
                             service_name='bridge')
 
     def putURL(self, url, headers, body):

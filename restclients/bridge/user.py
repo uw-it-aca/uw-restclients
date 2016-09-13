@@ -7,28 +7,38 @@ from restclients.exceptions import InvalidNetID
 from restclients.pws import PWS
 from restclients.models.bridge import BridgeUser, BridgeUserRole,\
     BridgeCustomField
-from restclients.bridge import get_resource
+from restclients.bridge import get_resource, patch_resource, post_resource,\
+    delete_resource
 
 
 logger = logging.getLogger(__name__)
 ADMIN_URL_PREFIX = "/api/admin/users"
 AUTHOR_URL_PREFIX = "/api/author/users"
+CUSTOM_FIELD = "includes%5B%5D=custom_fields"
+COURSE_SUMMARY = "includes%5B%5D=course_summary"
+PAGE_MAX_ENTRY = "limit=1000"
+RESTORE_SUFFIX = "/restore"
 
 
 def admin_users_url(uwnetid):
-    return "%s/uid%s%s%s" % (ADMIN_URL_PREFIX, '%3A', uwnetid, '%40uw.edu')
+    url = ADMIN_URL_PREFIX
+    if uwnetid is not None:
+        url = url + '/uid%3A' + uwnetid + '%40uw%2Eedu'
+    return url
 
 
-def author_users_url(uwnetid, suffix):
-    return "%s%s?%s" % (
-        AUTHOR_URL_PREFIX,
-        '/uid%3A' + uwnetid + '%40uw.edu' if uwnetid is not None else '',
-        suffix)
+def author_users_url(uwnetid):
+    url = AUTHOR_URL_PREFIX
+    if uwnetid is not None:
+        url = url + '/uid%3A' + uwnetid + '%40uw%2Eedu'
+    return url
 
 
-def add_auser(bridge_user):
-    return post_resource(ADMIN_URL_PREFIX,
-                         json.dumps(bridge_user.to_json()))
+def add_user(bridge_user):
+    resp = post_resource(admin_users_url(None),
+                         json.dumps(bridge_user.to_json_post(),
+                                    separators=(',', ':')))
+    return _process_json_resp_data(resp)
 
 
 def delete_user(uwnetid):
@@ -43,34 +53,41 @@ def change_uid(old_uwnetid, new_uwnetid):
                          '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
 
 
-def get_user(uwnetid):
+def get_user(uwnetid, include_course_summary=False):
     """
     Return a BridgeUsers object
     """
     resp = get_resource(
-        author_users_url(uwnetid, "includes=custom_fields"))
-    return process_json_get_users(resp)
+        author_users_url(uwnetid) +
+        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    return _process_json_resp_data(resp)
 
 
-def get_all_users():
+def get_all_users(include_course_summary=False):
     """
     Return a list of BridgeUser objects
     """
     resp = get_resource(
-        author_users_url(None, "includes=custom_fields&limit=1000"))
-    return process_json_get_users(resp)
+        author_users_url(None) +
+        "?%s&%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY, PAGE_MAX_ENTRY))
+    return _process_json_resp_data(resp)
 
 
-def restore_auser(bridge_user):
-    return post_resource(author_users_url(uwnetid) + "/restore")
+def restore_user(uwnetid):
+    resp = post_resource(
+        author_users_url(uwnetid) + RESTORE_SUFFIX)
+    return _process_json_resp_data(resp)
 
 
-def update_auser(bridge_user):
-    return put_resource(author_users_url(uwnetid),
-                        json.dumps(bridge_user.to_json()))
+def update_user(bridge_user):
+    resp = patch_resource(author_users_url(bridge_user.uwnetid) +
+                          ("?%s" % CUSTOM_FIELD),
+                          json.dumps(bridge_user.to_json_post(),
+                                     separators=(',', ':')))
+    return _process_json_resp_data(resp)
 
 
-def process_json_get_users(resp):
+def _process_json_resp_data(resp):
     bridge_users = []
     while True:
         resp_data = json.loads(resp)
@@ -79,7 +96,7 @@ def process_json_get_users(resp):
                 "next" in resp_data["meta"]:
             link_url = resp_data["meta"]["next"]
 
-        bridge_users = _process_apage_of_users(resp_data, bridge_users)
+        bridge_users = _process_apage(resp_data, bridge_users)
 
         if link_url is None:
             break
@@ -88,7 +105,7 @@ def process_json_get_users(resp):
     return bridge_users
 
 
-def _process_apage_of_users(resp_data, bridge_users):
+def _process_apage(resp_data, bridge_users):
     if "linked" not in resp_data:
         logger.error("Invalid response body (missing 'linked') %s", resp_data)
         return bridge_users
@@ -107,6 +124,11 @@ def _process_apage_of_users(resp_data, bridge_users):
         return bridge_users
 
     for user_data in resp_data["users"]:
+        if "deleted_at" in user_data and\
+                user_data["deleted_at"] is not None:
+            # skip deleted entry
+            continue
+
         user = BridgeUser()
         user.bridge_id = user_data["id"]
         user.uwnetid = re.sub('@uw.edu', '', user_data["uid"])
@@ -135,10 +157,6 @@ def _process_apage_of_users(resp_data, bridge_users):
         if "avatar_url" in user_data:
             user.avatar_url = user_data["avatar_url"]
 
-        if "deleted_at" in user_data and\
-                user_data["deleted_at"] is not None:
-            user.deleted_at = parse_datetime(user_data["deleted_at"])
-
         if "loggedInAt" in user_data and\
                 user_data["loggedInAt"] is not None:
             user.logged_in_at = parse_datetime(user_data["loggedInAt"])
@@ -149,6 +167,13 @@ def _process_apage_of_users(resp_data, bridge_users):
 
         if "unsubscribed" in user_data:
             user.unsubscribed = user_data["unsubscribed"]
+
+        if "next_due_date" in user_data and\
+                user_data["next_due_date"] is not None:
+            user.next_due_date = parse_datetime(user_data["next_due_date"])
+
+        if "completed_courses_count" in user_data:
+            user.completed_courses_count = user_data["completed_courses_count"]
 
         if "links" in user_data and\
                 "custom_field_values" in user_data["links"]:

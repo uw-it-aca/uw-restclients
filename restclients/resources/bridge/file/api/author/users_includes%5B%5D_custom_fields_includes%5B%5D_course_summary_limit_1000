@@ -1,6 +1,6 @@
 {
   "meta":{
-     "next":"/api/author/users?after=xxx\u0026includes=custom_fields"},
+     "next":"/api/author/users?after=xxx\u0026includes[]=custom_fields"},
    "linked":{
        "custom_fields": [
        {

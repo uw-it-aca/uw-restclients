@@ -178,6 +178,9 @@ class Bridge_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('bridge', url, headers)
 
+    def patchURL(self, url, headers, body):
+        return self._patchURL('bridge', url, headers, body)
+
     def putURL(self, url, headers, body):
         return self._putURL('bridge', url, headers, body)
 
