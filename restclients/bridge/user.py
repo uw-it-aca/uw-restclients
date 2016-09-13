@@ -35,7 +35,8 @@ def author_users_url(uwnetid):
 
 
 def add_user(bridge_user):
-    resp = post_resource(admin_users_url(None),
+    resp = post_resource(admin_users_url(None) +
+                         ("?%s" % CUSTOM_FIELD),
                          json.dumps(bridge_user.to_json_post(),
                                     separators=(',', ':')))
     return _process_json_resp_data(resp)
