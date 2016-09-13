@@ -44,7 +44,7 @@ class BridgeTestUser(TestCase):
                 str(user.updated_at), '2016-07-25 16:24:42.131000-07:00')
             self.assertEquals(
                 str(user.logged_in_at), "2016-09-02 15:27:01.827000-07:00")
-            # user.next_due_date
+            self.assertEquals(user.next_due_date, None)
             self.assertEquals(user.completed_courses_count, 0)
             self.assertEquals(
                 user.to_json(),

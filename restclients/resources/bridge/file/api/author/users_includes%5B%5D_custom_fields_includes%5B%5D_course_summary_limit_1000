@@ -59,6 +59,8 @@
        "unsubscribed":null,
        "welcomedAt":null,
        "loggedInAt":null,
+       "next_due_date":null,
+       "completed_courses_count":0,
        "links":{
           "custom_field_values":["2"]
        },
@@ -81,6 +83,8 @@
        "unsubscribed":null,
        "welcomedAt":null,
        "loggedInAt":null,
+       "next_due_date":null,
+       "completed_courses_count":0,
        "links":{
          "custom_field_values":["3"]
        },
@@ -103,6 +107,8 @@
        "unsubscribed":null,
        "welcomedAt":null,
        "loggedInAt":null,
+       "next_due_date":null,
+       "completed_courses_count":0,
        "links":{
           "custom_field_values":["1"]
        },

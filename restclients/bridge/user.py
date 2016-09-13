@@ -157,20 +157,23 @@ def _process_apage(resp_data, bridge_users):
         if "avatar_url" in user_data:
             user.avatar_url = user_data["avatar_url"]
 
-        if "loggedInAt" in user_data and\
-                user_data["loggedInAt"] is not None:
-            user.logged_in_at = parse_datetime(user_data["loggedInAt"])
+        if "loggedInAt" in user_data:
+            user.logged_in_at = user_data["loggedInAt"]
+            if user_data["loggedInAt"] is not None:
+                user.logged_in_at = parse_datetime(user_data["loggedInAt"])
 
-        if "updated_at" in user_data and\
-                user_data["updated_at"] is not None:
-            user.updated_at = parse_datetime(user_data["updated_at"])
+        if "updated_at" in user_data:
+            user.updated_at = user_data["updated_at"]
+            if user_data["updated_at"] is not None:
+                user.updated_at = parse_datetime(user_data["updated_at"])
 
         if "unsubscribed" in user_data:
             user.unsubscribed = user_data["unsubscribed"]
 
-        if "next_due_date" in user_data and\
-                user_data["next_due_date"] is not None:
-            user.next_due_date = parse_datetime(user_data["next_due_date"])
+        if "next_due_date" in user_data:
+            user.next_due_date = user_data["next_due_date"]
+            if user_data["next_due_date"] is not None:
+                user.next_due_date = parse_datetime(user_data["next_due_date"])
 
         if "completed_courses_count" in user_data:
             user.completed_courses_count = user_data["completed_courses_count"]

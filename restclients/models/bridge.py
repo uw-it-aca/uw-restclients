@@ -43,10 +43,10 @@ class BridgeUser(models.Model):
     email = models.CharField(max_length=128)
     avatar_url = models.CharField(max_length=512, null=True, default=None)
     locale = models.CharField(max_length=2)
-    logged_in_at = models.DateTimeField(null=True, blank=True, default=None)
+    logged_in_at = models.DateTimeField(null=True, default=None)
     updated_at = models.DateTimeField()
     unsubscribed = models.CharField(max_length=128, null=True, default=None)
-    next_due_date = models.DateTimeField(null=True, blank=True, default=None)
+    next_due_date = models.DateTimeField(null=True, default=None)
     completed_courses_count = models.IntegerField()
 
     def get_uid(self):
