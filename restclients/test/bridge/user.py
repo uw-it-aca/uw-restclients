@@ -18,6 +18,9 @@ class BridgeTestUser(TestCase):
                          {'id': '1',
                           'value': '787',
                           'custom_field_id': '5'})
+        self.assertTrue(bcf.is_regid())
+        self.assertEqual(bcf.value, '787')
+
         bcf = BridgeCustomField()
         bcf.field_id = "5"
         bcf.name = "REGID"
