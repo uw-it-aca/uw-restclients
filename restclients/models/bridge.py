@@ -12,7 +12,6 @@ class BridgeCustomField(models.Model):
     name = models.CharField(max_length=64)
     value = models.CharField(max_length=256)
 
-
     def is_regid(self):
         return self.field_id == BridgeCustomField.REGID_FIELD_ID and\
             self.name == BridgeCustomField.REGID_NAME
