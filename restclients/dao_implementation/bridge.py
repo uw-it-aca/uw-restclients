@@ -1,23 +1,33 @@
 """
 Contains Bridge DAO implementations.
 """
-
+import os
+from os.path import abspath, dirname
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url,\
     convert_to_platform_safe, post_mockdata_url, delete_mockdata_url,\
-    put_mockdata_url, patch_mockdata_url, _mockdata_path_root
+    put_mockdata_url, patch_mockdata_url, __initialize_app_resource_dirs,\
+    app_resource_dirs
 from django.conf import settings
-from os.path import abspath, dirname
 
 
 def make_resp_body(url, response):
-    path = _mockdata_path_root("bridge", "file") + url
-    try:
-        handle = open(path)
+    __initialize_app_resource_dirs()
+    handle = None
+    for resource_dir in app_resource_dirs:
+        path = os.path.join(resource_dir['path'], "bridge", "file") +\
+            convert_to_platform_safe(url)
+        try:
+            handle = open(path)
+            break
+        except IOError:
+            pass
+
+    if handle is None:
+        response.status = 404
+    else:
         response.data = handle.read()
         response.status = 200
-    except IOError:
-        response.status = 404
     return response
 
 
@@ -37,7 +47,7 @@ class File(object):
         return get_mockdata_url("bridge", "file", url, headers)
 
     def patchURL(self, url, headers, body):
-        patch_url = convert_to_platform_safe(url) + ".PATCH"
+        patch_url = url + ".PATCH"
         response = patch_mockdata_url("bridge", "file",
                                       patch_url, headers, body)
         if response.status == 400:
@@ -45,7 +55,7 @@ class File(object):
         return make_resp_body(patch_url, response)
 
     def putURL(self, url, headers, body):
-        put_url = convert_to_platform_safe(url) + ".PUT"
+        put_url = url + ".PUT"
         response = put_mockdata_url("bridge", "file",
                                     put_url, headers, body)
         if response.status == 400:
@@ -53,14 +63,14 @@ class File(object):
         return make_resp_body(put_url, response)
 
     def postURL(self, url, headers, body):
-        post_url = convert_to_platform_safe(url) + ".POST"
+        post_url = url + ".POST"
         response = post_mockdata_url("bridge", "file", post_url, headers, body)
         if response.status == 400:
             return response
         return make_resp_body(post_url, response)
 
     def deleteURL(self, url, headers):
-        del_url = convert_to_platform_safe(url) + ".DELETE"
+        del_url = url + ".DELETE"
         return delete_mockdata_url("bridge", "file", del_url, headers)
 
 
