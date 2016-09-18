@@ -53,6 +53,14 @@ def __initialize_app_resource_dirs():
                 app_resource_dirs.insert(0, data)
 
 
+def _mockdata_path_root(service_name, implementation_name):
+    dir_base = dirname(__file__)
+    __initialize_app_resource_dirs()
+
+    return abspath(dir_base + "/../resources/" +
+                   service_name + "/" + implementation_name)
+
+
 def get_mockdata_url(service_name, implementation_name,
                      url, headers):
     """
@@ -62,12 +70,7 @@ def get_mockdata_url(service_name, implementation_name,
         possible values: "file", etc.
     """
 
-    dir_base = dirname(__file__)
-    __initialize_app_resource_dirs()
-
-    RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
-                            service_name + "/" + implementation_name)
-
+    RESOURCE_ROOT = _mockdata_path_root(service_name, implementation_name)
     file_path = None
     success = False
     start_time = time.time()
@@ -260,9 +263,7 @@ def delete_mockdata_url(service_name, implementation_name,
     # return an entity-body
     response = MockHTTP()
     response.status = 204
-    RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
-                            service_name + "/" + implementation_name)
-    path = RESOURCE_ROOT + url
+    path = _mockdata_path_root(service_name, implementation_name) + url
     try:
         headers = open(path + '.http-headers')
         file_values = json.loads(headers.read())

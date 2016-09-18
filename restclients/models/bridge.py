@@ -94,17 +94,17 @@ class BridgeUser(models.Model):
     def __str__(self):
         return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
-            "id", self.bridge_id,
-            "uwnetid", self.uwnetid,
-            "first_name", self.first_name,
-            "last_name", self.last_name,
-            "full_name", self.full_name,
-            "sortable_name", self.sortable_name,
-            "name", self.name,
-            "email", self.email,
-            "updated_at", self.updated_at,
-            "logged_in_at", self.logged_in_at,
-            "completed_courses_count", self.completed_courses_count)
+                "id", self.bridge_id if self.bridge_id else None,
+                "uwnetid", self.uwnetid,
+                "first_name", self.first_name,
+                "last_name", self.last_name,
+                "full_name", self.full_name,
+                "sortable_name", self.sortable_name,
+                "name", self.name,
+                "email", self.email,
+                "updated_at", self.updated_at,
+                "logged_in_at", self.logged_in_at,
+                "completed_courses_count", self.completed_courses_count)
 
     def __init__(self):
         self.roles = []

@@ -35,6 +35,10 @@ def author_users_url(uwnetid):
 
 
 def add_user(bridge_user):
+    """
+    Add the bridge_user given
+    Return a list of BridgeUsers in the API response
+    """
     resp = post_resource(admin_users_url(None) +
                          ("?%s" % CUSTOM_FIELD),
                          json.dumps(bridge_user.to_json_post(),
@@ -89,6 +93,9 @@ def update_user(bridge_user):
 
 
 def _process_json_resp_data(resp):
+    """
+    process the response and return a list of BridgeUser
+    """
     bridge_users = []
     while True:
         resp_data = json.loads(resp)

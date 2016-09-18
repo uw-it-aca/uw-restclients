@@ -5,14 +5,13 @@ Contains Bridge DAO implementations.
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url,\
     convert_to_platform_safe, post_mockdata_url, delete_mockdata_url,\
-    put_mockdata_url, patch_mockdata_url
+    put_mockdata_url, patch_mockdata_url, _mockdata_path_root
 from django.conf import settings
 from os.path import abspath, dirname
 
 
 def make_resp_body(url, response):
-    path = abspath(dirname(__file__) + "/../resources/bridge/file" +
-                   url)
+    path = _mockdata_path_root("bridge", "file") + url
     try:
         handle = open(path)
         response.data = handle.read()
