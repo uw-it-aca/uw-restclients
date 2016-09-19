@@ -105,6 +105,15 @@ def get_user(uwnetid, include_course_summary=False):
     return _process_json_resp_data(resp)
 
 
+def get_user_by_id(bridge_id, include_course_summary=False):
+    """
+    Return a list of BridgeUsers objects with custom fields
+    """
+    resp = get_resource(author_id_url(bridge_id) +
+                        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    return _process_json_resp_data(resp)
+
+
 def get_all_users(include_course_summary=False):
     """
     Return a list of BridgeUser objects with custom fields

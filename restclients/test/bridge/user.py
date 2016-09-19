@@ -2,7 +2,7 @@ from datetime import datetime
 from django.test import TestCase
 from restclients.test.bridge import FBridgeWS
 from restclients.models.bridge import BridgeUser, BridgeCustomField
-from restclients.bridge.user import get_user, get_all_users,\
+from restclients.bridge.user import get_user, get_all_users, get_user_by_id,\
     add_user, admin_id_url, admin_uid_url, author_id_url,\
     author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX,\
     update_user_by_id, change_uid, replace_uid, restore_user_by_id,\
@@ -116,14 +116,25 @@ class BridgeTestUser(TestCase):
             self.assertEqual(cus_field.name, "REGID")
             self.assertEqual(cus_field.value,
                              "9136CCB8F66711D5BE060004AC494FFE")
+
             user_list = get_user('bill')
-            self.assertEqual(len(user_list), 1)
-            user = user_list[0]
-            self.assertEqual(user.name, "Bill Average Teacher")
-            self.assertEqual(user.bridge_id, "17637")
-            cus_field = user.custom_fields[0]
-            self.assertEqual(cus_field.value,
-                             "FBB38FE46A7C11D5A4AE0004AC494FFE")
+            self.verify_bill(user_list)
+
+    def verify_bill(self, user_list):
+        self.assertEqual(len(user_list), 1)
+        user = user_list[0]
+        self.assertEqual(user.name, "Bill Average Teacher")
+        self.assertEqual(user.bridge_id, "17637")
+        self.assertEqual(user.first_name, "Bill Average")
+        self.assertEqual(user.last_name, "Teacher")
+        self.assertEqual(user.full_name, "Bill Average Teacher")
+        self.assertEqual(user.sortable_name, "Teacher, Bill Average")
+        self.assertEqual(user.email, "bill@u.washington.edu")
+        self.assertEqual(user.uwnetid, "bill")
+        self.assertEqual(user.get_uid(), "bill@uw.edu")
+        cus_field = user.custom_fields[0]
+        self.assertEqual(cus_field.value,
+                         "FBB38FE46A7C11D5A4AE0004AC494FFE")
 
     def test_get_alluser(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
@@ -202,28 +213,14 @@ class BridgeTestUser(TestCase):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
             orig_users = get_user('bill')
             upded_users = update_user(orig_users[0])
-            self.assertEqual(len(upded_users), 1)
-            upded = upded_users[0]
-            self.assertEqual(upded.bridge_id, "17637")
-            self.assertEqual(upded.name, "Bill Average Teacher")
-            self.assertEqual(upded.first_name, "Bill Average")
-            self.assertEqual(upded.last_name, "Teacher")
-            self.assertEqual(upded.full_name, "Bill Average Teacher")
-            self.assertEqual(upded.sortable_name, "Teacher, Bill Average")
-            self.assertEqual(upded.email, "bill@u.washington.edu")
-            self.assertEqual(upded.uwnetid, "bill")
-            self.assertEqual(upded.get_uid(), "bill@uw.edu")
+            self.verify_bill(upded_users)
             self.assertEqual(
-                str(upded.updated_at), '2016-09-08 13:58:20.635000-07:00')
-            cus_field = upded.custom_fields[0]
-            self.assertEqual(cus_field.value,
-                             "FBB38FE46A7C11D5A4AE0004AC494FFE")
+                str(upded_users[0].updated_at),
+                '2016-09-08 13:58:20.635000-07:00')
 
             orig_users = get_user('bill')
             upded_users = update_user_by_id(orig_users[0])
-            self.assertEqual(len(upded_users), 1)
-            upded = upded_users[0]
-            self.assertEqual(upded.bridge_id, "17637")
+            self.verify_bill(upded_users)
 
     def test_change_uid(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
