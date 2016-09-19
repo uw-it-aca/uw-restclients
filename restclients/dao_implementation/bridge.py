@@ -6,13 +6,13 @@ from os.path import abspath, dirname
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url,\
     convert_to_platform_safe, post_mockdata_url, delete_mockdata_url,\
-    put_mockdata_url, patch_mockdata_url, __initialize_app_resource_dirs,\
+    put_mockdata_url, patch_mockdata_url, _mockdata_path_root,\
     app_resource_dirs
 from django.conf import settings
 
 
 def make_resp_body(url, response):
-    __initialize_app_resource_dirs()
+    RR = _mockdata_path_root("bridge", "file")
     handle = None
     for resource_dir in app_resource_dirs:
         path = os.path.join(resource_dir['path'], "bridge", "file") +\
