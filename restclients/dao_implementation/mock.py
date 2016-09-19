@@ -10,10 +10,15 @@ from urllib import quote, unquote, urlencode
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 try:
-    from importlib import import_module
+    # Django >= 1.7
+    from django.apps import apps as installed_apps
 except:
-    # python 2.6
-    from django.utils.importlib import import_module
+    installed_apps = None
+    try:
+        from importlib import import_module
+    except:
+        # python 2.6
+        from django.utils.importlib import import_module
 from restclients.signals.rest_request import rest_request
 from restclients.signals.success import rest_request_passfail
 from restclients.mock_http import MockHTTP
@@ -25,6 +30,21 @@ A centralized the mock data access
 # Based on django.template.loaders.app_directories
 fs_encoding = sys.getfilesystemencoding() or sys.getdefaultencoding()
 app_resource_dirs = []
+
+
+def __initialize_app_resource_dirs_from_config():
+    if not len(app_resource_dirs):
+        for app in installed_apps.get_app_configs():
+            resource_dir = os.path.join(app.path, 'resources')
+            if os.path.isdir(resource_dir):
+                data = {
+                    'path': resource_dir.decode(fs_encoding),
+                    'app': app.name,
+                }
+                if app.name == 'restclients':
+                    app_resource_dirs.append(data)
+                else:
+                    app_resource_dirs.insert(0, data)
 
 # An issue w/ loading order in management commands means this needs to be
 # a function.  Otherwise we can be trying to load modules that are trying to
@@ -63,7 +83,10 @@ def get_mockdata_url(service_name, implementation_name,
     """
 
     dir_base = dirname(__file__)
-    __initialize_app_resource_dirs()
+    if installed_apps:
+        __initialize_app_resource_dirs_from_config()
+    else:
+        __initialize_app_resource_dirs()
 
     RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
                             service_name + "/" + implementation_name)
