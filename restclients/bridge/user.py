@@ -60,6 +60,24 @@ def add_user(bridge_user):
     return _process_json_resp_data(resp)
 
 
+def change_uid(bridge_id, new_uwnetid):
+    """
+    Return a BridgeUsers object
+    """
+    resp = patch_resource(author_id_url(bridge_id),
+                           '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
+    return _process_json_resp_data(resp, no_custom_fields=True)
+
+
+def replace_uid(old_uwnetid, new_uwnetid):
+    """
+    Return a BridgeUsers object
+    """
+    resp = patch_resource(author_uid_url(old_uwnetid),
+                          '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
+    return _process_json_resp_data(resp, no_custom_fields=True)
+
+
 def delete_user(uwnetid):
     return delete_resource(admin_uid_url(uwnetid))
 
@@ -68,29 +86,12 @@ def delete_user_by_id(bridge_id):
     return delete_resource(admin_id_url(bridge_id))
 
 
-def change_uid(bridge_id, new_uwnetid):
-    """
-    Return a BridgeUsers object
-    """
-    return post_resource(author_id_url(bridge_id),
-                         '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
-
-
-def replace_uid(old_uwnetid, new_uwnetid):
-    """
-    Return a BridgeUsers object
-    """
-    return post_resource(author_uid_url(old_uwnetid),
-                         '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
-
-
 def get_user(uwnetid, include_course_summary=False):
     """
     Return a BridgeUsers object
     """
-    resp = get_resource(
-        author_uid_url(uwnetid) +
-        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    resp = get_resource(author_uid_url(uwnetid) +
+                        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
     return _process_json_resp_data(resp)
 
 
@@ -105,9 +106,15 @@ def get_all_users(include_course_summary=False):
 
 
 def restore_user(uwnetid):
-    resp = post_resource(
-        author_uid_url(uwnetid) + RESTORE_SUFFIX)
-    return _process_json_resp_data(resp)
+    resp = post_resource(author_uid_url(uwnetid) + RESTORE_SUFFIX,
+                         '{}')
+    return _process_json_resp_data(resp, no_custom_fields=True)
+
+
+def restore_user_by_id(bridge_id):
+    resp = post_resource(author_id_url(bridge_id) + RESTORE_SUFFIX,
+                         '{}')
+    return _process_json_resp_data(resp, no_custom_fields=True)
 
 
 def update_user(bridge_user):
@@ -126,7 +133,7 @@ def update_user_by_id(bridge_user):
     return _process_json_resp_data(resp)
 
 
-def _process_json_resp_data(resp):
+def _process_json_resp_data(resp, no_custom_fields=False):
     """
     process the response and return a list of BridgeUser
     """
@@ -138,7 +145,8 @@ def _process_json_resp_data(resp):
                 "next" in resp_data["meta"]:
             link_url = resp_data["meta"]["next"]
 
-        bridge_users = _process_apage(resp_data, bridge_users)
+        bridge_users = _process_apage(resp_data, bridge_users,
+                                      no_custom_fields)
 
         if link_url is None:
             break
@@ -147,19 +155,21 @@ def _process_json_resp_data(resp):
     return bridge_users
 
 
-def _process_apage(resp_data, bridge_users):
+def _process_apage(resp_data, bridge_users, no_custom_fields):
     if "linked" not in resp_data:
         logger.error("Invalid response body (missing 'linked') %s", resp_data)
         return bridge_users
 
-    if "custom_fields" not in resp_data["linked"] or\
-            "custom_field_values" not in resp_data["linked"]:
-        logger.error(
-            "Invalid response body (missing 'custom_fields') %s", resp_data)
-        return bridge_users
+    if not no_custom_fields:
+        if "custom_fields" not in resp_data["linked"] or\
+                "custom_field_values" not in resp_data["linked"]:
+            logger.error(
+                "Invalid response body (missing 'custom_fields') %s",
+                resp_data)
+            return bridge_users
 
-    custom_fields_value_dict = _get_custom_fields_dict(resp_data["linked"])
-    # a dict of {custom_field_value_id: BridgeCustomField}
+        custom_fields_value_dict = _get_custom_fields_dict(resp_data["linked"])
+        # a dict of {custom_field_value_id: BridgeCustomField}
 
     if "users" not in resp_data:
         logger.error("Invalid response body (missing 'users') %s", resp_data)
@@ -220,14 +230,14 @@ def _process_apage(resp_data, bridge_users):
         if "completed_courses_count" in user_data:
             user.completed_courses_count = user_data["completed_courses_count"]
 
-        if "links" in user_data and\
+        if "links" in user_data and len(user_data["links"]) > 0 and\
                 "custom_field_values" in user_data["links"]:
             values = user_data["links"]["custom_field_values"]
             for custom_field_value in values:
                 user.custom_fields.append(
                     custom_fields_value_dict[custom_field_value])
 
-        if "roles" in user_data:
+        if "roles" in user_data and len(user_data["roles"]) > 0:
             for role_data in user_data["roles"]:
                 user.roles.append(_get_roles_from_json(role_data))
 

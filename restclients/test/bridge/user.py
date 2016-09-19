@@ -2,10 +2,12 @@ from datetime import datetime
 from django.test import TestCase
 from restclients.test.bridge import FBridgeWS
 from restclients.models.bridge import BridgeUser, BridgeCustomField
-from restclients.bridge.user import get_user, get_all_users, update_user,\
-    add_user, delete_user, admin_id_url, admin_uid_url, author_id_url,\
-    author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX, delete_user_by_id,\
-    update_user_by_id
+from restclients.bridge.user import get_user, get_all_users,\
+    add_user, admin_id_url, admin_uid_url, author_id_url,\
+    author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX,\
+    update_user_by_id, change_uid, replace_uid, restore_user_by_id,\
+    restore_user, delete_user, delete_user_by_id,\
+    update_user, update_user_by_id
 
 
 class BridgeTestUser(TestCase):
@@ -224,3 +226,18 @@ class BridgeTestUser(TestCase):
             self.assertEqual(len(upded_users), 1)
             upded = upded_users[0]
             self.assertEqual(upded.bridge_id, "17637")
+
+    def test_change_uid(self):
+        with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
+            self.verify_uid(change_uid("17637", "billchanged"))
+            self.verify_uid(replace_uid("bill", "billchanged"))
+
+    def test_restore_user(self):
+        with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
+            self.verify_uid(restore_user_by_id("17637"))
+            self.verify_uid(restore_user("billchanged"))
+
+    def verify_uid(self, users):
+        self.assertEqual(len(users), 1)
+        self.assertEqual(users[0].bridge_id, "17637")
+        self.assertEqual(users[0].get_uid(), "billchanged@uw.edu")
