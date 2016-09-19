@@ -51,7 +51,7 @@ class BridgeUser(models.Model):
     updated_at = models.DateTimeField()
     unsubscribed = models.CharField(max_length=128, null=True, default=None)
     next_due_date = models.DateTimeField(null=True, default=None)
-    completed_courses_count = models.IntegerField()
+    completed_courses_count = models.IntegerField(default=0)
 
     def get_uid(self):
         return "%s@uw.edu" % self.uwnetid

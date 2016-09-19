@@ -20,14 +20,28 @@ PAGE_MAX_ENTRY = "limit=1000"
 RESTORE_SUFFIX = "/restore"
 
 
-def admin_users_url(uwnetid):
+def admin_id_url(bridge_id):
+    url = ADMIN_URL_PREFIX
+    if bridge_id is not None:
+        url = url + '/' + bridge_id
+    return url
+
+
+def admin_uid_url(uwnetid):
     url = ADMIN_URL_PREFIX
     if uwnetid is not None:
         url = url + '/uid%3A' + uwnetid + '%40uw%2Eedu'
     return url
 
 
-def author_users_url(uwnetid):
+def author_id_url(bridge_id):
+    url = AUTHOR_URL_PREFIX
+    if bridge_id is not None:
+        url = url + '/' + bridge_id
+    return url
+
+
+def author_uid_url(uwnetid):
     url = AUTHOR_URL_PREFIX
     if uwnetid is not None:
         url = url + '/uid%3A' + uwnetid + '%40uw%2Eedu'
@@ -39,7 +53,7 @@ def add_user(bridge_user):
     Add the bridge_user given
     Return a list of BridgeUsers in the API response
     """
-    resp = post_resource(admin_users_url(None) +
+    resp = post_resource(admin_uid_url(None) +
                          ("?%s" % CUSTOM_FIELD),
                          json.dumps(bridge_user.to_json_post(),
                                     separators=(',', ':')))
@@ -47,14 +61,26 @@ def add_user(bridge_user):
 
 
 def delete_user(uwnetid):
-    return delete_resource(admin_users_url(uwnetid))
+    return delete_resource(admin_uid_url(uwnetid))
 
 
-def change_uid(old_uwnetid, new_uwnetid):
+def delete_user_by_id(bridge_id):
+    return delete_resource(admin_id_url(bridge_id))
+
+
+def change_uid(bridge_id, new_uwnetid):
     """
     Return a BridgeUsers object
     """
-    return post_resource(author_users_url(old_uwnetid),
+    return post_resource(author_id_url(bridge_id),
+                         '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
+
+
+def replace_uid(old_uwnetid, new_uwnetid):
+    """
+    Return a BridgeUsers object
+    """
+    return post_resource(author_uid_url(old_uwnetid),
                          '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
 
 
@@ -63,7 +89,7 @@ def get_user(uwnetid, include_course_summary=False):
     Return a BridgeUsers object
     """
     resp = get_resource(
-        author_users_url(uwnetid) +
+        author_uid_url(uwnetid) +
         "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
     return _process_json_resp_data(resp)
 
@@ -73,19 +99,27 @@ def get_all_users(include_course_summary=False):
     Return a list of BridgeUser objects
     """
     resp = get_resource(
-        author_users_url(None) +
+        author_uid_url(None) +
         "?%s&%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY, PAGE_MAX_ENTRY))
     return _process_json_resp_data(resp)
 
 
 def restore_user(uwnetid):
     resp = post_resource(
-        author_users_url(uwnetid) + RESTORE_SUFFIX)
+        author_uid_url(uwnetid) + RESTORE_SUFFIX)
     return _process_json_resp_data(resp)
 
 
 def update_user(bridge_user):
-    resp = patch_resource(author_users_url(bridge_user.uwnetid) +
+    resp = patch_resource(author_uid_url(bridge_user.uwnetid) +
+                          ("?%s" % CUSTOM_FIELD),
+                          json.dumps(bridge_user.to_json_post(),
+                                     separators=(',', ':')))
+    return _process_json_resp_data(resp)
+
+
+def update_user_by_id(bridge_user):
+    resp = patch_resource(author_id_url(bridge_user.bridge_id) +
                           ("?%s" % CUSTOM_FIELD),
                           json.dumps(bridge_user.to_json_post(),
                                      separators=(',', ':')))

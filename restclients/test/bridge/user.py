@@ -3,10 +3,36 @@ from django.test import TestCase
 from restclients.test.bridge import FBridgeWS
 from restclients.models.bridge import BridgeUser, BridgeCustomField
 from restclients.bridge.user import get_user, get_all_users, update_user,\
-    add_user, delete_user
+    add_user, delete_user, admin_id_url, admin_uid_url, author_id_url,\
+    author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX, delete_user_by_id,\
+    update_user_by_id
 
 
 class BridgeTestUser(TestCase):
+
+    def test_admin_id_url(self):
+        self.assertEqual(admin_id_url(None),
+                         ADMIN_URL_PREFIX)
+        self.assertEqual(admin_id_url('123'),
+                         ADMIN_URL_PREFIX + '/123')
+
+    def test_author_id_url(self):
+        self.assertEqual(author_id_url(None),
+                         AUTHOR_URL_PREFIX)
+        self.assertEqual(author_id_url('123'),
+                         AUTHOR_URL_PREFIX + '/123')
+
+    def test_admin_uid_url(self):
+        self.assertEqual(admin_uid_url(None),
+                         ADMIN_URL_PREFIX)
+        self.assertEqual(admin_uid_url('staff'),
+                         ADMIN_URL_PREFIX + '/uid%3Astaff%40uw%2Eedu')
+
+    def test_author_uid_url(self):
+        self.assertEqual(author_uid_url(None),
+                         AUTHOR_URL_PREFIX)
+        self.assertEqual(author_uid_url('staff'),
+                         AUTHOR_URL_PREFIX + '/uid%3Astaff%40uw%2Eedu')
 
     def test_bridge_custom_field(self):
         bcf = BridgeCustomField()
@@ -165,6 +191,8 @@ class BridgeTestUser(TestCase):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
             reps = delete_user("javerage")
             self.assertEqual(reps.status, 204)
+            reps = delete_user_by_id("195")
+            self.assertEqual(reps.status, 204)
             try:
                 reps = delete_user("staff")
             except Exception as ex:
@@ -190,3 +218,9 @@ class BridgeTestUser(TestCase):
             cus_field = upded.custom_fields[0]
             self.assertEqual(cus_field.value,
                              "FBB38FE46A7C11D5A4AE0004AC494FFE")
+
+            orig_users = get_user('bill')
+            upded_users = update_user_by_id(orig_users[0])
+            self.assertEqual(len(upded_users), 1)
+            upded = upded_users[0]
+            self.assertEqual(upded.bridge_id, "17637")
