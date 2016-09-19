@@ -51,7 +51,7 @@ def author_uid_url(uwnetid):
 def add_user(bridge_user):
     """
     Add the bridge_user given
-    Return a list of BridgeUsers in the API response
+    Return a list of BridgeUser objects with custom fields
     """
     resp = post_resource(admin_uid_url(None) +
                          ("?%s" % CUSTOM_FIELD),
@@ -62,16 +62,16 @@ def add_user(bridge_user):
 
 def change_uid(bridge_id, new_uwnetid):
     """
-    Return a BridgeUsers object
+    Return a list of BridgeUser objects without custom fields
     """
     resp = patch_resource(author_id_url(bridge_id),
-                           '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
+                          '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
     return _process_json_resp_data(resp, no_custom_fields=True)
 
 
 def replace_uid(old_uwnetid, new_uwnetid):
     """
-    Return a BridgeUsers object
+    Return a list of BridgeUser objects without custom fields
     """
     resp = patch_resource(author_uid_url(old_uwnetid),
                           '{"user":{"uid":"%s@uw.edu"}}' % new_uwnetid)
@@ -79,16 +79,26 @@ def replace_uid(old_uwnetid, new_uwnetid):
 
 
 def delete_user(uwnetid):
-    return delete_resource(admin_uid_url(uwnetid))
+    """
+    Return True when the HTTP repsonse status is 204 -
+    the user is deleted successfully
+    """
+    resp = delete_resource(admin_uid_url(uwnetid))
+    return resp.status == 204
 
 
 def delete_user_by_id(bridge_id):
-    return delete_resource(admin_id_url(bridge_id))
+    """
+    Return True when the HTTP repsonse status is 204 -
+    the user is deleted successfully
+    """
+    resp = delete_resource(admin_id_url(bridge_id))
+    return resp.status == 204
 
 
 def get_user(uwnetid, include_course_summary=False):
     """
-    Return a BridgeUsers object
+    Return a list of BridgeUsers objects with custom fields
     """
     resp = get_resource(author_uid_url(uwnetid) +
                         "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
@@ -97,7 +107,7 @@ def get_user(uwnetid, include_course_summary=False):
 
 def get_all_users(include_course_summary=False):
     """
-    Return a list of BridgeUser objects
+    Return a list of BridgeUser objects with custom fields
     """
     resp = get_resource(
         author_uid_url(None) +
@@ -106,18 +116,27 @@ def get_all_users(include_course_summary=False):
 
 
 def restore_user(uwnetid):
+    """
+    Return a list of BridgeUsers objects without custom fields
+    """
     resp = post_resource(author_uid_url(uwnetid) + RESTORE_SUFFIX,
                          '{}')
     return _process_json_resp_data(resp, no_custom_fields=True)
 
 
 def restore_user_by_id(bridge_id):
+    """
+    Return a list of BridgeUsers objects without custom fields
+    """
     resp = post_resource(author_id_url(bridge_id) + RESTORE_SUFFIX,
                          '{}')
     return _process_json_resp_data(resp, no_custom_fields=True)
 
 
 def update_user(bridge_user):
+    """
+    Return a list of BridgeUsers objects with custom fields
+    """
     resp = patch_resource(author_uid_url(bridge_user.uwnetid) +
                           ("?%s" % CUSTOM_FIELD),
                           json.dumps(bridge_user.to_json_post(),
@@ -126,6 +145,9 @@ def update_user(bridge_user):
 
 
 def update_user_by_id(bridge_user):
+    """
+    Return a list of BridgeUsers objects with custom fields
+    """
     resp = patch_resource(author_id_url(bridge_user.bridge_id) +
                           ("?%s" % CUSTOM_FIELD),
                           json.dumps(bridge_user.to_json_post(),

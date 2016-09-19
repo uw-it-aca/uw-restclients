@@ -191,10 +191,8 @@ class BridgeTestUser(TestCase):
 
     def test_delete_user(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            reps = delete_user("javerage")
-            self.assertEqual(reps.status, 204)
-            reps = delete_user_by_id("195")
-            self.assertEqual(reps.status, 204)
+            self.assertTrue(delete_user("javerage"))
+            self.assertTrue(delete_user_by_id("195"))
             try:
                 reps = delete_user("staff")
             except Exception as ex:
