@@ -6,29 +6,8 @@ from os.path import abspath, dirname
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url,\
     convert_to_platform_safe, post_mockdata_url, delete_mockdata_url,\
-    put_mockdata_url, patch_mockdata_url, _mockdata_path_root,\
-    app_resource_dirs
+    put_mockdata_url, patch_mockdata_url, read_resp_data
 from django.conf import settings
-
-
-def make_resp_body(url, response):
-    RR = _mockdata_path_root("bridge", "file")
-    handle = None
-    for resource_dir in app_resource_dirs:
-        path = os.path.join(resource_dir['path'], "bridge", "file") +\
-            convert_to_platform_safe(url)
-        try:
-            handle = open(path)
-            break
-        except IOError:
-            pass
-
-    if handle is None:
-        response.status = 404
-    else:
-        response.data = handle.read()
-        response.status = 200
-    return response
 
 
 class File(object):
@@ -52,7 +31,7 @@ class File(object):
                                       patch_url, headers, body)
         if response.status == 400:
             return response
-        return make_resp_body(patch_url, response)
+        return read_resp_data("bridge", "file", patch_url, response)
 
     def putURL(self, url, headers, body):
         put_url = url + ".PUT"
@@ -60,14 +39,14 @@ class File(object):
                                     put_url, headers, body)
         if response.status == 400:
             return response
-        return make_resp_body(put_url, response)
+        return read_resp_data("bridge", "file", put_url, response)
 
     def postURL(self, url, headers, body):
         post_url = url + ".POST"
         response = post_mockdata_url("bridge", "file", post_url, headers, body)
         if response.status == 400:
             return response
-        return make_resp_body(post_url, response)
+        return read_resp_data("bridge", "file", post_url, response)
 
     def deleteURL(self, url, headers):
         del_url = url + ".DELETE"
