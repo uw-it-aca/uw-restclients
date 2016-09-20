@@ -56,7 +56,7 @@ def patch_resource(url, body):
     response = Bridge_DAO().patchURL(url, PHEADER, body)
     log_data = "PATCH %s %s ==status==> %s" % (url, body, response.status)
 
-    if not (response.status == 200 or response.status == 201):
+    if not response.status == 200:
         log_err(logger, log_data, timer)
         raise DataFailureException(url, response.status, response.data)
 
@@ -75,6 +75,24 @@ def post_resource(url, body):
 
     if response.status != 200 and response.status != 201:
         # 201 Created
+        log_err(logger, log_data, timer)
+        raise DataFailureException(url, response.status, response.data)
+
+    _log_resp_time(logger, log_data, timer, response)
+    return response.data
+
+
+def put_resource(url, body):
+    """
+    Put request with the given json body
+    :returns: http response data
+    Bridge PUT seems to have the same effect as PATCH currently.
+    """
+    timer = Timer()
+    response = Bridge_DAO().putURL(url, PHEADER, body)
+    log_data = "PUT %s %s ==status==> %s" % (url, body, response.status)
+
+    if not response.status == 200:
         log_err(logger, log_data, timer)
         raise DataFailureException(url, response.status, response.data)
 

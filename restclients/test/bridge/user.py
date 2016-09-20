@@ -5,9 +5,8 @@ from restclients.models.bridge import BridgeUser, BridgeCustomField
 from restclients.bridge.user import get_user, get_all_users, get_user_by_id,\
     add_user, admin_id_url, admin_uid_url, author_id_url,\
     author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX,\
-    update_user_by_id, change_uid, replace_uid, restore_user_by_id,\
-    restore_user, delete_user, delete_user_by_id,\
-    update_user, update_user_by_id
+    change_uid, replace_uid, restore_user_by_id, update_user,\
+    restore_user, delete_user, delete_user_by_id
 
 
 class BridgeTestUser(TestCase):
@@ -219,7 +218,8 @@ class BridgeTestUser(TestCase):
                 '2016-09-08 13:58:20.635000-07:00')
 
             orig_users = get_user('bill')
-            upded_users = update_user_by_id(orig_users[0])
+            orig_users[0].bridge_id = None
+            upded_users = update_user(orig_users[0])
             self.verify_bill(upded_users)
 
     def test_change_uid(self):

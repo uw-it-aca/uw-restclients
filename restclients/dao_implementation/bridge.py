@@ -50,7 +50,8 @@ class File(object):
 
     def deleteURL(self, url, headers):
         del_url = url + ".DELETE"
-        return delete_mockdata_url("bridge", "file", del_url, headers)
+        response = delete_mockdata_url("bridge", "file", del_url, headers)
+        return read_resp_data("bridge", "file", del_url, response)
 
 
 BRIDGE_MAX_POOL_SIZE = 5

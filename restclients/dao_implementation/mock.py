@@ -286,7 +286,7 @@ def delete_mockdata_url(service_name, implementation_name,
     # return an entity-body
     response = MockHTTP()
     response.status = 204
-    return read_resp_data(service_name, implementation_name, url, response)
+    return response
 
 
 def convert_to_platform_safe(dir_file_name):
@@ -302,42 +302,57 @@ def read_resp_data(service_name, implementation_name, url, response):
     Read the (DELETE, PATCH, POST, PUT) response body and header if exist.
     """
     RR = _mockdata_path_root(service_name, implementation_name)
-    handle = None
-
     for resource_dir in app_resource_dirs:
-        path = os.path.join(
-            resource_dir['path'], service_name, implementation_name) +\
-            convert_to_platform_safe(url)
-        if _read_resp_body(path, response) or\
-                _read_resp_header(path, response):
+        path = os.path.join(resource_dir['path'],
+                            service_name,
+                            implementation_name)
+        found_header = _read_resp_header(path, url, response)
+        found_body = _read_resp_body(path, url, response)
+        if found_body or found_header:
             return response
     response.status = 404
     return response
 
 
-def _read_resp_body(path, response):
+def _read_resp_body(path, url, response):
+    handle = None
     try:
-        handle = open(path)
+        handle = open(os.path.join(path, url))
+    except IOError:
+        try:
+            handle = open(path + convert_to_platform_safe(url))
+        except IOError:
+            return False
+
+    if handle is not None:
         response.data = handle.read()
         response.status = 200
         return True
-    except IOError:
-        return False
+    return False
 
 
-def _read_resp_header(path, response):
+def _read_resp_header(path, url, response):
+    handle = None
     try:
-        headers = open(path + '.http-headers')
-        file_values = json.loads(headers.read())
+        handle = open(os.path.join(path, url) +
+                      '.http-headers')
+    except IOError:
+        try:
+            handle = open(path + convert_to_platform_safe(url) +
+                          '.http-headers')
+        except IOError:
+            return False
+
+    if handle is not None:
+        file_values = json.loads(handle.read())
+        if 'status' in file_values:
+            response.status = file_values['status']
 
         if "headers" in file_values:
             response.headers = dict(response.headers.items() +
                                     file_values['headers'].items())
-            if 'status' in file_values:
-                response.status = file_values['status']
         else:
             response.headers = dict(response.headers.items() +
                                     file_values.items())
         return True
-    except IOError:
-        return False
+    return False

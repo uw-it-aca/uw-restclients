@@ -144,21 +144,14 @@ def restore_user_by_id(bridge_id):
 
 def update_user(bridge_user):
     """
-    Return a list of BridgeUsers objects with custom fields
+    Update only the user attributes provided.
+    Return a list of BridgeUsers objects with custom fields.
     """
-    resp = patch_resource(author_uid_url(bridge_user.uwnetid) +
-                          ("?%s" % CUSTOM_FIELD),
-                          json.dumps(bridge_user.to_json_post(),
-                                     separators=(',', ':')))
-    return _process_json_resp_data(resp)
-
-
-def update_user_by_id(bridge_user):
-    """
-    Return a list of BridgeUsers objects with custom fields
-    """
-    resp = patch_resource(author_id_url(bridge_user.bridge_id) +
-                          ("?%s" % CUSTOM_FIELD),
+    if bridge_user.bridge_id is not None:
+        url = author_id_url(bridge_user.bridge_id)
+    else:
+        url = author_uid_url(bridge_user.uwnetid)
+    resp = patch_resource(url + ("?%s" % CUSTOM_FIELD),
                           json.dumps(bridge_user.to_json_post(),
                                      separators=(',', ':')))
     return _process_json_resp_data(resp)
