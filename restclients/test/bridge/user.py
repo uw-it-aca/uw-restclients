@@ -77,24 +77,6 @@ class BridgeTestUser(TestCase):
             self.assertEqual(user.next_due_date, None)
             self.assertEqual(user.completed_courses_count, 0)
             self.assertEqual(
-                user.to_json(),
-                {"users":[
-                  {"first_name": "James",
-                   "last_name": "Student",
-                   "uid": "javerage@uw.edu",
-                   "roles": [
-                        {
-                         "id": "account_admin",
-                         "name": "account_admin",
-                         "permissions": []
-                         }],
-                   "full_name": "James Student",
-                   "email": "javerage@uw.edu",
-                   "custom_fields": [
-                        {"id": "1",
-                         "value": "9136CCB8F66711D5BE060004AC494FFE",
-                         "custom_field_id": "5"}]}]})
-            self.assertEqual(
                 user.to_json_post(),
                 {"users":[
                    {"first_name": "James",

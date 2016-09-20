@@ -57,6 +57,7 @@ class BridgeUser(models.Model):
         return "%s@uw.edu" % self.uwnetid
 
     def to_json_post(self):
+        # for POST, PATCH, PUT
         custom_fields_json = []
         for field in self.custom_fields:
             custom_fields_json.append(field.to_json())
@@ -68,26 +69,6 @@ class BridgeUser(models.Model):
                  "full_name": self.full_name,
                  "email": self.email,
                  "custom_fields": custom_fields_json
-                 }]
-                }
-
-    def to_json(self):
-        custom_fields_json = []
-        for field in self.custom_fields:
-            custom_fields_json.append(field.to_json())
-
-        roles_json = []
-        for role in self.roles:
-            roles_json.append(role.to_json())
-
-        return {"users": [
-                {"uid": self.get_uid(),
-                 "first_name": self.first_name,
-                 "last_name": self.last_name,
-                 "full_name": self.full_name,
-                 "email": self.email,
-                 "custom_fields": custom_fields_json,
-                 "roles": roles_json
                  }]
                 }
 
@@ -123,9 +104,9 @@ class BridgeUserRole(models.Model):
 
     def to_json(self):
         return {
-            'id': self.role_id,
-            'name': self.name,
-            'permissions': self.permissions  # unknown
+            "id": self.role_id,
+            "name": self.name,
+            "permissions": self.permissions  # unknown
             }
 
     class Meta:
