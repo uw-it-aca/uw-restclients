@@ -305,7 +305,8 @@ def read_resp_data(service_name, implementation_name, url, response):
     handle = None
 
     for resource_dir in app_resource_dirs:
-        path = os.path.join(resource_dir['path'], service_name, implementation_name) +\
+        path = os.path.join(
+            resource_dir['path'], service_name, implementation_name) +\
             convert_to_platform_safe(url)
         if _read_resp_body(path, response) or\
                 _read_resp_header(path, response):
