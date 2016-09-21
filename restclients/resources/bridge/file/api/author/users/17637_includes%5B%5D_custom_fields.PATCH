@@ -1,0 +1,64 @@
+{
+  "meta": {},
+  "linked":
+   {
+    "custom_fields": [
+       {
+        "id": "5",
+        "name": "REGID"
+      }],
+    "custom_field_values": [
+      {
+        "id": "2",
+        "value": "FBB38FE46A7C11D5A4AE0004AC494FFE",
+        "links": {
+          "custom_field": {
+            "id": "5",
+            "type": "custom_fields"
+          }
+        }
+      }
+    ]
+   },
+   "users":[
+       {"id":"17637",
+       "uid":"bill@uw.edu",
+       "hris_id":null,
+       "first_name":"Bill Average",
+       "last_name":"Teacher",
+       "full_name":"Bill Average Teacher",
+       "sortable_name":"Teacher, Bill Average",
+       "email":"bill@u.washington.edu",
+       "locale":"en",
+       "roles":[],
+       "name":"Bill Average Teacher",
+       "avatar_url":null,
+       "updated_at":"2016-09-08T13:58:20.635-07:00",
+       "deleted_at":null,
+       "unsubscribed":null,
+       "welcomedAt":null,
+       "loggedInAt":null,
+       "links":{"custom_field_values":["2"]},
+       "meta":{"can_masquerade":true}
+       },
+   {"id":"13",
+    "uid":"bill@uw.edu",
+    "hris_id":null,
+    "first_name":null,
+    "last_name":null,
+    "full_name":null,
+    "sortable_name":null,
+    "email":"bill@uw.edu",
+    "locale":"en",
+    "roles":[],
+    "name":"bill deleted",
+    "avatar_url":null,
+    "updated_at":"2016-09-06T17:53:25.754-07:00",
+    "deleted_at":"2016-07-26T10:54:22.710-07:00",
+    "unsubscribed":null,
+    "welcomedAt":null,
+    "loggedInAt":"2016-07-26T09:37:41.440-07:00",
+    "links":{"custom_field_values":[]},
+    "meta":{"can_masquerade":true}
+   }
+]}
