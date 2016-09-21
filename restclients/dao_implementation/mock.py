@@ -73,6 +73,17 @@ def __initialize_app_resource_dirs():
                 app_resource_dirs.insert(0, data)
 
 
+def _mockdata_path_root(service_name, implementation_name):
+    dir_base = dirname(__file__)
+    if installed_apps:
+        __initialize_app_resource_dirs_from_config()
+    else:
+        __initialize_app_resource_dirs()
+
+    return abspath(dir_base + "/../resources/" +
+                   service_name + "/" + implementation_name)
+
+
 def get_mockdata_url(service_name, implementation_name,
                      url, headers):
     """
@@ -82,15 +93,7 @@ def get_mockdata_url(service_name, implementation_name,
         possible values: "file", etc.
     """
 
-    dir_base = dirname(__file__)
-    if installed_apps:
-        __initialize_app_resource_dirs_from_config()
-    else:
-        __initialize_app_resource_dirs()
-
-    RESOURCE_ROOT = abspath(dir_base + "/../resources/" +
-                            service_name + "/" + implementation_name)
-
+    RESOURCE_ROOT = _mockdata_path_root(service_name, implementation_name)
     file_path = None
     success = False
     start_time = time.time()
@@ -283,7 +286,6 @@ def delete_mockdata_url(service_name, implementation_name,
     # return an entity-body
     response = MockHTTP()
     response.status = 204
-
     return response
 
 
@@ -293,3 +295,64 @@ def convert_to_platform_safe(dir_file_name):
     :return: a string with all the reserved characters replaced
     """
     return re.sub('[\?|<>=:*,;+&"@$]', '_', dir_file_name)
+
+
+def read_resp_data(service_name, implementation_name, url, response):
+    """
+    Read the (DELETE, PATCH, POST, PUT) response body and header if exist.
+    """
+    RR = _mockdata_path_root(service_name, implementation_name)
+    for resource_dir in app_resource_dirs:
+        path = os.path.join(resource_dir['path'],
+                            service_name,
+                            implementation_name)
+        found_header = _read_resp_header(path, url, response)
+        found_body = _read_resp_body(path, url, response)
+        if found_body or found_header:
+            return response
+    response.status = 404
+    return response
+
+
+def _read_resp_body(path, url, response):
+    handle = None
+    try:
+        handle = open(os.path.join(path, url))
+    except IOError:
+        try:
+            handle = open(path + convert_to_platform_safe(url))
+        except IOError:
+            return False
+
+    if handle is not None:
+        response.data = handle.read()
+        response.status = 200
+        return True
+    return False
+
+
+def _read_resp_header(path, url, response):
+    handle = None
+    try:
+        handle = open(os.path.join(path, url) +
+                      '.http-headers')
+    except IOError:
+        try:
+            handle = open(path + convert_to_platform_safe(url) +
+                          '.http-headers')
+        except IOError:
+            return False
+
+    if handle is not None:
+        file_values = json.loads(handle.read())
+        if 'status' in file_values:
+            response.status = file_values['status']
+
+        if "headers" in file_values:
+            response.headers = dict(response.headers.items() +
+                                    file_values['headers'].items())
+        else:
+            response.headers = dict(response.headers.items() +
+                                    file_values.items())
+        return True
+    return False

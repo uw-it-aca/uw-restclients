@@ -6,8 +6,7 @@ import re
 import logging
 from django.conf import settings
 from restclients.dao_implementation.live import get_con_pool, get_live_url
-from restclients.dao_implementation.mock import get_mockdata_url,\
-    post_mockdata_url, delete_mockdata_url, put_mockdata_url
+from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.mock_http import MockHTTP
 
 
