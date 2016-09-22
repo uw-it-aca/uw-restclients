@@ -37,7 +37,7 @@ class BridgeCustomField(models.Model):
 
 
 class BridgeUser(models.Model):
-    bridge_id = models.IntegerField(default=0)
+    bridge_id = models.CharField(max_length=16, null=True, default=None)
     uwnetid = models.CharField(max_length=128)
     first_name = models.CharField(max_length=128)
     full_name = models.CharField(max_length=128)
