@@ -23,7 +23,7 @@ RESTORE_SUFFIX = "/restore"
 def admin_id_url(bridge_id):
     url = ADMIN_URL_PREFIX
     if bridge_id is not None:
-        url = url + '/' + bridge_id
+        url = url + ("/%d" % bridge_id)
     return url
 
 
@@ -37,7 +37,7 @@ def admin_uid_url(uwnetid):
 def author_id_url(bridge_id):
     url = AUTHOR_URL_PREFIX
     if bridge_id is not None:
-        url = url + '/' + bridge_id
+        url = url + ("/%d" % bridge_id)
     return url
 
 
@@ -206,7 +206,7 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
             continue
 
         user = BridgeUser()
-        user.bridge_id = user_data["id"]
+        user.bridge_id = int(user_data["id"])
         user.uwnetid = re.sub('@uw.edu', '', user_data["uid"])
 
         if "name" in user_data:

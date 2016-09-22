@@ -14,13 +14,13 @@ class BridgeTestUser(TestCase):
     def test_admin_id_url(self):
         self.assertEqual(admin_id_url(None),
                          ADMIN_URL_PREFIX)
-        self.assertEqual(admin_id_url('123'),
+        self.assertEqual(admin_id_url(123),
                          ADMIN_URL_PREFIX + '/123')
 
     def test_author_id_url(self):
         self.assertEqual(author_id_url(None),
                          AUTHOR_URL_PREFIX)
-        self.assertEqual(author_id_url('123'),
+        self.assertEqual(author_id_url(123),
                          AUTHOR_URL_PREFIX + '/123')
 
     def test_admin_uid_url(self):
@@ -61,7 +61,7 @@ class BridgeTestUser(TestCase):
             user_list = get_user('javerage')
             self.assertEqual(len(user_list), 1)
             user = user_list[0]
-            self.assertEqual(user.bridge_id, "195")
+            self.assertEqual(user.bridge_id, 195)
             self.assertEqual(user.name, "James Average Student")
             self.assertEqual(user.first_name, "James")
             self.assertEqual(user.last_name, "Student")
@@ -105,7 +105,7 @@ class BridgeTestUser(TestCase):
         self.assertEqual(len(user_list), 1)
         user = user_list[0]
         self.assertEqual(user.name, "Bill Average Teacher")
-        self.assertEqual(user.bridge_id, "17637")
+        self.assertEqual(user.bridge_id, 17637)
         self.assertEqual(user.first_name, "Bill Average")
         self.assertEqual(user.last_name, "Teacher")
         self.assertEqual(user.full_name, "Bill Average Teacher")
@@ -123,25 +123,25 @@ class BridgeTestUser(TestCase):
             self.assertEqual(len(user_list), 4)
             user = user_list[0]
             self.assertEqual(user.name, "Bill Average Teacher")
-            self.assertEqual(user.bridge_id, "17637")
+            self.assertEqual(user.bridge_id, 17637)
             cus_field = user.custom_fields[0]
             self.assertEqual(cus_field.value,
                              "FBB38FE46A7C11D5A4AE0004AC494FFE")
             user = user_list[1]
             self.assertEqual(user.name, "Eight Class Student")
-            self.assertEqual(user.bridge_id, "106")
+            self.assertEqual(user.bridge_id, 106)
             cus_field = user.custom_fields[0]
             self.assertEqual(cus_field.value,
                              "12345678901234567890123456789012")
             user = user_list[2]
             self.assertEqual(user.name, "James Student")
-            self.assertEqual(user.bridge_id, "195")
+            self.assertEqual(user.bridge_id, 195)
             cus_field = user.custom_fields[0]
             self.assertEqual(cus_field.value,
                              "9136CCB8F66711D5BE060004AC494FFE")
             user = user_list[3]
             self.assertEqual(user.name, "None Average Student")
-            self.assertEqual(user.bridge_id, "17")
+            self.assertEqual(user.bridge_id, 17)
             cus_field = user.custom_fields[0]
             self.assertEqual(cus_field.value,
                              "00000000000000000000000000000001")
@@ -164,7 +164,7 @@ class BridgeTestUser(TestCase):
             added_users = add_user(user)
             self.assertEqual(len(added_users), 1)
             added = added_users[0]
-            self.assertEqual(added.bridge_id, "123")
+            self.assertEqual(added.bridge_id, 123)
             self.assertEqual(added.name, "Eight Class Student")
             self.assertEqual(added.first_name, "Eight Class")
             self.assertEqual(added.last_name, "Student")
@@ -184,7 +184,7 @@ class BridgeTestUser(TestCase):
     def test_delete_user(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
             self.assertTrue(delete_user("javerage"))
-            self.assertTrue(delete_user_by_id("195"))
+            self.assertTrue(delete_user_by_id(195))
             try:
                 reps = delete_user("staff")
             except Exception as ex:
@@ -200,21 +200,20 @@ class BridgeTestUser(TestCase):
                 '2016-09-08 13:58:20.635000-07:00')
 
             orig_users = get_user('bill')
-            orig_users[0].bridge_id = None
             upded_users = update_user(orig_users[0])
             self.verify_bill(upded_users)
 
     def test_change_uid(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            self.verify_uid(change_uid("17637", "billchanged"))
+            self.verify_uid(change_uid(17637, "billchanged"))
             self.verify_uid(replace_uid("bill", "billchanged"))
 
     def test_restore_user(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            self.verify_uid(restore_user_by_id("17637"))
+            self.verify_uid(restore_user_by_id(17637))
             self.verify_uid(restore_user("billchanged"))
 
     def verify_uid(self, users):
         self.assertEqual(len(users), 1)
-        self.assertEqual(users[0].bridge_id, "17637")
+        self.assertEqual(users[0].bridge_id, 17637)
         self.assertEqual(users[0].get_uid(), "billchanged@uw.edu")
