@@ -2,6 +2,7 @@ from datetime import datetime
 from django.test import TestCase
 from restclients.test.bridge import FBridgeWS
 from restclients.models.bridge import BridgeUser, BridgeCustomField
+from restclients.bridge.custom_field import new_regid_custom_field
 from restclients.bridge.user import get_user, get_all_users, get_user_by_id,\
     add_user, admin_id_url, admin_uid_url, author_id_url,\
     author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX,\
@@ -9,7 +10,7 @@ from restclients.bridge.user import get_user, get_all_users, get_user_by_id,\
     restore_user, delete_user, delete_user_by_id
 
 
-class BridgeTestUser(TestCase):
+class TestBridgeUser(TestCase):
 
     def test_admin_id_url(self):
         self.assertEqual(admin_id_url(None),
@@ -148,11 +149,8 @@ class BridgeTestUser(TestCase):
 
     def test_add_user(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            cus_fie = BridgeCustomField()
-            cus_fie.field_id = BridgeCustomField.REGID_FIELD_ID
-            cus_fie.name = BridgeCustomField.REGID_NAME
-            cus_fie.value = "12345678901234567890123456789012"
-
+            regid = "12345678901234567890123456789012"
+            cus_fie = new_regid_custom_field(regid)
             user = BridgeUser()
             user.uwnetid = "eight"
             user.full_name = "Eight Class Student"
