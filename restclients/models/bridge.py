@@ -37,7 +37,7 @@ class BridgeCustomField(models.Model):
 
 
 class BridgeUser(models.Model):
-    bridge_id = models.IntegerField()
+    bridge_id = models.IntegerField(default=0)
     uwnetid = models.CharField(max_length=128)
     first_name = models.CharField(max_length=128)
     full_name = models.CharField(max_length=128)
@@ -75,7 +75,7 @@ class BridgeUser(models.Model):
     def __str__(self):
         return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
-                "id", self.bridge_id if self.bridge_id else None,
+                "id", self.bridge_id,
                 "uwnetid", self.uwnetid,
                 "first_name", self.first_name,
                 "last_name", self.last_name,
