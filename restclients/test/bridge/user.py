@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.test import TestCase
 from restclients.test.bridge import FBridgeWS
+from restclients.exceptions import DataFailureException
 from restclients.models.bridge import BridgeUser, BridgeCustomField
 from restclients.bridge.custom_field import new_regid_custom_field
 from restclients.bridge.user import get_user, get_all_users, get_user_by_id,\
@@ -59,7 +60,7 @@ class TestBridgeUser(TestCase):
 
     def test_get_user(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            user_list = get_user('javerage')
+            user_list = get_user('javerage', include_course_summary=True)
             self.assertEqual(len(user_list), 1)
             user = user_list[0]
             self.assertEqual(user.bridge_id, 195)
@@ -99,8 +100,15 @@ class TestBridgeUser(TestCase):
             self.assertEqual(cus_field.value,
                              "9136CCB8F66711D5BE060004AC494FFE")
 
-            user_list = get_user('bill')
+            user_list = get_user('bill', include_course_summary=True)
             self.verify_bill(user_list)
+            user_list = get_user_by_id(17637,  include_course_summary=True)
+            self.verify_bill(user_list)
+
+            self.assertRaises(DataFailureException,
+                              get_user, 'bill')
+            self.assertRaises(DataFailureException,
+                              get_user_by_id, 17637)
 
     def verify_bill(self, user_list):
         self.assertEqual(len(user_list), 1)
@@ -120,7 +128,7 @@ class TestBridgeUser(TestCase):
 
     def test_get_alluser(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            user_list = get_all_users()
+            user_list = get_all_users(include_course_summary=True)
             self.assertEqual(len(user_list), 4)
             user = user_list[0]
             self.assertEqual(user.name, "Bill Average Teacher")
@@ -190,14 +198,14 @@ class TestBridgeUser(TestCase):
 
     def test_update_user(self):
         with self.settings(RESTCLIENTS_BRIDGE_DAO_CLASS=FBridgeWS):
-            orig_users = get_user('bill')
+            orig_users = get_user('bill', include_course_summary=True)
             upded_users = update_user(orig_users[0])
             self.verify_bill(upded_users)
             self.assertEqual(
                 str(upded_users[0].updated_at),
                 '2016-09-08 13:58:20.635000-07:00')
 
-            orig_users = get_user('bill')
+            orig_users = get_user('bill', include_course_summary=True)
             upded_users = update_user(orig_users[0])
             self.verify_bill(upded_users)
 

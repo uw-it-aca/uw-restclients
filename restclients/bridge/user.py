@@ -100,8 +100,10 @@ def get_user(uwnetid, include_course_summary=False):
     """
     Return a list of BridgeUsers objects with custom fields
     """
-    resp = get_resource(author_uid_url(uwnetid) +
-                        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    url = author_uid_url(uwnetid) + "?%s" % CUSTOM_FIELD
+    if include_course_summary:
+        url = "%s&%s" % (url, COURSE_SUMMARY)
+    resp = get_resource(url)
     return _process_json_resp_data(resp)
 
 
@@ -109,8 +111,10 @@ def get_user_by_id(bridge_id, include_course_summary=False):
     """
     Return a list of BridgeUsers objects with custom fields
     """
-    resp = get_resource(author_id_url(bridge_id) +
-                        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    url = author_id_url(bridge_id) + "?%s" % CUSTOM_FIELD
+    if include_course_summary:
+        url = "%s&%s" % (url, COURSE_SUMMARY)
+    resp = get_resource(url)
     return _process_json_resp_data(resp)
 
 
@@ -118,6 +122,10 @@ def get_all_users(include_course_summary=False):
     """
     Return a list of BridgeUser objects with custom fields
     """
+    url = author_uid_url(None) + "?%s" % CUSTOM_FIELD
+    if include_course_summary:
+        url = "%s&%s" % (url, COURSE_SUMMARY)
+    url = "%s&%s" % (url, PAGE_MAX_ENTRY)
     resp = get_resource(
         author_uid_url(None) +
         "?%s&%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY, PAGE_MAX_ENTRY))
