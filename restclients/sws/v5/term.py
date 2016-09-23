@@ -168,16 +168,33 @@ def _json_to_term_model(term_data):
     term.grade_submission_deadline = strptime(
         term_data["GradeSubmissionDeadline"], datetime_format)
 
-    term.registration_services_start = parse_sws_date(term_data["RegistrationServicesStart"])
+    if term_data["RegistrationServicesStart"] is not None:
+        term.registration_services_start = parse_sws_date(
+            term_data["RegistrationServicesStart"])
 
-    term.registration_period1_start = parse_sws_date(term_data["RegistrationPeriods"][0]["StartDate"])
-    term.registration_period1_end = parse_sws_date(term_data["RegistrationPeriods"][0]["EndDate"])
+    if term_data["RegistrationPeriods"][0]["StartDate"] is not None:
+        term.registration_period1_start = parse_sws_date(
+            term_data["RegistrationPeriods"][0]["StartDate"])
 
-    term.registration_period2_start = parse_sws_date(term_data["RegistrationPeriods"][1]["StartDate"])
-    term.registration_period2_end = parse_sws_date(term_data["RegistrationPeriods"][1]["EndDate"])
+    if term_data["RegistrationPeriods"][0]["EndDate"] is not None:
+        term.registration_period1_end = parse_sws_date(
+            term_data["RegistrationPeriods"][0]["EndDate"])
 
-    term.registration_period3_start = parse_sws_date(term_data["RegistrationPeriods"][2]["StartDate"])
-    term.registration_period3_end = parse_sws_date(term_data["RegistrationPeriods"][2]["EndDate"])
+    if term_data["RegistrationPeriods"][1]["StartDate"] is not None:
+        term.registration_period2_start = parse_sws_date(
+            term_data["RegistrationPeriods"][1]["StartDate"])
+
+    if term_data["RegistrationPeriods"][1]["EndDate"] is not None:
+        term.registration_period2_end = parse_sws_date(
+            term_data["RegistrationPeriods"][1]["EndDate"])
+
+    if term_data["RegistrationPeriods"][2]["StartDate"] is not None:
+        term.registration_period3_start = parse_sws_date(
+            term_data["RegistrationPeriods"][2]["StartDate"])
+
+    if term_data["RegistrationPeriods"][2]["EndDate"] is not None:
+        term.registration_period3_end = parse_sws_date(
+            term_data["RegistrationPeriods"][2]["EndDate"])
 
     term.time_schedule_construction = []
     for campus in term_data["TimeScheduleConstruction"]:
