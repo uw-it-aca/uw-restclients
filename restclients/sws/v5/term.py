@@ -3,10 +3,10 @@ This class interfaces with the Student Web Service, Term resource.
 """
 import logging
 from datetime import datetime
-from restclients.sws import get_resource, QUARTER_SEQ, get_current_sws_version, parse_sws_date
-from restclients.models.sws import Term as TermModel
+from restclients.sws import get_resource, get_current_sws_version,\
+    parse_sws_date, QUARTER_SEQ
+from restclients.models.sws import TimeScheduleConstruction, Term as TermModel
 from restclients.exceptions import DataFailureException
-from restclients.models.sws import TimeScheduleConstruction
 
 
 term_res_url_prefix = "/student/v5/term"
@@ -116,6 +116,7 @@ def get_term_by_date(date):
         return term_after
 
     pass
+
 
 def _json_to_term_model(term_data):
     """
