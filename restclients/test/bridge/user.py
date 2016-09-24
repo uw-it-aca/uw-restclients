@@ -70,7 +70,7 @@ class TestBridgeUser(TestCase):
             self.assertEqual(user.full_name, "James Student")
             self.assertEqual(user.sortable_name, "Student, James Average")
             self.assertEqual(user.email, "javerage@uw.edu")
-            self.assertEqual(user.uwnetid, "javerage")
+            self.assertEqual(user.netid, "javerage")
             self.assertEqual(user.get_uid(), "javerage@uw.edu")
             self.assertEqual(
                 str(user.updated_at), '2016-07-25 16:24:42.131000-07:00')
@@ -120,7 +120,7 @@ class TestBridgeUser(TestCase):
         self.assertEqual(user.full_name, "Bill Average Teacher")
         self.assertEqual(user.sortable_name, "Teacher, Bill Average")
         self.assertEqual(user.email, "bill@u.washington.edu")
-        self.assertEqual(user.uwnetid, "bill")
+        self.assertEqual(user.netid, "bill")
         self.assertEqual(user.get_uid(), "bill@uw.edu")
         cus_field = user.custom_fields[0]
         self.assertEqual(cus_field.value,
@@ -160,7 +160,7 @@ class TestBridgeUser(TestCase):
             regid = "12345678901234567890123456789012"
             cus_fie = new_regid_custom_field(regid)
             user = BridgeUser()
-            user.uwnetid = "eight"
+            user.netid = "eight"
             user.full_name = "Eight Class Student"
             user.first_name = "Eight Class"
             user.last_name = "Student"
@@ -177,7 +177,7 @@ class TestBridgeUser(TestCase):
             self.assertEqual(added.full_name, "Eight Class Student")
             self.assertEqual(added.sortable_name, "Student, Eight Class")
             self.assertEqual(added.email, "eight@uw.edu")
-            self.assertEqual(added.uwnetid, "eight")
+            self.assertEqual(added.netid, "eight")
             self.assertEqual(added.get_uid(), "eight@uw.edu")
             self.assertEqual(
                 str(added.updated_at), '2016-09-06 21:42:48.821000-07:00')

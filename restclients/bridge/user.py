@@ -215,7 +215,7 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
 
         user = BridgeUser()
         user.bridge_id = int(user_data["id"])
-        user.uwnetid = re.sub('@uw.edu', '', user_data["uid"])
+        user.netid = re.sub('@uw.edu', '', user_data["uid"])
 
         if "name" in user_data:
             user.name = user_data["name"]

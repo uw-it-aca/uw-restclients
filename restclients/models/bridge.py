@@ -37,13 +37,13 @@ class BridgeCustomField(models.Model):
 
 class BridgeUser(models.Model):
     bridge_id = models.IntegerField(default=0)
-    uwnetid = models.CharField(max_length=128)
+    netid = models.CharField(max_length=32)
     email = models.CharField(max_length=128)
-    full_name = models.CharField(max_length=128)
+    full_name = models.CharField(max_length=256)
     first_name = models.CharField(max_length=128, null=True, default=None)
     last_name = models.CharField(max_length=128, null=True, default=None)
-    name = models.CharField(max_length=128, null=True, default=None)
-    sortable_name = models.CharField(max_length=128, null=True, default=None)
+    name = models.CharField(max_length=256, null=True, default=None)
+    sortable_name = models.CharField(max_length=256, null=True, default=None)
     avatar_url = models.CharField(max_length=512, null=True, default=None)
     locale = models.CharField(max_length=2)
     logged_in_at = models.DateTimeField(null=True, default=None)
@@ -53,7 +53,7 @@ class BridgeUser(models.Model):
     completed_courses_count = models.IntegerField(default=0)
 
     def get_uid(self):
-        return "%s@uw.edu" % self.uwnetid
+        return "%s@uw.edu" % self.netid
 
     def to_json_post(self):
         # for POST, PATCH
@@ -76,7 +76,7 @@ class BridgeUser(models.Model):
         return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
                 "id", self.bridge_id,
-                "uwnetid", self.uwnetid,
+                "netid", self.netid,
                 "first_name", self.first_name,
                 "last_name", self.last_name,
                 "full_name", self.full_name,
