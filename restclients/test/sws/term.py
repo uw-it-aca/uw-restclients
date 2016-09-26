@@ -401,6 +401,10 @@ class SWSTestTerm(TestCase):
             self.assertNotEquals(get_specific_term(2012, 'autumn'),
                                  get_term_by_year_and_quarter(2013, 'winter'))
 
+            # Loading a term with null Registration Periods
+            term = get_term_by_year_and_quarter(2015, 'autumn')
+            self.assertEquals(term.registration_services_start, None)
+
     def test_week_of_term(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS=SWSF,
