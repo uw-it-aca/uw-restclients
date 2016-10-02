@@ -22,7 +22,7 @@ RESTORE_SUFFIX = "/restore"
 
 def admin_id_url(bridge_id):
     url = ADMIN_URL_PREFIX
-    if bridge_id is not None:
+    if bridge_id:
         url = url + ("/%d" % bridge_id)
     return url
 
@@ -36,7 +36,7 @@ def admin_uid_url(uwnetid):
 
 def author_id_url(bridge_id):
     url = AUTHOR_URL_PREFIX
-    if bridge_id is not None:
+    if bridge_id:
         url = url + ("/%d" % bridge_id)
     return url
 
@@ -155,7 +155,7 @@ def update_user(bridge_user):
     Update only the user attributes provided.
     Return a list of BridgeUsers objects with custom fields.
     """
-    if bridge_user.bridge_id is not None:
+    if bridge_user.bridge_id:
         url = author_id_url(bridge_user.bridge_id)
     else:
         url = author_uid_url(bridge_user.uwnetid)

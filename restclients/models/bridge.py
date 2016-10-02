@@ -73,9 +73,9 @@ class BridgeUser(models.Model):
         return {"users": [ret_user]}
 
     def __str__(self):
-        return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
+        return ("{%s: %d, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
-                "id", self.bridge_id,
+                "bridge_id", self.bridge_id,
                 "netid", self.netid,
                 "first_name", self.first_name,
                 "last_name", self.last_name,
