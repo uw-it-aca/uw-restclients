@@ -3,6 +3,7 @@ import os
 version = os.environ.get("DJANGO_VERSION", "1.6")
 
 values = version.split(".")
+major = values[0]
 minor = values[1]
 
 if major == 1 and minor < 10:
