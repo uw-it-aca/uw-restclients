@@ -43,4 +43,4 @@ deploy:
   on:
     tags: true
     python: '2.7'
-    condition: 1.10 = $DJANGO_VERSION
+    condition: 1.10.* = $DJANGO_VERSION
