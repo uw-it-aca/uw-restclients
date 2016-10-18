@@ -2,7 +2,8 @@ import os
 
 version = os.environ.get("DJANGO_VERSION", "1.6")
 
-major, minor = version.split(".")
+values = version.split(".")
+minor = values[1]
 
 if major == 1 and minor < 10:
     from django.conf.urls import patterns, include, url
