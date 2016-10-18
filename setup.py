@@ -22,7 +22,7 @@ setup(
     author="UW-IT AXDD",
     author_email="aca-it@uw.edu",
     include_package_data=True,
-    install_requires=['Django<1.8',
+    install_requires=['Django',
                       'lxml==2.3.5',
                       'urllib3==1.10.2',
                       'twilio==3.4.1',
