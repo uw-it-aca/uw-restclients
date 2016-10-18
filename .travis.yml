@@ -36,7 +36,7 @@ before_deploy:
 deploy:
   provider: pypi
   server: https://pypi.python.org/pypi
-  user: uw-it-aca
+  user: uw-it-axdd
   skip_cleanup: true
   password:
     secure: jsTm65lB9zSlAGFdCgTIUiZF0ZpVM0QFUq2qVaHwV0yiXH+46HcSoaLFFIA4NjjuN7mpU//wnnUEO5j9BORsSVCbKSbCTLy8g63u/RIpRQN2GLSm7hD8NcM7peOtxwouqaZ6zWvPB3jeqN1CZTtmbXvEsstvdfuedvO6nCsDs5M=
