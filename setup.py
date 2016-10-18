@@ -1,20 +1,55 @@
-#!/usr/bin/env python
-
-# Taken from django's setup.py:
-
 import os
+from setuptools import setup
 
-from distutils.core import setup
-import setuptools
+README = """
+See the README on `GitHub
+<https://github.com/uw-it-aca/uw-restclients>`_.
+"""
 
-setup(name='UW-RestClients',
-      version='1.0.4',
-      license = "Apache 2.0",
-      author = "UW-IT ACA",
-      author_email = "pmichaud@uw.edu",
-      packages=setuptools.find_packages(exclude=["project"]),
-      include_package_data=True,  # use MANIFEST.in during install
-      url='https://github.com/uw-it-aca/uw-restclients',
-      description='Clients for a variety of RESTful web services at the University of Washington',
-      install_requires=['Django<1.8', 'lxml==2.3.5', 'urllib3==1.10.2', 'twilio==3.4.1', 'boto', 'simplejson>=2.1', 'djangorestframework>=2.0', 'jsonpickle>=0.4.0', 'ordereddict>=1.1', 'python-dateutil>=2.1', 'unittest2>=0.5.1', 'pytz', 'icalendar', 'AuthZ-Group>=1.1.4', 'Django-UserService', 'python-binary-memcached',],
-     )
+# The VERSION file is created by travis-ci, based on the tag name
+version_path = 'restclients/VERSION'
+VERSION = open(os.path.join(os.path.dirname(__file__), version_path)).read()
+VERSION = VERSION.replace("\n", "")
+
+# allow setup.py to be run from any path
+os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+url = "https://github.com/uw-it-aca/uw-restclients"
+setup(
+    name='UW-RestClients',
+    version=VERSION,
+    packages=['sqlshare_client'],
+    author="UW-IT AXDD",
+    author_email="aca-it@uw.edu",
+    include_package_data=True,
+    install_requires=['Django<1.8',
+                      'lxml==2.3.5',
+                      'urllib3==1.10.2',
+                      'twilio==3.4.1',
+                      'boto',
+                      'simplejson>=2.1',
+                      'djangorestframework>=2.0',
+                      'jsonpickle>=0.4.0',
+                      'ordereddict>=1.1',
+                      'python-dateutil>=2.1',
+                      'unittest2>=0.5.1',
+                      'pytz',
+                      'icalendar',
+                      'AuthZ-Group>=1.1.4',
+                      'Django-UserService',
+                      'python-binary-memcached',],
+    license='Apache License, Version 2.0',
+    description=('Clients for a variety of RESTful web services '
+                 'at the University of Washington'),
+    long_description=README,
+    url=url,
+    classifiers=[
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+    ],
+)
+
