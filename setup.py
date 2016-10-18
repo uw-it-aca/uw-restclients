@@ -18,7 +18,7 @@ url = "https://github.com/uw-it-aca/uw-restclients"
 setup(
     name='UW-RestClients',
     version=VERSION,
-    packages=['sqlshare_client'],
+    packages=['restclients'],
     author="UW-IT AXDD",
     author_email="aca-it@uw.edu",
     include_package_data=True,
