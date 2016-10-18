@@ -3,7 +3,6 @@ language: python
 services:
   - memcached
 python:
-  - "3.4"
   - "2.7"
 install:
   - echo "0.01" > restclients/VERSION
