@@ -1,2 +1,2 @@
-recursive-include restclients/templates *
-recursive-include restclients/resources *
+include restclients/VERSION
+recursive-include restclients *
