@@ -35,11 +35,11 @@ before_deploy:
 - echo $TRAVIS_TAG > restclients/VERSION
 deploy:
   provider: pypi
-  server: https://testpypi.python.org/pypi
-  user: uw-it-axdd
+  server: https://pypi.python.org/pypi
+  user: uw-it-aca
   skip_cleanup: true
   password:
-    secure: jsTm65lB9zSlAGFdCgTIUiZF0ZpVM0QFUq2qVaHwV0yiXH+46HcSoaLFFIA4NjjuN7mpU//wnnUEO5j9BORsSVCbKSbCTLy8g63u/RIpRQN2GLSm7hD8NcM7peOtxwouqaZ6zWvPB3jeqN1CZTtmbXvEsstvdfuedvO6nCsDs5M=
+    secure: Kfnnp7nIWBdqm0bjHvMnG7KZYvx8P4Pvi1f91Df9dDaJikkKLGGG11XACQdgi9MnmOGewIxp3pvJzEvDh9U4ptOXWvS0NYY6frB0X0nRB4UuZ0tDgdPaYJZpzk1K712oeQWpQ4ywOcmKCzWW5pys6Uljh2rOIB7hVOrOvru9ZSs=
   on:
     tags: true
     python: '2.7'
