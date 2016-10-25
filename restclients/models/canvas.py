@@ -271,7 +271,10 @@ class CanvasUser(models.Model):
                          "locale": self.locale},
                 "pseudonym": {"unique_id": self.login_id,
                               "sis_user_id": self.sis_user_id,
-                              "send_confirmation": False}}
+                              "send_confirmation": False},
+                "communication_channel": {"type": "email",
+                                          "address": self.email,
+                                          "skip_confirmation": True}}
 
     class Meta:
         db_table = "restclients_canvas_user"
