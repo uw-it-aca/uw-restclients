@@ -6,6 +6,8 @@ from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
+from restclients.test.bridge.user import TestBridgeUser
+from restclients.test.bridge.custom_field import TestBridgeCustomFields
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.hrpws.appointee import AppointeeTest
 from restclients.test.library.mylibinfo import MyLibInfoTest
@@ -14,8 +16,6 @@ from restclients.test.grad.committee import CommitteeTest
 from restclients.test.grad.degree import DegreeTest
 from restclients.test.grad.leave import LeaveTest
 from restclients.test.grad.petition import PetitionTest
-from restclients.test.bridge.user import BridgeTestUser
-
 from restclients.test.sws.compatible import SWSTest
 from restclients.test.sws.financial import SWSFinance
 from restclients.test.sws.notice import SWSNotice
