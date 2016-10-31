@@ -6,7 +6,35 @@ from django.contrib.auth.middleware import AuthenticationMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 from userservice.user import UserServiceMiddleware
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.conf import settings
+from unittest2 import skipIf
 import os
+
+
+def missing_url(name, *args, **kwargs):
+    try:
+        url = reverse(name, *args, **kwargs)
+    except Exception as ex:
+        print "Ex: ", ex
+        if getattr(settings, "RESTCLIENTS_REQUIRE_VIEW_TESTS", False):
+            raise
+        return True
+
+    return False
+
+
+def get_user(username):
+    try:
+        user = User.objects.get(username=username)
+        return user
+    except Exception as ex:
+        user = User.objects.create_user(username, password='pass')
+        return user
+
+
+def get_user_pass(username):
+    return 'pass'
 
 
 class ViewTest(TestCase):
@@ -50,3 +78,13 @@ class ViewTest(TestCase):
             self.assertEquals(res.content,
                               "Bad URL param given to the restclients browser")
             self.assertEquals(res.status_code, 200)
+
+    @skipIf(missing_url("restclients_proxy", args=["test", "/ok"]), "restclients urls not configured")
+    def test_support_links(self):
+        url = reverse("restclients_proxy", args=["pws", "/identity/v1/person.json?student_number=1234567"])
+        get_user('test_view')
+        self.client.login(username='test_view',
+                          password=get_user_pass('test_view'))
+
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)

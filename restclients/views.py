@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.http import HttpResponse
 from django.template import loader, RequestContext, TemplateDoesNotExist
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO,\
     Book_DAO, Canvas_DAO, Uwnetid_DAO, MyLibInfo_DAO, LibCurrics_DAO,\
     TrumbaCalendar_DAO, MyPlan_DAO, IASYSTEM_DAO, Grad_DAO
@@ -166,9 +166,7 @@ def proxy(request, service, url):
     except TemplateDoesNotExist:
         context["search_template"] = None
 
-    return render_to_response("proxy.html",
-                              context,
-                              context_instance=RequestContext(request))
+    return render(request, "proxy.html", context)
 
 
 def format_search_params(url):

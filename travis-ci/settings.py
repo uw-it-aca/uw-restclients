@@ -40,7 +40,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -54,15 +53,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.RemoteUserMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.RemoteUserBackend',
-#    'django.contrib.auth.backends.ModelBackend',
 )
 
 ROOT_URLCONF = 'travis-ci.urls'
@@ -103,3 +95,7 @@ STATIC_URL = '/static/'
 # Test the memcached cache code
 RESTCLIENTS_TEST_MEMCACHED = True
 RESTCLIENTS_MEMCACHED_SERVERS = ('localhost:11211', )
+RESTCLIENTS_REQUIRE_VIEW_TESTS = True
+
+AUTHZ_GROUP_BACKEND = "authz_group.authz_implementation.all_ok.AllOK"
+RESTCLIENTS_ADMIN_GROUP = "x"
