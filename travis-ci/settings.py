@@ -103,3 +103,7 @@ STATIC_URL = '/static/'
 # Test the memcached cache code
 RESTCLIENTS_TEST_MEMCACHED = True
 RESTCLIENTS_MEMCACHED_SERVERS = ('localhost:11211', )
+RESTCLIENTS_REQUIRE_VIEW_TESTS = True
+
+AUTHZ_GROUP_BACKEND = "authz_group.authz_implementation.all_ok.AllOK"
+RESTCLIENTS_ADMIN_GROUP = "x"
