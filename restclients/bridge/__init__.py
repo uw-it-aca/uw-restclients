@@ -102,4 +102,4 @@ def put_resource(url, body):
 
 def _log_resp_time(logger, log_data, timer, response):
     log_info(logger, log_data, timer)
-    logger.info("%s ==data==> %s" % (log_data, response.data))
+    logger.debug("%s ==data==> %s" % (log_data, response.data))

@@ -22,8 +22,8 @@ RESTORE_SUFFIX = "/restore"
 
 def admin_id_url(bridge_id):
     url = ADMIN_URL_PREFIX
-    if bridge_id is not None:
-        url = url + '/' + bridge_id
+    if bridge_id:
+        url = url + ("/%d" % bridge_id)
     return url
 
 
@@ -36,8 +36,8 @@ def admin_uid_url(uwnetid):
 
 def author_id_url(bridge_id):
     url = AUTHOR_URL_PREFIX
-    if bridge_id is not None:
-        url = url + '/' + bridge_id
+    if bridge_id:
+        url = url + ("/%d" % bridge_id)
     return url
 
 
@@ -100,8 +100,10 @@ def get_user(uwnetid, include_course_summary=False):
     """
     Return a list of BridgeUsers objects with custom fields
     """
-    resp = get_resource(author_uid_url(uwnetid) +
-                        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    url = author_uid_url(uwnetid) + "?%s" % CUSTOM_FIELD
+    if include_course_summary:
+        url = "%s&%s" % (url, COURSE_SUMMARY)
+    resp = get_resource(url)
     return _process_json_resp_data(resp)
 
 
@@ -109,8 +111,10 @@ def get_user_by_id(bridge_id, include_course_summary=False):
     """
     Return a list of BridgeUsers objects with custom fields
     """
-    resp = get_resource(author_id_url(bridge_id) +
-                        "?%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY))
+    url = author_id_url(bridge_id) + "?%s" % CUSTOM_FIELD
+    if include_course_summary:
+        url = "%s&%s" % (url, COURSE_SUMMARY)
+    resp = get_resource(url)
     return _process_json_resp_data(resp)
 
 
@@ -118,6 +122,10 @@ def get_all_users(include_course_summary=False):
     """
     Return a list of BridgeUser objects with custom fields
     """
+    url = author_uid_url(None) + "?%s" % CUSTOM_FIELD
+    if include_course_summary:
+        url = "%s&%s" % (url, COURSE_SUMMARY)
+    url = "%s&%s" % (url, PAGE_MAX_ENTRY)
     resp = get_resource(
         author_uid_url(None) +
         "?%s&%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY, PAGE_MAX_ENTRY))
@@ -147,7 +155,7 @@ def update_user(bridge_user):
     Update only the user attributes provided.
     Return a list of BridgeUsers objects with custom fields.
     """
-    if bridge_user.bridge_id is not None:
+    if bridge_user.bridge_id:
         url = author_id_url(bridge_user.bridge_id)
     else:
         url = author_uid_url(bridge_user.uwnetid)
@@ -206,8 +214,8 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
             continue
 
         user = BridgeUser()
-        user.bridge_id = user_data["id"]
-        user.uwnetid = re.sub('@uw.edu', '', user_data["uid"])
+        user.bridge_id = int(user_data["id"])
+        user.netid = re.sub('@uw.edu', '', user_data["uid"])
 
         if "name" in user_data:
             user.name = user_data["name"]
