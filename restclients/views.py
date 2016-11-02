@@ -190,7 +190,6 @@ def format_json(service, content):
     base_url = reverse("restclients_proxy", args=["xx", "xx"])
     base_url = base_url.replace('/xx/xx', '')
 
-
     formatted = re.sub(r"\"/(.*?)\"",
                        r'"<a href="%s/%s/\1">/\1</a>"' % (base_url, service),
                        formatted)
