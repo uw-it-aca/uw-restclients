@@ -3,6 +3,7 @@ try:
 except:
     # python 2.6
     from django.utils.importlib import import_module
+from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -186,9 +187,13 @@ def format_json(service, content):
     formatted = formatted.replace(" ", "&nbsp;")
     formatted = formatted.replace("\n", "<br/>\n")
 
+    base_url = reverse("restclients_proxy", args=["xx", "xx"])
+    base_url = base_url.replace('/xx/xx', '')
+
+
     formatted = re.sub(r"\"/(.*?)\"",
-                       r'"<a href="/restclients/view/%s/\1">/\1</a>"' %
-                       service, formatted)
+                       r'"<a href="%s/%s/\1">/\1</a>"' % (base_url, service),
+                       formatted)
 
     return formatted
 
