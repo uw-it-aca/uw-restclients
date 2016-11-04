@@ -409,6 +409,8 @@ class Section(RestClientsModel):
     lms_ownership = models.CharField(max_length=12, choices=LMS_OWNER_CHOICES)
     is_independent_start = models.NullBooleanField()
     current_enrollment = models.IntegerField()
+    limit_estimate_enrollment = models.IntegerField()
+    limit_estimate_enrollment_indicator = models.CharField(max_length=20)
     auditors = models.IntegerField()
 
     # These are for non-standard start/end dates - don't have those yet
@@ -582,6 +584,9 @@ class Section(RestClientsModel):
             'start_date': '',
             'end_date': '',
             'current_enrollment': self.current_enrollment,
+            'limit_estimate_enrollment': self.limit_estimate_enrollment,
+            'limit_estimate_enrollment_indicator':
+                self.limit_estimate_enrollment_indicator,
             'auditors': self.auditors,
             'meetings': [],
             'credits': str(self.student_credits),

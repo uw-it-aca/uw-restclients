@@ -238,6 +238,11 @@ def _json_to_section(section_data,
         section.is_withdrawn = False
 
     section.current_enrollment = int(section_data['CurrentEnrollment'])
+    section.limit_estimate_enrollment = int(
+        section_data['LimitEstimateEnrollment'])
+    section.limit_estimate_enrollment_indicator = section_data[
+        'LimitEstimateEnrollmentIndicator']
+
     section.auditors = int(section_data['Auditors'])
     section.allows_secondary_grading = section_data["SecondaryGradingOption"]
 
