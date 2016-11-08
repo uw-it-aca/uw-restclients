@@ -209,14 +209,19 @@ def _json_to_section(section_data,
     section.is_independent_start = section_data.get("IsIndependentStart",
                                                     False)
 
-    date_format = "%Y-%m-%d"
-    if section_data.get("StartDate", None):
-        str_date = section_data["StartDate"]
-        section.start_date = datetime.strptime(str_date, date_format).date()
+    # Some section data sources have different formats for these dates.
+    try:
+        date_format = "%Y-%m-%d"
+        if section_data.get("StartDate", None):
+            str_date = section_data["StartDate"]
+            start_date = datetime.strptime(str_date, date_format).date()
+            section.start_date = start_date
 
-    if section_data.get("EndDate", None):
-        str_date = section_data["EndDate"]
-        section.end_date = datetime.strptime(str_date, date_format).date()
+        if section_data.get("EndDate", None):
+            str_date = section_data["EndDate"]
+            section.end_date = datetime.strptime(str_date, date_format).date()
+    except Exception as ex:
+        pass
 
     section.section_type = section_data["SectionType"]
     if "independent study" == section.section_type:
