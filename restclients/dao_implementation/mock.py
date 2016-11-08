@@ -98,6 +98,9 @@ def get_mockdata_url(service_name, implementation_name,
     success = False
     start_time = time.time()
 
+    mockdata_delay = getattr(settings, "RESTCLIENTS_MOCKDATA_DELAY", 0.0)
+    time.sleep(mockdata_delay)
+
     for resource_dir in app_resource_dirs:
         response = _load_resource_from_path(resource_dir, service_name,
                                             implementation_name, url, headers)
