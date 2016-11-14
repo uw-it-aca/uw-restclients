@@ -109,20 +109,13 @@ def post_bot_resource(url, body):
     Get the requested resource of Bothell calendars
     :returns: http response with content in json
     """
-    retry = 0
     response = None
-    while True:
-        timer = Timer()
-        response = TrumbaBot_DAO().postURL(
-            url,
-            {"Content-Type": "application/json"},
-            body)
-        _log_json_resp("Bothell", url, body, response, timer)
-        if response.status != 500 or retry == 1:
-            break
-        logger.warn("RETRY %s %s" % (url, body))
-        retry += 1
-        time.sleep(1)
+    timer = Timer()
+    response = TrumbaBot_DAO().postURL(
+        url,
+        {"Content-Type": "application/json"},
+        body)
+    _log_json_resp("Bothell", url, body, response, timer)
     return response
 
 
@@ -131,20 +124,13 @@ def post_sea_resource(url, body):
     Get the requested resource using the Seattle account
     :returns: http response with content in json
     """
-    retry = 0
     response = None
-    while True:
-        timer = Timer()
-        response = TrumbaSea_DAO().postURL(
-            url,
-            {"Content-Type": "application/json"},
-            body)
-        _log_json_resp("Seattle", url, body, response, timer)
-        if response.status != 500 or retry == 1:
-            break
-        logger.warn("RETRY %s %s" % (url, body))
-        retry += 1
-        time.sleep(1)
+    timer = Timer()
+    response = TrumbaSea_DAO().postURL(
+        url,
+        {"Content-Type": "application/json"},
+        body)
+    _log_json_resp("Seattle", url, body, response, timer)
     return response
 
 
@@ -153,18 +139,11 @@ def post_tac_resource(url, body):
     Get the requested resource of Tacoma calendars
     :returns: http response with content in json
     """
-    retry = 0
     response = None
-    while True:
-        timer = Timer()
-        response = TrumbaTac_DAO().postURL(
-            url,
-            {"Content-Type": "application/json"},
-            body)
-        _log_json_resp("Tacoma", url, body, response, timer)
-        if response.status != 500 or retry == 1:
-            break
-        logger.warn("RETRY %s %s" % (url, body))
-        retry += 1
-        time.sleep(1)
+    timer = Timer()
+    response = TrumbaTac_DAO().postURL(
+        url,
+        {"Content-Type": "application/json"},
+        body)
+    _log_json_resp("Tacoma", url, body, response, timer)
     return response
