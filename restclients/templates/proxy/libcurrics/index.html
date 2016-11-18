@@ -1,11 +1,11 @@
 <h1>Library Subject Guide (Proxy)</h1>
 <ul>
-    {% url 'restclients.views.proxy' 'libcurrics' 'currics_db/api/v1/data/course.html' as course_url %}
+    {% url 'restclients_proxy' 'libcurrics' 'currics_db/api/v1/data/course.html' as course_url %}
     {% if course_url %}
     <li><b><a href="{{ course_url }}">Course Guide</a></b></li>
     {% endif %}
 
-    {% url 'restclients.views.proxy' 'libcurrics' 'currics_db/api/v1/data/default.html' as defaultGuide_url %}
+    {% url 'restclients_proxy' 'libcurrics' 'currics_db/api/v1/data/default.html' as defaultGuide_url %}
     {% if defaultGuide_url %}
     <li><b><a href="{{ defaultGuide_url }}">Default Guide</a></b></li>
     {% endif %}

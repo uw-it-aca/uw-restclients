@@ -10,11 +10,10 @@ class BridgeCustomField(models.Model):
     value_id = models.CharField(max_length=10, null=True, default=None)
     field_id = models.CharField(max_length=10)
     name = models.CharField(max_length=64)
-    value = models.CharField(max_length=256)
+    value = models.CharField(max_length=256, null=True, default=None)
 
     def is_regid(self):
-        return self.field_id == BridgeCustomField.REGID_FIELD_ID and\
-            self.name == BridgeCustomField.REGID_NAME
+        return self.name == BridgeCustomField.REGID_NAME
 
     def __str__(self):
         return "{%s: %s, %s: %s, %s: %s, %s: %s}" % (
@@ -28,7 +27,7 @@ class BridgeCustomField(models.Model):
         value = {"custom_field_id": self.field_id,
                  "value": self.value
                  }
-        if self.value_id is not None:
+        if self.value_id:
             value["id"] = self.value_id
         return value
 
@@ -37,14 +36,14 @@ class BridgeCustomField(models.Model):
 
 
 class BridgeUser(models.Model):
-    bridge_id = models.IntegerField()
-    uwnetid = models.CharField(max_length=128)
-    first_name = models.CharField(max_length=128)
-    full_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
-    name = models.CharField(max_length=128)
-    sortable_name = models.CharField(max_length=128)
+    bridge_id = models.IntegerField(default=0)
+    netid = models.CharField(max_length=32)
     email = models.CharField(max_length=128)
+    full_name = models.CharField(max_length=256)
+    first_name = models.CharField(max_length=128, null=True, default=None)
+    last_name = models.CharField(max_length=128, null=True, default=None)
+    name = models.CharField(max_length=256, null=True, default=None)
+    sortable_name = models.CharField(max_length=256, null=True, default=None)
     avatar_url = models.CharField(max_length=512, null=True, default=None)
     locale = models.CharField(max_length=2)
     logged_in_at = models.DateTimeField(null=True, default=None)
@@ -54,29 +53,30 @@ class BridgeUser(models.Model):
     completed_courses_count = models.IntegerField(default=0)
 
     def get_uid(self):
-        return "%s@uw.edu" % self.uwnetid
+        return "%s@uw.edu" % self.netid
 
     def to_json_post(self):
-        # for POST, PATCH, PUT
+        # for POST, PATCH
         custom_fields_json = []
         for field in self.custom_fields:
             custom_fields_json.append(field.to_json())
 
-        return {"users": [
-                {"uid": self.get_uid(),
-                 "first_name": self.first_name,
-                 "last_name": self.last_name,
-                 "full_name": self.full_name,
-                 "email": self.email,
-                 "custom_fields": custom_fields_json
-                 }]
-                }
+        ret_user = {"uid": self.get_uid(),
+                    "full_name": self.full_name,
+                    "email": self.email,
+                    "custom_fields": custom_fields_json
+                    }
+        if self.first_name:
+            ret_user["first_name"] = self.first_name
+        if self.last_name:
+            ret_user["last_name"] = self.last_name
+        return {"users": [ret_user]}
 
     def __str__(self):
-        return ("{%s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
+        return ("{%s: %d, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
                 " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
-                "id", self.bridge_id if self.bridge_id else None,
-                "uwnetid", self.uwnetid,
+                "bridge_id", self.bridge_id,
+                "netid", self.netid,
                 "first_name", self.first_name,
                 "last_name", self.last_name,
                 "full_name", self.full_name,

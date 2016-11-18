@@ -1,6 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
+from restclients.views import proxy
 
-urlpatterns = patterns(
-    '',
-    url(r'view/(\w+)/(.*)$', 'restclients.views.proxy'),
-    )
+urlpatterns = [
+    url(r'view/(\w+)/(.*)$',
+        proxy,
+        name="restclients_proxy"),
+]
