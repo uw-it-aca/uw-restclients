@@ -197,8 +197,8 @@ def get_prefetch_for_section_data(section_data):
             pdata = instructor_data["Person"]
             if "RegID" in pdata and pdata["RegID"] is not None:
                 prefetch.append(["person-%s" % pdata["RegID"],
-                                 prefetch_method(pws.get_person_by_regid,
-                                                 [pdata["RegID"]])])
+                                 generic_prefetch(pws.get_person_by_regid,
+                                                  [pdata["RegID"]])])
 
     return prefetch
 
