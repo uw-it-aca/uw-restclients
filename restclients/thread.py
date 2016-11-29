@@ -48,3 +48,17 @@ class Thread(threading.Thread):
             return super(Thread, self).join()
 
         return True
+
+
+class GenericPrefetchThread(Thread):
+    method = None
+    def run(self):
+        if self.method is None:
+            return
+        self.method()
+
+
+def generic_prefetch(method, args):
+    def ret():
+        return method(*args)
+    return ret
