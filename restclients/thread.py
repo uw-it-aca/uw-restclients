@@ -52,6 +52,7 @@ class Thread(threading.Thread):
 
 class GenericPrefetchThread(Thread):
     method = None
+
     def run(self):
         if self.method is None:
             return
