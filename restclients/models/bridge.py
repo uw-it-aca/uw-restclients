@@ -13,7 +13,7 @@ class BridgeCustomField(models.Model):
     value = models.CharField(max_length=256, null=True, default=None)
 
     def is_regid(self):
-        return self.name == BridgeCustomField.REGID_NAME
+        return self.name.lower() == BridgeCustomField.REGID_NAME.lower()
 
     def __str__(self):
         return "{%s: %s, %s: %s, %s: %s, %s: %s}" % (
@@ -24,11 +24,12 @@ class BridgeCustomField(models.Model):
             )
 
     def to_json(self):
-        value = {"custom_field_id": self.field_id,
-                 "value": self.value
+        value = {'custom_field_id': self.field_id,
+                 'value': self.value,
+                 'name': self.name,
                  }
         if self.value_id:
-            value["id"] = self.value_id
+            value['id'] = self.value_id
         return value
 
     class Meta:

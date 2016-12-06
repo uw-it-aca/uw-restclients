@@ -25,5 +25,5 @@ class TestBridgeCustomFields(TestCase):
             cf = new_regid_custom_field(regid)
             self.assertEqual(cf.field_id, "5")
             self.assertEqual(cf.value, regid)
-            self.assertFalse(cf.name)
-            self.assertFalse(cf.value_id)
+            self.assertEqual(cf.name, "REGID")
+            self.assertIsNone(cf.value_id)

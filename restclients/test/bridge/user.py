@@ -46,6 +46,7 @@ class TestBridgeUser(TestCase):
         self.assertEqual(bcf.to_json(),
                          {'id': '1',
                           'value': '787',
+                          'name': 'REGID',
                           'custom_field_id': '5'})
         self.assertTrue(bcf.is_regid())
         self.assertEqual(bcf.value, '787')
@@ -56,6 +57,7 @@ class TestBridgeUser(TestCase):
         bcf.value = "787"
         self.assertEqual(bcf.to_json(),
                          {'custom_field_id': '5',
+                          'name': 'REGID',
                           'value': '787'})
 
     def test_get_user(self):
@@ -89,6 +91,7 @@ class TestBridgeUser(TestCase):
                     "custom_fields": [
                        {"id": "1",
                         "value": "9136CCB8F66711D5BE060004AC494FFE",
+                        "name": "REGID",
                         "custom_field_id": "5"}
                        ]}]})
 
