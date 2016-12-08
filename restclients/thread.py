@@ -56,7 +56,12 @@ class GenericPrefetchThread(Thread):
     def run(self):
         if self.method is None:
             return
-        self.method()
+        try:
+            self.method()
+        except Exception as ex:
+            # Errors in prefetching should also manifest during actual
+            # processing, where they can be handled appropriately
+            pass
 
 
 def generic_prefetch(method, args):
