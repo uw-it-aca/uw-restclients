@@ -191,7 +191,8 @@ def get_credits_by_reg_url(url):
 
 
 def get_schedule_by_regid_and_term(regid, term,
-                                   include_instructor_not_on_time_schedule=True):
+                                   include_instructor_not_on_time_schedule=True,
+                                   per_section_prefetch_callback=None):
     """
     Returns a restclients.models.sws.ClassSchedule object
     for the regid and term passed in.
@@ -205,11 +206,13 @@ def get_schedule_by_regid_and_term(regid, term,
                    ]))
 
     return _json_to_schedule(get_resource(url), term, regid,
-                             include_instructor_not_on_time_schedule)
+                             include_instructor_not_on_time_schedule,
+                             per_section_prefetch_callback)
 
 
 def _json_to_schedule(term_data, term, regid,
-                      include_instructor_not_on_time_schedule=True):
+                      include_instructor_not_on_time_schedule=True,
+                      per_section_prefetch_callback=None):
     sections = []
     sws_threads = []
     term_credit_hours = Decimal("0.0")
@@ -242,6 +245,9 @@ def _json_to_schedule(term_data, term, regid,
                 if response and response.status == 200:
                     data = json.loads(response.data)
                     section_prefetch.extend(get_prefetch_for_section_data(data))
+                    if per_section_prefetch_callback:
+                        client_callbacks = per_section_prefetch_callback(data)
+                        section_prefetch.extend(client_callbacks)
 
                 url = thread.reg_url
                 section_prefetch.append([url,
