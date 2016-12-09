@@ -67,6 +67,8 @@ class BridgeUser(models.Model):
                     "email": self.email,
                     "custom_fields": custom_fields_json
                     }
+        if self.bridge_id:
+            ret_user["id"] = self.bridge_id
         if self.first_name:
             ret_user["first_name"] = self.first_name
         if self.last_name:

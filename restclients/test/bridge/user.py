@@ -88,6 +88,7 @@ class TestBridgeUser(TestCase):
                 "last_name": "Student",
                 "uid": "javerage@uw.edu",
                 "full_name": "James Student",
+                "id": 195,
                 "email": "javerage@uw.edu",
                 "custom_fields": [
                    {"id": "1",
