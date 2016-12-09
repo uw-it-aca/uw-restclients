@@ -14,6 +14,8 @@ from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist,\
     InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher,\
     NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnknownError,\
     UnexpectedError
+from restclients.test import fdao_trumba_sea_override,\
+    fdao_trumba_bot_override, fdao_trumba_tac_override
 
 
 ADD_ACC_URL = "/service/accounts.asmx/CreateEditor?"
@@ -21,93 +23,67 @@ DEL_ACC_URL = "/service/accounts.asmx/CloseEditor?"
 SET_PERM_URL = "/service/calendars.asmx/SetPermissions?"
 
 
+@fdao_trumba_sea_override
+@fdao_trumba_bot_override
+@fdao_trumba_tac_override
 class TrumbaTestAccounts(TestCase):
 
     def test_make_add_account_url(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertEqual(_make_add_account_url('Margaret Murray',
-                                                   'murray4'),
-                             "%sName=%s&Email=%s@washington.edu&Password=" % (
-                    ADD_ACC_URL, "Margaret%20Murray", 'murray4'))
+        self.assertEqual(
+            _make_add_account_url('Margaret Murray',
+                                  'murray4'),
+            "%sName=%s&Email=%s@washington.edu&Password=" % (
+                ADD_ACC_URL, "Margaret%20Murray", 'murray4'))
 
     def test_add_editor_error_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertRaises(AccountNameEmpty,
-                              add_editor,'','')
+        self.assertRaises(AccountNameEmpty,
+                          add_editor,'','')
 
-            self.assertRaises(InvalidEmail,
-                              add_editor,'010','')
+        self.assertRaises(InvalidEmail,
+                          add_editor,'010','')
 
-            self.assertRaises(AccountUsedByDiffUser,
-                              add_editor,'011','test10')
-
+        self.assertRaises(AccountUsedByDiffUser,
+                          add_editor,'011','test10')
 
     def test_add_editor_normal_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertTrue(add_editor('008','test8'))
-
-            self.assertTrue(add_editor('010','test10'))
-
+        self.assertTrue(add_editor('008','test8'))
+        self.assertTrue(add_editor('010','test10'))
 
     def test_make_del_account_url(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertEqual(_make_del_account_url('murray4'),
-                             "%sEmail=%s@washington.edu" % (DEL_ACC_URL,
-                                                            'murray4'))
+        self.assertEqual(_make_del_account_url('murray4'),
+                         "%sEmail=%s@washington.edu" % (DEL_ACC_URL,
+                                                        'murray4'))
 
     def test_delete_editor_normal_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertTrue(delete_editor('test10'))
+        self.assertTrue(delete_editor('test10'))
 
     def test_delete_editor_error_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertRaises(AccountNotExist,
-                              delete_editor,'')
+        self.assertRaises(AccountNotExist,
+                          delete_editor,'')
 
-            self.assertRaises(AccountNotExist,
-                              delete_editor,'test')
+        self.assertRaises(AccountNotExist,
+                          delete_editor,'test')
 
 
     def test_make_set_permissions_url(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertEqual(
-                _make_set_permissions_url(1, 'test10', 'EDIT'),
-                "%sCalendarID=%s&Email=%s@washington.edu&Level=%s" % (
-                    SET_PERM_URL, 1, 'test10', 'EDIT'))
+        self.assertEqual(
+            _make_set_permissions_url(1, 'test10', 'EDIT'),
+            "%sCalendarID=%s&Email=%s@washington.edu&Level=%s" % (
+                SET_PERM_URL, 1, 'test10', 'EDIT'))
 
     def test_set_sea_permissions_error_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertRaises(AccountNotExist,
-                              set_sea_permissions, 1, '', 'EDIT')
+        self.assertRaises(AccountNotExist,
+                          set_sea_permissions, 1, '', 'EDIT')
 
-            self.assertRaises(NoAllowedPermission,
-                              set_sea_permissions, 1, 'test10', 'PUBLISH')
+        self.assertRaises(NoAllowedPermission,
+                          set_sea_permissions, 1, 'test10', 'PUBLISH')
 
     def test_set_sea_permissions_normal_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_SEA_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileSea'
-                           ):
-            self.assertTrue(set_sea_permissions(1, 'test10', 'SHOWON'))
-            self.assertTrue(set_sea_permissions(1, 'test10', 'EDIT'))
-            self.assertTrue(set_sea_editor(1, 'test10'))
-            self.assertTrue(set_sea_showon(1, 'test10'))
-            self.assertTrue(set_sea_none(1, 'test10'))
+        self.assertTrue(set_sea_permissions(1, 'test10', 'SHOWON'))
+        self.assertTrue(set_sea_permissions(1, 'test10', 'EDIT'))
+        self.assertTrue(set_sea_editor(1, 'test10'))
+        self.assertTrue(set_sea_showon(1, 'test10'))
+        self.assertTrue(set_sea_none(1, 'test10'))
 
     def test_is_permission_set(self):
         self.assertTrue(_is_permission_set(1003))
@@ -176,43 +152,29 @@ class TrumbaTestAccounts(TestCase):
                           3020, 'test if UnexpectedError is thrown')
 
     def test_set_bot_permissions_error_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_BOT_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileBot'
-                           ):
-            self.assertRaises(AccountNotExist,
-                              set_bot_permissions, 2, '', 'EDIT')
+        self.assertRaises(AccountNotExist,
+                          set_bot_permissions, 2, '', 'EDIT')
 
-            self.assertRaises(NoAllowedPermission,
-                              set_bot_permissions, 2, 'test10', 'PUBLISH')
+        self.assertRaises(NoAllowedPermission,
+                          set_bot_permissions, 2, 'test10', 'PUBLISH')
 
     def test_set_bot_permissions_normal_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_BOT_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileBot'
-                           ):
-            self.assertTrue(set_bot_permissions(2, 'test10', 'SHOWON'))
-            self.assertTrue(set_bot_permissions(2, 'test10', 'EDIT'))
-            self.assertTrue(set_bot_editor(2, 'test10'))
-            self.assertTrue(set_bot_showon(2, 'test10'))
-            self.assertTrue(set_bot_none(2, 'test10'))
-
+        self.assertTrue(set_bot_permissions(2, 'test10', 'SHOWON'))
+        self.assertTrue(set_bot_permissions(2, 'test10', 'EDIT'))
+        self.assertTrue(set_bot_editor(2, 'test10'))
+        self.assertTrue(set_bot_showon(2, 'test10'))
+        self.assertTrue(set_bot_none(2, 'test10'))
 
     def test_set_tac_permissions_error_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_TAC_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileTac'
-                           ):
-            self.assertRaises(AccountNotExist,
-                              set_tac_permissions, 3, '', 'EDIT')
+        self.assertRaises(AccountNotExist,
+                          set_tac_permissions, 3, '', 'EDIT')
 
-            self.assertRaises(NoAllowedPermission,
-                              set_tac_permissions, 3, 'test10', 'PUBLISH')
+        self.assertRaises(NoAllowedPermission,
+                          set_tac_permissions, 3, 'test10', 'PUBLISH')
 
     def test_set_tac_permissions_normal_cases(self):
-        with self.settings(RESTCLIENTS_TRUMBA_TAC_DAO_CLASS=\
-                               'restclients.dao_implementation.trumba.FileTac'
-                           ):
-            self.assertTrue(set_tac_permissions(3, 'test10', 'SHOWON'))
-            self.assertTrue(set_tac_permissions(3, 'test10', 'EDIT'))
-            self.assertTrue(set_tac_editor(3, 'test10'))
-            self.assertTrue(set_tac_showon(3, 'test10'))
-            self.assertTrue(set_tac_none(3, 'test10'))
-
+        self.assertTrue(set_tac_permissions(3, 'test10', 'SHOWON'))
+        self.assertTrue(set_tac_permissions(3, 'test10', 'EDIT'))
+        self.assertTrue(set_tac_editor(3, 'test10'))
+        self.assertTrue(set_tac_showon(3, 'test10'))
+        self.assertTrue(set_tac_none(3, 'test10'))

@@ -1,20 +1,18 @@
 from django.test import TestCase
-from django.conf import settings
 from restclients.hrpws.appointee import get_appointee_by_netid,\
     get_appointee_by_eid, get_appointee_by_regid
 from restclients.exceptions import DataFailureException
+from restclients.test import fdao_hrp_override
 
 
+@fdao_hrp_override
 class AppointeeTest(TestCase):
 
     def test_get_appointee(self):
-        with self.settings(
-            RESTCLIENTS_UWNETID_DAO_CLASS =
-                'restclients.dao_implementation.hrpws.File'):
-            self.eval(get_appointee_by_netid("javerage"))
-            self.eval(get_appointee_by_eid("123456789"))
-            self.eval(get_appointee_by_regid(
-                    "9136CCB8F66711D5BE060004AC494FFE"))
+        self.eval(get_appointee_by_netid("javerage"))
+        self.eval(get_appointee_by_eid("123456789"))
+        self.eval(get_appointee_by_regid(
+                "9136CCB8F66711D5BE060004AC494FFE"))
 
 
     def eval(self, ap):
@@ -55,16 +53,11 @@ class AppointeeTest(TestCase):
         self.assertEqual(appointments[0].status, "A")
         self.assertEqual(appointments[0].status_desc, "ACTIVE")
 
-
     def test_invalid_user(self):
-        with self.settings(
-                RESTCLIENTS_HRPWS_DAO_CLASS =
-                'restclients.dao_implementation.hrpws.File'):
+        self.assertRaises(DataFailureException,
+                          get_appointee_by_regid,
+                          "00000000000000000000000000000001")
 
-            self.assertRaises(DataFailureException,
-                              get_appointee_by_regid,
-                              "00000000000000000000000000000001")
-
-            self.assertRaises(DataFailureException,
-                              get_appointee_by_eid,
-                              "100000000")
+        self.assertRaises(DataFailureException,
+                          get_appointee_by_eid,
+                          "100000000")
