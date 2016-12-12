@@ -51,10 +51,13 @@ class BridgeUser(models.Model):
     updated_at = models.DateTimeField(null=True, default=None)
     unsubscribed = models.CharField(max_length=128, null=True, default=None)
     next_due_date = models.DateTimeField(null=True, default=None)
-    completed_courses_count = models.IntegerField(default=0)
+    completed_courses_count = models.IntegerField(default=-1)
 
-    def has_completed_course(self):
-        return self.completed_courses_count > 0
+    def has_course_summary(self):
+        return self.completed_courses_count >= 0
+
+    def no_learning_history(self):
+        return self.completed_courses_count == 0
 
     def get_uid(self):
         return "%s@uw.edu" % self.netid

@@ -63,6 +63,11 @@ class TestBridgeUser(TestCase):
                           'value': '787'})
 
     def test_get_user(self):
+        user_list = get_user('javerage', include_course_summary=False)
+        self.assertEqual(len(user_list), 1)
+        user = user_list[0]
+        self.assertFalse(user.has_course_summary())
+
         user_list = get_user('javerage', include_course_summary=True)
         self.assertEqual(len(user_list), 1)
         user = user_list[0]
@@ -81,6 +86,8 @@ class TestBridgeUser(TestCase):
             str(user.logged_in_at), "2016-09-02 15:27:01.827000-07:00")
         self.assertEqual(user.next_due_date, None)
         self.assertEqual(user.completed_courses_count, 0)
+        self.assertTrue(user.has_course_summary())
+        self.assertTrue(user.no_learning_history())
         self.assertEqual(
             user.to_json_post(),
             {"users":[
@@ -111,9 +118,9 @@ class TestBridgeUser(TestCase):
         self.verify_bill(user_list)
 
         self.assertRaises(DataFailureException,
-                          get_user, 'bill')
+                          get_user, 'unknown')
         self.assertRaises(DataFailureException,
-                          get_user_by_id, 17637)
+                          get_user_by_id, 19567)
 
     def verify_bill(self, user_list):
         self.assertEqual(len(user_list), 1)
