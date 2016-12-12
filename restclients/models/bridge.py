@@ -53,6 +53,9 @@ class BridgeUser(models.Model):
     next_due_date = models.DateTimeField(null=True, default=None)
     completed_courses_count = models.IntegerField(default=0)
 
+    def has_completed_course(self):
+        return self.completed_courses_count > 0
+
     def get_uid(self):
         return "%s@uw.edu" % self.netid
 
@@ -67,12 +70,18 @@ class BridgeUser(models.Model):
                     "email": self.email,
                     "custom_fields": custom_fields_json
                     }
-        if self.bridge_id:
+        try:
             ret_user["id"] = self.bridge_id
-        if self.first_name:
+        except AttributeError:
+            pass
+        try:
             ret_user["first_name"] = self.first_name
-        if self.last_name:
+        except AttributeError:
+            pass
+        try:
             ret_user["last_name"] = self.last_name
+        except AttributeError:
+            pass
         return {"users": [ret_user]}
 
     def __str__(self):
