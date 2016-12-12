@@ -96,7 +96,7 @@ def delete_user_by_id(bridge_id):
     return resp.status == 204
 
 
-def get_user(uwnetid, include_course_summary=False):
+def get_user(uwnetid, include_course_summary=True):
     """
     Return a list of BridgeUsers objects with custom fields
     """
@@ -107,7 +107,7 @@ def get_user(uwnetid, include_course_summary=False):
     return _process_json_resp_data(resp)
 
 
-def get_user_by_id(bridge_id, include_course_summary=False):
+def get_user_by_id(bridge_id, include_course_summary=True):
     """
     Return a list of BridgeUsers objects with custom fields
     """
@@ -118,7 +118,7 @@ def get_user_by_id(bridge_id, include_course_summary=False):
     return _process_json_resp_data(resp)
 
 
-def get_all_users(include_course_summary=False):
+def get_all_users(include_course_summary=True):
     """
     Return a list of BridgeUser objects with custom fields
     """
@@ -261,6 +261,8 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
 
         if "completed_courses_count" in user_data:
             user.completed_courses_count = user_data["completed_courses_count"]
+        else:
+            user.completed_courses_count = -1
 
         if "links" in user_data and len(user_data["links"]) > 0 and\
                 "custom_field_values" in user_data["links"]:
