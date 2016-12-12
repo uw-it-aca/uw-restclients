@@ -467,7 +467,7 @@ class Section(RestClientsModel):
             self.primary_section_id)
 
     def get_instructors(self):
-        instructors = {} 
+        instructors = {}
         for meeting in self.meetings:
             for instructor in meeting.instructors:
                 instructors[instructor.uwregid] = instructor
