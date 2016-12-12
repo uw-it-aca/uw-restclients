@@ -79,9 +79,8 @@ class Enrollments(Canvas):
                     enrollments.append(enrollment)
             else:
                 enrollment = self._enrollment_from_json(datum)
-                enrollment.course_url = re.match(
-                    r'^(https://[^/]+/courses/\d+)(/.*)?$',
-                    enrollment.html_url).group(1)
+                enrollment.course_url = re.sub(
+                    r'/users/\d+$', '', enrollment.html_url)
                 enrollments.append(enrollment)
 
         return enrollments
