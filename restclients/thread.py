@@ -48,3 +48,23 @@ class Thread(threading.Thread):
             return super(Thread, self).join()
 
         return True
+
+
+class GenericPrefetchThread(Thread):
+    method = None
+
+    def run(self):
+        if self.method is None:
+            return
+        try:
+            self.method()
+        except Exception as ex:
+            # Errors in prefetching should also manifest during actual
+            # processing, where they can be handled appropriately
+            pass
+
+
+def generic_prefetch(method, args):
+    def ret():
+        return method(*args)
+    return ret

@@ -13,7 +13,7 @@ class BridgeCustomField(models.Model):
     value = models.CharField(max_length=256, null=True, default=None)
 
     def is_regid(self):
-        return self.name == BridgeCustomField.REGID_NAME
+        return self.name.lower() == BridgeCustomField.REGID_NAME.lower()
 
     def __str__(self):
         return "{%s: %s, %s: %s, %s: %s, %s: %s}" % (
@@ -24,11 +24,12 @@ class BridgeCustomField(models.Model):
             )
 
     def to_json(self):
-        value = {"custom_field_id": self.field_id,
-                 "value": self.value
+        value = {'custom_field_id': self.field_id,
+                 'value': self.value,
+                 'name': self.name,
                  }
         if self.value_id:
-            value["id"] = self.value_id
+            value['id'] = self.value_id
         return value
 
     class Meta:
@@ -45,12 +46,18 @@ class BridgeUser(models.Model):
     name = models.CharField(max_length=256, null=True, default=None)
     sortable_name = models.CharField(max_length=256, null=True, default=None)
     avatar_url = models.CharField(max_length=512, null=True, default=None)
-    locale = models.CharField(max_length=2)
+    locale = models.CharField(max_length=2, default='en')
     logged_in_at = models.DateTimeField(null=True, default=None)
-    updated_at = models.DateTimeField()
+    updated_at = models.DateTimeField(null=True, default=None)
     unsubscribed = models.CharField(max_length=128, null=True, default=None)
     next_due_date = models.DateTimeField(null=True, default=None)
-    completed_courses_count = models.IntegerField(default=0)
+    completed_courses_count = models.IntegerField(default=-1)
+
+    def has_course_summary(self):
+        return self.completed_courses_count >= 0
+
+    def no_learning_history(self):
+        return self.completed_courses_count == 0
 
     def get_uid(self):
         return "%s@uw.edu" % self.netid
@@ -66,10 +73,18 @@ class BridgeUser(models.Model):
                     "email": self.email,
                     "custom_fields": custom_fields_json
                     }
-        if self.first_name:
+        try:
+            ret_user["id"] = self.bridge_id
+        except AttributeError:
+            pass
+        try:
             ret_user["first_name"] = self.first_name
-        if self.last_name:
+        except AttributeError:
+            pass
+        try:
             ret_user["last_name"] = self.last_name
+        except AttributeError:
+            pass
         return {"users": [ret_user]}
 
     def __str__(self):

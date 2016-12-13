@@ -5,6 +5,7 @@ import logging
 import re
 from datetime import datetime
 from urllib import urlencode
+from restclients.thread import generic_prefetch
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.models.sws import Section, SectionReference, FinalExam
@@ -177,6 +178,29 @@ def get_joint_sections(section,
 
     return joint_sections
 
+
+def get_prefetch_for_section_data(section_data):
+    """
+    This will return a list of methods that can be called to prefetch (in
+    threads) content that would be fetched while building the section.
+
+    This depends on a good cache backend.  Without that, this will just double
+    the work that's needed :(
+
+    Each method is identified by a key, so they can be deduped if multiple
+    sections want the same data, such as a common instructor.
+    """
+    pws = PWS()
+    prefetch = []
+    for meeting_data in section_data["Meetings"]:
+        for instructor_data in meeting_data["Instructors"]:
+            pdata = instructor_data["Person"]
+            if "RegID" in pdata and pdata["RegID"] is not None:
+                prefetch.append(["person-%s" % pdata["RegID"],
+                                 generic_prefetch(pws.get_person_by_regid,
+                                                  [pdata["RegID"]])])
+
+    return prefetch
 
 def _json_to_section(section_data,
                      term=None,

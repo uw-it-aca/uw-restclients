@@ -25,8 +25,11 @@ def get_subject_guide_for_section_params(year, quarter, curriculum_abbr,
     course_number: course number
     section_id: course section identifier (optional)
     """
+
+    quarter = quarter.upper()[:3]
+
     url = '%s/%s/%s/%s/%s/%s/%s' % (
-        subject_guide_url_prefix, 'course', year, quarter.upper(),
+        subject_guide_url_prefix, 'course', year, quarter,
         quote(curriculum_abbr.upper()), course_number, section_id.upper())
     headers = {'Accept': 'application/json'}
 
@@ -44,7 +47,7 @@ def get_subject_guide_for_section(section):
     Returns a SubjectGuide model for the passed SWS section model.
     """
     return get_subject_guide_for_section_params(
-        section.term.year, section.term.quarter[:3], section.curriculum_abbr,
+        section.term.year, section.term.quarter, section.curriculum_abbr,
         section.course_number, section.section_id)
 
 
@@ -55,7 +58,7 @@ def get_subject_guide_for_canvas_course_sis_id(course_sis_id):
     (year, quarter, curriculum_abbr, course_number,
         section_id) = course_sis_id.split('-', 4)
     return get_subject_guide_for_section_params(
-        year, quarter[:3], curriculum_abbr, course_number, section_id)
+        year, quarter, curriculum_abbr, course_number, section_id)
 
 
 def get_default_subject_guide(campus='seattle'):
