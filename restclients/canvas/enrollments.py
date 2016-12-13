@@ -64,7 +64,7 @@ class Enrollments(Canvas):
 
         enrollments = []
         for datum in self._get_paged_resource(url, params=params):
-            if courses:
+            if include_courses:
                 course_id = datum["course_id"]
                 course = courses.get_course(course_id)
 
