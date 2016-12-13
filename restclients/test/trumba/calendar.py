@@ -1,13 +1,11 @@
 from django.test import TestCase
-from django.conf import settings
 from restclients.trumba import get_calendar_by_name
+from restclients.test import fdao_trumba_override
 
 
-CAL_DAO = 'restclients.dao_implementation.trumba.CalendarFile'
-
-
+@fdao_trumba_override
 class TestCalendarParse(TestCase):
+
     def test_ical_parsing(self):
-        with self.settings(RESTCLIENTS_CALENDAR_DAO_CLASS=CAL_DAO):
-            calendar = get_calendar_by_name('sea_acad-comm')
-            self.assertEquals(len(calendar.walk('vevent')), 4)
+        calendar = get_calendar_by_name('sea_acad-comm')
+        self.assertEquals(len(calendar.walk('vevent')), 4)

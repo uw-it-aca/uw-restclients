@@ -45,5 +45,6 @@ def new_regid_custom_field(uwregid):
     """
     cus_fie = BridgeCustomField()
     cus_fie.field_id = get_regid_field_id()
+    cus_fie.name = BridgeCustomField.REGID_NAME
     cus_fie.value = uwregid
     return cus_fie

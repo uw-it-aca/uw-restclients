@@ -13,9 +13,10 @@ from restclients.cache_manager import enable_cache_entry_queueing
 from restclients.cache_manager import disable_cache_entry_queueing
 from restclients.cache_manager import save_all_queued_entries
 from restclients.pws import PWS
-from restclients.thread import Thread
+from restclients.thread import Thread, GenericPrefetchThread, generic_prefetch
 from restclients.sws import get_resource, SWSThread, deprecation, parse_sws_date
-from restclients.sws.v5.section import _json_to_section
+from restclients.sws.v5.section import (_json_to_section,
+                                        get_prefetch_for_section_data)
 
 
 registration_res_url_prefix = "/student/v5/registration.json"
@@ -190,7 +191,8 @@ def get_credits_by_reg_url(url):
 
 
 def get_schedule_by_regid_and_term(regid, term,
-                                   include_instructor_not_on_time_schedule=True):
+                                   include_instructor_not_on_time_schedule=True,
+                                   per_section_prefetch_callback=None):
     """
     Returns a restclients.models.sws.ClassSchedule object
     for the regid and term passed in.
@@ -204,11 +206,13 @@ def get_schedule_by_regid_and_term(regid, term,
                    ]))
 
     return _json_to_schedule(get_resource(url), term, regid,
-                             include_instructor_not_on_time_schedule)
+                             include_instructor_not_on_time_schedule,
+                             per_section_prefetch_callback)
 
 
 def _json_to_schedule(term_data, term, regid,
-                      include_instructor_not_on_time_schedule=True):
+                      include_instructor_not_on_time_schedule=True,
+                      per_section_prefetch_callback=None):
     sections = []
     sws_threads = []
     term_credit_hours = Decimal("0.0")
@@ -232,6 +236,41 @@ def _json_to_schedule(term_data, term, regid,
 
         for thread in sws_threads:
             thread.join()
+
+        try:
+            section_prefetch = []
+            seen_keys = {}
+            for thread in sws_threads:
+                response = thread.response
+                if response and response.status == 200:
+                    data = json.loads(response.data)
+                    section_prefetch.extend(get_prefetch_for_section_data(data))
+                    if per_section_prefetch_callback:
+                        client_callbacks = per_section_prefetch_callback(data)
+                        section_prefetch.extend(client_callbacks)
+
+                url = thread.reg_url
+                section_prefetch.append([url,
+                                         generic_prefetch(get_resource, [url])])
+
+            prefetch_threads = []
+            for entry in section_prefetch:
+                key = entry[0]
+                if key not in seen_keys:
+                    seen_keys[key] = True
+                    thread = GenericPrefetchThread()
+                    prefetch_method = entry[1]
+                    thread.method = prefetch_method
+                    prefetch_threads.append(thread)
+                    thread.start()
+
+            for thread in prefetch_threads:
+                thread.join()
+
+        except Exception as ex:
+            # If there's a real problem, it'll come up in the data fetching
+            # step - no need to raise an exception here
+            pass
 
         for thread in sws_threads:
             response = thread.response
