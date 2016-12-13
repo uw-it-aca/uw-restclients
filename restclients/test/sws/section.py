@@ -169,11 +169,11 @@ class SWSTestSectionData(TestCase):
                               "Correct number of instructors")
 
             section3 = get_section_by_label('2013,spring,PHYS,121/A')
-            self.assertEquals(len(section3.get_instructors()), 5,
-                              "Correct number of all instructors")
+            self.assertEquals(len(section3.get_instructors()), 2,
+                              "Course with duplicate instructors")
 
             section3 = get_section_by_label('2013,spring,PHYS,121/A', False)
-            self.assertEquals(len(section3.get_instructors()), 4,
+            self.assertEquals(len(section3.get_instructors()), 1,
                               "Correct number of TSPrinted instructors")
 
     def test_delegates_in_section(self):
