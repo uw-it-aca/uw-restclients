@@ -50,7 +50,8 @@ class Enrollments(Canvas):
         return self.get_enrollments_for_section(
             self._sis_id(sis_section_id, sis_field="section"), params)
 
-    def get_enrollments_for_regid(self, regid, params={}):
+    def get_enrollments_for_regid(self, regid, params={},
+                                  include_courses=True):
         """
         Return a list of enrollments for the passed user regid.
 
@@ -59,21 +60,27 @@ class Enrollments(Canvas):
         url = "/api/v1/users/%s/enrollments" % (
             self._sis_id(regid, sis_field="user"))
 
-        courses = Courses()
+        courses = Courses() if include_courses else None
 
         enrollments = []
         for datum in self._get_paged_resource(url, params=params):
-            course_id = datum["course_id"]
-            course = courses.get_course(course_id)
+            if include_courses:
+                course_id = datum["course_id"]
+                course = courses.get_course(course_id)
 
-            if course.sis_course_id is not None:
+                if course.sis_course_id is not None:
+                    enrollment = self._enrollment_from_json(datum)
+                    enrollment.course = course
+                    # the following 3 lines are not removed
+                    # to be backward compatible.
+                    enrollment.course_url = course.course_url
+                    enrollment.course_name = course.name
+                    enrollment.sis_course_id = course.sis_course_id
+                    enrollments.append(enrollment)
+            else:
                 enrollment = self._enrollment_from_json(datum)
-                enrollment.course = course
-                # the following 3 lines are not removed
-                # to be backward compatible.
-                enrollment.course_url = course.course_url
-                enrollment.course_name = course.name
-                enrollment.sis_course_id = course.sis_course_id
+                enrollment.course_url = re.sub(
+                    r'/users/\d+$', '', enrollment.html_url)
                 enrollments.append(enrollment)
 
         return enrollments
