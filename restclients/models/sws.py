@@ -846,6 +846,11 @@ class TimeScheduleConstruction(RestClientsModel):
     is_on = models.NullBooleanField()
 
 
+class TimeSchedulePublished(RestClientsModel):
+    campus = models.SlugField(max_length=15)
+    is_on = models.NullBooleanField()
+
+
 class NoticeAttribute(RestClientsModel):
     name = models.CharField(max_length=100)
     data_type = models.CharField(max_length=100)
