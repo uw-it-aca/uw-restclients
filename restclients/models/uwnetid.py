@@ -230,3 +230,63 @@ class SubscriptionAction(RestClientsModel):
 
     def json_data(self):
         return action
+
+
+class UwPassword(models.Model):
+    PERSON = "Person"
+    ACTIVE = "Active"
+    uwnetid = models.SlugField(max_length=16,
+                               db_index=True,
+                               unique=True)
+    kerb_status =  models.CharField(max_length=32)
+    last_change = models.DateTimeField(null=True)
+    last_change_med = models.DateTimeField(null=True)
+    expires_med = models.DateTimeField(null=True)
+    interval_med = models.IntegerField()  # seconds
+    minimum_length = models.SmallIntegerField()
+    time_stamp = models.DateTimeField()
+
+    def is_person(self, value):
+        return value == UwPassword.PERSON
+
+    def is_active(self, value):
+        return value == UwPassword.ACTIVE
+
+    def is_active_person(self):
+        is_person = False
+        is_active = False
+        for status in self.netid_status:
+            if self.is_person(status):
+                is_person = True
+            if self.is_active(status):
+                is_active = True
+        return is_person and is_active
+
+    def is_kerb_status_active(self):
+        return self.is_active(self.kerb_status)
+
+    def get_med_interval_day(self):
+        return self.interval_med/60/60/24
+
+    def json_data(self):
+        data = {
+            'uwnetid': self.uwnetid,
+            'kerb_status': self.kerb_status,
+            'last_change': self.last_change,
+            'last_change_med': self.last_change_med,
+            'expires_med': self.expires_med,
+            'interval_med': self.interval_med,
+            'minimum_length': self.minimum_length,
+            'time_stamp': self.time_stamp,
+        }
+
+        if self.netid_status and len(self.netid_status) > 0:
+            data['netid_status'] = ','.join(self.netid_status)
+        return data
+
+    def __init__(self, *args, **kwargs):
+        super(UwPassword, self).__init__(*args, **kwargs)
+        self.netid_status = []
+
+    class Meta:
+        db_table = "restclients_uwnetid_password"
