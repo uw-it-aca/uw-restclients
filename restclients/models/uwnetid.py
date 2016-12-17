@@ -238,7 +238,7 @@ class UwPassword(models.Model):
     uwnetid = models.SlugField(max_length=16,
                                db_index=True,
                                unique=True)
-    kerb_status =  models.CharField(max_length=32)
+    kerb_status = models.CharField(max_length=32)
     last_change = models.DateTimeField(null=True)
     last_change_med = models.DateTimeField(null=True)
     expires_med = models.DateTimeField(null=True)
