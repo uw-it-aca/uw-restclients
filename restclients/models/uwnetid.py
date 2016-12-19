@@ -246,24 +246,17 @@ class UwPassword(models.Model):
     minimum_length = models.SmallIntegerField()
     time_stamp = models.DateTimeField()
 
-    def is_person(self, value):
-        return value == UwPassword.PERSON
+    def is_status_person(self):
+        return UwPassword.PERSON in self.netid_status
 
-    def is_active(self, value):
-        return value == UwPassword.ACTIVE
+    def is_status_active(self):
+        return UwPassword.ACTIVE in self.netid_status
 
     def is_active_person(self):
-        is_person = False
-        is_active = False
-        for status in self.netid_status:
-            if self.is_person(status):
-                is_person = True
-            if self.is_active(status):
-                is_active = True
-        return is_person and is_active
+        return self.is_status_active() and self.is_status_person()
 
     def is_kerb_status_active(self):
-        return self.is_active(self.kerb_status)
+        return UwPassword.ACTIVE == self.kerb_status
 
     def get_med_interval_day(self):
         return self.interval_med/60/60/24
