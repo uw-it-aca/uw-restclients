@@ -34,6 +34,7 @@ setup(
                       'python-dateutil>=2.1',
                       'unittest2>=0.5.1',
                       'pytz',
+                      'pytimeparse',
                       'icalendar',
                       'AuthZ-Group>=1.1.4',
                       'Django-UserService',

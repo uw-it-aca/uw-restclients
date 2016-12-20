@@ -1,3 +1,4 @@
+from restclients.test.uwnetid.password import UwPasswordTest
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.uwnetid.subscription_60 import KerberosSubsTest
 from restclients.test.uwnetid.subscription_233 import Office365EduSubsTest

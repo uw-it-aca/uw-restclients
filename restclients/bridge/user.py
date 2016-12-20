@@ -1,8 +1,8 @@
 from datetime import datetime
+import json
 import logging
 import re
-from django.utils.dateparse import parse_datetime
-import simplejson as json
+from dateutil.parser import parse
 from restclients.exceptions import InvalidNetID
 from restclients.pws import PWS
 from restclients.models.bridge import BridgeUser, BridgeUserRole,\
@@ -244,12 +244,12 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
         if "loggedInAt" in user_data:
             user.logged_in_at = user_data["loggedInAt"]
             if user_data["loggedInAt"] is not None:
-                user.logged_in_at = parse_datetime(user_data["loggedInAt"])
+                user.logged_in_at = parse(user_data["loggedInAt"])
 
         if "updated_at" in user_data:
             user.updated_at = user_data["updated_at"]
             if user_data["updated_at"] is not None:
-                user.updated_at = parse_datetime(user_data["updated_at"])
+                user.updated_at = parse(user_data["updated_at"])
 
         if "unsubscribed" in user_data:
             user.unsubscribed = user_data["unsubscribed"]
@@ -257,7 +257,7 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
         if "next_due_date" in user_data:
             user.next_due_date = user_data["next_due_date"]
             if user_data["next_due_date"] is not None:
-                user.next_due_date = parse_datetime(user_data["next_due_date"])
+                user.next_due_date = parse(user_data["next_due_date"])
 
         if "completed_courses_count" in user_data:
             user.completed_courses_count = user_data["completed_courses_count"]
