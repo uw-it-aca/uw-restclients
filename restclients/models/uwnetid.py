@@ -265,13 +265,14 @@ class UwPassword(models.Model):
                                db_index=True,
                                unique=True)
     kerb_status = models.CharField(max_length=32)
-    last_change = models.DateTimeField(null=True)
+
+    last_change = models.DateTimeField(null=True)     # timestamps
 
     # the expiration interval in seconds
     interval = models.IntegerField(null=True)
 
-    last_change_med = models.DateTimeField(null=True)
-    expires_med = models.DateTimeField(null=True)
+    last_change_med = models.DateTimeField(null=True)    # timestamps
+    expires_med = models.DateTimeField(null=True)    # timestamps
 
     # the expiration interval in seconds
     interval_med = models.IntegerField(null=True)
