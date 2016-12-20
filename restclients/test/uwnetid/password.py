@@ -1,12 +1,32 @@
 from datetime import date
 from django.test import TestCase
+from restclients.models.uwnetid import UwPassword
 from restclients.uwnetid.password import get_uwnetid_password
 from restclients.exceptions import DataFailureException
 from restclients.test import fdao_uwnetid_override
 
 
 @fdao_uwnetid_override
-class UwPassword(TestCase):
+class UwPasswordTest(TestCase):
+
+    def test_uwpassword(self):
+        pw = UwPassword(uwnetid='userid',
+                        kerb_status="Active",
+                        last_change=None,
+                        last_change_med=None,
+                        expires_med=None,
+                        interval_med=None,
+                        minimum_length=8,
+                        time_stamp=None)
+        self.assertFalse(pw.is_status_active())
+        self.assertFalse(pw.is_status_person())
+        self.assertFalse(pw.is_active_person())
+        pw.netid_status = ["Person", "Active"]
+        self.assertEquals(pw.netid_status[0], "Person")
+        self.assertEquals(pw.netid_status[1], "Active")
+        self.assertTrue(pw.is_status_active())
+        self.assertTrue(pw.is_status_person())
+        self.assertTrue(pw.is_active_person())
 
     def test_get_uwnetid_password(self):
         pw = get_uwnetid_password("javerage")
@@ -29,14 +49,3 @@ class UwPassword(TestCase):
         self.assertEqual(str(pw.last_change_med), '2016-10-13 10:57:06-07:00')
         self.assertEqual(pw.get_med_interval_day(), 120)
         self.assertEqual(pw.minimum_length, 8)
-
-        self.assertEquals(pw.netid_status[0], "Person")
-        self.assertEquals(pw.netid_status[1], "Active")
-        self.assertTrue(pw.is_status_active())
-        self.assertTrue(pw.is_status_person())
-        self.assertTrue(pw.is_active_person())
-
-        pw.netid_status = []
-        self.assertFalse(pw.is_status_active())
-        self.assertFalse(pw.is_status_person())
-        self.assertFalse(pw.is_active_person())
