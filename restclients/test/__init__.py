@@ -33,6 +33,9 @@ FLIB_CUR = 'restclients.dao_implementation.library.currics.File'
 fdao_libcurr_override = override_settings(
     RESTCLIENTS_LIBCURRICS_DAO_CLASS=FLIB_CUR)
 
+FCANVAS = 'restclients.dao_implementation.canvas.File'
+fdao_canvas_override = override_settings(RESTCLIENTS_CANVAS_DAO_CLASS=FCANVAS)
+
 FPWS = 'restclients.dao_implementation.pws.File'
 fdao_pws_override = override_settings(RESTCLIENTS_PWS_DAO_CLASS=FPWS)
 
