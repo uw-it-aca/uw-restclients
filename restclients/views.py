@@ -15,6 +15,7 @@ from restclients.dao import SWS_DAO, PWS_DAO, GWS_DAO, NWS_DAO, Hfs_DAO,\
     Book_DAO, Canvas_DAO, Uwnetid_DAO, MyLibInfo_DAO, LibCurrics_DAO,\
     TrumbaCalendar_DAO, MyPlan_DAO, IASYSTEM_DAO, Grad_DAO
 from restclients.mock_http import MockHTTP
+from restclients.models.degrade_performance import DegradePerformance
 from authz_group import Group
 from userservice.user import UserService
 from time import time
@@ -24,23 +25,42 @@ import simplejson as json
 import re
 
 
+def require_admin(view_func):
+    def wrapper(*args, **kwargs):
+        if not hasattr(settings, "RESTCLIENTS_ADMIN_GROUP"):
+            print "You must have a group defined as your admin group."
+            print 'Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"'
+            raise Exception("Missing RESTCLIENTS_ADMIN_GROUP in settings")
+
+        user_service = UserService()
+        actual_user = user_service.get_original_user()
+        g = Group()
+
+        is_admin = g.is_member_of_group(actual_user,
+                                        settings.RESTCLIENTS_ADMIN_GROUP)
+
+        if not is_admin:
+            return HttpResponseRedirect("/")
+
+        return view_func(*args, **kwargs)
+
+    return wrapper
+
+
+def set_wrapper_template(context):
+    try:
+        loader.get_template("restclients/proxy_wrapper.html")
+        context["wrapper_template"] = "restclients/proxy_wrapper.html"
+    except TemplateDoesNotExist:
+        context["wrapper_template"] = "proxy_wrapper.html"
+
+
 @login_required
 @csrf_protect
+@require_admin
 def proxy(request, service, url):
-
-    if not hasattr(settings, "RESTCLIENTS_ADMIN_GROUP"):
-        print "You must have a group defined as your admin group."
-        print 'Configure that using RESTCLIENTS_ADMIN_GROUP="u_foo_bar"'
-        raise Exception("Missing RESTCLIENTS_ADMIN_GROUP in settings")
-
     user_service = UserService()
     actual_user = user_service.get_original_user()
-    g = Group()
-    is_admin = g.is_member_of_group(actual_user,
-                                    settings.RESTCLIENTS_ADMIN_GROUP)
-
-    if not is_admin:
-        return HttpResponseRedirect("/")
 
     use_pre = False
     headers = {}
@@ -152,11 +172,7 @@ def proxy(request, service, url):
     except TemplateDoesNotExist:
         pass
 
-    try:
-        loader.get_template("restclients/proxy_wrapper.html")
-        context["wrapper_template"] = "restclients/proxy_wrapper.html"
-    except TemplateDoesNotExist:
-        context["wrapper_template"] = "proxy_wrapper.html"
+    set_wrapper_template(context)
 
     try:
         search_template_path = re.sub(r"\..*$", "", url)
@@ -208,3 +224,54 @@ def format_html(service, content):
 def clean_self_closing_divs(content):
     cleaned = re.sub("((<div[^>]*?)/>)", "<!-- \g<1> -->\g<2>></div>", content)
     return cleaned
+
+
+@login_required
+@csrf_protect
+@require_admin
+def errors(request):
+    context = {}
+    context["errors"] = []
+    problem_str = request.session.get("RESTCLIENTS_ERRORS", None)
+    problems = DegradePerformance(serialized=problem_str)
+
+    drop_keys = []
+    if request.method == "POST":
+        for key in problems.services():
+            keepit = "keep_%s" % key
+            if keepit not in request.POST:
+                problems.remove_service(key)
+            else:
+                problems.set_status(key,
+                                    request.POST.get("%s_status" % key, None))
+                problems.set_content(key,
+                                     request.POST.get("%s_content" % key,
+                                                      None))
+                problems.set_load_time(key,
+                                       request.POST.get("%s_load_time" % key,
+                                                        None))
+
+        new_service = request.POST.get("new_service_name", None)
+        if new_service:
+            key = request.POST["new_service_name"]
+            problems.set_status(key,
+                                request.POST.get("new_service_status", None))
+            problems.set_content(key,
+                                 request.POST.get("new_service_content", None))
+            problems.set_load_time(key,
+                                   request.POST.get("new_service_load_time",
+                                                    None))
+
+        request.session["RESTCLIENTS_ERRORS"] = problems.serialize()
+
+    for service in problems.services():
+        context["errors"].append({
+            "name": service,
+            "status": problems.get_status(service),
+            "content": problems.get_content(service),
+            "load_time": problems.get_load_time(service),
+        })
+
+    set_wrapper_template(context)
+
+    return render(request, "restclients/cause_errors.html", context)

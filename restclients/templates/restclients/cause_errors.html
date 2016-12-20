@@ -1,0 +1,30 @@
+
+{% extends wrapper_template %}
+{% block content %}
+<p>This page lets you cause various problems in restclients.  You can force a specific service to give you a specific response code, specific content, or take an extra amount of time</p>
+
+<form action="{% url 'restclients_errors' %}" method="POST">
+{% csrf_token %}
+
+{% if errors %}
+<h3>Existing</h3>
+{% for error in errors %}
+<label><input type="checkbox" name="keep_{{ error.name }}" checked="checked"> {{ error.name }}</label>
+<br>
+<label>Response Code (e.g. 500): <input type="text" name="{{ error.name }}_status" value="{{ error.status }}"/></label> <br/>
+<label>Content (can be empty, but you could do something like { "oops } ): <input type="text" name="{{ error.name }}_content" value="{{ error.content }}"/></label> <br/>
+<label>Add seconds to the response time (e.g. 2.5): <input type="text" name="{{ error.name }}_load_time" value="{{ error.load_time }}"/></label> <br/>
+{% endfor %}
+{% endif %}
+
+<h3>Add new:</h3>
+<label>Service name (e.g. sws): <input type="text" name="new_service_name" /></label> <br/>
+<label>Response Status(e.g. 500): <input type="text" name="new_service_status" /></label> <br/>
+<label>Content (can be empty, but you could do something like { "oops } ): <input type="text" name="new_service_content" /></label> <br/>
+<label>Add seconds to the response time (e.g. 2.5): <input type="text" name="new_service_load_time" /></label> <br/>
+
+<input type="submit" value="Update all settings"/>
+
+</form>
+
+{% endblock %}
