@@ -30,6 +30,7 @@ def _process_json(response_body):
     data = json.loads(response_body)
     uwpassword = UwPassword(uwnetid=data["uwNetID"],
                             kerb_status=data["kerbStatus"],
+                            interval=None,
                             last_change=None,
                             last_change_med=None,
                             expires_med=None,
@@ -38,6 +39,9 @@ def _process_json(response_body):
                             time_stamp=parse(data["timeStamp"]),)
     if "lastChange" in data:
         uwpassword.last_change = parse(data["lastChange"])
+
+    if "interval" in data:
+        uwpassword.interval = timeparse(data["interval"])
 
     if "lastChangeMed" in data:
         uwpassword.last_change_med = parse(data["lastChangeMed"])

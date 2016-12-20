@@ -1,6 +1,7 @@
 from datetime import date
 from django.test import TestCase
-from restclients.models.uwnetid import UwPassword
+from restclients.models.uwnetid import UwPassword, convert_seconds_to_days,\
+    convert_days_to_seconds
 from restclients.uwnetid.password import get_uwnetid_password
 from restclients.exceptions import DataFailureException
 from restclients.test import fdao_uwnetid_override
@@ -9,7 +10,7 @@ from restclients.test import fdao_uwnetid_override
 @fdao_uwnetid_override
 class UwPasswordTest(TestCase):
 
-    def test_uwpassword(self):
+    def test_status(self):
         pw = UwPassword(uwnetid='userid',
                         kerb_status="Active",
                         last_change=None,
@@ -28,6 +29,27 @@ class UwPasswordTest(TestCase):
         self.assertTrue(pw.is_status_person())
         self.assertTrue(pw.is_active_person())
 
+        self.assertTrue(pw.is_kerb_status_active())
+        self.assertFalse(pw.is_kerb_status_disabled())
+        self.assertFalse(pw.is_kerb_status_expired())
+        self.assertFalse(pw.is_kerb_status_inactive())
+        self.assertFalse(pw.is_kerb_status_other())
+        self.assertFalse(pw.is_kerb_status_pending())
+        self.assertFalse(pw.is_kerb_status_suspended())
+
+        pw.kerb_status = "Disabled"
+        self.assertTrue(pw.is_kerb_status_disabled())
+        pw.kerb_status = "Expired"
+        self.assertTrue(pw.is_kerb_status_expired())
+        pw.kerb_status = "Inactive"
+        self.assertTrue(pw.is_kerb_status_inactive())
+        pw.kerb_status = "Pending"
+        self.assertTrue(pw.is_kerb_status_pending())
+        pw.kerb_status = "Other"
+        self.assertTrue(pw.is_kerb_status_other())
+        pw.kerb_status ="Suspended"
+        self.assertTrue(pw.is_kerb_status_suspended())
+
     def test_get_uwnetid_password(self):
         pw = get_uwnetid_password("javerage")
         self.assertEquals(len(pw.netid_status), 2)
@@ -38,6 +60,7 @@ class UwPasswordTest(TestCase):
         self.assertEqual(str(pw.last_change), '2015-01-27 10:49:42-08:00')
         self.assertEqual(str(pw.time_stamp), '2016-12-16 14:21:40-08:00')
         self.assertEqual(str(pw.time_stamp,), '2016-12-16 14:21:40-08:00')
+        self.assertEqual(convert_seconds_to_days(pw.interval), 120)
         self.assertEqual(pw.minimum_length, 8)
 
         pw = get_uwnetid_password("bill")
@@ -47,5 +70,8 @@ class UwPasswordTest(TestCase):
         self.assertEqual(str(pw.time_stamp), '2016-12-16 14:23:11-08:00')
         self.assertEqual(str(pw.expires_med), '2017-02-10 10:57:06-08:00')
         self.assertEqual(str(pw.last_change_med), '2016-10-13 10:57:06-07:00')
-        self.assertEqual(pw.get_med_interval_day(), 120)
+        self.assertEqual(convert_seconds_to_days(pw.interval_med), 120)
         self.assertEqual(pw.minimum_length, 8)
+
+        self.assertEqual(
+            convert_seconds_to_days(UwPassword.DEFAULT_MED_INTERVAL), 120)
