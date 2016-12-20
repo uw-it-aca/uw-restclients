@@ -6,6 +6,7 @@ from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
+from restclients.test.bridge.models import TestBridgeModel
 from restclients.test.bridge.user import TestBridgeUser
 from restclients.test.bridge.custom_field import TestBridgeCustomFields
 from restclients.test.hfs.idcard import HfsTest

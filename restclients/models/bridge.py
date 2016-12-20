@@ -15,22 +15,23 @@ class BridgeCustomField(models.Model):
     def is_regid(self):
         return self.name.lower() == BridgeCustomField.REGID_NAME.lower()
 
-    def __str__(self):
-        return "{%s: %s, %s: %s, %s: %s, %s: %s}" % (
-            'value_id', self.value_id,
-            'id', self.field_id,
-            'name', self.name,
-            'value', self.value
-            )
-
     def to_json(self):
         value = {'custom_field_id': self.field_id,
                  'value': self.value,
                  'name': self.name,
                  }
-        if self.value_id:
-            value['id'] = self.value_id
+        try:
+            if self.value_id:
+                value['id'] = self.value_id
+        except AttributeError:
+            pass
         return value
+
+    def __init__(self, *args, **kwargs):
+        super(BridgeCustomField, self).__init__(*args, **kwargs)
+
+    def __str__(self):
+        return json.dumps(self.to_json())
 
     class Meta:
         db_table = "restclients_bridge_custom_field"
@@ -54,10 +55,13 @@ class BridgeUser(models.Model):
     completed_courses_count = models.IntegerField(default=-1)
 
     def has_course_summary(self):
-        return self.completed_courses_count >= 0
+        try:
+            return self.completed_courses_count >= 0
+        except AttributeError:
+            return False
 
     def no_learning_history(self):
-        return self.completed_courses_count == 0
+        return self.has_course_summary() and self.completed_courses_count == 0
 
     def get_uid(self):
         return "%s@uw.edu" % self.netid
@@ -74,35 +78,48 @@ class BridgeUser(models.Model):
                     "custom_fields": custom_fields_json
                     }
         try:
-            ret_user["id"] = self.bridge_id
+            if self.bridge_id > 0:
+                ret_user["id"] = self.bridge_id
         except AttributeError:
             pass
         try:
-            ret_user["first_name"] = self.first_name
+            if self.first_name:
+                ret_user["first_name"] = self.first_name
         except AttributeError:
             pass
         try:
-            ret_user["last_name"] = self.last_name
+            if self.last_name:
+                ret_user["last_name"] = self.last_name
         except AttributeError:
             pass
         return {"users": [ret_user]}
 
     def __str__(self):
-        return ("{%s: %d, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s," +
-                " %s: %s, %s: %s, %s: %s, %s: %s, %s: %d}") % (
-                "bridge_id", self.bridge_id,
-                "netid", self.netid,
-                "first_name", self.first_name,
-                "last_name", self.last_name,
-                "full_name", self.full_name,
-                "sortable_name", self.sortable_name,
-                "name", self.name,
-                "email", self.email,
-                "updated_at", self.updated_at,
-                "logged_in_at", self.logged_in_at,
-                "completed_courses_count", self.completed_courses_count)
+        json_data = self.to_json_post()
+        try:
+            if self.sortable_name:
+                json_data["users"][0]["sortable_name"] = self.sortable_name
+        except AttributeError:
+            pass
+        try:
+            if self.updated_at:
+                json_data["users"][0]["updated_at"] = self.updated_at
+        except AttributeError:
+            pass
+        try:
+            if self.logged_in_at:
+                json_data["users"][0]["logged_in_at"] = self.logged_in_at
+        except AttributeError:
+            pass
+        try:
+            json_data["users"][0]["completed_courses_count"] =\
+                self.completed_courses_count
+        except AttributeError:
+            pass
+        return json.dumps(json_data, default=str)
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(BridgeUser, self).__init__(*args, **kwargs)
         self.roles = []
         self.custom_fields = []
 
