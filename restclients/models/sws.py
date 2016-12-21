@@ -841,11 +841,6 @@ class GradeSubmissionDelegate(RestClientsModel):
     delegate_level = models.CharField(max_length=20)
 
 
-class TimeScheduleConstruction(RestClientsModel):
-    campus = models.SlugField(max_length=15)
-    is_on = models.NullBooleanField()
-
-
 class NoticeAttribute(RestClientsModel):
     name = models.CharField(max_length=100)
     data_type = models.CharField(max_length=100)
