@@ -3,9 +3,9 @@ This class interfaces with the Student Web Service, Term resource.
 """
 import logging
 from datetime import datetime
-from restclients.sws import get_resource, get_current_sws_version,\
-    parse_sws_date, QUARTER_SEQ
-from restclients.models.sws import TimeScheduleConstruction, Term as TermModel
+from restclients.sws import (
+    get_resource, get_current_sws_version, parse_sws_date, QUARTER_SEQ)
+from restclients.models.sws import Term as TermModel
 from restclients.exceptions import DataFailureException
 
 
@@ -197,12 +197,10 @@ def _json_to_term_model(term_data):
         term.registration_period3_end = parse_sws_date(
             term_data["RegistrationPeriods"][2]["EndDate"])
 
-    term.time_schedule_construction = []
+    term.time_schedule_construction = {}
     for campus in term_data["TimeScheduleConstruction"]:
-        tsc = TimeScheduleConstruction(
-            campus=campus.lower(),
-            is_on=(term_data["TimeScheduleConstruction"][campus] is True))
-        term.time_schedule_construction.append(tsc)
+        term.time_schedule_construction[campus.lower()] = True if (
+            term_data["TimeScheduleConstruction"][campus]) else False
 
     term.clean_fields()
     return term
