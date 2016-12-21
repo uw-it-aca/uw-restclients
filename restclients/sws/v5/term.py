@@ -197,7 +197,7 @@ def _json_to_term_model(term_data):
         term.registration_period3_end = parse_sws_date(
             term_data["RegistrationPeriods"][2]["EndDate"])
 
-    term.time_schedule_construction = {} 
+    term.time_schedule_construction = {}
     for campus in term_data["TimeScheduleConstruction"]:
         term.time_schedule_construction[campus.lower()] = True if (
             term_data["TimeScheduleConstruction"][campus]) else False
