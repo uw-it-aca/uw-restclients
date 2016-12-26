@@ -54,8 +54,8 @@ class File(object):
         return read_resp_data("bridge", "file", del_url, response)
 
 
-BRIDGE_MAX_POOL_SIZE = 5
-BRIDGE_SOCKET_TIMEOUT = 15
+BRIDGE_MAX_POOL_SIZE = 10
+BRIDGE_SOCKET_TIMEOUT = 30
 
 
 class Live(object):
@@ -75,16 +75,10 @@ class Live(object):
     def set_pool(self):
         if Live.pool is None or Live.host is None:
             Live.host = settings.RESTCLIENTS_BRIDGE_HOST
-            max_pool_size = getattr(settings,
-                                    "RESTCLIENTS_BRIDGE_MAX_POOL_SIZE",
-                                    BRIDGE_MAX_POOL_SIZE)
-            socket_timeout = getattr(settings,
-                                     "RESTCLIENTS_BRIDGE_SOCKET_TIMEOUT",
-                                     BRIDGE_SOCKET_TIMEOUT),
             Live.pool = get_con_pool(Live.host,
                                      verify_https=True,
-                                     max_pool_size=max_pool_size,
-                                     socket_timeout=socket_timeout)
+                                     max_pool_size=BRIDGE_MAX_POOL_SIZE,
+                                     socket_timeout=BRIDGE_SOCKET_TIMEOUT)
 
     def get_basic_auth(self):
         return "%s:%s" % (settings.RESTCLIENTS_BRIDGE_BASIC_AUTH_KEY,
