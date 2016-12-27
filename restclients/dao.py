@@ -55,8 +55,14 @@ class PerformanceDegradation(object):
     @classmethod
     def get_problems(obj):
         thread = currentThread()
+
         if thread in PerformanceDegradation._problem_data:
             return PerformanceDegradation._problem_data[thread]
+
+        if hasattr(thread, 'parent'):
+            thread = thread.parent
+            if thread in PerformanceDegradation._problem_data:
+                return PerformanceDegradation._problem_data[thread]
 
         return None
 
