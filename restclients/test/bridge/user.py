@@ -166,6 +166,13 @@ class TestBridgeUser(TestCase):
         self.assertEqual(cus_field.value,
                          "00000000000000000000000000000001")
 
+        user_list = get_all_users(include_course_summary=False)
+        self.assertEqual(len(user_list), 4)
+        self.assertEqual(user_list[0].bridge_id, 17637)
+        self.assertEqual(user_list[0].bridge_id, 106)
+        self.assertEqual(user_list[0].bridge_id, 195)
+        self.assertEqual(user_list[0].bridge_id, 17)
+
     def test_add_user(self):
         regid = "12345678901234567890123456789012"
         cus_fie = new_regid_custom_field(regid)

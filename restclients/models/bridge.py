@@ -133,14 +133,17 @@ class BridgeUserRole(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(BridgeUserRole, self).__init__(*args, **kwargs)
-        self.permissions = []   # unknown 2016/11
+        # self.permissions = []   # unknown 2016/11
 
     def to_json(self):
         return {
             "id": self.role_id,
             "name": self.name,
-            "permissions": self.permissions
+            # "permissions": self.permissions
             }
+
+    def __str__(self):
+        return json.dumps(self.to_json())
 
     class Meta:
         db_table = "restclients_bridge_user_role"

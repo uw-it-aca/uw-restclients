@@ -134,13 +134,16 @@ def get_all_users(include_course_summary=True, cache_in_db=False):
     """
     if cache_in_db:
         _clear_bridge_user_db_table()
+
     url = author_uid_url(None) + "?%s" % CUSTOM_FIELD
+
     if include_course_summary:
         url = "%s&%s" % (url, COURSE_SUMMARY)
+
     url = "%s&%s" % (url, PAGE_MAX_ENTRY)
-    resp = get_resource(
-        author_uid_url(None) +
-        "?%s&%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY, PAGE_MAX_ENTRY))
+
+    resp = get_resource(url)
+
     return _process_json_resp_data(resp, cache_in_db)
 
 
