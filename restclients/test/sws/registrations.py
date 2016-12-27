@@ -47,6 +47,12 @@ class SWSTestRegistrations(TestCase):
             javerage_reg = registrations[0]
             self.assertEquals(javerage_reg.person.uwnetid, 'javerage')
             self.assertEquals(javerage_reg.is_active, False)
+            self.assertEquals(javerage_reg.is_auditor, False)
+            self.assertEquals(javerage_reg.is_credit, True)
+            self.assertEquals(str(javerage_reg.request_date.date()), '2015-11-18')
+            self.assertEquals(javerage_reg.request_status, 'DROPPED FROM CLASS')
+            self.assertEquals(javerage_reg.duplicate_code, '')
+            self.assertEquals(javerage_reg.repository_timestamp.isoformat(), '2016-01-05T02:45:15')
 
     def test_active_registration_status_after_drop_and_add(self):
         with self.settings(
@@ -56,10 +62,16 @@ class SWSTestRegistrations(TestCase):
             section = get_section_by_label('2013,winter,DROP_T,100/B')
             registrations = get_all_registrations_by_section(section)
 
-            self.assertEquals(len(registrations), 1)
-            javerage_reg = registrations[0]
+            self.assertEquals(len(registrations), 3)
+            javerage_reg = registrations[2]
             self.assertEquals(javerage_reg.person.uwnetid, 'javerage')
             self.assertEquals(javerage_reg.is_active, True)
+            self.assertEquals(javerage_reg.is_auditor, True)
+            self.assertEquals(javerage_reg.is_credit, True)
+            self.assertEquals(str(javerage_reg.request_date.date()), '2015-11-18')
+            self.assertEquals(javerage_reg.request_status, 'ADDED TO CLASS')
+            self.assertEquals(javerage_reg.duplicate_code, 'A')
+            self.assertEquals(javerage_reg.repository_timestamp.isoformat(), '2016-01-05T02:45:15')
 
     def test_get_schedule_by_regid_and_term(self):
         with self.settings(
