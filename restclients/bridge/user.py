@@ -144,7 +144,7 @@ def get_all_users(include_course_summary=True, cache_in_db=False):
 
     resp = get_resource(url)
 
-    return _process_json_resp_data(resp, cache_in_db)
+    return _process_json_resp_data(resp, cache_in_db=cache_in_db)
 
 
 def restore_user(uwnetid):
