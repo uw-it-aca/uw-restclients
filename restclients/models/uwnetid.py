@@ -230,3 +230,121 @@ class SubscriptionAction(RestClientsModel):
 
     def json_data(self):
         return action
+
+
+def convert_seconds_to_days(interval):
+    return interval/60/60/24
+
+
+def convert_days_to_seconds(interval):
+    return interval*60*60*24
+
+
+class UwPassword(models.Model):
+    ADMIN = "Admin"
+    PERSON = "Person"
+    OTHER = "Other"
+
+    ABANDONED = "Abandoned"
+    ACTIVE = "Active"
+    DISENFRANCHISED = "Disenfranchised"
+    INACTIVE = "Inactive"
+    WANTED = "Wanted"
+
+    KERB_STATUS_ACTIVE = "Active"
+    KERB_STATUS_DISABLED = "Disabled"
+    KERB_STATUS_EXPIRED = "Expired"
+    KERB_STATUS_INACTIVE = "Inactive"
+    KERB_STATUS_PENDING = "Pending"
+    KERB_STATUS_OTHER = "Other"
+    KERB_STATUS_SUSPENDED = "Suspended"
+
+    DEFAULT_MED_INTERVAL = convert_days_to_seconds(120)   # 120 days
+
+    uwnetid = models.SlugField(max_length=16,
+                               db_index=True,
+                               unique=True)
+    kerb_status = models.CharField(max_length=32)
+
+    last_change = models.DateTimeField(null=True)     # timestamps
+
+    # the expiration interval in seconds
+    interval = models.IntegerField(null=True)
+
+    last_change_med = models.DateTimeField(null=True)    # timestamps
+    expires_med = models.DateTimeField(null=True)    # timestamps
+
+    # the expiration interval in seconds
+    interval_med = models.IntegerField(null=True)
+    minimum_length = models.SmallIntegerField()
+    time_stamp = models.DateTimeField()
+
+    def is_status_admin(self):
+        return UwPassword.ADMIN in self.netid_status
+
+    def is_status_person(self):
+        return UwPassword.PERSON in self.netid_status
+
+    def is_status_active(self):
+        return UwPassword.ACTIVE in self.netid_status
+
+    def is_active_person(self):
+        return self.is_status_active() and self.is_status_person()
+
+    def is_kerb_status_active(self):
+        return UwPassword.KERB_STATUS_ACTIVE == self.kerb_status
+
+    def is_kerb_status_disabled(self):
+        return UwPassword.KERB_STATUS_DISABLED == self.kerb_status
+
+    def is_kerb_status_expired(self):
+        return UwPassword.KERB_STATUS_EXPIRED == self.kerb_status
+
+    def is_kerb_status_inactive(self):
+        return UwPassword.KERB_STATUS_INACTIVE == self.kerb_status
+
+    def is_kerb_status_other(self):
+        return UwPassword.KERB_STATUS_OTHER == self.kerb_status
+
+    def is_kerb_status_pending(self):
+        return UwPassword.KERB_STATUS_PENDING == self.kerb_status
+
+    def is_kerb_status_suspended(self):
+        return UwPassword.KERB_STATUS_SUSPENDED == self.kerb_status
+
+    def json_data(self):
+        data = {
+            'uwnetid': self.uwnetid,
+            'kerb_status': self.kerb_status,
+            'last_change': self.last_change,
+            'interval': self.interval,
+            'last_change_med': self.last_change_med,
+            'expires_med': self.expires_med,
+            'interval_med': self.interval_med,
+            'minimum_length': self.minimum_length,
+            'time_stamp': self.time_stamp,
+        }
+
+        try:
+            data['interval'] = self.interval
+        except AttributeError:
+            pass
+
+        try:
+            data['interval_med'] = self.interval_med
+        except AttributeError:
+            pass
+
+        try:
+            data['netid_status'] = self.netid_status
+        except AttributeError:
+            pass
+
+        return data
+
+    def __init__(self, *args, **kwargs):
+        super(UwPassword, self).__init__(*args, **kwargs)
+        self.netid_status = []
+
+    class Meta:
+        db_table = "restclients_uwnetid_password"

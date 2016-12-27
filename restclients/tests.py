@@ -1,3 +1,4 @@
+from restclients.test.uwnetid.password import UwPasswordTest
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.uwnetid.subscription_60 import KerberosSubsTest
 from restclients.test.uwnetid.subscription_233 import Office365EduSubsTest
@@ -6,6 +7,7 @@ from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
+from restclients.test.bridge.models import TestBridgeModel
 from restclients.test.bridge.user import TestBridgeUser
 from restclients.test.bridge.custom_field import TestBridgeCustomFields
 from restclients.test.hfs.idcard import HfsTest
@@ -107,6 +109,7 @@ from restclients.test.o365.license import O365TestLicense
 
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
+from restclients.test.delay import DegradedTestCase
 from restclients.test.dao_implementation.mock import TestMock
 
 from restclients.test.iasystem.evaluation import IASystemTest
