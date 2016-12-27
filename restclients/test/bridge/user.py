@@ -169,9 +169,9 @@ class TestBridgeUser(TestCase):
         user_list = get_all_users(include_course_summary=False)
         self.assertEqual(len(user_list), 4)
         self.assertEqual(user_list[0].bridge_id, 17637)
-        self.assertEqual(user_list[0].bridge_id, 106)
-        self.assertEqual(user_list[0].bridge_id, 195)
-        self.assertEqual(user_list[0].bridge_id, 17)
+        self.assertEqual(user_list[1].bridge_id, 106)
+        self.assertEqual(user_list[2].bridge_id, 195)
+        self.assertEqual(user_list[3].bridge_id, 17)
 
     def test_add_user(self):
         regid = "12345678901234567890123456789012"

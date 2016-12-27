@@ -266,12 +266,14 @@ def _process_apage(resp_data, bridge_users, no_custom_fields, cache_in_db):
                 user_data["next_due_date"] is not None:
             user.next_due_date = parse(user_data["next_due_date"])
 
-        if "links" in user_data and len(user_data["links"]) > 0 and\
+        if not no_custom_fields and\
+                "links" in user_data and len(user_data["links"]) > 0 and\
                 "custom_field_values" in user_data["links"]:
             values = user_data["links"]["custom_field_values"]
             for custom_field_value in values:
-                user.custom_fields.append(
-                    custom_fields_value_dict[custom_field_value])
+                if custom_field_value in custom_fields_value_dict:
+                    user.custom_fields.append(
+                        custom_fields_value_dict[custom_field_value])
 
         if "roles" in user_data and len(user_data["roles"]) > 0:
             for role_data in user_data["roles"]:
@@ -297,12 +299,12 @@ def _get_custom_fields_dict(linked_data):
 
     fields_values = linked_data["custom_field_values"]
     for value in fields_values:
-        custom_field = BridgeCustomField()
-        custom_field.value_id = value["id"]
-        custom_field.value = value["value"]
-        custom_field.field_id = value["links"]["custom_field"]["id"]
+        custom_field = BridgeCustomField(
+            value_id=value["id"],
+            value=value["value"],
+            field_id=value["links"]["custom_field"]["id"]
+            )
         custom_field.name = custom_fields_name_dict[custom_field.field_id]
-
         custom_fields_value_dict[custom_field.value_id] = custom_field
 
     return custom_fields_value_dict
