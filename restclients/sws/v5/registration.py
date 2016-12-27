@@ -14,7 +14,8 @@ from restclients.cache_manager import disable_cache_entry_queueing
 from restclients.cache_manager import save_all_queued_entries
 from restclients.pws import PWS
 from restclients.thread import Thread, GenericPrefetchThread, generic_prefetch
-from restclients.sws import get_resource, SWSThread, deprecation, parse_sws_date
+from restclients.sws import (
+    get_resource, SWSThread, deprecation, parse_sws_date)
 from restclients.sws.v5.section import (_json_to_section,
                                         get_prefetch_for_section_data)
 
@@ -43,14 +44,10 @@ def _registrations_for_section_with_active_flag(section, is_active,
     If is_active is True, the objects will have is_active set to True.
     Otherwise, is_active is undefined, and out of scope for this method.
     """
-    instructor_reg_id = ''
+    instructor_reg_id = ""
     if (section.is_independent_study and
             section.independent_study_instructor_regid is not None):
         instructor_reg_id = section.independent_study_instructor_regid
-
-    activity_flag = ""
-    if is_active:
-        activity_flag = "true"
 
     params = {
         "year": section.term.year,
@@ -59,7 +56,8 @@ def _registrations_for_section_with_active_flag(section, is_active,
         "course_number": section.course_number,
         "section_id": section.section_id,
         "instructor_reg_id": instructor_reg_id,
-        "is_active": activity_flag
+        "is_active": "true" if is_active else "",
+        "verbose": "true"
     }
 
     if transcriptable_course != "":
@@ -67,44 +65,43 @@ def _registrations_for_section_with_active_flag(section, is_active,
 
     url = "%s?%s" % (registration_res_url_prefix, urlencode(params))
 
-    return _json_to_registrations(get_resource(url), section, is_active)
+    return _json_to_registrations(get_resource(url), section)
 
 
-def _json_to_registrations(data, section, is_active):
+def _json_to_registrations(data, section):
     """
     Returns a list of all restclients.models.sws.Registration objects
     """
-    seen_registrations = {}
     registrations = []
-
-    # Keeping is_active on the registration resource undefined
-    # unless is_active is true - the response with all registrations
-    # doesn't tell us if it's active or not.
-    # use get_all_registrations_for_section if you need to know that.
-    is_active_flag = None
-    if is_active:
-        is_active_flag = True
-
     person_threads = []
     for reg_data in data.get("Registrations", []):
-        if reg_data["RegID"] not in seen_registrations:
-            registration = Registration()
-            registration.section = section
+        registration = Registration()
+        registration.section = section
+        registration.is_active = reg_data["IsActive"]
+        registration.is_credit = reg_data["IsCredit"]
+        registration.is_auditor = reg_data["Auditor"]
+        registration.is_independent_start = reg_data["IsIndependentStart"]
+        if len(reg_data["StartDate"]):
+            registration.start_date = parse_sws_date(reg_data["StartDate"])
+        if len(reg_data["EndDate"]):
+            registration.end_date = parse_sws_date(reg_data["EndDate"])
+        registration.request_date = parse_sws_date(reg_data["RequestDate"])
+        registration.request_status = reg_data["RequestStatus"]
+        registration.duplicate_code = reg_data["DuplicateCode"]
+        registration.credits = reg_data["Credits"]
+        registration.repository_timestamp = datetime.strptime(
+            reg_data["RepositoryTimeStamp"], "%m/%d/%Y %H:%M:%S %p")
 
-            thread = SWSPersonByRegIDThread()
-            thread.regid = reg_data["RegID"]
-            thread.start()
-            person_threads.append(thread)
-            registration.is_active = is_active_flag
-            registrations.append(registration)
-
-            seen_registrations[reg_data["RegID"]] = True
+        thread = SWSPersonByRegIDThread()
+        thread.regid = reg_data["Person"]["RegID"]
+        thread.start()
+        person_threads.append(thread)
+        registrations.append(registration)
 
     for i in range(len(person_threads)):
         thread = person_threads[i]
         thread.join()
         registration = registrations[i]
-
         registration.person = thread.person
 
     return registrations
@@ -124,32 +121,13 @@ def get_active_registrations_by_section(section, transcriptable_course=""):
 def get_all_registrations_by_section(section, transcriptable_course=""):
     """
     Returns a list of restclients.models.sws.Registration objects,
-    representing all (active and inactive) registrations
-    for the passed section.
-    For independent study sections,
-    section.independent_study_instructor_regid
-    limits registrations to that instructor.
+    representing all (active and inactive) registrations for the passed
+    section. For independent study sections,
+    section.independent_study_instructor_regid limits registrations to
+    that instructor.
     """
-    registrations = get_active_registrations_by_section(
-        section, transcriptable_course)
-
-    seen_registrations = {}
-    for registration in registrations:
-        seen_registrations[registration.person.uwregid] = True
-
-    all_registrations = _registrations_for_section_with_active_flag(
-        section, False, transcriptable_course)
-
-    for registration in all_registrations:
-        regid = registration.person.uwregid
-        if regid not in seen_registrations:
-            # This is just being set by induction.  The all registrations
-            # resource can't know if a registration is active.
-            registration.is_active = False
-            seen_registrations[regid] = True
-            registrations.append(registration)
-
-    return registrations
+    return _registrations_for_section_with_active_flag(section, False,
+                                                       transcriptable_course)
 
 
 # This function won't work when the dup_code is not empty
