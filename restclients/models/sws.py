@@ -325,7 +325,8 @@ class Term(RestClientsModel):
             'first_day_quarter': str(self.first_day_quarter),
             'census_day': str(self.census_day),
             'last_day_instruction': str(self.last_day_instruction),
-            'last_final_exam_date': str(self.last_final_exam_date),
+            'last_final_exam_date': self.last_final_exam_date.strftime(
+                "%Y-%m-%d 23:59:59"),  # Datetime for backwards compatibility
             'grading_period_open': str(self.grading_period_open),
             'aterm_grading_period_open': str(self.aterm_grading_period_open),
             'grade_submission_deadline': str(self.grade_submission_deadline),
