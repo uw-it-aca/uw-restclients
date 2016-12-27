@@ -5,7 +5,7 @@ import logging
 from datetime import datetime
 from restclients.sws import (
     get_resource, get_current_sws_version, parse_sws_date, QUARTER_SEQ)
-from restclients.models.sws import Term as TermModel, TimeSchedulePublished
+from restclients.models.sws import Term as TermModel
 from restclients.exceptions import DataFailureException
 
 
@@ -202,12 +202,10 @@ def _json_to_term_model(term_data):
         term.time_schedule_construction[campus.lower()] = True if (
             term_data["TimeScheduleConstruction"][campus]) else False
 
-    term.time_schedule_published = []
+    term.time_schedule_published = {}
     for campus in term_data["TimeSchedulePublished"]:
-        tsc = TimeSchedulePublished(
-            campus=campus.lower(),
-            is_on=(term_data["TimeSchedulePublished"][campus] is True))
-        term.time_schedule_published.append(tsc)
+        term.time_schedule_published[campus.lower()] = True if (
+            term_data["TimeSchedulePublished"][campus]) else False
 
     term.clean_fields()
     return term
