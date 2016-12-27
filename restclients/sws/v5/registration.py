@@ -73,7 +73,7 @@ def _json_to_registrations(data, section):
     Returns a list of all restclients.models.sws.Registration objects
     """
     registrations = []
-    person_threads = []
+    person_threads = {}
     for reg_data in data.get("Registrations", []):
         registration = Registration()
         registration.section = section
@@ -92,17 +92,20 @@ def _json_to_registrations(data, section):
         registration.repository_timestamp = datetime.strptime(
             reg_data["RepositoryTimeStamp"], "%m/%d/%Y %H:%M:%S %p")
 
-        thread = SWSPersonByRegIDThread()
-        thread.regid = reg_data["Person"]["RegID"]
-        thread.start()
-        person_threads.append(thread)
+        registration._uwregid = reg_data["Person"]["RegID"]
+        if registration._uwregid not in person_threads:
+            thread = SWSPersonByRegIDThread()
+            thread.regid = registration._uwregid
+            thread.start()
+            person_threads[registration._uwregid] = thread
+
         registrations.append(registration)
 
-    for i in range(len(person_threads)):
-        thread = person_threads[i]
+    for registration in registrations:
+        thread = person_threads[registration._uwregid]
         thread.join()
-        registration = registrations[i]
         registration.person = thread.person
+        del registration._uwregid
 
     return registrations
 
