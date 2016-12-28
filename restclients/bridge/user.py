@@ -118,23 +118,10 @@ def get_user_by_id(bridge_id, include_course_summary=True):
     return _process_json_resp_data(resp)
 
 
-def _clear_bridge_user_db_table():
-    BridgeUser.objects.all().delete()
-
-
-def get_all_bridge_users_from_db():
-    return BridgeUser.objects.all()
-
-
-def get_all_users(include_course_summary=True, cache_in_db=False):
+def get_all_users(include_course_summary=True):
     """
     Return a list of BridgeUser objects with custom fields.
-    If cache_in_db is True, return an empty list. Use function
-    get_all_bridge_users_from_db to retrieve all the users
     """
-    if cache_in_db:
-        _clear_bridge_user_db_table()
-
     url = author_uid_url(None) + "?%s" % CUSTOM_FIELD
 
     if include_course_summary:
@@ -144,7 +131,7 @@ def get_all_users(include_course_summary=True, cache_in_db=False):
 
     resp = get_resource(url)
 
-    return _process_json_resp_data(resp, cache_in_db=cache_in_db)
+    return _process_json_resp_data(resp)
 
 
 def restore_user(uwnetid):
@@ -180,7 +167,7 @@ def update_user(bridge_user):
     return _process_json_resp_data(resp)
 
 
-def _process_json_resp_data(resp, no_custom_fields=False, cache_in_db=False):
+def _process_json_resp_data(resp, no_custom_fields=False):
     """
     process the response and return a list of BridgeUser
     """
@@ -193,8 +180,7 @@ def _process_json_resp_data(resp, no_custom_fields=False, cache_in_db=False):
             link_url = resp_data["meta"]["next"]
 
         bridge_users = _process_apage(resp_data, bridge_users,
-                                      no_custom_fields, cache_in_db)
-
+                                      no_custom_fields)
         if link_url is None:
             break
         resp = get_resource(link_url)
@@ -202,7 +188,7 @@ def _process_json_resp_data(resp, no_custom_fields=False, cache_in_db=False):
     return bridge_users
 
 
-def _process_apage(resp_data, bridge_users, no_custom_fields, cache_in_db):
+def _process_apage(resp_data, bridge_users, no_custom_fields):
     if "linked" not in resp_data:
         logger.error("Invalid response body (missing 'linked') %s", resp_data)
         return bridge_users
@@ -279,10 +265,7 @@ def _process_apage(resp_data, bridge_users, no_custom_fields, cache_in_db):
             for role_data in user_data["roles"]:
                 user.roles.append(_get_roles_from_json(role_data))
 
-        if cache_in_db:
-            user.save()
-        else:
-            bridge_users.append(user)
+        bridge_users.append(user)
 
     return bridge_users
 
@@ -308,6 +291,15 @@ def _get_custom_fields_dict(linked_data):
         custom_fields_value_dict[custom_field.value_id] = custom_field
 
     return custom_fields_value_dict
+
+
+def get_regid_from_custom_fields(custom_fields):
+    if custom_fields is not None and\
+            len(custom_fields) > 0:
+        for custom_field in custom_fields:
+            if custom_field.is_regid():
+                return custom_field.value
+    return None
 
 
 def _get_roles_from_json(role_data):
