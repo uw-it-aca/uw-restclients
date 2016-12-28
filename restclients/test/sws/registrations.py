@@ -73,6 +73,23 @@ class SWSTestRegistrations(TestCase):
             self.assertEquals(javerage_reg.duplicate_code, 'A')
             self.assertEquals(javerage_reg.repository_timestamp.isoformat(), '2016-01-05T02:45:15')
 
+    def test_all_registrations_with_transcriptable_course(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+
+            section = get_section_by_label('2013,winter,DROP_T,100/B')
+            registrations = get_all_registrations_by_section(section,
+                                                             transcriptable_course='all')
+
+            self.assertEquals(len(registrations), 5)
+            javerage_reg = registrations[4]
+            self.assertEquals(javerage_reg.is_active, False)
+            self.assertEquals(javerage_reg.is_auditor, False)
+            self.assertEquals(javerage_reg.is_credit, False)
+            self.assertEquals(str(javerage_reg.request_date.date()), '2013-11-30')
+            self.assertEquals(javerage_reg.repository_timestamp.isoformat(), '2013-12-02T11:45:15')
+
     def test_get_schedule_by_regid_and_term(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
