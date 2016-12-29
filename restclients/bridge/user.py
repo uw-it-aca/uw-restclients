@@ -208,61 +208,42 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
         return bridge_users
 
     for user_data in resp_data["users"]:
+
         if "deleted_at" in user_data and\
                 user_data["deleted_at"] is not None:
             # skip deleted entry
             continue
 
-        user = BridgeUser()
-        user.bridge_id = int(user_data["id"])
-        user.netid = re.sub('@uw.edu', '', user_data["uid"])
+        user = BridgeUser(
+            bridge_id=int(user_data["id"]),
+            netid=re.sub('@uw.edu', '', user_data["uid"]),
+            email=user_data.get("email", None),
+            name=user_data.get("name", None),
+            full_name=user_data.get("full_name", None),
+            first_name=user_data.get("first_name", None),
+            last_name=user_data.get("last_name", None),
+            sortable_name=user_data.get("sortable_name", None),
+            locale=user_data.get("locale", "en"),
+            avatar_url=user_data.get("avatar_url", None),
+            logged_in_at=None,
+            updated_at=None,
+            unsubscribed=user_data.get("unsubscribed", None),
+            next_due_date=None,
+            completed_courses_count=user_data.get("completed_courses_count",
+                                                  -1),
+            )
 
-        if "name" in user_data:
-            user.name = user_data["name"]
+        if "loggedInAt" in user_data and\
+                user_data["loggedInAt"] is not None:
+            user.logged_in_at = parse(user_data["loggedInAt"])
 
-        if "first_name" in user_data:
-            user.first_name = user_data["first_name"]
+        if "updated_at" in user_data and\
+                user_data["updated_at"] is not None:
+            user.updated_at = parse(user_data["updated_at"])
 
-        if "last_name" in user_data:
-            user.last_name = user_data["last_name"]
-
-        if "full_name" in user_data:
-            user.full_name = user_data["full_name"]
-
-        if "sortable_name" in user_data:
-            user.sortable_name = user_data["sortable_name"]
-
-        if "email" in user_data:
-            user.email = user_data["email"]
-
-        if "locale" in user_data:
-            user.locale = user_data["locale"]
-
-        if "avatar_url" in user_data:
-            user.avatar_url = user_data["avatar_url"]
-
-        if "loggedInAt" in user_data:
-            user.logged_in_at = user_data["loggedInAt"]
-            if user_data["loggedInAt"] is not None:
-                user.logged_in_at = parse(user_data["loggedInAt"])
-
-        if "updated_at" in user_data:
-            user.updated_at = user_data["updated_at"]
-            if user_data["updated_at"] is not None:
-                user.updated_at = parse(user_data["updated_at"])
-
-        if "unsubscribed" in user_data:
-            user.unsubscribed = user_data["unsubscribed"]
-
-        if "next_due_date" in user_data:
-            user.next_due_date = user_data["next_due_date"]
-            if user_data["next_due_date"] is not None:
-                user.next_due_date = parse(user_data["next_due_date"])
-
-        if "completed_courses_count" in user_data:
-            user.completed_courses_count = user_data["completed_courses_count"]
-        else:
-            user.completed_courses_count = -1
+        if "next_due_date" in user_data and\
+                user_data["next_due_date"] is not None:
+            user.next_due_date = parse(user_data["next_due_date"])
 
         if "links" in user_data and len(user_data["links"]) > 0 and\
                 "custom_field_values" in user_data["links"]:
