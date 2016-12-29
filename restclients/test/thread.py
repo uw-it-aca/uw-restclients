@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
-from restclients.thread import Thread
+from restclients.thread import Thread, GenericPrefetchThread
+from restclients.dao import PerformanceDegradation
 
 class ThreadsTest(TestCase):
     def test_defaults(self):
@@ -35,3 +36,34 @@ class ThreadsTest(TestCase):
 
             thread = Thread()
             self.assertEquals(thread._use_thread, False)
+
+    def test_performance_degradation(self):
+        with self.settings(RESTCLIENTS_USE_THREADING=True):
+            PerformanceDegradation.set_problems("fake data")
+
+            def test_method():
+                from threading import currentThread
+                currentThread().method = PerformanceDegradation.get_problems()
+
+            thread = GenericPrefetchThread()
+            thread.method = test_method
+
+            thread.start()
+            thread.join()
+
+            self.assertEquals(thread.method, "fake data")
+
+            def test_method():
+                from threading import currentThread
+                current = currentThread()
+                test = current not in PerformanceDegradation._problem_data
+                current.method = test
+
+            thread = GenericPrefetchThread()
+            thread.method = test_method
+
+            thread.start()
+            thread.join()
+
+            self.assertEquals(thread.method, True)
+            PerformanceDegradation.clear_problems()
