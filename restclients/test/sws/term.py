@@ -200,6 +200,9 @@ class SWSTestTerm(TestCase):
             self.assertEquals(len(term.time_schedule_construction), 3)
             self.assertEquals(term.time_schedule_construction['seattle'], False)
 
+            self.assertEquals(len(term.time_schedule_published), 3)
+            self.assertEquals(term.time_schedule_published['seattle'], True)
+
             self.assertEquals(term.is_grading_period_open(), False,
                               "Grading period is not open")
             self.assertEquals(term.is_grading_period_past(), True,
@@ -299,6 +302,9 @@ class SWSTestTerm(TestCase):
 
             self.assertEquals(len(term.time_schedule_construction), 3)
             self.assertEquals(term.time_schedule_construction['bothell'], True)
+
+            self.assertEquals(len(term.time_schedule_published), 3)
+            self.assertEquals(term.time_schedule_published['bothell'], False)
 
             self.assertEquals(term.is_grading_period_open(), False,
                               "Grading period is not open")
