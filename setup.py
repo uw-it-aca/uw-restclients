@@ -23,7 +23,7 @@ setup(
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=['Django',
-                      'lxml==2.3.5',
+                      'lxml==3.7.1',
                       'urllib3==1.10.2',
                       'twilio==3.4.1',
                       'boto',
