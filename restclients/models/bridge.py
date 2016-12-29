@@ -27,6 +27,9 @@ class BridgeCustomField(models.Model):
             pass
         return value
 
+    def __init__(self, *args, **kwargs):
+        super(BridgeCustomField, self).__init__(*args, **kwargs)
+
     def __str__(self):
         return json.dumps(self.to_json())
 
@@ -115,7 +118,8 @@ class BridgeUser(models.Model):
             pass
         return json.dumps(json_data, default=str)
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(BridgeUser, self).__init__(*args, **kwargs)
         self.roles = []
         self.custom_fields = []
 
