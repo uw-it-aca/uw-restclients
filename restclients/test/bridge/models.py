@@ -2,11 +2,17 @@ from datetime import datetime
 from django.test import TestCase
 from django.utils.dateparse import parse_datetime
 from restclients.exceptions import DataFailureException
-from restclients.models.bridge import BridgeUser, BridgeCustomField
+from restclients.models.bridge import BridgeUser, BridgeCustomField,\
+    BridgeUserRole
 from restclients.test import fdao_pws_override
 
 
 class TestBridgeModel(TestCase):
+
+    def test_bridge_user_role(self):
+        role = BridgeUserRole(role_id='user', name='user')
+        self.assertEqual(role.to_json(),
+                         {"id": "user", "name": "user"})
 
     def test_bridge_custom_field(self):
         bcf = BridgeCustomField(value_id="1",

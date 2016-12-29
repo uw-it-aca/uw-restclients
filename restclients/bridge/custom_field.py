@@ -22,9 +22,10 @@ def _process_json_resp_data(resp):
     if "custom_fields" in resp_data and\
             len(resp_data["custom_fields"]) > 0:
         for value in resp_data["custom_fields"]:
-            custom_field = BridgeCustomField()
-            custom_field.field_id = value["id"]
-            custom_field.name = value["name"]
+            custom_field = BridgeCustomField(
+                field_id=value["id"],
+                name=value["name"]
+                )
             fields.append(custom_field)
     return fields
 
@@ -43,8 +44,8 @@ def new_regid_custom_field(uwregid):
     Return a BridgeCustomField object for REGID
     to be used in a POST, PATCH request
     """
-    cus_fie = BridgeCustomField()
-    cus_fie.field_id = get_regid_field_id()
-    cus_fie.name = BridgeCustomField.REGID_NAME
-    cus_fie.value = uwregid
-    return cus_fie
+    return BridgeCustomField(
+        field_id=get_regid_field_id(),
+        name=BridgeCustomField.REGID_NAME,
+        value=uwregid
+        )
