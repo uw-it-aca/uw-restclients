@@ -1,3 +1,4 @@
+from restclients.test.uwnetid.password import UwPasswordTest
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.uwnetid.subscription_60 import KerberosSubsTest
 from restclients.test.uwnetid.subscription_233 import Office365EduSubsTest
@@ -108,6 +109,7 @@ from restclients.test.o365.license import O365TestLicense
 
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
+from restclients.test.delay import DegradedTestCase
 from restclients.test.dao_implementation.mock import TestMock
 
 from restclients.test.iasystem.evaluation import IASystemTest

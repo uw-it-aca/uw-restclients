@@ -7,7 +7,7 @@ from restclients.bridge.user import get_user, get_all_users, get_user_by_id,\
     add_user, admin_id_url, admin_uid_url, author_id_url,\
     author_uid_url, ADMIN_URL_PREFIX, AUTHOR_URL_PREFIX,\
     change_uid, replace_uid, restore_user_by_id, update_user,\
-    restore_user, delete_user, delete_user_by_id
+    restore_user, delete_user, delete_user_by_id, get_regid_from_custom_fields
 from restclients.test import fdao_bridge_override, fdao_pws_override
 
 
@@ -104,6 +104,8 @@ class TestBridgeUser(TestCase):
                     "custom_field_id": "5"}
                    ]}]})
 
+        self.assertEqual(get_regid_from_custom_fields(user.custom_fields),
+                         "9136CCB8F66711D5BE060004AC494FFE")
         self.assertEqual(len(user.custom_fields), 1)
         cus_field = user.custom_fields[0]
         self.assertEqual(cus_field.value_id, "1")
@@ -165,6 +167,13 @@ class TestBridgeUser(TestCase):
         cus_field = user.custom_fields[0]
         self.assertEqual(cus_field.value,
                          "00000000000000000000000000000001")
+
+        user_list = get_all_users(include_course_summary=False)
+        self.assertEqual(len(user_list), 4)
+        self.assertEqual(user_list[0].bridge_id, 17637)
+        self.assertEqual(user_list[1].bridge_id, 106)
+        self.assertEqual(user_list[2].bridge_id, 195)
+        self.assertEqual(user_list[3].bridge_id, 17)
 
     def test_add_user(self):
         regid = "12345678901234567890123456789012"

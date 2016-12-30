@@ -33,6 +33,65 @@ from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.dao_implementation.o365 import File as O365File
 from restclients.cache_implementation import NoCache
+from restclients.mock_http import MockHTTP
+from threading import currentThread
+import time
+
+
+class PerformanceDegradation(object):
+    _problem_data = {}
+    problems = None
+
+    @classmethod
+    def set_problems(obj, problems):
+        thread = currentThread()
+        PerformanceDegradation._problem_data[thread] = problems
+
+    @classmethod
+    def clear_problems(obj):
+        thread = currentThread()
+        PerformanceDegradation._problem_data[thread] = None
+
+    @classmethod
+    def get_problems(obj):
+        thread = currentThread()
+
+        if thread in PerformanceDegradation._problem_data:
+            return PerformanceDegradation._problem_data[thread]
+
+        if hasattr(thread, 'parent'):
+            thread = thread.parent
+            if thread in PerformanceDegradation._problem_data:
+                return PerformanceDegradation._problem_data[thread]
+
+        return None
+
+    @classmethod
+    def get_response(obj, service, url):
+        problems = PerformanceDegradation.get_problems()
+        if not problems:
+            return
+
+        delay = problems.get_load_time(service)
+        if delay:
+            time.sleep(float(delay))
+
+        status = problems.get_status(service)
+        content = problems.get_content(service)
+
+        if content and not status:
+            status = 200
+
+        if status:
+            response = MockHTTP()
+            response.status = int(status)
+
+            if content:
+                response.data = content
+
+            return response
+
+        return None
 
 
 class DAO_BASE(object):
@@ -60,6 +119,10 @@ class MY_DAO(DAO_BASE):
         return self._getModule('RESTCLIENTS_DAO_CACHE_CLASS', NoCache)
 
     def _getURL(self, service, url, headers):
+        bad_response = PerformanceDegradation.get_response(service, url)
+        if bad_response:
+            return bad_response
+
         dao = self._getDAO()
         cache = self._getCache()
         cache_response = cache.getCache(service, url, headers)
