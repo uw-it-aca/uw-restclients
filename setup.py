@@ -33,6 +33,7 @@ setup(
                       'ordereddict>=1.1',
                       'python-dateutil>=2.1',
                       'unittest2>=0.5.1',
+                      'mock',
                       'pytz',
                       'pytimeparse',
                       'icalendar',

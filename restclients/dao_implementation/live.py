@@ -7,7 +7,6 @@ import logging
 import ssl
 import time
 import socket
-import signal
 from urlparse import urlparse
 from urllib3 import connection_from_url
 from django.conf import settings
@@ -73,19 +72,9 @@ def get_live_url(con_pool,
     timeout = con_pool.timeout.read_timeout
     start_time = time.time()
 
-    def response_timeout(*args):
-        raise DataFailureException(url, 500, "Timeout")
-
-    signal.signal(signal.SIGALRM, response_timeout)
-
-    alarm_timeout = int(timeout)
-    if alarm_timeout < timeout:
-        alarm_timeout += 1
-    signal.alarm(alarm_timeout)
     response = con_pool.urlopen(method, url, body=body,
                                 headers=headers, redirect=redirect,
                                 retries=retries, timeout=timeout)
-    signal.alarm(0)
     request_time = time.time() - start_time
     rest_request.send(sender='restclients',
                       url=url,
