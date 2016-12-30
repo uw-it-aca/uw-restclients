@@ -7,6 +7,8 @@ from restclients.sws.registration import get_all_registrations_by_section
 from restclients.sws.registration import get_schedule_by_regid_and_term
 from restclients.exceptions import DataFailureException
 from decimal import Decimal
+import mock
+
 
 class SWSTestRegistrations(TestCase):
 
@@ -72,6 +74,33 @@ class SWSTestRegistrations(TestCase):
             self.assertEquals(javerage_reg.request_status, 'ADDED TO CLASS')
             self.assertEquals(javerage_reg.duplicate_code, 'A')
             self.assertEquals(javerage_reg.repository_timestamp.isoformat(), '2016-01-05T02:45:15')
+
+    @mock.patch('restclients.sws.v5.registration.get_resource')
+    def test_all_registrations_with_transcriptable_course(self, mock_get_resource):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+                RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+
+            section = get_section_by_label('2013,winter,DROP_T,100/B')
+
+            # Test for default resource, i.e. transcriptable_course=yes
+            registrations = get_all_registrations_by_section(section)
+            mock_get_resource.assert_called_with('/student/v5/registration.json?curriculum_abbreviation=DROP_T&instructor_reg_id=&course_number=100&verbose=true&year=2013&quarter=winter&is_active=&section_id=B')
+
+            # Test for transcriptable_course=yes explicitly
+            registrations = get_all_registrations_by_section(
+                section, transcriptable_course='yes')
+            mock_get_resource.assert_called_with('/student/v5/registration.json?curriculum_abbreviation=DROP_T&instructor_reg_id=&course_number=100&verbose=true&year=2013&quarter=winter&is_active=&section_id=B&transcriptable_course=yes')
+
+            # Test for transcriptable_course=all resource
+            registrations = get_all_registrations_by_section(
+                section, transcriptable_course='all')
+            mock_get_resource.assert_called_with('/student/v5/registration.json?curriculum_abbreviation=DROP_T&instructor_reg_id=&course_number=100&verbose=true&year=2013&quarter=winter&is_active=&section_id=B&transcriptable_course=all')
+
+            # Test for transcriptable_course=no
+            registrations = get_all_registrations_by_section(
+                section, transcriptable_course='no')
+            mock_get_resource.assert_called_with('/student/v5/registration.json?curriculum_abbreviation=DROP_T&instructor_reg_id=&course_number=100&verbose=true&year=2013&quarter=winter&is_active=&section_id=B&transcriptable_course=no')
 
     def test_get_schedule_by_regid_and_term(self):
         with self.settings(
