@@ -120,8 +120,8 @@ class BridgeUser(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(BridgeUser, self).__init__(*args, **kwargs)
-        self.roles = []
         self.custom_fields = []
+        self.roles = []
 
     class Meta:
         db_table = "restclients_bridge_user"
@@ -131,15 +131,19 @@ class BridgeUserRole(models.Model):
     role_id = models.CharField(max_length=64)
     name = models.CharField(max_length=64)
 
-    def __init__(self):
-        self.permissions = []
+    def __init__(self, *args, **kwargs):
+        super(BridgeUserRole, self).__init__(*args, **kwargs)
+        # self.permissions = []   # unknown 2016/11
 
     def to_json(self):
         return {
             "id": self.role_id,
             "name": self.name,
-            "permissions": self.permissions  # unknown
+            # "permissions": self.permissions
             }
+
+    def __str__(self):
+        return json.dumps(self.to_json())
 
     class Meta:
         db_table = "restclients_bridge_user_role"

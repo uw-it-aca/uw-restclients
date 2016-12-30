@@ -1,0 +1,111 @@
+{
+  "meta":{
+     "next":"/api/author/users?after=xxx\u0026includes[]=custom_fields"},
+   "linked":{
+       "custom_fields": [
+       {
+        "id": "5",
+        "name": "REGID"
+      }
+      ],
+    "custom_field_values": [
+      {
+        "id": "1",
+        "value": "9136CCB8F66711D5BE060004AC494FFE",
+        "links": {
+          "custom_field": {
+            "id": "5",
+            "type": "custom_fields"
+          }
+        }
+      },
+      {
+        "id": "2",
+        "value": "FBB38FE46A7C11D5A4AE0004AC494FFE",
+        "links": {
+          "custom_field": {
+            "id": "5",
+            "type": "custom_fields"
+          }
+        }
+      },
+      {
+        "id": "3",
+        "value": "12345678901234567890123456789012",
+        "links": {
+          "custom_field": {
+            "id": "5",
+            "type": "custom_fields"
+          }
+        }
+      }
+    ]
+   },
+   "users":[
+       {"id":"17637",
+       "uid":"bill@uw.edu",
+       "hris_id":null,
+       "first_name":"Bill Average",
+       "last_name":"Teacher",
+       "full_name":"Bill Average Teacher",
+       "sortable_name":"Teacher, Bill Average",
+       "email":"bill@u.washington.edu",
+       "locale":"en",
+       "roles":[],
+       "name":"Bill Average Teacher",
+       "avatar_url":null,
+       "updated_at":"2016-08-08T13:58:20.635-07:00",
+       "deleted_at":null,
+       "unsubscribed":null,
+       "welcomedAt":null,
+       "loggedInAt":null,
+       "links":{
+          "custom_field_values":["2"]
+       },
+       "meta":{"can_masquerade":true}
+       },
+       {"id":"106",
+       "uid":"eight@uw.edu",
+       "hris_id":null,
+       "first_name":"Eight Class",
+       "last_name":"Student",
+       "full_name":"Eight Class Student",
+       "sortable_name":"Student, Eight Class",
+       "email":"eight@uw.edu",
+       "locale":"en",
+       "roles":[],
+       "name":"Eight Class Student",
+       "avatar_url":null,
+       "updated_at":"2016-08-02T14:36:17.082-07:00",
+       "deleted_at":null,
+       "unsubscribed":null,
+       "welcomedAt":null,
+       "loggedInAt":null,
+       "links":{
+         "custom_field_values":["3"]
+       },
+       "meta":{"can_masquerade":true}
+       },
+       {"id":"195",
+       "uid":"javerage@uw.edu",
+       "hris_id":null,
+       "first_name":"James",
+       "last_name":"Student",
+       "full_name":"James Student",
+       "sortable_name":"Student, James",
+       "email":"javerage@uw.edu",
+       "locale":"en",
+       "roles":[],
+       "name":"James Student",
+       "avatar_url":null,
+       "updated_at":"2016-07-25T16:24:42.131-07:00",
+       "deleted_at":null,
+       "unsubscribed":null,
+       "welcomedAt":null,
+       "loggedInAt":null,
+       "links":{
+          "custom_field_values":["1"]
+       },
+       "meta":{"can_masquerade":true}
+       }
+]}

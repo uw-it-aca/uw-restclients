@@ -44,8 +44,8 @@ def new_regid_custom_field(uwregid):
     Return a BridgeCustomField object for REGID
     to be used in a POST, PATCH request
     """
-    cus_fie = BridgeCustomField()
-    cus_fie.field_id = get_regid_field_id()
-    cus_fie.name = BridgeCustomField.REGID_NAME
-    cus_fie.value = uwregid
-    return cus_fie
+    return BridgeCustomField(
+        field_id=get_regid_field_id(),
+        name=BridgeCustomField.REGID_NAME,
+        value=uwregid
+        )
