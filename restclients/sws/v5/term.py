@@ -202,5 +202,10 @@ def _json_to_term_model(term_data):
         term.time_schedule_construction[campus.lower()] = True if (
             term_data["TimeScheduleConstruction"][campus]) else False
 
+    term.time_schedule_published = {}
+    for campus in term_data["TimeSchedulePublished"]:
+        term.time_schedule_published[campus.lower()] = True if (
+            term_data["TimeSchedulePublished"][campus]) else False
+
     term.clean_fields()
     return term
