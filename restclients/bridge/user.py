@@ -209,6 +209,7 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
         return bridge_users
 
     for user_data in resp_data["users"]:
+
         if "deleted_at" in user_data and\
                 user_data["deleted_at"] is not None:
             # skip deleted entry
@@ -217,36 +218,29 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
         user = BridgeUser(
             bridge_id=int(user_data["id"]),
             netid=re.sub('@uw.edu', '', user_data["uid"]),
-            full_name=user_data.get("full_name", ""),
             email=user_data.get("email", ""),
+            name=user_data.get("name", None),
+            full_name=user_data.get("full_name", ""),
+            first_name=user_data.get("first_name", None),
+            last_name=user_data.get("last_name", None),
+            sortable_name=user_data.get("sortable_name", None),
             locale=user_data.get("locale", "en"),
+            avatar_url=user_data.get("avatar_url", None),
+            logged_in_at=None,
+            updated_at=None,
+            unsubscribed=user_data.get("unsubscribed", None),
+            next_due_date=None,
             completed_courses_count=user_data.get("completed_courses_count",
-                                                  -1)
+                                                  -1),
             )
 
-        if "name" in user_data:
-            user.name = user_data["name"]
-
-        if "first_name" in user_data:
-            user.first_name = user_data["first_name"]
-
-        if "last_name" in user_data:
-            user.last_name = user_data["last_name"]
-
-        if "sortable_name" in user_data:
-            user.sortable_name = user_data["sortable_name"]
-
-        if "avatar_url" in user_data:
-            user.avatar_url = user_data["avatar_url"]
-
-        if "loggedInAt" in user_data and user_data["loggedInAt"] is not None:
+        if "loggedInAt" in user_data and\
+                user_data["loggedInAt"] is not None:
             user.logged_in_at = parse(user_data["loggedInAt"])
 
-        if "updated_at" in user_data and user_data["updated_at"] is not None:
+        if "updated_at" in user_data and\
+                user_data["updated_at"] is not None:
             user.updated_at = parse(user_data["updated_at"])
-
-        if "unsubscribed" in user_data:
-            user.unsubscribed = user_data["unsubscribed"]
 
         if "next_due_date" in user_data and\
                 user_data["next_due_date"] is not None:

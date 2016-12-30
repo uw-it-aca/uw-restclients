@@ -22,11 +22,11 @@ def _process_json_resp_data(resp):
     if "custom_fields" in resp_data and\
             len(resp_data["custom_fields"]) > 0:
         for value in resp_data["custom_fields"]:
-            custom_field = BridgeCustomField(
-                field_id=value["id"],
-                name=value["name"]
-                )
-            fields.append(custom_field)
+            if "id" in value and "name" in value:
+                custom_field = BridgeCustomField(field_id=value["id"],
+                                                 name=value["name"]
+                                                 )
+                fields.append(custom_field)
     return fields
 
 
