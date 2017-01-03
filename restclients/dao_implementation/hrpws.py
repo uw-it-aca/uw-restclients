@@ -4,6 +4,7 @@ Contains UW HRP DAO implementations.
 
 from os.path import abspath, dirname
 from django.conf import settings
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url, \
     post_mockdata_url
@@ -23,7 +24,6 @@ class File(object):
 
 
 HRPWS_MAX_POOL_SIZE = 10
-HRPWS_SOCKET_TIMEOUT = 15
 
 
 class Live(object):
@@ -42,7 +42,7 @@ class Live(object):
                 settings.RESTCLIENTS_HRPWS_KEY_FILE,
                 settings.RESTCLIENTS_HRPWS_CERT_FILE,
                 max_pool_size=HRPWS_MAX_POOL_SIZE,
-                socket_timeout=HRPWS_SOCKET_TIMEOUT)
+                socket_timeout=get_timeout('hrpws'))
         return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_HRPWS_HOST,

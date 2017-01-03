@@ -5,6 +5,7 @@ Contains Grad School DAO implementations.
 import re
 import logging
 from django.conf import settings
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.mock_http import MockHTTP
@@ -26,7 +27,6 @@ class File(object):
 
 
 GRAD_MAX_POOL_SIZE = 10
-GRAD_SOCKET_TIMEOUT = 15
 
 
 class Live(object):
@@ -47,7 +47,7 @@ class Live(object):
                 settings.RESTCLIENTS_GRAD_KEY_FILE,
                 settings.RESTCLIENTS_GRAD_CERT_FILE,
                 max_pool_size=GRAD_MAX_POOL_SIZE,
-                socket_timeout=GRAD_SOCKET_TIMEOUT)
+                socket_timeout=get_timeout("grad"))
         return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_GRAD_HOST,
