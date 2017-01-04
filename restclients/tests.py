@@ -12,6 +12,7 @@ from restclients.test.bridge.user import TestBridgeUser
 from restclients.test.bridge.custom_field import TestBridgeCustomFields
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.hrpws.appointee import AppointeeTest
+from restclients.test.mailman.uwnetid import TestMailmanUwnetid
 from restclients.test.library.mylibinfo import MyLibInfoTest
 from restclients.test.library.currics import CurricsTest
 from restclients.test.grad.committee import CommitteeTest

@@ -21,6 +21,17 @@ PWSF = 'restclients.dao_implementation.pws.File'
 
 
 class SWSTestSectionData(TestCase):
+    def test_section(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS=SWSF,
+                RESTCLIENTS_PWS_DAO_CLASS=PWSF):
+            section = get_section_by_label('2012,autumn,B BIO,180/A')
+            self.assertTrue(section.is_campus_bothell())
+            section = get_section_by_label('2013,summer,MATH,125/G')
+            self.assertTrue(section.is_campus_seattle())
+            section = get_section_by_label('2013,autumn,T BUS,310/A')
+            self.assertTrue(section.is_campus_tacoma())
+
     def test_final_exams(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS=SWSF,

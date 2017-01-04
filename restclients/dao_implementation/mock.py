@@ -30,6 +30,7 @@ A centralized the mock data access
 # Based on django.template.loaders.app_directories
 fs_encoding = sys.getfilesystemencoding() or sys.getdefaultencoding()
 app_resource_dirs = []
+logger = logging.getLogger(__name__)
 
 
 def __initialize_app_resource_dirs_from_config():
@@ -102,6 +103,9 @@ def get_mockdata_url(service_name, implementation_name,
     time.sleep(mockdata_delay)
 
     for resource_dir in app_resource_dirs:
+        logger.debug("Check url %s, service_name: %s, in resource_dir: %s" %
+                     (url, service_name, resource_dir))
+
         response = _load_resource_from_path(resource_dir, service_name,
                                             implementation_name, url, headers)
 
@@ -120,7 +124,6 @@ def get_mockdata_url(service_name, implementation_name,
             return response
 
     # If no response has been found in any installed app, return a 404
-    logger = logging.getLogger(__name__)
     logger.info("404 for url %s, path: %s" %
                 (url, "resources/%s/%s/%s" %
                  (service_name,
@@ -174,11 +177,11 @@ def _load_resource_from_path(resource_dir, service_name,
             except IOError as ex:
                 pass
 
+        logger.debug("URL: %s; App: %s; Service: %s; File: %s" %
+                     (url, app, service_name, file_path))
+
         if handle is None:
             return None
-
-        logger = logging.getLogger(__name__)
-        logger.debug("URL: %s; App: %s; File: %s" % (url, app, file_path))
 
         response = MockHTTP()
         response.status = 200
