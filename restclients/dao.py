@@ -35,7 +35,10 @@ from restclients.dao_implementation.o365 import File as O365File
 from restclients.cache_implementation import NoCache
 from restclients.mock_http import MockHTTP
 from threading import currentThread
+import logging
 import time
+
+logger = logging.getLogger(__name__)
 
 
 class PerformanceDegradation(object):
@@ -115,10 +118,19 @@ class DAO_BASE(object):
 
 
 class MY_DAO(DAO_BASE):
+    def _log(self, service, url, method, start_time, cached=False):
+        from_cache = "yes" if cached else "no"
+        total_time = time.time() - start_time
+        args = (service, method, url, from_cache, total_time)
+        msg = "service:%s method:%s url:%s from_cache:%s time:%s" % args
+        logger.info(msg)
+
     def _getCache(self):
         return self._getModule('RESTCLIENTS_DAO_CACHE_CLASS', NoCache)
 
     def _getURL(self, service, url, headers):
+        start_time = time.time()
+
         bad_response = PerformanceDegradation.get_response(service, url)
         if bad_response:
             return bad_response
@@ -128,6 +140,8 @@ class MY_DAO(DAO_BASE):
         cache_response = cache.getCache(service, url, headers)
         if cache_response is not None:
             if "response" in cache_response:
+                self._log(service=service, url=url, method="GET",
+                          cached=True, start_time=start_time)
                 return cache_response["response"]
             if "headers" in cache_response:
                 headers = cache_response["headers"]
@@ -138,28 +152,45 @@ class MY_DAO(DAO_BASE):
 
         if cache_post_response is not None:
             if "response" in cache_post_response:
+                self._log(service=service, url=url, method="GET",
+                          cached=True, start_time=start_time)
                 return cache_post_response["response"]
 
+        self._log(service=service, url=url, method="GET",
+                  start_time=start_time)
         return response
 
     def _postURL(self, service, url, headers, body=None):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.postURL(url, headers, body)
+
+        self._log(service=service, url=url, method="POST",
+                  start_time=start_time)
         return response
 
     def _deleteURL(self, service, url, headers):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.deleteURL(url, headers)
+        self._log(service=service, url=url, method="DELETE",
+                  start_time=start_time)
         return response
 
     def _putURL(self, service, url, headers, body=None):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.putURL(url, headers, body)
+        self._log(service=service, url=url, method="PUT",
+                  start_time=start_time)
         return response
 
     def _patchURL(self, service, url, headers, body=None):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.patchURL(url, headers, body)
+        self._log(service=service, url=url, method="PATCH",
+                  start_time=start_time)
         return response
 
 
