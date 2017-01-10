@@ -187,7 +187,7 @@ class Reports(Canvas):
                          "/etc/ssl/certs/ca-bundle.crt")
         pool_manager = PoolManager(cert_reqs="CERT_REQUIRED",
                                    ca_certs=cafile,
-                                   timeout=timeout,
+                                   socket_timeout=timeout,
                                    retries=5)
 
         response = pool_manager.request("GET", url)

@@ -51,7 +51,7 @@ class TestMock(TestCase):
                 # Giving .01 seconds for the rest of the work.  should be plenty,
                 # it was taking 0.2022 seconds in my test runs.
                 self.assertGreater(delta, 0.2)
-                self.assertLess(delta, 0.21)
+                self.assertLess(delta, 0.22)
 
         with self.settings(
                 RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File',
@@ -65,4 +65,4 @@ class TestMock(TestCase):
                 delta = t1-t0
 
                 self.assertGreater(delta, 0.4)
-                self.assertLess(delta, 0.41)
+                self.assertLess(delta, 0.42)

@@ -4,6 +4,7 @@ Contains R25 DAO implementations.
 
 from django.conf import settings
 from restclients.mock_http import MockHTTP
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 import datetime
@@ -33,6 +34,6 @@ class Live(object):
         host = settings.RESTCLIENTS_R25_HOST
 
         if Live.pool is None:
-            Live.pool = get_con_pool(host)
+            Live.pool = get_con_pool(host, socket_timeout=get_timeout('r25'))
 
         return get_live_url(Live.pool, "GET", host, url, headers=headers)

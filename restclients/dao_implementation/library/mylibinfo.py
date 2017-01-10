@@ -3,6 +3,7 @@ Contains UW Libraries DAO implementations.
 """
 
 from django.conf import settings
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url,\
     post_mockdata_url, delete_mockdata_url, put_mockdata_url
@@ -23,7 +24,6 @@ class File(object):
 
 
 LIB_MAX_POOL_SIZE = 10
-LIB_SOCKET_TIMEOUT = 15
 
 
 class Live(object):
@@ -39,7 +39,8 @@ class Live(object):
                 settings.RESTCLIENTS_LIBRARIES_HOST,
                 settings.RESTCLIENTS_LIBRARIES_KEY_FILE,
                 settings.RESTCLIENTS_LIBRARIES_CERT_FILE,
-                max_pool_size=LIB_MAX_POOL_SIZE)
+                max_pool_size=LIB_MAX_POOL_SIZE,
+                socket_timeout=get_timeout('library'))
 
         # For rest router...
         url_prefix = getattr(settings, "RESTCLIENTS_LIBRARIES_PREFIX", "")

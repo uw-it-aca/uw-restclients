@@ -3,6 +3,7 @@ Contains UW Libraries DAO implementations.
 """
 
 from django.conf import settings
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.mock_http import MockHTTP
@@ -20,7 +21,6 @@ class File(object):
 
 
 HFS_MAX_POOL_SIZE = 10
-HFS_SOCKET_TIMEOUT = 15
 
 
 class Live(object):
@@ -39,7 +39,7 @@ class Live(object):
                 settings.RESTCLIENTS_HFS_KEY_FILE,
                 settings.RESTCLIENTS_HFS_CERT_FILE,
                 max_pool_size=HFS_MAX_POOL_SIZE,
-                socket_timeout=HFS_SOCKET_TIMEOUT)
+                socket_timeout=get_timeout('hfs'))
         return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_HFS_HOST,

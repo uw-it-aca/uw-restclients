@@ -4,6 +4,7 @@ import json
 import logging
 import re
 from django.conf import settings
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.mock import get_mockdata_url
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 
@@ -30,7 +31,8 @@ class CalendarLive(object):
 
     def _get_pool(self):
         return get_con_pool(CalendarLive.TRUMBA_HOST,
-                            max_pool_size=CalendarLive.MAX_POOL_SIZE)
+                            max_pool_size=CalendarLive.MAX_POOL_SIZE,
+                            socket_timeout=get_timeout('trumba'))
 
     def getURL(self, url, headers):
         if CalendarLive.pool is None:
@@ -115,7 +117,8 @@ class LiveSea(object):
     def set_pool():
         if LiveSea.pool is None:
             LiveSea.pool = get_con_pool(settings.RESTCLIENTS_TRUMBA_HOST,
-                                        None, None)
+                                        None, None,
+                                        socket_timeout=get_timeout('trumba'))
 
     def getURL(self, url, headers):
         self.set_pool()
