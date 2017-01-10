@@ -3,6 +3,7 @@ Contains UW Libraries Currics DAO implementations.
 """
 
 from django.conf import settings
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url,\
     post_mockdata_url, delete_mockdata_url, put_mockdata_url
@@ -37,7 +38,8 @@ class Live(object):
         if Live.pool is None:
             Live.pool = get_con_pool(
                 settings.RESTCLIENTS_LIBCURRICS_HOST,
-                max_pool_size=LIB_MAX_POOL_SIZE)
+                max_pool_size=LIB_MAX_POOL_SIZE,
+                socket_timeout=get_timeout('library'))
 
         return get_live_url(Live.pool,
                             'GET',

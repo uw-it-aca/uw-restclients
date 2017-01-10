@@ -2,6 +2,7 @@
 Contains UW Bookstore DAO implementations.
 """
 
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 from django.conf import settings
@@ -40,4 +41,5 @@ class Live(object):
 
         return get_live_url(Live.pool, 'GET',
                             host, url, headers=headers,
-                            service_name='book')
+                            service_name='book',
+                            socket_timeout=get_timeout("book"))

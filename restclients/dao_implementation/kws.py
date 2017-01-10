@@ -4,6 +4,7 @@ Contains KWS DAO implementations.
 
 from django.conf import settings
 from restclients.mock_http import MockHTTP
+from restclients.dao_implementation import get_timeout
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url
 
@@ -37,7 +38,8 @@ class Live(object):
             Live.pool = get_con_pool(settings.RESTCLIENTS_KWS_HOST,
                                      settings.RESTCLIENTS_KWS_KEY_FILE,
                                      settings.RESTCLIENTS_KWS_CERT_FILE,
-                                     max_pool_size=KWS_MAX_POOL_SIZE)
+                                     max_pool_size=KWS_MAX_POOL_SIZE,
+                                     socket_timeout=get_timeout("kws"))
         return get_live_url(Live.pool, 'GET',
                             settings.RESTCLIENTS_KWS_HOST,
                             url, headers=headers,
