@@ -9,7 +9,7 @@ from restclients.dao_implementation.mock import get_mockdata_url
 
 
 MAX_POOL_SIZE = 10
-HOST = ''  # - TBD
+HOST = settings.RESTCLIENTS_UPASS_HOST
 
 
 class File(object):
