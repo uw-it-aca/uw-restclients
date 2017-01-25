@@ -9,7 +9,6 @@ from restclients.dao_implementation.mock import get_mockdata_url
 
 
 MAX_POOL_SIZE = 10
-HOST = ''  # - TBD
 
 
 class File(object):
@@ -32,14 +31,14 @@ class Live(object):
     def getURL(self, url, headers):
         if Live.pool is None:
             Live.pool = get_con_pool(
-                settings.RESTCLIENTS_UPASS_DAO_CLASS,
+                settings.RESTCLIENTS_UPASS_HOST,
                 settings.RESTCLIENTS_UPASS_KEY_FILE,
                 settings.RESTCLIENTS_UPASS_CERT_FILE,
                 max_pool_size=MAX_POOL_SIZE,
                 socket_timeout=get_timeout('upass'))
         return get_live_url(Live.pool,
                             'GET',
-                            HOST,
+                            settings.RESTCLIENTS_UPASS_HOST,
                             url,
                             headers=headers,
                             service_name='upass')
