@@ -114,3 +114,5 @@ from restclients.test.delay import DegradedTestCase
 from restclients.test.dao_implementation.mock import TestMock
 
 from restclients.test.iasystem.evaluation import IASystemTest
+
+from restclients.test.upass import UPassTest
