@@ -52,7 +52,7 @@ def _get_curriculum_abbr(section):
 
 
 def get_section_list_name(section):
-    return  "%s%s%s_%s%s" % (
+    return "%s%s%s_%s%s" % (
         _get_curriculum_abbr(section),
         section.course_number,
         section.section_id.lower(),
