@@ -22,29 +22,43 @@ def exists(list_name):
     return _process_json(get_resource(URL % list_name))
 
 
+def get_instructor_term_list_name(instructor_entid, term):
+    return "%s_%s%s" % (
+        instructor_entid,
+        term.quarter.lower()[:2],
+        str(term.year)[-2:])
+
+
 def exists_instructor_term_combined_list(instructor_entid, term):
     """
     Return True if a combined mailman list exists
     for the multilpe courses taught by the given instructor
     in the course year and quarter
     """
-    list_name = "%s_%s%s" % (
-        instructor_entid,
-        term.quarter.lower()[:2],
-        str(term.year)[-2:])
-    return exists(list_name)
+    return exists(
+        get_instructor_term_list_name(instructor_entid, term))
 
 
-def _get_curriculum_abbr(course_section):
+def _get_curriculum_abbr(section):
     """
     @return mailman specific curriculum abbr
     """
-    if course_section.is_campus_bothell():
-        return re.sub(r'^b ', 'b', course_section.curriculum_abbr.lower())
-    elif course_section.is_campus_tacoma():
-        return re.sub(r'^t ', 't', course_section.curriculum_abbr.lower())
+    if section.is_campus_bothell():
+        return re.sub(r'^b ', 'b', section.curriculum_abbr.lower())
+    elif section.is_campus_tacoma():
+        return re.sub(r'^t ', 't', section.curriculum_abbr.lower())
     else:
-        return course_section.curriculum_abbr.lower()
+        return section.curriculum_abbr.lower()
+
+
+def get_section_list_name(section):
+    return  "%s%s%s_%s%s" % (
+        _get_curriculum_abbr(section),
+        section.course_number,
+        section.section_id.lower(),
+        section.term.quarter.lower()[:2],
+        str(section.term.year)[-2:]
+        )
 
 
 def exists_section_list(course_section):
@@ -53,14 +67,22 @@ def exists_section_list(course_section):
     for the course section
     @param course_section a valid Section object
     """
-    list_name = "%s%s%s_%s%s" % (
-        _get_curriculum_abbr(course_section),
-        course_section.course_number,
-        course_section.section_id.lower(),
-        course_section.term.quarter.lower()[:2],
-        str(course_section.term.year)[-2:]
+    return exists(get_section_list_name(course_section))
+
+
+def get_secondary_section_combined_list_name(section):
+    if section.is_primary_section:
+        section_id = section.section_id
+    else:
+        section_id = section.primary_section_id
+
+    return "multi_%s%s%s_%s%s" % (
+        _get_curriculum_abbr(section),
+        section.course_number,
+        section_id.lower(),
+        section.term.quarter.lower()[:2],
+        str(section.term.year)[-2:]
         )
-    return exists(list_name)
 
 
 def exists_secondary_section_combined_list(course_section):
@@ -68,13 +90,7 @@ def exists_secondary_section_combined_list(course_section):
     Return True if a combined mailman list exists
     for all the secondary course sections
     """
-    list_name = "multi_%s%sa_%s%s" % (
-        _get_curriculum_abbr(course_section),
-        course_section.course_number,
-        course_section.term.quarter.lower()[:2],
-        str(course_section.term.year)[-2:]
-        )
-    return exists(list_name)
+    return exists(get_secondary_section_combined_list_name(course_section))
 
 
 def _process_json(response_body):
