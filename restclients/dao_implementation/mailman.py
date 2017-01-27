@@ -21,22 +21,6 @@ class File(object):
     def getURL(self, url, headers):
         return get_mockdata_url("mailman", "file", url, headers)
 
-    def putURL(self, url, headers, body):
-        put_url = url + ".PUT"
-        response = put_mockdata_url("mailman", "file",
-                                    put_url, headers, body)
-        if response.status == 400:
-            return response
-        return read_resp_data("mailman", "file", put_url, response)
-
-    def postURL(self, url, headers, body):
-        post_url = url + ".POST"
-        response = post_mockdata_url("mailman", "file",
-                                     post_url, headers, body)
-        if response.status == 400:
-            return response
-        return read_resp_data("mailman", "file", post_url, response)
-
 
 MAILMAN_MAX_POOL_SIZE = 10
 MAILMAN_SOCKET_TIMEOUT = 15
@@ -67,18 +51,4 @@ class Live(object):
         return get_live_url(Live.pool, 'GET',
                             Live.host, url,
                             headers=headers,
-                            service_name='mailman')
-
-    def putURL(self, url, headers, body):
-        return get_live_url(Live.pool, 'PUT',
-                            Live.host, url,
-                            headers=headers,
-                            body=body,
-                            service_name='mailman')
-
-    def postURL(self, url, headers, body):
-        return get_live_url(Live.pool, 'POST',
-                            Live.host, url,
-                            headers=headers,
-                            body=body,
                             service_name='mailman')

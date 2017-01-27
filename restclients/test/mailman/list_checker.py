@@ -1,70 +1,51 @@
-from datetime import datetime
 from django.test import TestCase
-from django.conf import settings
-from restclients.exceptions import DataFailureException
-from restclients.sws.section import get_section_by_label
-from restclients.mailman.list_checker import exists_section_list,\
-    exists_secondary_section_combined_list, _get_list_name_curr_abbr,\
-    exists, exists_instructor_term_combined_list,\
-    get_instructor_term_list_name, get_section_list_name,\
-    get_secondary_section_combined_list_name
-from restclients.test import fdao_pws_override, fdao_sws_override,\
-    fdao_mailman_override
+from restclients.mailman.list_checker import _get_url_path, exists,\
+    get_instructor_term_list_name, exists_instructor_term_combined_list,\
+    _get_list_name_curr_abbr, get_course_list_name, exists_course_list
+from restclients.test import fdao_mailman_override
 
-@fdao_pws_override
-@fdao_sws_override
+
 @fdao_mailman_override
-class TestMailmanListExists(TestCase):
+class TestMailmanLists(TestCase):
 
-    def test_get_list_name_curr_abbr(self):
-        section = get_section_by_label('2012,autumn,B BIO,180/A')
-        self.assertEqual(_get_list_name_curr_abbr(section), 'bbio')
-        section = get_section_by_label('2013,autumn,T BUS,310/A')
-        self.assertEqual(_get_list_name_curr_abbr(section), 'tbus')
-        section = get_section_by_label('2013,summer,MATH,125/G')
-        self.assertEqual(_get_list_name_curr_abbr(section), 'math')
+    def test_get_url_path(self):
+        self.assertEqual(_get_url_path('aaa_au12'),
+                         ("/%s/admin/v1.0/uwnetid/available/?uwnetid=%s" %
+                          ("__mock_key__", 'aaa_au12')))
 
-    def test_list_names(self):
-        section = get_section_by_label('2012,autumn,B BIO,180/A')
-        self.assertEqual(get_section_list_name(section), 'bbio180a_au12')
-        self.assertEqual(get_secondary_section_combined_list_name(section),
-                         'multi_bbio180a_au12')
-
-        section = get_section_by_label('2013,autumn,T BUS,310/A')
-        self.assertEqual(get_section_list_name(section), 'tbus310a_au13')
-        self.assertEqual(get_secondary_section_combined_list_name(section),
-                         'multi_tbus310a_au13')
-
-        section = get_section_by_label('2013,summer,MATH,125/G')
-        self.assertEqual(get_section_list_name(section), 'math125g_su13')
-        self.assertEqual(get_secondary_section_combined_list_name(section),
-                         'multi_math125g_su13')
-        self.assertEqual(get_instructor_term_list_name('bill', section.term),
-                         'bill_su13')
-
-    def test_is_bot_class_list_available(self):
-        section = get_section_by_label('2012,autumn,B BIO,180/A')
-        self.assertFalse(exists_section_list(section))
+    def test_exists(self):
+        self.assertFalse(exists('bbio180a_au12'))
         self.assertTrue(exists('bbio180a_au13'))
-        section = get_section_by_label('2013,autumn,B BIO,180/A')
-        self.assertTrue(exists_secondary_section_combined_list(section))
-
-    def test_is_tac_class_list_available(self):
-        section = get_section_by_label('2013,autumn,T BUS,310/A')
-        self.assertFalse(exists_section_list(section))
-        section = get_section_by_label('2013,spring,T BUS,310/A')
-        self.assertTrue(exists_section_list(section))
-
-    def test_exists_section_list(self):
-        section = get_section_by_label('2013,summer,MATH,125/G')
-        self.assertFalse(exists_section_list(section))
-
-    def test_exists_secondary_section_combined_list(self):
-        section = get_section_by_label('2013,summer,MATH,125/G')
-        self.assertFalse(exists_secondary_section_combined_list(section))
+        self.assertFalse(exists("tbus310a_au13"))
 
     def test_exists_instructor_term_combined_list(self):
-        section = get_section_by_label('2013,autumn,B BIO,180/A')
+        self.assertEqual(
+            get_instructor_term_list_name('bill', 2013, 'autumn'), "bill_au13")
         self.assertTrue(
-                exists_instructor_term_combined_list('bill',
-                                                     section.term))
+            exists_instructor_term_combined_list('bill', 2013, 'autumn'))
+
+    def test_get_list_name_curr_abbr(self):
+        self.assertEqual(_get_list_name_curr_abbr("B BIO"), 'bbio')
+        self.assertEqual(_get_list_name_curr_abbr("T BUS"), 'tbus')
+        self.assertEqual(_get_list_name_curr_abbr("MATH"), 'math')
+
+    def test_get_course_list_name(self):
+        self.assertEqual(get_course_list_name("B BIO", "180", "A",
+                                              "autumn", 2012),
+                         'bbio180a_au12')
+        self.assertEqual(get_course_list_name("T BUS", "310", "A",
+                                              "autumn", 2013),
+                         'tbus310a_au13')
+        self.assertEqual(get_course_list_name("MATH", "125", "G",
+                                              "summer", 2013),
+                         'math125g_su13')
+
+    def test_exists_course_list(self):
+        self.assertFalse(exists_course_list("B BIO", "180",
+                                            "A", "autumn", 2012))
+        self.assertTrue(exists_course_list("B BIO", "180",
+                                           "A", "autumn", 2013))
+        self.assertFalse(exists_course_list("T BUS", "310", "A",
+                                            "autumn", 2013))
+        self.assertFalse(exists_course_list("MATH", "125", "G",
+                                            "summer", 2013))
