@@ -61,6 +61,18 @@ def get_sections_by_curriculum_and_term(curriculum, term):
     return _json_to_sectionref(get_resource(url), term)
 
 
+def get_sections_by_building_and_term(building, term):
+    """
+    Returns a list of restclients.models.sws.SectionReference objects
+    for the passed building and term.
+    """
+    url = "%s?%s" % (section_res_url_prefix,
+                     urlencode({"year": term.year,
+                                "quarter": term.quarter.lower(),
+                                "facility_code": building}))
+    return _json_to_sectionref(get_resource(url), term)
+
+
 def get_changed_sections_by_term(changed_since_date, term, **kwargs):
     kwargs.update({"year": term.year,
                    "quarter": term.quarter.lower(),

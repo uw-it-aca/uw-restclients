@@ -11,6 +11,7 @@ from restclients.sws.section import get_section_by_label,\
     get_joint_sections, get_linked_sections,\
     get_sections_by_instructor_and_term,\
     get_sections_by_curriculum_and_term,\
+    get_sections_by_building_and_term,\
     get_changed_sections_by_term,\
     get_sections_by_delegate_and_term,\
     is_a_term, is_b_term, is_full_summer_term
@@ -353,6 +354,23 @@ class SWSTestSectionData(TestCase):
             self.assertRaises(DataFailureException,
                               get_sections_by_curriculum_and_term,
                               Curriculum(label="FINN"),
+                              term)
+
+    def test_sections_by_building_and_term(self):
+        with self.settings(
+                RESTCLIENTS_SWS_DAO_CLASS=SWSF,
+                RESTCLIENTS_PWS_DAO_CLASS=PWSF):
+
+            term = Term(quarter="winter", year=2013)
+            building = "KNE"
+            sections = get_sections_by_building_and_term(building, term)
+
+            self.assertEquals(len(sections), 2)
+
+            # Valid building, with no file
+            self.assertRaises(DataFailureException,
+                              get_sections_by_building_and_term,
+                              "SIG",
                               term)
 
     def test_changed_sections_by_term(self):
