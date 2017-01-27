@@ -32,6 +32,7 @@ from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.dao_implementation.o365 import File as O365File
+from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
 from restclients.mock_http import MockHTTP
 from threading import currentThread
@@ -496,3 +497,11 @@ class O365_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_O365_DAO_CLASS', O365File)
+
+
+class UPass_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('upass', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_UPASS_DAO_CLASS', UPassFile)
