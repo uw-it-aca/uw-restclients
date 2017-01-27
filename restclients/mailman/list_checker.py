@@ -39,21 +39,22 @@ def exists_instructor_term_combined_list(instructor_entid, term):
         get_instructor_term_list_name(instructor_entid, term))
 
 
-def _get_curriculum_abbr(section):
+def _get_list_name_curr_abbr(section):
     """
     @return mailman specific curriculum abbr
     """
-    if section.is_campus_bothell():
-        return re.sub(r'^b ', 'b', section.curriculum_abbr.lower())
-    elif section.is_campus_tacoma():
-        return re.sub(r'^t ', 't', section.curriculum_abbr.lower())
+    cur_abbr = section.curriculum_abbr.lower()
+    if re.match(r'^b [&\w]+', cur_abbr):
+        return re.sub(r'^b ', 'b', cur_abbr)
+    elif re.match(r'^t [&\w]+', cur_abbr):
+        return re.sub(r'^t ', 't', cur_abbr)
     else:
-        return section.curriculum_abbr.lower()
+        return cur_abbr
 
 
 def get_section_list_name(section):
     return "%s%s%s_%s%s" % (
-        _get_curriculum_abbr(section),
+        _get_list_name_curr_abbr(section),
         section.course_number,
         section.section_id.lower(),
         section.term.quarter.lower()[:2],
@@ -77,7 +78,7 @@ def get_secondary_section_combined_list_name(section):
         section_id = section.primary_section_id
 
     return "multi_%s%s%s_%s%s" % (
-        _get_curriculum_abbr(section),
+        _get_list_name_curr_abbr(section),
         section.course_number,
         section_id.lower(),
         section.term.quarter.lower()[:2],

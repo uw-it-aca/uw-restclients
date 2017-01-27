@@ -4,7 +4,7 @@ from django.conf import settings
 from restclients.exceptions import DataFailureException
 from restclients.sws.section import get_section_by_label
 from restclients.mailman.list_checker import exists_section_list,\
-    exists_secondary_section_combined_list, _get_curriculum_abbr,\
+    exists_secondary_section_combined_list, _get_list_name_curr_abbr,\
     exists, exists_instructor_term_combined_list,\
     get_instructor_term_list_name, get_section_list_name,\
     get_secondary_section_combined_list_name
@@ -16,13 +16,13 @@ from restclients.test import fdao_pws_override, fdao_sws_override,\
 @fdao_mailman_override
 class TestMailmanListExists(TestCase):
 
-    def test_get_curriculum_abbr(self):
+    def test_get_list_name_curr_abbr(self):
         section = get_section_by_label('2012,autumn,B BIO,180/A')
-        self.assertEqual(_get_curriculum_abbr(section), 'bbio')
+        self.assertEqual(_get_list_name_curr_abbr(section), 'bbio')
         section = get_section_by_label('2013,autumn,T BUS,310/A')
-        self.assertEqual(_get_curriculum_abbr(section), 'tbus')
+        self.assertEqual(_get_list_name_curr_abbr(section), 'tbus')
         section = get_section_by_label('2013,summer,MATH,125/G')
-        self.assertEqual(_get_curriculum_abbr(section), 'math')
+        self.assertEqual(_get_list_name_curr_abbr(section), 'math')
 
     def test_list_names(self):
         section = get_section_by_label('2012,autumn,B BIO,180/A')
