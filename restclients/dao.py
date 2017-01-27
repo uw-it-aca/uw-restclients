@@ -395,14 +395,9 @@ class Mailman_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('mailman', url, headers)
 
-    def putURL(self, url, headers, body):
-        return self._putURL('mailman', url, headers, body)
-
-    def postURL(self, url, headers, body):
-        return self._postURL('mailman', url, headers, body)
-
     def _getDAO(self):
-        return self._getModule('RESTCLIENTS_MAILMAN_DAO_CLASS', MailmanFile)
+        return self._getModule('RESTCLIENTS_MAILMAN_DAO_CLASS',
+                               MailmanFile)
 
 
 class MyLibInfo_DAO(MY_DAO):
