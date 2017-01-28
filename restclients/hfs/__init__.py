@@ -6,8 +6,6 @@ import logging
 import json
 from restclients.dao import Hfs_DAO
 from restclients.exceptions import DataFailureException
-from restclients.util.timer import Timer
-from restclients.util.log import log_info
 
 
 ERROR_MSG = "An error has occurred"
@@ -17,11 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 def get_resource(url):
-    timer = Timer()
     response = Hfs_DAO().getURL(url, {})
-    log_info(logger,
-             "%s ==status==> %s" % (url, response.status),
-             timer)
+    logger.info("%s ==status==> %s" % (url, response.status))
 
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)

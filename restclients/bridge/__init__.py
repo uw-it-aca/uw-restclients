@@ -7,8 +7,6 @@ Be sure to set the logging configuration if you use the LiveDao!
 import logging
 from restclients.dao import Bridge_DAO
 from restclients.exceptions import DataFailureException
-from restclients.util.timer import Timer
-from restclients.util.log import log_info, log_err
 
 
 logger = logging.getLogger(__name__)
@@ -21,29 +19,27 @@ PHEADER = {"Content-Type": "application/json",
 
 
 def delete_resource(url):
-    timer = Timer()
     response = Bridge_DAO().deleteURL(url, DHEADER)
     log_data = "DELETE %s ==status==> %s" % (url, response.status)
 
     if response.status != 204:
         # 204 is a successful deletion
-        log_err(logger, log_data, timer)
+        logger.error(log_data)
         raise DataFailureException(url, response.status, response.data)
 
-    _log_resp_time(logger, log_data, timer, response)
+    _log_resp(log_data, response.data)
     return response
 
 
 def get_resource(url):
-    timer = Timer()
     response = Bridge_DAO().getURL(url, GHEADER)
     log_data = "GET %s ==status==> %s" % (url, response.status)
 
     if response.status != 200:
-        log_err(logger, log_data, timer)
+        logger.error(log_data)
         raise DataFailureException(url, response.status, response.data)
 
-    _log_resp_time(logger, log_data, timer, response)
+    _log_resp(log_data, response.data)
     return response.data
 
 
@@ -52,15 +48,14 @@ def patch_resource(url, body):
     Patch resource with the given json body
     :returns: http response data
     """
-    timer = Timer()
     response = Bridge_DAO().patchURL(url, PHEADER, body)
     log_data = "PATCH %s %s ==status==> %s" % (url, body, response.status)
 
     if not response.status == 200:
-        log_err(logger, log_data, timer)
+        logger.error(log_data)
         raise DataFailureException(url, response.status, response.data)
 
-    _log_resp_time(logger, log_data, timer, response)
+    _log_resp(log_data, response.data)
     return response.data
 
 
@@ -69,16 +64,15 @@ def post_resource(url, body):
     Post resource with the given json body
     :returns: http response data
     """
-    timer = Timer()
     response = Bridge_DAO().postURL(url, PHEADER, body)
     log_data = "POST %s %s ==status==> %s" % (url, body, response.status)
 
     if response.status != 200 and response.status != 201:
         # 201 Created
-        log_err(logger, log_data, timer)
+        logger.error(log_data)
         raise DataFailureException(url, response.status, response.data)
 
-    _log_resp_time(logger, log_data, timer, response)
+    _log_resp(log_data, response.data)
     return response.data
 
 
@@ -88,18 +82,17 @@ def put_resource(url, body):
     :returns: http response data
     Bridge PUT seems to have the same effect as PATCH currently.
     """
-    timer = Timer()
     response = Bridge_DAO().putURL(url, PHEADER, body)
     log_data = "PUT %s %s ==status==> %s" % (url, body, response.status)
 
     if not response.status == 200:
-        log_err(logger, log_data, timer)
+        logger.error(log_data)
         raise DataFailureException(url, response.status, response.data)
 
-    _log_resp_time(logger, log_data, timer, response)
+    _log_resp(log_data, response.data)
     return response.data
 
 
-def _log_resp_time(logger, log_data, timer, response):
-    log_info(logger, log_data, timer)
-    logger.debug("%s ==data==> %s" % (log_data, response.data))
+def _log_resp(log_data, response_data):
+    logger.info(log_data)
+    logger.debug("%s ==data==> %s" % (log_data, response_data))
