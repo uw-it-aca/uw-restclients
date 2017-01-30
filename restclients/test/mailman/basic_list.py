@@ -1,5 +1,5 @@
 from django.test import TestCase
-from restclients.mailman.basic_list import _get_url_path, exists
+from restclients.mailman.basic_list import _get_url_path, exists, get_admin_url
 from restclients.test import fdao_mailman_override
 
 
@@ -16,3 +16,8 @@ class TestMailmanBasicList(TestCase):
         self.assertTrue(exists('bbio180a_au13'))
         self.assertFalse(exists("tbus310a_au13"))
         self.assertTrue(exists("bill_au13"))
+
+    def test_get_admin_url(self):
+        self.assertEqual(
+            get_admin_url("bbio180a_su13"),
+            "https://mailman.u.washington.edu/mailman/admin/bbio180a_su13")

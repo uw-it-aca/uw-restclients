@@ -8,6 +8,7 @@ from restclients.mailman import get_resource
 
 
 URL = "/%s/admin/v1.0/uwnetid/available/?uwnetid=%s"
+MAILMAN_ADMIN_URL = "https://mailman.u.washington.edu/mailman/admin/%s"
 
 
 def _get_url_path(list_name):
@@ -35,3 +36,7 @@ def _process_json(response_body):
     """
     data = json.loads(response_body)
     return "Available" in data and data["Available"] == "False"
+
+
+def get_admin_url(list_name):
+    return MAILMAN_ADMIN_URL % list_name
