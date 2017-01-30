@@ -16,6 +16,8 @@ class TestMailmanCourseLists(TestCase):
         self.assertEqual(_get_list_name_curr_abbr("B BIO"), 'bbio')
         self.assertEqual(_get_list_name_curr_abbr("T BUS"), 'tbus')
         self.assertEqual(_get_list_name_curr_abbr("MATH"), 'math')
+        self.assertEqual(_get_list_name_curr_abbr("JSIS B"), 'jsisb')
+        self.assertEqual(_get_list_name_curr_abbr("CL AR"), "clar")
 
     def test_get_course_list_name(self):
         self.assertEqual(get_course_list_name("B BIO", "180", "A",
