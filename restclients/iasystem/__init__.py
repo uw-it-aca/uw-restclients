@@ -2,8 +2,6 @@ import json
 import logging
 from restclients.dao import IASYSTEM_DAO
 from restclients.exceptions import DataFailureException
-from restclients.util.timer import Timer
-from restclients.util.log import log_info
 
 
 logger = logging.getLogger(__name__)
@@ -23,16 +21,12 @@ def get_resource(url, subdomain):
     :returns: http response with content in json
     """
     headers = {"Accept": "application/vnd.collection+json"}
-    timer = Timer()
     response = IASYSTEM_DAO().getURL(url, headers, subdomain)
 
-    log_info(logger,
-             "%s ==status==> %s" % (url, response.status),
-             timer)
+    logger.info("%s ==status==> %s" % (url, response.status))
 
     if response.status != 200:
-        logger.debug("%s ==data==> %s" % (url,
-                                          response.data))
+        logger.error("%s ==data==> %s" % (url, response.data))
         raise DataFailureException(url, response.status, response.data)
 
     return json.loads(response.data)

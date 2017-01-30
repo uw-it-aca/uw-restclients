@@ -11,8 +11,6 @@ from lxml import etree
 from icalendar import Calendar, Event
 from restclients.dao import TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
 from restclients.dao import TrumbaCalendar_DAO
-from restclients.util.timer import Timer
-from restclients.util.log import log_info, log_err
 from restclients.exceptions import DataFailureException
 
 logger = logging.getLogger(__name__)
@@ -31,38 +29,30 @@ def get_calendar_by_name(calendar_name):
     return calendar
 
 
-def _log_xml_resp(campus, url, response, timer):
+def _log_xml_resp(campus, url, response):
     if response.status == 200 and response.data is not None:
-        log_info(logger,
-                 "%s %s ==status==> %s" % (campus, url, response.status),
-                 timer)
+        logger.info("%s %s ==status==> %s" % (campus, url, response.status))
         root = etree.fromstring(response.data)
         resp_msg = ''
         for el in root.iterchildren():
             resp_msg += str(el.attrib)
         logger.info("%s %s ==message==> %s" % (campus, url, resp_msg))
     else:
-        log_err(logger,
-                "%s %s ==error==> %s %s" % (campus, url,
-                                            response.status,
-                                            response.reason),
-                timer)
+        logger.error("%s %s ==error==> %s %s" % (campus, url,
+                                                 response.status,
+                                                 response.reason))
 
 
-def _log_json_resp(campus, url, body, response, timer):
+def _log_json_resp(campus, url, body, response):
     if response.status == 200 and response.data is not None:
-        log_info(logger,
-                 "%s %s %s ==status==> %s" % (campus, url, body,
-                                              response.status),
-                 timer)
+        logger.info("%s %s %s ==status==> %s" % (campus, url, body,
+                                                 response.status))
         logger.debug("%s %s %s ==data==> %s" % (campus, url, body,
                                                 response.data))
     else:
-        log_err(logger,
-                "%s %s %s ==error==> %s %s" % (campus, url, body,
-                                               response.status,
-                                               response.reason),
-                timer)
+        logger.error("%s %s %s ==error==> %s %s" % (campus, url, body,
+                                                    response.status,
+                                                    response.reason))
 
 
 def get_bot_resource(url):
@@ -71,10 +61,9 @@ def get_bot_resource(url):
     :returns: http response with content in xml
     """
     response = None
-    timer = Timer()
     response = TrumbaBot_DAO().getURL(url,
                                       {"Content-Type": "application/xml"})
-    _log_xml_resp("Bothell", url, response, timer)
+    _log_xml_resp("Bothell", url, response)
     return response
 
 
@@ -84,10 +73,9 @@ def get_sea_resource(url):
     :returns: http response with content in xml
     """
     response = None
-    timer = Timer()
     response = TrumbaSea_DAO().getURL(url,
                                       {"Accept": "application/xml"})
-    _log_xml_resp("Seattle", url, response, timer)
+    _log_xml_resp("Seattle", url, response)
     return response
 
 
@@ -97,10 +85,9 @@ def get_tac_resource(url):
     :returns: http response with content in xml
     """
     response = None
-    timer = Timer()
     response = TrumbaTac_DAO().getURL(url,
                                       {"Accept": "application/xml"})
-    _log_xml_resp("Tacoma", url, response, timer)
+    _log_xml_resp("Tacoma", url, response)
     return response
 
 
@@ -110,12 +97,11 @@ def post_bot_resource(url, body):
     :returns: http response with content in json
     """
     response = None
-    timer = Timer()
     response = TrumbaBot_DAO().postURL(
         url,
         {"Content-Type": "application/json"},
         body)
-    _log_json_resp("Bothell", url, body, response, timer)
+    _log_json_resp("Bothell", url, body, response)
     return response
 
 
@@ -125,12 +111,11 @@ def post_sea_resource(url, body):
     :returns: http response with content in json
     """
     response = None
-    timer = Timer()
     response = TrumbaSea_DAO().postURL(
         url,
         {"Content-Type": "application/json"},
         body)
-    _log_json_resp("Seattle", url, body, response, timer)
+    _log_json_resp("Seattle", url, body, response)
     return response
 
 
@@ -140,10 +125,9 @@ def post_tac_resource(url, body):
     :returns: http response with content in json
     """
     response = None
-    timer = Timer()
     response = TrumbaTac_DAO().postURL(
         url,
         {"Content-Type": "application/json"},
         body)
-    _log_json_resp("Tacoma", url, body, response, timer)
+    _log_json_resp("Tacoma", url, body, response)
     return response
