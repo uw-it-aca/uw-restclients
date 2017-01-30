@@ -9,7 +9,7 @@ def _get_list_name_curr_abbr(curriculum_abbr):
     """
     @return mailman specific curriculum abbr
     """
-    return curriculum_abbr.lower().replace(' ', '')
+    return curriculum_abbr.lower().replace(' ', '').replace('&', '')
 
 
 def get_course_list_name(curriculum_abbr, course_number, section_id,
