@@ -13,6 +13,7 @@ from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.canvas import File as CanvasFile
 from restclients.dao_implementation.catalyst import File as CatalystFile
+from restclients.dao_implementation.mailman import File as MailmanFile
 from restclients.dao_implementation.nws import File as NWSFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
@@ -32,6 +33,7 @@ from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.dao_implementation.o365 import File as O365File
+from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
 from restclients.mock_http import MockHTTP
 from threading import currentThread
@@ -389,6 +391,15 @@ class Hfs_DAO(MY_DAO):
         return self._getModule('RESTCLIENTS_HFS_DAO_CLASS', HfsFile)
 
 
+class Mailman_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('mailman', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_MAILMAN_DAO_CLASS',
+                               MailmanFile)
+
+
 class MyLibInfo_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('libraries', url, headers)
@@ -496,3 +507,11 @@ class O365_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_O365_DAO_CLASS', O365File)
+
+
+class UPass_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('upass', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_UPASS_DAO_CLASS', UPassFile)

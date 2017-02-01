@@ -3,6 +3,8 @@
 {% include 'proxy/sws/student/v5/includes/term.html' %}
 {% include 'proxy/sws/student/v5/includes/course.html' %}
 {% include 'proxy/sws/student/v5/includes/reg_id.html' %}
+<div><label for="facility_code">Facility Code:</label> <input class="facility_code" id="facility_code" name="facility_code" value="{{search.facility_code}}" type="text" size="8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label for="room_number">Room Number:</label> <input class="room_number" id="room_number" name="room_number" value="{{search.room_number}}" type="text" size="3"></div>
 <div>
     <input class="search_by" id="search_by_instructor" name="search_by" value="Instructor"{% if search.search_by == "Instructor" %} checked="checked"{% endif %} type="radio">
 <label for="search_by_instructor">Instructor</label>

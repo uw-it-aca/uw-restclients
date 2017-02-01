@@ -8,8 +8,6 @@ import json
 from restclients.models.library import MyLibAccount
 from restclients.dao import MyLibInfo_DAO
 from restclients.exceptions import DataFailureException
-from restclients.util.timer import Timer
-from restclients.util.log import log_info
 
 
 INVALID_USER_MSG = "User not found"
@@ -19,11 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 def get_resource(url):
-    timer = Timer()
     response = MyLibInfo_DAO().getURL(url, {})
-    log_info(logger,
-             "%s ==status==> %s" % (url, response.status),
-             timer)
+    logger.info("%s ==status==> %s" % (url, response.status))
 
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
@@ -33,7 +28,6 @@ def get_resource(url):
         raise DataFailureException(url, 404, response.data)
 
     logger.debug("%s ==data==> %s" % (url, response.data))
-
     return response.data
 
 

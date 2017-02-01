@@ -7,8 +7,6 @@ import logging
 import json
 from restclients.dao import Uwnetid_DAO
 from restclients.exceptions import DataFailureException
-from restclients.util.timer import Timer
-from restclients.util.log import log_info
 
 
 INVALID_USER_MSG = "No such NetID"
@@ -16,11 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 def get_resource(url):
-    timer = Timer()
     response = Uwnetid_DAO().getURL(url, {'Accept': 'application/json'})
-    log_info(logger,
-             "%s ==status==> %s" % (url, response.status),
-             timer)
+    logger.info("GET %s ==status==> %s" % (url, response.status))
 
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
@@ -30,20 +25,17 @@ def get_resource(url):
         json_data = json.loads(response.data)
         raise DataFailureException(url, 404, json_data["errorMessage"])
 
-    logger.debug("%s ==data==> %s" % (url, response.data))
+    logger.debug("GET %s ==data==> %s" % (url, response.data))
 
     return response.data
 
 
 def post_resource(url, body):
-    timer = Timer()
     response = Uwnetid_DAO().postURL(url, {
         'Content-Type': 'application/json',
         'Acept': 'application/json',
     }, body)
-    log_info(logger,
-             "%s ==status==> %s" % (url, response.status),
-             timer)
+    logger.info("POST %s ==status==> %s" % (url, response.status))
 
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
@@ -53,6 +45,6 @@ def post_resource(url, body):
         json_data = json.loads(response.data)
         raise DataFailureException(url, 404, json_data["errorMessage"])
 
-    logger.debug("%s ==data==> %s" % (url, response.data))
+    logger.debug("POST %s ==data==> %s" % (url, response.data))
 
     return response.data

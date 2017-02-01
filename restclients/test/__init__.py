@@ -61,3 +61,7 @@ fdao_trumba_tac_override = override_settings(
 FUWNETID = 'restclients.dao_implementation.uwnetid.File'
 fdao_uwnetid_override = override_settings(
     RESTCLIENTS_UWNETID_DAO_CLASS=FUWNETID)
+
+FMAILMAN = 'restclients.dao_implementation.mailman.File'
+fdao_mailman_override = override_settings(
+    RESTCLIENTS_MAILMAN_DAO_CLASS=FMAILMAN)
