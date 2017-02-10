@@ -173,18 +173,23 @@ def get_credits_by_reg_url(url):
 
 def get_schedule_by_regid_and_term(regid, term,
                                    include_instructor_not_on_time_schedule=True,
-                                   per_section_prefetch_callback=None):
+                                   per_section_prefetch_callback=None,
+                                   transcriptable_course=""):
     """
     Returns a restclients.models.sws.ClassSchedule object
     for the regid and term passed in.
     """
-    url = "%s?%s" % (
-        registration_res_url_prefix,
-        urlencode([('reg_id', regid),
-                   ('quarter', term.quarter),
-                   ('is_active', 'true'),
-                   ('year', term.year)
-                   ]))
+    params = {
+        'reg_id': regid,
+        'quarter': term.quarter,
+        'is_active': 'true',
+        'year': term.year
+    }
+
+    if transcriptable_course != "":
+        params["transcriptable_course"] = transcriptable_course
+
+    url = "%s?%s" % (registration_res_url_prefix, urlencode(params))
 
     return _json_to_schedule(get_resource(url), term, regid,
                              include_instructor_not_on_time_schedule,
