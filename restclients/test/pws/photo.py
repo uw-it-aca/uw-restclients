@@ -7,7 +7,7 @@ from restclients.test import fdao_pws_override
 
 
 @fdao_pws_override
-class TestIdCardPhoto(TestCase):
+class IdCardTestPhoto(TestCase):
 
     def test_actas(self):
         user = Person(uwnetid="bill")
