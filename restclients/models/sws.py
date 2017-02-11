@@ -616,7 +616,8 @@ class Section(RestClientsModel):
             'credits': str(self.student_credits),
             'is_auditor':  self.is_auditor,
             'grade': self.student_grade,
-            'grade_date': self.get_grade_date_str()
+            'grade_date': self.get_grade_date_str(),
+            'section_label': self.section_label()
         }
 
         if self.final_exam is not None:
