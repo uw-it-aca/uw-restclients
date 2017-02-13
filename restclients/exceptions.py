@@ -58,6 +58,11 @@ class InvalidIdCardPhotoSize(Exception):
     pass
 
 
+class InvalidProxRFID(Exception):
+    """Exception for invalid rfid."""
+    pass
+
+
 class InvalidEndpointProtocol(Exception):
     """Exception for invalid endpoint protocol."""
     pass
