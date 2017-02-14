@@ -142,4 +142,20 @@ class SWSTestRegistrations(TestCase):
                     self.assertEquals(section.is_auditor, True)
                     self.assertTrue(section.is_primary_section)
 
+    def test_get_schedule_by_regid_and_term(self):
+        with self.settings(
+            RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',
+            RESTCLIENTS_PWS_DAO_CLASS='restclients.dao_implementation.pws.File'):
+            term = Term(quarter="spring", year=2013)
+            class_schedule = get_schedule_by_regid_and_term(
+                'FE36CCB8F66711D5BE060004AC494FCE',
+                term, transcriptable_course="no")
 
+            for section in class_schedule.sections:
+                if section.section_label() == '2013,spring,ESS,107/A':
+                    self.assertEquals(len(section.get_instructors()), 1)
+                    self.assertEquals(section.student_credits, Decimal("%s" % 3.0))
+                    self.assertEquals(section.student_grade, "X")
+                    self.assertEquals(section.get_grade_date_str(), None)
+                    self.assertTrue(section.is_primary_section)
+                    self.assertEquals(section.is_auditor, False)
