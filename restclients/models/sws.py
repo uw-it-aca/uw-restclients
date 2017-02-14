@@ -466,6 +466,18 @@ class Section(RestClientsModel):
                            'course_number',
                            'section_id')
 
+    def is_campus_seattle(self):
+        return self.course_campus is not None and\
+            self.course_campus.lower() == 'seattle'
+
+    def is_campus_bothell(self):
+        return self.course_campus is not None and\
+            self.course_campus.lower() == 'bothell'
+
+    def is_campus_tacoma(self):
+        return self.course_campus is not None and\
+            self.course_campus.lower() == 'tacoma'
+
     def section_label(self):
         return "%s,%s,%s,%s/%s" % (
             self.term.year,

@@ -6,8 +6,6 @@ import logging
 from datetime import datetime
 from restclients.dao import Grad_DAO
 from restclients.exceptions import DataFailureException
-from restclients.util.timer import Timer
-from restclients.util.log import log_info
 
 
 logger = logging.getLogger(__name__)
@@ -15,14 +13,13 @@ logger = logging.getLogger(__name__)
 
 def get_resource(url):
     dao = Grad_DAO()
-    timer = Timer()
     response = dao.getURL(url, {})
-    log_info(logger,
-             "%s ==status==> %s" % (url, response.status),
-             timer)
+    logger.info("%s ==status==> %s" % (url, response.status))
+
     if response.status != 200:
-        logger.debug("%s ==data==> %s" % (url, response.data))
         raise DataFailureException(url, response.status, response.data)
+
+    logger.debug("%s ==data==> %s" % (url, response.data))
     return response.data
 
 
