@@ -245,6 +245,9 @@ def _json_to_section(section_data,
     section.is_independent_start = section_data.get("IsIndependentStart",
                                                     False)
 
+    if("Metadata" in section_data):
+        section.metadata = section_data["Metadata"]
+
     # Some section data sources have different formats for these dates.
     try:
         date_format = "%Y-%m-%d"

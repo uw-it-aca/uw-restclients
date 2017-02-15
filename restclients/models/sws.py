@@ -426,6 +426,7 @@ class Section(RestClientsModel):
     is_independent_start = models.NullBooleanField()
     current_enrollment = models.IntegerField()
     auditors = models.IntegerField()
+    metadata = models.CharField(max_length=512, null=True)
 
     # These are for non-standard start/end dates - don't have those yet
     start_date = models.DateField()
