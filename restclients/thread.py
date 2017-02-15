@@ -10,11 +10,13 @@ from django.conf import settings
 
 class Thread(threading.Thread):
     _use_thread = False
+    parent = None
 
     def __init__(self, *args, **kwargs):
         # Threading has been tested w/ the mysql backend.
         # It should also work with the postgres/oracle/and so on backends,
         # but we don't use those.
+        self.parent = threading.currentThread()
         if settings.DATABASES['default']['ENGINE'] ==\
                 'django.db.backends.mysql':
             if hasattr(settings, "RESTCLIENTS_DISABLE_THREADING"):
@@ -48,3 +50,23 @@ class Thread(threading.Thread):
             return super(Thread, self).join()
 
         return True
+
+
+class GenericPrefetchThread(Thread):
+    method = None
+
+    def run(self):
+        if self.method is None:
+            return
+        try:
+            self.method()
+        except Exception as ex:
+            # Errors in prefetching should also manifest during actual
+            # processing, where they can be handled appropriately
+            pass
+
+
+def generic_prefetch(method, args):
+    def ret():
+        return method(*args)
+    return ret

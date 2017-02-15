@@ -1,3 +1,4 @@
+from restclients.test.uwnetid.password import UwPasswordTest
 from restclients.test.uwnetid.subscription import EmailForwardingTest
 from restclients.test.uwnetid.subscription_60 import KerberosSubsTest
 from restclients.test.uwnetid.subscription_233 import Office365EduSubsTest
@@ -6,10 +7,15 @@ from restclients.test.uwnetid.subscription import NetidPostSubscriptionTest
 from restclients.test.util.date_formator import FormatorTest
 from restclients.test.util.datetime_convertor import DatetimeConvertorTest
 from restclients.test.util.retry import RetryTest
+from restclients.test.bridge.models import TestBridgeModel
 from restclients.test.bridge.user import TestBridgeUser
 from restclients.test.bridge.custom_field import TestBridgeCustomFields
 from restclients.test.hfs.idcard import HfsTest
 from restclients.test.hrpws.appointee import AppointeeTest
+from restclients.test.mailman.basic_list import TestMailmanBasicList
+from restclients.test.mailman.instructor_term_list import\
+    TestMailmanInstructorList
+from restclients.test.mailman.course_list import TestMailmanCourseLists
 from restclients.test.library.mylibinfo import MyLibInfoTest
 from restclients.test.library.currics import CurricsTest
 from restclients.test.grad.committee import CommitteeTest
@@ -44,7 +50,8 @@ from restclients.test.sws.dates import SWSTestDates
 
 from restclients.test.pws.person import PWSTestPersonData
 from restclients.test.pws.entity import PWSTestEntityData
-from restclients.test.pws.idcard import TestIdCardPhoto
+from restclients.test.pws.card import IdCardTestCard
+from restclients.test.pws.photo import IdCardTestPhoto
 from restclients.test.pws.err404.dao import PWSTestDAO404
 from restclients.test.pws.err404.pws import PWSTest404
 from restclients.test.pws.err500.dao import PWSTestDAO500
@@ -107,6 +114,9 @@ from restclients.test.o365.license import O365TestLicense
 
 from restclients.test.thread import ThreadsTest
 from restclients.test.view import ViewTest
+from restclients.test.delay import DegradedTestCase
 from restclients.test.dao_implementation.mock import TestMock
 
 from restclients.test.iasystem.evaluation import IASystemTest
+
+from restclients.test.upass import UPassTest

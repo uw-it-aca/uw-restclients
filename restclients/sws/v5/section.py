@@ -5,6 +5,7 @@ import logging
 import re
 from datetime import datetime
 from urllib import urlencode
+from restclients.thread import generic_prefetch
 from restclients.exceptions import DataFailureException
 from restclients.exceptions import InvalidSectionID, InvalidSectionURL
 from restclients.models.sws import Section, SectionReference, FinalExam
@@ -57,6 +58,18 @@ def get_sections_by_curriculum_and_term(curriculum, term):
                      urlencode({"year": term.year,
                                 "quarter": term.quarter.lower(),
                                 "curriculum_abbreviation": curriculum.label}))
+    return _json_to_sectionref(get_resource(url), term)
+
+
+def get_sections_by_building_and_term(building, term):
+    """
+    Returns a list of restclients.models.sws.SectionReference objects
+    for the passed building and term.
+    """
+    url = "%s?%s" % (section_res_url_prefix,
+                     urlencode({"year": term.year,
+                                "quarter": term.quarter.lower(),
+                                "facility_code": building}))
     return _json_to_sectionref(get_resource(url), term)
 
 
@@ -178,6 +191,29 @@ def get_joint_sections(section,
     return joint_sections
 
 
+def get_prefetch_for_section_data(section_data):
+    """
+    This will return a list of methods that can be called to prefetch (in
+    threads) content that would be fetched while building the section.
+
+    This depends on a good cache backend.  Without that, this will just double
+    the work that's needed :(
+
+    Each method is identified by a key, so they can be deduped if multiple
+    sections want the same data, such as a common instructor.
+    """
+    pws = PWS()
+    prefetch = []
+    for meeting_data in section_data["Meetings"]:
+        for instructor_data in meeting_data["Instructors"]:
+            pdata = instructor_data["Person"]
+            if "RegID" in pdata and pdata["RegID"] is not None:
+                prefetch.append(["person-%s" % pdata["RegID"],
+                                 generic_prefetch(pws.get_person_by_regid,
+                                                  [pdata["RegID"]])])
+
+    return prefetch
+
 def _json_to_section(section_data,
                      term=None,
                      include_instructor_not_on_time_schedule=True):
@@ -209,14 +245,19 @@ def _json_to_section(section_data,
     section.is_independent_start = section_data.get("IsIndependentStart",
                                                     False)
 
-    date_format = "%Y-%m-%d"
-    if section_data.get("StartDate", None):
-        str_date = section_data["StartDate"]
-        section.start_date = datetime.strptime(str_date, date_format).date()
+    # Some section data sources have different formats for these dates.
+    try:
+        date_format = "%Y-%m-%d"
+        if section_data.get("StartDate", None):
+            str_date = section_data["StartDate"]
+            start_date = datetime.strptime(str_date, date_format).date()
+            section.start_date = start_date
 
-    if section_data.get("EndDate", None):
-        str_date = section_data["EndDate"]
-        section.end_date = datetime.strptime(str_date, date_format).date()
+        if section_data.get("EndDate", None):
+            str_date = section_data["EndDate"]
+            section.end_date = datetime.strptime(str_date, date_format).date()
+    except Exception as ex:
+        pass
 
     section.section_type = section_data["SectionType"]
     if "independent study" == section.section_type:

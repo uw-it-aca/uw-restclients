@@ -1,8 +1,8 @@
 from datetime import datetime
+import json
 import logging
 import re
-from django.utils.dateparse import parse_datetime
-import simplejson as json
+from dateutil.parser import parse
 from restclients.exceptions import InvalidNetID
 from restclients.pws import PWS
 from restclients.models.bridge import BridgeUser, BridgeUserRole,\
@@ -96,7 +96,7 @@ def delete_user_by_id(bridge_id):
     return resp.status == 204
 
 
-def get_user(uwnetid, include_course_summary=False):
+def get_user(uwnetid, include_course_summary=True):
     """
     Return a list of BridgeUsers objects with custom fields
     """
@@ -107,7 +107,7 @@ def get_user(uwnetid, include_course_summary=False):
     return _process_json_resp_data(resp)
 
 
-def get_user_by_id(bridge_id, include_course_summary=False):
+def get_user_by_id(bridge_id, include_course_summary=True):
     """
     Return a list of BridgeUsers objects with custom fields
     """
@@ -118,17 +118,19 @@ def get_user_by_id(bridge_id, include_course_summary=False):
     return _process_json_resp_data(resp)
 
 
-def get_all_users(include_course_summary=False):
+def get_all_users(include_course_summary=True):
     """
-    Return a list of BridgeUser objects with custom fields
+    Return a list of BridgeUser objects with custom fields.
     """
     url = author_uid_url(None) + "?%s" % CUSTOM_FIELD
+
     if include_course_summary:
         url = "%s&%s" % (url, COURSE_SUMMARY)
+
     url = "%s&%s" % (url, PAGE_MAX_ENTRY)
-    resp = get_resource(
-        author_uid_url(None) +
-        "?%s&%s&%s" % (CUSTOM_FIELD, COURSE_SUMMARY, PAGE_MAX_ENTRY))
+
+    resp = get_resource(url)
+
     return _process_json_resp_data(resp)
 
 
@@ -179,7 +181,6 @@ def _process_json_resp_data(resp, no_custom_fields=False):
 
         bridge_users = _process_apage(resp_data, bridge_users,
                                       no_custom_fields)
-
         if link_url is None:
             break
         resp = get_resource(link_url)
@@ -208,66 +209,51 @@ def _process_apage(resp_data, bridge_users, no_custom_fields):
         return bridge_users
 
     for user_data in resp_data["users"]:
+
         if "deleted_at" in user_data and\
                 user_data["deleted_at"] is not None:
             # skip deleted entry
             continue
 
-        user = BridgeUser()
-        user.bridge_id = int(user_data["id"])
-        user.netid = re.sub('@uw.edu', '', user_data["uid"])
+        user = BridgeUser(
+            bridge_id=int(user_data["id"]),
+            netid=re.sub('@uw.edu', '', user_data["uid"]),
+            email=user_data.get("email", ""),
+            name=user_data.get("name", None),
+            full_name=user_data.get("full_name", ""),
+            first_name=user_data.get("first_name", None),
+            last_name=user_data.get("last_name", None),
+            sortable_name=user_data.get("sortable_name", None),
+            locale=user_data.get("locale", "en"),
+            avatar_url=user_data.get("avatar_url", None),
+            logged_in_at=None,
+            updated_at=None,
+            unsubscribed=user_data.get("unsubscribed", None),
+            next_due_date=None,
+            completed_courses_count=user_data.get("completed_courses_count",
+                                                  -1),
+            )
 
-        if "name" in user_data:
-            user.name = user_data["name"]
+        if "loggedInAt" in user_data and\
+                user_data["loggedInAt"] is not None:
+            user.logged_in_at = parse(user_data["loggedInAt"])
 
-        if "first_name" in user_data:
-            user.first_name = user_data["first_name"]
+        if "updated_at" in user_data and\
+                user_data["updated_at"] is not None:
+            user.updated_at = parse(user_data["updated_at"])
 
-        if "last_name" in user_data:
-            user.last_name = user_data["last_name"]
+        if "next_due_date" in user_data and\
+                user_data["next_due_date"] is not None:
+            user.next_due_date = parse(user_data["next_due_date"])
 
-        if "full_name" in user_data:
-            user.full_name = user_data["full_name"]
-
-        if "sortable_name" in user_data:
-            user.sortable_name = user_data["sortable_name"]
-
-        if "email" in user_data:
-            user.email = user_data["email"]
-
-        if "locale" in user_data:
-            user.locale = user_data["locale"]
-
-        if "avatar_url" in user_data:
-            user.avatar_url = user_data["avatar_url"]
-
-        if "loggedInAt" in user_data:
-            user.logged_in_at = user_data["loggedInAt"]
-            if user_data["loggedInAt"] is not None:
-                user.logged_in_at = parse_datetime(user_data["loggedInAt"])
-
-        if "updated_at" in user_data:
-            user.updated_at = user_data["updated_at"]
-            if user_data["updated_at"] is not None:
-                user.updated_at = parse_datetime(user_data["updated_at"])
-
-        if "unsubscribed" in user_data:
-            user.unsubscribed = user_data["unsubscribed"]
-
-        if "next_due_date" in user_data:
-            user.next_due_date = user_data["next_due_date"]
-            if user_data["next_due_date"] is not None:
-                user.next_due_date = parse_datetime(user_data["next_due_date"])
-
-        if "completed_courses_count" in user_data:
-            user.completed_courses_count = user_data["completed_courses_count"]
-
-        if "links" in user_data and len(user_data["links"]) > 0 and\
+        if not no_custom_fields and\
+                "links" in user_data and len(user_data["links"]) > 0 and\
                 "custom_field_values" in user_data["links"]:
             values = user_data["links"]["custom_field_values"]
             for custom_field_value in values:
-                user.custom_fields.append(
-                    custom_fields_value_dict[custom_field_value])
+                if custom_field_value in custom_fields_value_dict:
+                    user.custom_fields.append(
+                        custom_fields_value_dict[custom_field_value])
 
         if "roles" in user_data and len(user_data["roles"]) > 0:
             for role_data in user_data["roles"]:
@@ -290,20 +276,27 @@ def _get_custom_fields_dict(linked_data):
 
     fields_values = linked_data["custom_field_values"]
     for value in fields_values:
-        custom_field = BridgeCustomField()
-        custom_field.value_id = value["id"]
-        custom_field.value = value["value"]
-        custom_field.field_id = value["links"]["custom_field"]["id"]
+        custom_field = BridgeCustomField(
+            value_id=value["id"],
+            value=value["value"],
+            field_id=value["links"]["custom_field"]["id"]
+            )
         custom_field.name = custom_fields_name_dict[custom_field.field_id]
-
         custom_fields_value_dict[custom_field.value_id] = custom_field
 
     return custom_fields_value_dict
 
 
+def get_regid_from_custom_fields(custom_fields):
+    if custom_fields is not None and\
+            len(custom_fields) > 0:
+        for custom_field in custom_fields:
+            if custom_field.is_regid():
+                return custom_field.value
+    return None
+
+
 def _get_roles_from_json(role_data):
     # roles in data is a list of strings currently.
-    role = BridgeUserRole()
-    role.role_id = role_data
-    role.name = role_data
-    return role
+    return BridgeUserRole(role_id=role_data,
+                          name=role_data)

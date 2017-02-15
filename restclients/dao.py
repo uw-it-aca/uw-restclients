@@ -13,6 +13,7 @@ from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.canvas import File as CanvasFile
 from restclients.dao_implementation.catalyst import File as CatalystFile
+from restclients.dao_implementation.mailman import File as MailmanFile
 from restclients.dao_implementation.nws import File as NWSFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
@@ -32,7 +33,70 @@ from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.dao_implementation.o365 import File as O365File
+from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
+from restclients.mock_http import MockHTTP
+from threading import currentThread
+import logging
+import time
+
+logger = logging.getLogger(__name__)
+
+
+class PerformanceDegradation(object):
+    _problem_data = {}
+    problems = None
+
+    @classmethod
+    def set_problems(obj, problems):
+        thread = currentThread()
+        PerformanceDegradation._problem_data[thread] = problems
+
+    @classmethod
+    def clear_problems(obj):
+        thread = currentThread()
+        PerformanceDegradation._problem_data[thread] = None
+
+    @classmethod
+    def get_problems(obj):
+        thread = currentThread()
+
+        if thread in PerformanceDegradation._problem_data:
+            return PerformanceDegradation._problem_data[thread]
+
+        if hasattr(thread, 'parent'):
+            thread = thread.parent
+            if thread in PerformanceDegradation._problem_data:
+                return PerformanceDegradation._problem_data[thread]
+
+        return None
+
+    @classmethod
+    def get_response(obj, service, url):
+        problems = PerformanceDegradation.get_problems()
+        if not problems:
+            return
+
+        delay = problems.get_load_time(service)
+        if delay:
+            time.sleep(float(delay))
+
+        status = problems.get_status(service)
+        content = problems.get_content(service)
+
+        if content and not status:
+            status = 200
+
+        if status:
+            response = MockHTTP()
+            response.status = int(status)
+
+            if content:
+                response.data = content
+
+            return response
+
+        return None
 
 
 class DAO_BASE(object):
@@ -56,15 +120,30 @@ class DAO_BASE(object):
 
 
 class MY_DAO(DAO_BASE):
+    def _log(self, service, url, method, start_time, cached=False):
+        from_cache = "yes" if cached else "no"
+        total_time = time.time() - start_time
+        args = (service, method, url, from_cache, total_time)
+        msg = "service:%s method:%s url:%s from_cache:%s time:%s" % args
+        logger.info(msg)
+
     def _getCache(self):
         return self._getModule('RESTCLIENTS_DAO_CACHE_CLASS', NoCache)
 
     def _getURL(self, service, url, headers):
+        start_time = time.time()
+
+        bad_response = PerformanceDegradation.get_response(service, url)
+        if bad_response:
+            return bad_response
+
         dao = self._getDAO()
         cache = self._getCache()
         cache_response = cache.getCache(service, url, headers)
         if cache_response is not None:
             if "response" in cache_response:
+                self._log(service=service, url=url, method="GET",
+                          cached=True, start_time=start_time)
                 return cache_response["response"]
             if "headers" in cache_response:
                 headers = cache_response["headers"]
@@ -75,28 +154,45 @@ class MY_DAO(DAO_BASE):
 
         if cache_post_response is not None:
             if "response" in cache_post_response:
+                self._log(service=service, url=url, method="GET",
+                          cached=True, start_time=start_time)
                 return cache_post_response["response"]
 
+        self._log(service=service, url=url, method="GET",
+                  start_time=start_time)
         return response
 
     def _postURL(self, service, url, headers, body=None):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.postURL(url, headers, body)
+
+        self._log(service=service, url=url, method="POST",
+                  start_time=start_time)
         return response
 
     def _deleteURL(self, service, url, headers):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.deleteURL(url, headers)
+        self._log(service=service, url=url, method="DELETE",
+                  start_time=start_time)
         return response
 
     def _putURL(self, service, url, headers, body=None):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.putURL(url, headers, body)
+        self._log(service=service, url=url, method="PUT",
+                  start_time=start_time)
         return response
 
     def _patchURL(self, service, url, headers, body=None):
         dao = self._getDAO()
+        start_time = time.time()
         response = dao.patchURL(url, headers, body)
+        self._log(service=service, url=url, method="PATCH",
+                  start_time=start_time)
         return response
 
 
@@ -295,6 +391,15 @@ class Hfs_DAO(MY_DAO):
         return self._getModule('RESTCLIENTS_HFS_DAO_CLASS', HfsFile)
 
 
+class Mailman_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('mailman', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_MAILMAN_DAO_CLASS',
+                               MailmanFile)
+
+
 class MyLibInfo_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('libraries', url, headers)
@@ -402,3 +507,11 @@ class O365_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_O365_DAO_CLASS', O365File)
+
+
+class UPass_DAO(MY_DAO):
+    def getURL(self, url, headers):
+        return self._getURL('upass', url, headers)
+
+    def _getDAO(self):
+        return self._getModule('RESTCLIENTS_UPASS_DAO_CLASS', UPassFile)

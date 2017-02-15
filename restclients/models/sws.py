@@ -319,11 +319,27 @@ class Term(RestClientsModel):
         return {
             'quarter': self.get_quarter_display(),
             'year': self.year,
+            'label': self.term_label(),
+            'last_day_add': str(self.last_day_add),
+            'last_day_drop': str(self.last_day_drop),
+            'first_day_quarter': str(self.first_day_quarter),
+            'census_day': str(self.census_day),
+            'last_day_instruction': str(self.last_day_instruction),
             'last_final_exam_date': self.last_final_exam_date.strftime(
-                "%Y-%m-%d 23:59:59"),
-            'grade_submission_deadline':
-                self.grade_submission_deadline.strftime(
-                "%Y-%m-%d 23:59:59")
+                "%Y-%m-%d 23:59:59"),  # Datetime for backwards compatibility
+            'grading_period_open': str(self.grading_period_open),
+            'aterm_grading_period_open': str(self.aterm_grading_period_open),
+            'grade_submission_deadline': str(self.grade_submission_deadline),
+            'registration_periods': [{
+                    'start': str(self.registration_period1_start.date()),
+                    'end': str(self.registration_period1_end.date())
+                }, {
+                    'start': str(self.registration_period2_start.date()),
+                    'end': str(self.registration_period2_end.date())
+                }, {
+                    'start': str(self.registration_period3_start.date()),
+                    'end': str(self.registration_period3_end.date())
+                }]
         }
 
 
@@ -452,6 +468,18 @@ class Section(RestClientsModel):
                            'course_number',
                            'section_id')
 
+    def is_campus_seattle(self):
+        return self.course_campus is not None and\
+            self.course_campus.lower() == 'seattle'
+
+    def is_campus_bothell(self):
+        return self.course_campus is not None and\
+            self.course_campus.lower() == 'bothell'
+
+    def is_campus_tacoma(self):
+        return self.course_campus is not None and\
+            self.course_campus.lower() == 'tacoma'
+
     def section_label(self):
         return "%s,%s,%s,%s/%s" % (
             self.term.year,
@@ -469,10 +497,11 @@ class Section(RestClientsModel):
             self.primary_section_id)
 
     def get_instructors(self):
-        instructors = []
+        instructors = {}
         for meeting in self.meetings:
-            instructors.extend(meeting.instructors)
-        return instructors
+            for instructor in meeting.instructors:
+                instructors[instructor.uwregid] = instructor
+        return instructors.values()
 
     def is_instructor(self, person):
         for meeting in self.meetings:
@@ -655,6 +684,16 @@ class Registration(RestClientsModel):
     person = models.ForeignKey(Person,
                                on_delete=models.PROTECT)
     is_active = models.NullBooleanField()
+    is_credit = models.NullBooleanField()
+    is_auditor = models.NullBooleanField()
+    is_independent_start = models.NullBooleanField()
+    start_date = models.DateField(blank=True)
+    end_date = models.DateField(blank=True)
+    request_date = models.DateField()
+    request_status = models.CharField(max_length=50)
+    duplicate_code = models.CharField(max_length=3)
+    credits = models.CharField(max_length=5, null=True)
+    repository_timestamp = models.DateTimeField()
 
 
 class SectionMeeting(RestClientsModel):
@@ -843,11 +882,6 @@ class GradeSubmissionDelegate(RestClientsModel):
     person = models.ForeignKey(Person,
                                on_delete=models.PROTECT)
     delegate_level = models.CharField(max_length=20)
-
-
-class TimeScheduleConstruction(RestClientsModel):
-    campus = models.SlugField(max_length=15)
-    is_on = models.NullBooleanField()
 
 
 class NoticeAttribute(RestClientsModel):

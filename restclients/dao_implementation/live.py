@@ -10,6 +10,7 @@ import socket
 from urlparse import urlparse
 from urllib3 import connection_from_url
 from django.conf import settings
+from restclients.exceptions import DataFailureException
 from restclients.signals.rest_request import rest_request
 from restclients.signals.success import rest_request_passfail
 
@@ -67,8 +68,10 @@ def get_live_url(con_pool,
     :param body:
         the POST, PUT, PATCH body of the request
     """
-    timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", con_pool.timeout)
+
+    timeout = con_pool.timeout.read_timeout
     start_time = time.time()
+
     response = con_pool.urlopen(method, url, body=body,
                                 headers=headers, redirect=redirect,
                                 retries=retries, timeout=timeout)

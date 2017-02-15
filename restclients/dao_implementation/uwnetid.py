@@ -6,6 +6,7 @@ from django.conf import settings
 from restclients.dao_implementation.live import get_con_pool, get_live_url
 from restclients.dao_implementation.mock import get_mockdata_url, \
     post_mockdata_url
+from restclients.dao_implementation import get_timeout
 from restclients.mock_http import MockHTTP
 from os.path import abspath, dirname
 
@@ -40,7 +41,6 @@ class File(object):
 
 
 UWNETID_MAX_POOL_SIZE = 10
-UWNETID_SOCKET_TIMEOUT = 15
 
 
 class Live(object):
@@ -59,7 +59,7 @@ class Live(object):
                 settings.RESTCLIENTS_UWNETID_KEY_FILE,
                 settings.RESTCLIENTS_UWNETID_CERT_FILE,
                 max_pool_size=UWNETID_MAX_POOL_SIZE,
-                socket_timeout=UWNETID_SOCKET_TIMEOUT)
+                socket_timeout=get_timeout('uwnetid'))
         return get_live_url(Live.pool,
                             'GET',
                             settings.RESTCLIENTS_UWNETID_HOST,
@@ -74,7 +74,7 @@ class Live(object):
                 settings.RESTCLIENTS_UWNETID_KEY_FILE,
                 settings.RESTCLIENTS_UWNETID_CERT_FILE,
                 max_pool_size=UWNETID_MAX_POOL_SIZE,
-                socket_timeout=UWNETID_SOCKET_TIMEOUT)
+                socket_timeout=get_timeout('uwnetid'))
         return get_live_url(Live.pool,
                             'POST',
                             settings.RESTCLIENTS_UWNETID_HOST,

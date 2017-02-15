@@ -5,7 +5,7 @@ This is the interface for interacting with the Person Web Service.
 from restclients.dao import PWS_DAO
 from restclients.exceptions import InvalidRegID, InvalidNetID,\
     InvalidEmployeeID, InvalidStudentNumber, InvalidIdCardPhotoSize,\
-    DataFailureException
+    InvalidProxRFID, DataFailureException
 from restclients.models.sws import Person, Entity
 from StringIO import StringIO
 from urllib import urlencode
@@ -15,6 +15,7 @@ import re
 
 PERSON_PREFIX = '/identity/v1/person'
 ENTITY_PREFIX = '/identity/v1/entity'
+CARD_PREFIX = '/idcard/v1/card'
 
 
 class PWS(object):
@@ -31,6 +32,7 @@ class PWS(object):
                                                 re.I)
         self._re_employee_id = re.compile(r'^\d{9}$')
         self._re_student_number = re.compile(r'^\d{7}$')
+        self._re_prox_rfid = re.compile(r'^\d{16}$')
 
     def get_person_by_regid(self, regid):
         """
@@ -114,6 +116,30 @@ class PWS(object):
             raise DataFailureException(url, 404, "No person found")
 
         regid = data["Persons"][0]["PersonURI"]["UWRegID"]
+        return self.get_person_by_regid(regid)
+
+    def get_person_by_prox_rfid(self, prox_rfid):
+        """
+        Returns a restclients.Person object for the given rfid.  If the rfid
+        isn't found, or if there is an error communicating with the IdCard WS,
+        a DataFailureException will be thrown.
+        """
+        if not self.valid_prox_rfid(prox_rfid):
+            raise InvalidProxRFID(prox_rfid)
+
+        dao = PWS_DAO()
+        url = "%s.json?%s" % (CARD_PREFIX,
+                              urlencode({"prox_rfid": prox_rfid}))
+        response = dao.getURL(url, {"Accept": "application/json"})
+
+        if response.status != 200:
+            raise DataFailureException(url, response.status, response.data)
+
+        data = json.loads(response.data)
+        if not len(data["Cards"]):
+            raise DataFailureException(url, 404, "No card found")
+
+        regid = data["Cards"][0]["RegID"]
         return self.get_person_by_regid(regid)
 
     def get_entity_by_regid(self, regid):
@@ -218,6 +244,9 @@ class PWS(object):
     def valid_student_number(self, student_number):
         return True if (
             self._re_student_number.match(str(student_number))) else False
+
+    def valid_prox_rfid(self, prox_rfid):
+        return True if self._re_prox_rfid.match(str(prox_rfid)) else False
 
     def _person_from_json(self, data):
         """

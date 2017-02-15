@@ -181,8 +181,7 @@ class Reports(Canvas):
         # Ensure file url matches the hostname in settings,
         # workaround for Canvas bug help.instructure.com/tickets/362386
         url = re.sub(r'^https://[^/]+', settings.RESTCLIENTS_CANVAS_HOST, url)
-
-        timeout = getattr(settings, "RESTCLIENTS_TIMEOUT", 15.0)
+        timeout = getattr(settings, "RESTCLIENTS_CANVAS_SOCKET_TIMEOUT", 15)
         cafile = getattr(settings, "RESTCLIENTS_CA_BUNDLE",
                          "/etc/ssl/certs/ca-bundle.crt")
         pool_manager = PoolManager(cert_reqs="CERT_REQUIRED",
