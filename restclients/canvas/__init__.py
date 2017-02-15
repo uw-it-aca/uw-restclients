@@ -3,7 +3,6 @@ This is the interface for interacting with Instructure's Canvas web services.
 """
 from django.conf import settings
 from restclients.dao import Canvas_DAO
-from restclients.models.canvas import CanvasTerm
 from restclients.exceptions import DataFailureException
 from urllib import quote, unquote
 import warnings
@@ -49,20 +48,9 @@ class Canvas(object):
         return Enrollments().get_enrollments_for_regid(regid)
 
     def get_term_by_sis_id(self, sis_term_id):
-        """
-        Return a term resource for the passed SIS ID.
-        """
-        params = {"workflow_state": "all", "per_page": 500}
-        url = "/api/v1/accounts/%s/terms" % (
-            settings.RESTCLIENTS_CANVAS_ACCOUNT_ID)
-        data = self._get_resource(url, params=params)
-
-        for term in data["enrollment_terms"]:
-            if term["sis_term_id"] == sis_term_id:
-                term = CanvasTerm(term_id=term["id"],
-                                  sis_term_id=term["sis_term_id"],
-                                  name=term["name"])
-                return term
+        deprecation("Use restclients.canvas.terms.get_term_by_sis_id")
+        from restclients.canvas.terms import Terms
+        return Terms().get_term_by_sis_id(sis_term_id)
 
     def valid_canvas_id(self, canvas_id):
         return self._re_canvas_id.match(str(canvas_id)) is not None
