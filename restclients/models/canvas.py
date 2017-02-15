@@ -45,19 +45,9 @@ class CanvasTerm(models.Model):
     term_id = models.IntegerField()
     sis_term_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=100)
-
-    # XXX - should this fall back to fetching from the SWS?
-    def get_start_date(self):
-        if self._start_date:
-            return self._start_date
-        raise Exception(
-            "Need to fetch this from the SWS, or manually pre-populate")
-
-    def get_end_date(self):
-        if self._end_date:
-            return self._end_date
-        raise Exception(
-            "Need to fetch this from the SWS, or manually pre-populate")
+    workflow_state = models.CharField(max_length=50)
+    start_at = models.DateTimeField(null=True)
+    end_at = models.DateTimeField(null=True)
 
     class Meta:
         db_table = "restclients_canvas_term"

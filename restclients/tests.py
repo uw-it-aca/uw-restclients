@@ -50,7 +50,8 @@ from restclients.test.sws.dates import SWSTestDates
 
 from restclients.test.pws.person import PWSTestPersonData
 from restclients.test.pws.entity import PWSTestEntityData
-from restclients.test.pws.idcard import TestIdCardPhoto
+from restclients.test.pws.card import IdCardTestCard
+from restclients.test.pws.photo import IdCardTestPhoto
 from restclients.test.pws.err404.dao import PWSTestDAO404
 from restclients.test.pws.err404.pws import PWSTest404
 from restclients.test.pws.err500.dao import PWSTestDAO500

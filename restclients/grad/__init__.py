@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 def get_resource(url):
     dao = Grad_DAO()
     response = dao.getURL(url, {})
-    logger.info("GET %s ==status==> %s" % (url, response.status))
+    logger.info("%s ==status==> %s" % (url, response.status))
 
     if response.status != 200:
         raise DataFailureException(url, response.status, response.data)
 
-    logger.debug("GET %s ==status==> %s" % (url, response.data))
+    logger.debug("%s ==data==> %s" % (url, response.data))
     return response.data
 
 

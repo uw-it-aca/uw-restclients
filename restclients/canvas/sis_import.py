@@ -94,4 +94,5 @@ class SISImport(Canvas):
         sis_import.workflow_state = data["workflow_state"]
         sis_import.progress = data.get("progress", "0")
         sis_import.processing_warnings = data.get("processing_warnings", [])
+        sis_import.processing_errors = data.get("processing_errors", [])
         return sis_import
