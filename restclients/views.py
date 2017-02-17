@@ -23,6 +23,7 @@ from urllib import quote, unquote, urlencode
 from urlparse import urlparse, parse_qs
 import simplejson as json
 import re
+import base64
 
 
 def require_admin(view_func):
@@ -142,8 +143,14 @@ def proxy(request, service, url):
 
     end = time()
 
+    # First, check for known images
+    is_image = False
+    base_64 = None
     # Assume json, and try to format it.
     try:
+        if url.find('/idcard/v1/photo') == 0:
+            is_image = True
+            base_64 = base64.b64encode(response.data)
         if not use_pre:
             content = format_json(service, response.data)
             json_data = response.data
@@ -163,6 +170,8 @@ def proxy(request, service, url):
         "headers": response.headers,
         "override_user": user_service.get_override_user(),
         "use_pre": use_pre,
+        "is_image": is_image,
+        "base_64": base_64,
     }
 
     try:
