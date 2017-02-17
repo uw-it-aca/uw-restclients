@@ -18,6 +18,9 @@
             {% if use_pre %}<pre>{% endif %}
             {{ content|safe }}
             {% if use_pre %}</pre>{% endif %}
+            {% if is_image %}
+                <img src="data:image/jpeg;base64, {{ base_64 }}"/>
+            {% endif %}
         </div>
 
         <div class="restclients-footer">
