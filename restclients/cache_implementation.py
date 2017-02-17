@@ -7,6 +7,7 @@ from restclients.cache_manager import store_cache_entry
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware, get_current_timezone
 from django.conf import settings
+import base64
 import json
 import bmemcached
 import logging
@@ -213,6 +214,8 @@ class MemcachedCache(object):
             return
 
         values = json.loads(data)
+        if "b64_data" in data:
+            values["data"] = base64.b64decode(values["b64_data"])
         response = MockHTTP()
         response.status = values["status"]
         response.data = values["data"]
@@ -229,8 +232,9 @@ class MemcachedCache(object):
         for header in response.headers:
             header_data[header] = response.getheader(header)
 
+        b64_data = base64.b64encode(response.data)
         data = json.dumps({"status": response.status,
-                           "data": response.data,
+                           "b64_data": b64_data,
                            "headers": header_data})
 
         time_to_store = self.get_cache_expiration_time(service, url)
