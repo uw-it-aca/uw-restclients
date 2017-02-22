@@ -31,6 +31,11 @@ section_label_pattern = re.compile(
 logger = logging.getLogger(__name__)
 
 
+def is_valid_section_label(label):
+    return label is not None and\
+        section_label_pattern.match(label) is not None
+
+
 def get_sections_by_instructor_and_term(person, term):
     """
     Returns a list of restclients.models.sws.SectionReference objects
@@ -148,7 +153,7 @@ def get_section_by_label(label,
     Returns a restclients.models.sws.Section object for
     the passed section label.
     """
-    if not section_label_pattern.match(label):
+    if not is_valid_section_label(label):
         raise InvalidSectionID(label)
 
     url = "%s/%s.json" % (
