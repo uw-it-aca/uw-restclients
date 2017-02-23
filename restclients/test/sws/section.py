@@ -28,6 +28,7 @@ class SWSTestSectionData(TestCase):
         self.assertTrue(is_valid_section_label('2013,spring,PHYS,121/AA'))
         self.assertFalse(is_valid_section_label('2013spring,PHYS,121/AA'))
         self.assertFalse(is_valid_section_label('2013,spring,PHYS121/AA'))
+        self.assertFalse(is_valid_section_label(123))
         self.assertFalse(is_valid_section_label(None))
 
     def test_section(self):
