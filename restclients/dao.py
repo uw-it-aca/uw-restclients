@@ -6,7 +6,8 @@ except:
 from django.conf import settings
 from django.core.exceptions import *
 from restclients.dao_implementation.pws import File as PWSFile
-from restclients.dao_implementation.sws import File as SWSFile
+from restclients.dao_implementation.sws import SWS_DAO
+from restclients.dao_implementation.hfs import Hfs_DAO
 from restclients.dao_implementation.gws import File as GWSFile
 from restclients.dao_implementation.kws import File as KWSFile
 from restclients.dao_implementation.book import File as BookFile
@@ -28,7 +29,6 @@ from restclients.dao_implementation.library.mylibinfo import (
 from restclients.dao_implementation.library.currics import (
     File as LibCurricsFile)
 from restclients.dao_implementation.myplan import File as MyPlanFile
-from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
@@ -36,67 +36,11 @@ from restclients.dao_implementation.o365 import File as O365File
 from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
 from restclients.mock_http import MockHTTP
-from threading import currentThread
 import logging
 import time
+from restclients_core.util.performance import PerformanceDegradation
 
 logger = logging.getLogger(__name__)
-
-
-class PerformanceDegradation(object):
-    _problem_data = {}
-    problems = None
-
-    @classmethod
-    def set_problems(obj, problems):
-        thread = currentThread()
-        PerformanceDegradation._problem_data[thread] = problems
-
-    @classmethod
-    def clear_problems(obj):
-        thread = currentThread()
-        PerformanceDegradation._problem_data[thread] = None
-
-    @classmethod
-    def get_problems(obj):
-        thread = currentThread()
-
-        if thread in PerformanceDegradation._problem_data:
-            return PerformanceDegradation._problem_data[thread]
-
-        if hasattr(thread, 'parent'):
-            thread = thread.parent
-            if thread in PerformanceDegradation._problem_data:
-                return PerformanceDegradation._problem_data[thread]
-
-        return None
-
-    @classmethod
-    def get_response(obj, service, url):
-        problems = PerformanceDegradation.get_problems()
-        if not problems:
-            return
-
-        delay = problems.get_load_time(service)
-        if delay:
-            time.sleep(float(delay))
-
-        status = problems.get_status(service)
-        content = problems.get_content(service)
-
-        if content and not status:
-            status = 200
-
-        if status:
-            response = MockHTTP()
-            response.status = int(status)
-
-            if content:
-                response.data = content
-
-            return response
-
-        return None
 
 
 class DAO_BASE(object):
@@ -219,17 +163,6 @@ class Subdomain_DAO(MY_DAO):
                 return cache_post_response["response"]
 
         return response
-
-
-class SWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('sws', url, headers)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('sws', url, headers, body)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_SWS_DAO_CLASS', SWSFile)
 
 
 class PWS_DAO(MY_DAO):
@@ -381,14 +314,6 @@ class NWS_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_NWS_DAO_CLASS', NWSFile)
-
-
-class Hfs_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('hfs', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_HFS_DAO_CLASS', HfsFile)
 
 
 class Mailman_DAO(MY_DAO):
