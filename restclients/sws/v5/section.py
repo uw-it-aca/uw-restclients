@@ -33,8 +33,7 @@ logger = logging.getLogger(__name__)
 
 def is_valid_section_label(label):
     try:
-        return label is not None and\
-            section_label_pattern.match(label) is not None
+        return section_label_pattern.match(label) is not None
     except TypeError:
         return False
 
