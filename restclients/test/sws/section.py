@@ -12,7 +12,7 @@ from restclients.sws.section import get_section_by_label,\
     get_sections_by_instructor_and_term,\
     get_sections_by_curriculum_and_term,\
     get_sections_by_building_and_term,\
-    get_changed_sections_by_term,\
+    get_changed_sections_by_term, is_valid_section_label,\
     get_sections_by_delegate_and_term,\
     is_a_term, is_b_term, is_full_summer_term
 
@@ -22,6 +22,15 @@ PWSF = 'restclients.dao_implementation.pws.File'
 
 
 class SWSTestSectionData(TestCase):
+
+    def test_is_valid_section_label(self):
+        self.assertTrue(is_valid_section_label('2013,spring,B BIO,200/A'))
+        self.assertTrue(is_valid_section_label('2013,spring,PHYS,121/AA'))
+        self.assertFalse(is_valid_section_label('2013spring,PHYS,121/AA'))
+        self.assertFalse(is_valid_section_label('2013,spring,PHYS121/AA'))
+        self.assertFalse(is_valid_section_label(123))
+        self.assertFalse(is_valid_section_label(None))
+
     def test_section(self):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS=SWSF,
