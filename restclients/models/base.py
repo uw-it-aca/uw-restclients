@@ -8,10 +8,12 @@ class RestClientsModel(RCModel):
         abstract = True
         app_label = 'restclients'
 
+
 class RestClientsDjangoModel(DJModel):
     """Base class containing Meta attributes common to all models."""
     def __init__(self, *args, **kwargs):
         super(RestClientsDjangoModel, self).__init__(*args, **kwargs)
+
     class Meta:
         abstract = True
         app_label = 'restclients'
