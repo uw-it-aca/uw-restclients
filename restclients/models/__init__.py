@@ -1,9 +1,10 @@
-from django.db import models
+from restclients_core import models
+from django.db import models as dj_models
 import pickle
 from base64 import b64encode, b64decode
 import warnings
 
-from restclients.models.base import RestClientsModel
+from restclients.models.base import RestClientsModel, RestClientsDjangoModel
 from restclients.models.sws import Term as swsTerm
 from restclients.models.sws import Person as swsPerson
 from restclients.models.sws import FinalExam as swsFinalExam
@@ -113,15 +114,15 @@ def CanvasEnrollment(*args, **kwargs):
     return canvasEnrollment(*args, **kwargs)
 
 
-class CacheEntry(RestClientsModel):
-    service = models.CharField(max_length=50, db_index=True)
-    url = models.CharField(max_length=255, unique=True, db_index=True)
-    status = models.PositiveIntegerField()
-    header_pickle = models.TextField()
-    content = models.TextField()
+class CacheEntry(RestClientsDjangoModel):
+    service = dj_models.CharField(max_length=50, db_index=True)
+    url = dj_models.CharField(max_length=255, unique=True, db_index=True)
+    status = dj_models.PositiveIntegerField()
+    header_pickle = dj_models.TextField()
+    content = dj_models.TextField()
     headers = None
 
-    class Meta(RestClientsModel.Meta):
+    class Meta(RestClientsDjangoModel.Meta):
         unique_together = ('service', 'url')
 
     def getHeaders(self):
@@ -147,11 +148,13 @@ class CacheEntry(RestClientsModel):
 
 
 class CacheEntryTimed(CacheEntry):
-    time_saved = models.DateTimeField()
+    def __init__(self,  *args, **kwargs):
+        super(RestClientsDjangoModel, self).__init__(*args, **kwargs)
+    time_saved = dj_models.DateTimeField()
 
 
 class CacheEntryExpires(CacheEntry):
-    time_expires = models.DateTimeField()
+    time_expires = dj_models.DateTimeField()
 
 
 class Book(RestClientsModel):
@@ -189,8 +192,8 @@ class BookAuthor(RestClientsModel):
         return data
 
 
-class MockAmazonSQSQueue(RestClientsModel):
-    name = models.CharField(max_length=80, unique=True, db_index=True)
+class MockAmazonSQSQueue(RestClientsDjangoModel):
+    name = dj_models.CharField(max_length=80, unique=True, db_index=True)
 
     def new_message(self, body=""):
         message = MockAmazonSQSMessage()
@@ -224,19 +227,19 @@ class MockAmazonSQSQueue(RestClientsModel):
         pass
 
 
-class MockAmazonSQSMessage(RestClientsModel):
-    body = models.CharField(max_length=8192)
-    queue = models.ForeignKey(MockAmazonSQSQueue,
-                              on_delete=models.PROTECT)
+class MockAmazonSQSMessage(RestClientsDjangoModel):
+    body = dj_models.CharField(max_length=8192)
+    queue = dj_models.ForeignKey(MockAmazonSQSQueue,
+                                 on_delete=models.PROTECT)
 
     def get_body(self):
         return self.body
 
 
-class SMSRequest(RestClientsModel):
-    body = models.CharField(max_length=8192)
-    to = models.CharField(max_length=40)
-    from_number = models.CharField(max_length=40)
+class SMSRequest(RestClientsDjangoModel):
+    body = dj_models.CharField(max_length=8192)
+    to = dj_models.CharField(max_length=40)
+    from_number = dj_models.CharField(max_length=40)
 
     def get_body(self):
         return self.body

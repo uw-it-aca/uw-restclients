@@ -1,4 +1,4 @@
-from django.db import models
+from restclients_core import models
 from restclients.util.date_formator import past_datetime_str
 
 

@@ -1,5 +1,4 @@
 import pickle
-from django.db import models
 from django.template import Context, loader
 from base64 import b64encode, b64decode
 from datetime import datetime
@@ -9,6 +8,7 @@ from restclients.util.date_formator import abbr_week_month_day_str
 from restclients.util.datetime_convertor import convert_to_begin_of_day,\
     convert_to_end_of_day
 from restclients.models.base import RestClientsModel
+from restclients_core import models
 
 
 # PWS Person

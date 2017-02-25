@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from django.db import models
+from restclients_core import models
 
 
 class BridgeCustomField(models.Model):
