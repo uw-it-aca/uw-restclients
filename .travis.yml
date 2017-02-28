@@ -9,6 +9,7 @@ install:
 - if [[ $DJANGO_VERSION == 1.6 ]]; then pip install -r travis-ci/python-2.6-require-django-1.6.txt;
   fi
 - pip install -e git+https://github.com/uw-it-aca/uw-restclients-core.git@feature/starting-on-mock#egg=Restclients-Core
+- pip install -e git+https://github.com/uw-it-aca/uw-restclients-hfs.git@feature/initial_migration#egg=UW-Restclients-HFS
 - pip install -e .
 env:
 - DJANGO_VERSION=1.6.*
