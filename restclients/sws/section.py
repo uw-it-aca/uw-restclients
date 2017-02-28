@@ -7,6 +7,7 @@ from restclients.sws.v5.section import get_section_by_url
 from restclients.sws.v5.section import get_section_by_label
 from restclients.sws.v5.section import get_linked_sections
 from restclients.sws.v5.section import get_joint_sections
+from restclients.sws.v5.section import is_valid_section_label
 from restclients.models.sws import Section
 
 
