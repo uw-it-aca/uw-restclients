@@ -264,7 +264,7 @@ class GWS_DAO(MY_DAO):
 
 class Book_DAO(MY_DAO):
     def getURL(self, url, headers):
-        return self._getURL('books', url, headers)
+        return self._getURL('book', url, headers)
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_BOOK_DAO_CLASS', BookFile)
