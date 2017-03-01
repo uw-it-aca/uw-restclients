@@ -18,7 +18,28 @@
 {% endif %}
 
 <h3>Add new:</h3>
-<label>Service name (e.g. sws): <input type="text" name="new_service_name" /></label> <br/>
+<label>Service name (e.g. sws):
+<select name="new_service_name">
+  <option value="book">Textbook</option>
+  <option value="bridge">Bridge</option>
+  <option value="canvas">Canvas</option>
+  <option value="grad">Grad</option>
+  <option value="gws">GWS</option>
+  <option value="hfs">HFS</option>
+  <option value="iasystem">Iasystem</option>
+  <option value="libcurrics">Library currics</option>
+  <option value="libraries">My library Account</option>
+  <option value="mailman">Mailman</option>
+  <option value="myplan">MyPlan</option>
+  <option value="pws">PWS</option>
+  <option value="r25">R25</option>
+  <option value="sws">SWS</option>
+  <option value="trumba_calendar">Trumba calendar</option>
+  <option value="uwnetid">Uwnetid</option>
+  <option value="upass">UPASS</option>
+</select>
+</label>
+<br/>
 <label>Response Status(e.g. 500): <input type="text" name="new_service_status" /></label> <br/>
 <label>Content (can be empty, but you could do something like { "oops } ): <input type="text" name="new_service_content" /></label> <br/>
 <label>Add seconds to the response time (e.g. 2.5): <input type="text" name="new_service_load_time" /></label> <br/>
