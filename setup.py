@@ -40,7 +40,7 @@ setup(
                       'AuthZ-Group>=1.1.4',
                       'Django-UserService',
                       'python-binary-memcached',
-                      'UW-RestClients-Core==0.1.1'],
+                      'UW-RestClients-Core==0.1.2'],
     license='Apache License, Version 2.0',
     description=('Clients for a variety of RESTful web services '
                  'at the University of Washington'),
