@@ -82,17 +82,20 @@ class BridgeUser(models.Model):
                 ret_user["id"] = self.bridge_id
         except AttributeError:
             pass
+
         try:
             if self.first_name:
                 ret_user["first_name"] = self.first_name
         except AttributeError:
             pass
+
         try:
             if self.last_name:
                 ret_user["last_name"] = self.last_name
         except AttributeError:
             pass
-        return {"users": [ret_user]}
+
+        return {"user": ret_user}
 
     def __str__(self):
         json_data = self.to_json_post()
