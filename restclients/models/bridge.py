@@ -101,21 +101,21 @@ class BridgeUser(models.Model):
         json_data = self.to_json_post()
         try:
             if self.sortable_name:
-                json_data["users"][0]["sortable_name"] = self.sortable_name
+                json_data['user']["sortable_name"] = self.sortable_name
         except AttributeError:
             pass
         try:
             if self.updated_at:
-                json_data["users"][0]["updated_at"] = self.updated_at
+                json_data['user']["updated_at"] = self.updated_at
         except AttributeError:
             pass
         try:
             if self.logged_in_at:
-                json_data["users"][0]["logged_in_at"] = self.logged_in_at
+                json_data['user']["logged_in_at"] = self.logged_in_at
         except AttributeError:
             pass
         try:
-            json_data["users"][0]["completed_courses_count"] =\
+            json_data['user']["completed_courses_count"] =\
                 self.completed_courses_count
         except AttributeError:
             pass

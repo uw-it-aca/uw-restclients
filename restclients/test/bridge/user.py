@@ -90,7 +90,7 @@ class TestBridgeUser(TestCase):
         self.assertTrue(user.no_learning_history())
         self.assertEqual(
             user.to_json_post(),
-            {"users":[
+            {"user":
                {"first_name": "James",
                 "last_name": "Student",
                 "uid": "javerage@uw.edu",
@@ -102,7 +102,7 @@ class TestBridgeUser(TestCase):
                     "value": "9136CCB8F66711D5BE060004AC494FFE",
                     "name": "REGID",
                     "custom_field_id": "5"}
-                   ]}]})
+                   ]}})
 
         self.assertEqual(get_regid_from_custom_fields(user.custom_fields),
                          "9136CCB8F66711D5BE060004AC494FFE")
