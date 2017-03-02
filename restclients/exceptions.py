@@ -21,14 +21,6 @@ class InvalidPhoneNumber(Exception):
     pass
 
 
-
-
-
-
-
-
-
-
 class InvalidUUID(Exception):
     """Exception for invalid UUID."""
     pass
@@ -37,10 +29,6 @@ class InvalidUUID(Exception):
 class InvalidGroupID(Exception):
     """Exception for invalid group id."""
     pass
-
-
-
-
 
 
 class InvalidEndpointProtocol(Exception):

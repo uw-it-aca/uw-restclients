@@ -4,6 +4,7 @@ from uw_hfs.util import (is_today, past_datetime_str, is_days_ago,
                          last_midnight, time_str)
 from uw_sws.util import abbr_week_month_day_str
 
+
 # Appears to be unused - prune later
 def full_month_date_str(adate):
     """
