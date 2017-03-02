@@ -1,25 +1,8 @@
-from restclients.sws.v5.section import get_sections_by_instructor_and_term
-from restclients.sws.v5.section import get_sections_by_delegate_and_term
-from restclients.sws.v5.section import get_sections_by_curriculum_and_term
-from restclients.sws.v5.section import get_sections_by_building_and_term
-from restclients.sws.v5.section import get_changed_sections_by_term
-from restclients.sws.v5.section import get_section_by_url
-from restclients.sws.v5.section import get_section_by_label
-from restclients.sws.v5.section import get_linked_sections
-from restclients.sws.v5.section import get_joint_sections
-from restclients.models.sws import Section
-
-
-def is_a_term(str):
-    return str is not None and len(str) > 0 and\
-        str.lower() == Section.SUMMER_A_TERM
-
-
-def is_b_term(str):
-    return str is not None and len(str) > 0 and\
-        str.lower() == Section.SUMMER_B_TERM
-
-
-def is_full_summer_term(str):
-    return str is not None and len(str) > 0 and\
-        str.lower() == Section.SUMMER_FULL_TERM
+from uw_sws.section import (get_sections_by_instructor_and_term,
+                            get_sections_by_delegate_and_term,
+                            get_sections_by_curriculum_and_term,
+                            get_sections_by_building_and_term,
+                            get_changed_sections_by_term, get_section_by_url,
+                            get_section_by_label, get_linked_sections,
+                            get_joint_sections, get_prefetch_for_section_data,
+                            is_a_term, is_b_term, is_full_summer_term)

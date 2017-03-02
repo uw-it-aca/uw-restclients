@@ -40,8 +40,10 @@ setup(
                       'AuthZ-Group>=1.1.4',
                       'Django-UserService',
                       'python-binary-memcached',
-                      'UW-RestClients-Core==0.1.2',
-                      'UW-RestClients-HFS==0.1.1',
+                      'UW-RestClients-Core==0.1.3',
+                      'UW-RestClients-HFS==0.1.2',
+                      'UW-RestClients-PWS==0.1.1',
+                      'UW-RestClients-SWS==0.1.1',
                       ],
     license='Apache License, Version 2.0',
     description=('Clients for a variety of RESTful web services '

@@ -1,7 +1,14 @@
 """
 Contains the custom exceptions used by the restclients.
 """
-from restclients_core.exceptions import DataFailureException
+from restclients_core.exceptions import (InvalidRegID, InvalidNetID,
+                                         InvalidEmployeeID,
+                                         DataFailureException)
+from uw_pws.exceptions import (InvalidStudentNumber, InvalidIdCardPhotoSize,
+                               InvalidProxRFID)
+from uw_sws.exceptions import (InvalidCanvasSection,
+                               InvalidCanvasIndependentStudyCourse,
+                               InvalidSectionID, InvalidSectionURL)
 
 
 class PhoneNumberRequired(Exception):
@@ -14,38 +21,16 @@ class InvalidPhoneNumber(Exception):
     pass
 
 
-class InvalidNetID(Exception):
-    """Exception for invalid netid."""
-    pass
 
 
-class InvalidRegID(Exception):
-    """Exception for invalid regid."""
-    pass
 
 
-class InvalidEmployeeID(Exception):
-    """Exception for invalid employee id."""
-    pass
 
 
-class InvalidStudentNumber(Exception):
-    """Exception for invalid student number."""
-    pass
 
 
 class InvalidUUID(Exception):
     """Exception for invalid UUID."""
-    pass
-
-
-class InvalidSectionID(Exception):
-    """Exception for invalid section id."""
-    pass
-
-
-class InvalidSectionURL(Exception):
-    """Exception for invalid section url."""
     pass
 
 
@@ -54,28 +39,12 @@ class InvalidGroupID(Exception):
     pass
 
 
-class InvalidIdCardPhotoSize(Exception):
-    """Exception for invalid photo size."""
-    pass
 
 
-class InvalidProxRFID(Exception):
-    """Exception for invalid rfid."""
-    pass
 
 
 class InvalidEndpointProtocol(Exception):
     """Exception for invalid endpoint protocol."""
-    pass
-
-
-class InvalidCanvasIndependentStudyCourse(Exception):
-    """Exception for invalid Canvas course."""
-    pass
-
-
-class InvalidCanvasSection(Exception):
-    """Exception for invalid Canvas section."""
     pass
 
 

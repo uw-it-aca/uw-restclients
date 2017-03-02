@@ -2,7 +2,7 @@ from uw_hfs.util import (is_today, past_datetime_str, is_days_ago,
                          get_past_months_count, get_past_years_count,
                          get_past_weeks_count, get_total_seconds,
                          last_midnight, time_str)
-
+from uw_sws.util import abbr_week_month_day_str
 
 # Appears to be unused - prune later
 def full_month_date_str(adate):
@@ -25,19 +25,3 @@ def abbr_month_date_time_str(adatetime):
                                 adatetime.day,
                                 adatetime.year,
                                 time_str(adatetime))
-
-
-
-# Used by the SWS
-def abbr_week_month_day_str(adatetime):
-    """
-    Return a string consists of abbreviated weekday, abbreviated month,
-    date with no leading zero, and without a year
-    e.g., Mon, Jun 2. No punctuation is shown for
-    the abbreviated weekday and month.
-    """
-    return "%s %d" % (adatetime.strftime("%a, %b"), adatetime.day)
-
-
-
-

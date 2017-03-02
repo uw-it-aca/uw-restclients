@@ -5,7 +5,7 @@ except:
     from django.utils.importlib import import_module
 from django.conf import settings
 from django.core.exceptions import *
-from restclients.dao_implementation.pws import File as PWSFile
+from restclients.dao_implementation.pws import PWS_DAO
 from restclients.dao_implementation.sws import SWS_DAO
 from restclients.dao_implementation.hfs import Hfs_DAO
 from restclients.dao_implementation.gws import File as GWSFile
@@ -163,14 +163,6 @@ class Subdomain_DAO(MY_DAO):
                 return cache_post_response["response"]
 
         return response
-
-
-class PWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('pws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_PWS_DAO_CLASS', PWSFile)
 
 
 class KWS_DAO(MY_DAO):
