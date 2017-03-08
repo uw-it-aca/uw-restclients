@@ -36,11 +36,82 @@ from restclients.dao_implementation.o365 import File as O365File
 from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
 from restclients.mock_http import MockHTTP
+from restclients_core.dao import MockDAO, DAO
 import logging
 import time
+import os
 from restclients_core.util.performance import PerformanceDegradation
 
 logger = logging.getLogger(__name__)
+
+
+# This hack is in place for apps that haven't migrated to using the new core
+# approaches.  it adds django app dirs to the resource search paths, and
+# can monkey patch objects as needed.
+class LegacyAppHack(object):
+    has_run = False
+
+    @classmethod
+    def add_app_paths(cls):
+        if cls.has_run:
+            return
+        cls.has_run = True
+
+        dirs = []
+        try:
+            # Django >= 1.7
+            from django.apps import apps as installed_apps
+
+            for app in installed_apps.get_app_configs():
+                resource_dir = os.path.join(app.path, 'resources')
+                if os.path.isdir(resource_dir):
+                    if app.name == 'restclients':
+                        dirs.append(resource_dir)
+                    else:
+                        dirs.insert(0, resource_dir)
+        except:
+            try:
+                from importlib import import_module
+            except:
+                # python 2.6
+                from django.utils.importlib import import_module
+
+            for app in settings.INSTALLED_APPS:
+                try:
+                    mod = import_module(app)
+                except ImportError as e:
+                    msg = 'ImportError %s: %s' % (app, e.args[0])
+                    raise ImproperlyConfigured(msg)
+
+                resource_dir = os.path.join(os.path.dirname(mod.__file__),
+                                            'resources')
+                if os.path.isdir(resource_dir):
+                    if app == 'restclients':
+                        dirs.append(resource_dir)
+                    else:
+                        dirs.insert(0, resource_dir)
+
+        for path in dirs:
+            MockDAO.register_mock_path(path)
+
+    # Monkey patch the DAO class to support apps that checked _getDAO()
+    @classmethod
+    def add_dao_hack(cls):
+        def _getDAO(self):
+            class File(object):
+                pass
+
+            class Live(object):
+                pass
+
+            if self.get_implementation().is_mock():
+                return File()
+            return Live()
+
+        DAO._getDAO = _getDAO
+
+LegacyAppHack.add_app_paths()
+LegacyAppHack.add_dao_hack()
 
 
 class DAO_BASE(object):
