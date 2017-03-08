@@ -33,13 +33,20 @@ class Live(object):
         if Live.pool is None:
             cert = getattr(settings, "RESTCLIENTS_BOOKSTORE_CERT", None)
             key = getattr(settings, "RESTCLIENTS_BOOKSTORE_KEY", None)
-            Live.pool = get_con_pool(host, key, cert,
+            pool_size = getattr(settings, "BOOKSTORE_MAX_POOL_SIZE", 10)
+            Live.pool = get_con_pool(host,
+                                     key,
+                                     cert,
+                                     max_pool_size=pool_size,
                                      socket_timeout=get_timeout("book"))
 
         # For rest router...
         url_prefix = getattr(settings, "RESTCLIENTS_BOOKSTORE_PREFIX", "")
         url = "%s%s" % (url_prefix, url)
 
-        return get_live_url(Live.pool, 'GET',
-                            host, url, headers=headers,
+        return get_live_url(Live.pool,
+                            'GET',
+                            host,
+                            url,
+                            headers=headers,
                             service_name='book')
