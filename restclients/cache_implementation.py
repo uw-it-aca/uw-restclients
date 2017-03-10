@@ -12,20 +12,10 @@ import json
 import bmemcached
 import logging
 import threading
+from restclients_core.cache import NoCache
 
 
 logger = logging.getLogger(__name__)
-
-
-class NoCache(object):
-    """
-    This never caches anything.
-    """
-    def getCache(self, service, url, headers):
-        return None
-
-    def processResponse(self, service, url, response):
-        pass
 
 
 class TimedCache(object):

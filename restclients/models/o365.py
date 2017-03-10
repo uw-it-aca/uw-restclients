@@ -1,4 +1,4 @@
-from django.db import models
+from restclients_core import models
 from dateutil.parser import parse as date_parse
 
 

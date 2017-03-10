@@ -1,4 +1,4 @@
-from django.db import models
+from restclients_core import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from restclients.models.base import RestClientsModel
 
