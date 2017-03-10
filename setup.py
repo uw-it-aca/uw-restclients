@@ -39,7 +39,12 @@ setup(
                       'icalendar',
                       'AuthZ-Group>=1.1.4',
                       'Django-UserService',
-                      'python-binary-memcached',],
+                      'python-binary-memcached',
+                      'UW-RestClients-Core>=0.8.2,<1.0',
+                      'UW-RestClients-SWS>=0.5.1,<1.0',
+                      'UW-RestClients-PWS>=0.5,<1.0',
+                      'UW-RestClients-HFS>=0.5,<1.0',
+                      ],
     license='Apache License, Version 2.0',
     description=('Clients for a variety of RESTful web services '
                  'at the University of Washington'),

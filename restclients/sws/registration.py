@@ -1,4 +1,4 @@
-from restclients.sws.v5.registration import get_active_registrations_by_section
-from restclients.sws.v5.registration import get_all_registrations_by_section
-from restclients.sws.v5.registration import get_credits_by_section_and_regid
-from restclients.sws.v5.registration import get_schedule_by_regid_and_term
+from uw_sws.registration import (get_active_registrations_by_section,
+                                 get_all_registrations_by_section,
+                                 get_credits_by_section_and_regid,
+                                 get_schedule_by_regid_and_term)
