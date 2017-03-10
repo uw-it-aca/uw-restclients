@@ -1,1 +1,1 @@
-from restclients.sws.v5.notice import get_notices_by_regid
+from uw_sws.notice import get_notices_by_regid

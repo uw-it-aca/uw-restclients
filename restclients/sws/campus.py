@@ -1,1 +1,1 @@
-from restclients.sws.v5.campus import get_all_campuses
+from uw_sws.campus import get_all_campuses

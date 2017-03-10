@@ -1,2 +1,2 @@
-from restclients.sws.v5.college import get_all_colleges
+from uw_sws.college import get_all_colleges
 

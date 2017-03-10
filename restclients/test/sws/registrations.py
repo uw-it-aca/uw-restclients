@@ -75,7 +75,7 @@ class SWSTestRegistrations(TestCase):
             self.assertEquals(javerage_reg.duplicate_code, 'A')
             self.assertEquals(javerage_reg.repository_timestamp.isoformat(), '2016-01-05T02:45:15')
 
-    @mock.patch('restclients.sws.v5.registration.get_resource')
+    @mock.patch('uw_sws.registration.get_resource')
     def test_all_registrations_with_transcriptable_course(self, mock_get_resource):
         with self.settings(
                 RESTCLIENTS_SWS_DAO_CLASS='restclients.dao_implementation.sws.File',

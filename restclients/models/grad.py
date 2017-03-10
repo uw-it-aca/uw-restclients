@@ -1,5 +1,5 @@
 import datetime
-from django.db import models
+from restclients_core import models
 
 
 def get_datetime_str(datetime_obj):
