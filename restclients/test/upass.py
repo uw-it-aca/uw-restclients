@@ -10,6 +10,12 @@ class UPassTest(TestCase):
         status = get_upass_status("javerage")
         self.assertTrue(status.is_current)
         self.assertTrue(status.is_student)
+        self.assertFalse(status.is_employee)
+        status_json = status.json_data()
+        self.assertIsNotNone(status_json['status_message'])
+        self.assertTrue(status_json['is_current'])
+        self.assertFalse(status_json['is_employee'])
+        self.assertIsNotNone(str(status))
 
         status = get_upass_status("javeragefac")
         self.assertTrue(status.is_current)

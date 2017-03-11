@@ -35,11 +35,5 @@ class UPassStatus(models.Model):
             status.is_employee = True
         return status
 
-    def to_json(self):
-        return {"status_message": self.status_message,
-                "is_current": self.is_current,
-                "is_employee": self.is_employee,
-                "is_student": self.is_student}
-
     def __str__(self):
-        return json.dumps(self.to_json())
+        return json.dumps(self.json_data())
