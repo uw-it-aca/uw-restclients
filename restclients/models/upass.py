@@ -3,6 +3,7 @@ from restclients_core import models
 
 
 CURRENT = "U-PASS Membership is current."
+NOT_CURRENT = "U-PASS is not current."
 STUDENT = "Your Student U-PASS Membership "
 EMPLOYEE = "Your Faculty/Staff U-PASS Membership "
 

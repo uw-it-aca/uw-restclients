@@ -30,6 +30,10 @@ class UPassTest(TestCase):
                           get_upass_status,
                           "none")
 
+        self.assertRaises(Exception,
+                          get_upass_status,
+                          "jerror")
+
     def test_get_url(self):
         self.assertEquals(get_upass_url("javerage"),
                           "/upass/MyUWUpass.aspx?id=javerage")
