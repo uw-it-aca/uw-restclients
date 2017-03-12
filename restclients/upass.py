@@ -17,8 +17,8 @@ def get_upass_status(netid):
 
     if len(response.data) == 0 or\
             not(CURRENT in response.data or NOT_CURRENT in response.data):
-        raise Error("%s Unexpected Response Data: %s" %
-                    (url, response.data))
+        raise Exception("%s Unexpected Response Data: %s" %
+                        (url, response.data))
 
     status = UPassStatus.create(response.data)
     return status
