@@ -1,6 +1,7 @@
 from django.test import TestCase
 from restclients.upass import get_upass_url, get_upass_status
 from restclients.models.upass import UPassStatus
+from restclients.exceptions import DataFailureException
 from restclients.test import fdao_upass_override
 
 
@@ -21,9 +22,13 @@ class UPassTest(TestCase):
         self.assertTrue(status.is_current)
         self.assertTrue(status.is_employee)
 
-        status = get_upass_status("none")
+        status = get_upass_status("phil")
         self.assertFalse(status.is_current)
         self.assertFalse(status.is_student)
+
+        self.assertRaises(DataFailureException,
+                          get_upass_status,
+                          "none")
 
     def test_get_url(self):
         self.assertEquals(get_upass_url("javerage"),
