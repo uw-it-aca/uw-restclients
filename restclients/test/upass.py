@@ -36,7 +36,7 @@ class UPassTest(TestCase):
 
     def test_get_url(self):
         self.assertEquals(get_upass_url("javerage"),
-                          "/upass/MyUWUpass.aspx?id=javerage")
+                          "/MyUWUpass/MyUWUpass.aspx?id=javerage")
 
     def test_message_parsing(self):
         fac_message = ("<p><span class='highlight'>Your Faculty/Staff U-PASS"

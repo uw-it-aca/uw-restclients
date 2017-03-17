@@ -25,4 +25,4 @@ def get_upass_status(netid):
 
 
 def get_upass_url(netid):
-    return "/upass/MyUWUpass.aspx?id=%s" % (netid)
+    return ("/MyUWUpass/MyUWUpass.aspx?id=%s" % netid)
