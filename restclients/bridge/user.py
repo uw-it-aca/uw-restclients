@@ -162,7 +162,7 @@ def update_user(bridge_user):
     else:
         url = author_uid_url(bridge_user.uwnetid)
     resp = patch_resource(url + ("?%s" % CUSTOM_FIELD),
-                          json.dumps(bridge_user.to_json_post(),
+                          json.dumps(bridge_user.to_json_patch(),
                                      separators=(',', ':')))
     return _process_json_resp_data(resp)
 

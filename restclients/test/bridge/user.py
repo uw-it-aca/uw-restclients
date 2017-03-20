@@ -88,22 +88,6 @@ class TestBridgeUser(TestCase):
         self.assertEqual(user.completed_courses_count, 0)
         self.assertTrue(user.has_course_summary())
         self.assertTrue(user.no_learning_history())
-        self.assertEqual(
-            user.to_json_post(),
-            {"user":
-               {"first_name": "James",
-                "last_name": "Student",
-                "uid": "javerage@uw.edu",
-                "full_name": "James Student",
-                "id": 195,
-                "email": "javerage@uw.edu",
-                "custom_fields": [
-                   {"id": "1",
-                    "value": "9136CCB8F66711D5BE060004AC494FFE",
-                    "name": "REGID",
-                    "custom_field_id": "5"}
-                   ]}})
-
         self.assertEqual(get_regid_from_custom_fields(user.custom_fields),
                          "9136CCB8F66711D5BE060004AC494FFE")
         self.assertEqual(len(user.custom_fields), 1)

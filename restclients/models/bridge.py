@@ -66,8 +66,7 @@ class BridgeUser(models.Model):
     def get_uid(self):
         return "%s@uw.edu" % self.netid
 
-    def to_json_post(self):
-        # for POST, PATCH
+    def json_data(self):
         custom_fields_json = []
         for field in self.custom_fields:
             custom_fields_json.append(field.to_json())
@@ -84,38 +83,46 @@ class BridgeUser(models.Model):
             pass
 
         try:
-            if self.first_name:
+            if self.first_name and len(self.first_name) > 0:
                 ret_user["first_name"] = self.first_name
         except AttributeError:
             pass
 
         try:
-            if self.last_name:
+            if self.last_name and len(self.last_name) > 0:
                 ret_user["last_name"] = self.last_name
         except AttributeError:
             pass
 
-        return {"user": ret_user}
+        return ret_user
+
+    def to_json_post(self):
+        # for POST (add new user)
+        return {"users": [self.json_data()]}
+
+    def to_json_patch(self):
+        # for PATCH, PUT (update)
+        return {"user": self.json_data()}
 
     def __str__(self):
-        json_data = self.to_json_post()
+        json_data = self.json_data()
         try:
             if self.sortable_name:
-                json_data['user']["sortable_name"] = self.sortable_name
+                json_data["sortable_name"] = self.sortable_name
         except AttributeError:
             pass
         try:
             if self.updated_at:
-                json_data['user']["updated_at"] = self.updated_at
+                json_data["updated_at"] = self.updated_at
         except AttributeError:
             pass
         try:
             if self.logged_in_at:
-                json_data['user']["logged_in_at"] = self.logged_in_at
+                json_data["logged_in_at"] = self.logged_in_at
         except AttributeError:
             pass
         try:
-            json_data['user']["completed_courses_count"] =\
+            json_data["completed_courses_count"] =\
                 self.completed_courses_count
         except AttributeError:
             pass

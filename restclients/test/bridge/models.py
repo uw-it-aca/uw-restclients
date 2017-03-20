@@ -47,18 +47,6 @@ class TestBridgeModel(TestCase):
         user.email = "iamstudent@uw.edu"
         user.custom_fields.append(bcf)
         user.updated_at = parse_datetime("2016-08-08T13:58:20.635-07:00")
-        self.assertEqual(
-            user.to_json_post(),
-            {'user': {'custom_fields': [
-                        {'custom_field_id': '5',
-                         'name': 'REGID',
-                         'value': '12345678901234567890123456789012'}],
-                      'uid': 'iamstudent@uw.edu',
-                      'email': 'iamstudent@uw.edu',
-                      'first_name': 'Iam A',
-                      'full_name': 'Iam Student',
-                      'last_name': 'Student'
-                      }})
         self.assertIsNotNone(str(user))
         self.assertFalse(user.has_course_summary())
         self.assertFalse(user.no_learning_history())
@@ -68,28 +56,83 @@ class TestBridgeModel(TestCase):
         user.full_name = "Iam Student"
         user.email = "iamstudent@uw.edu"
         user.custom_fields.append(bcf)
-        self.assertEqual(
-            user.to_json_post(),
-            {'user': {'custom_fields': [
-                        {'custom_field_id': '5',
-                         'name': 'REGID',
-                         'value': '12345678901234567890123456789012'}],
-                      'email': 'iamstudent@uw.edu',
-                      'full_name': 'Iam Student',
-                      'uid': 'iamstudent@uw.edu'}})
-
-        user.bridge_id = 123
-        self.assertEqual(
-            user.to_json_post(),
-            {'user': {'custom_fields': [
-                        {'custom_field_id': '5',
-                         'name': 'REGID',
-                         'value': '12345678901234567890123456789012'}],
-                      'id': 123,
-                      'email': 'iamstudent@uw.edu',
-                      'full_name': 'Iam Student',
-                      'uid': 'iamstudent@uw.edu'}})
         user.completed_courses_count = 3
         self.assertTrue(user.has_course_summary())
         self.assertFalse(user.no_learning_history())
         self.assertIsNotNone(str(user))
+
+    def test_to_json_patch(self):
+        bcf = BridgeCustomField(field_id="5",
+                                name="REGID",
+                                value="12345678901234567890123456789012")
+        user = BridgeUser(netid="iamstudent",
+                          full_name="Iam Student",
+                          first_name="Iam A",
+                          last_name="Student",
+                          email="iamstudent@uw.edu"
+                          )
+        user.custom_fields.append(bcf)
+        json_patch = user.to_json_patch()
+        self.assertEqual(
+            user.to_json_patch(),
+            {'user': {
+                'uid': 'iamstudent@uw.edu',
+                'email': 'iamstudent@uw.edu',
+                'first_name': 'Iam A',
+                'last_name': 'Student',
+                'full_name': 'Iam Student',
+                'custom_fields': [
+                    {'custom_field_id': '5',
+                     'name': 'REGID',
+                     'value': '12345678901234567890123456789012'}],
+                }})
+        user.bridge_id = 123
+        self.assertEqual(
+            user.to_json_patch(),
+            {'user': {
+                'id': 123,
+                'uid': 'iamstudent@uw.edu',
+                'email': 'iamstudent@uw.edu',
+                'full_name': 'Iam Student',
+                'first_name': 'Iam A',
+                'last_name': 'Student',
+                'custom_fields': [
+                    {'custom_field_id': '5',
+                     'name': 'REGID',
+                     'value': '12345678901234567890123456789012'}],
+                }})
+
+    def test_to_json_post(self):
+        bcf = BridgeCustomField(field_id="5",
+                                name="REGID",
+                                value="12345678901234567890123456789012")
+        user = BridgeUser(netid="iamstudent",
+                          full_name="Iam Student",
+                          email="iamstudent@uw.edu"
+                          )
+        user.custom_fields.append(bcf)
+        json_post = user.to_json_post()
+        self.assertEqual(
+            user.to_json_post(),
+            {'users': [{
+                'uid': 'iamstudent@uw.edu',
+                'email': 'iamstudent@uw.edu',
+                'full_name': 'Iam Student',
+                'custom_fields': [
+                    {'custom_field_id': '5',
+                     'name': 'REGID',
+                     'value': '12345678901234567890123456789012'}],
+                }]})
+        user.bridge_id = 123
+        self.assertEqual(
+            user.to_json_post(),
+            {'users': [{
+                'id': 123,
+                'uid': 'iamstudent@uw.edu',
+                'email': 'iamstudent@uw.edu',
+                'full_name': 'Iam Student',
+                'custom_fields': [
+                    {'custom_field_id': '5',
+                     'name': 'REGID',
+                     'value': '12345678901234567890123456789012'}],
+                }]})
