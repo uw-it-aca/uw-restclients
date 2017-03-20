@@ -63,3 +63,7 @@ fdao_uwnetid_override = override_settings(
 FMAILMAN = 'restclients.dao_implementation.mailman.File'
 fdao_mailman_override = override_settings(
     RESTCLIENTS_MAILMAN_DAO_CLASS=FMAILMAN)
+
+FUPASS = 'restclients.dao_implementation.upass.File'
+fdao_upass_override = override_settings(
+    RESTCLIENTS_UPASS_DAO_CLASS=FUPASS)
