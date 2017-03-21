@@ -138,8 +138,7 @@ def restore_user(uwnetid):
     """
     Return a list of BridgeUsers objects without custom fields
     """
-    resp = post_resource(author_uid_url(uwnetid) + RESTORE_SUFFIX,
-                         '{}')
+    resp = post_resource(author_uid_url(uwnetid) + RESTORE_SUFFIX, '{}')
     return _process_json_resp_data(resp, no_custom_fields=True)
 
 
@@ -147,8 +146,7 @@ def restore_user_by_id(bridge_id):
     """
     Return a list of BridgeUsers objects without custom fields
     """
-    resp = post_resource(author_id_url(bridge_id) + RESTORE_SUFFIX,
-                         '{}')
+    resp = post_resource(author_id_url(bridge_id) + RESTORE_SUFFIX, '{}')
     return _process_json_resp_data(resp, no_custom_fields=True)
 
 

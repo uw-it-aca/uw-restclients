@@ -5,7 +5,7 @@ from django.db import models
 
 class BridgeCustomField(models.Model):
     REGID_FIELD_ID = "5"
-    REGID_NAME = "REGID"
+    REGID_NAME = "regid"
 
     value_id = models.CharField(max_length=10, null=True, default=None)
     field_id = models.CharField(max_length=10)
@@ -13,12 +13,11 @@ class BridgeCustomField(models.Model):
     value = models.CharField(max_length=256, null=True, default=None)
 
     def is_regid(self):
-        return self.name.lower() == BridgeCustomField.REGID_NAME.lower()
+        return self.name.lower() == BridgeCustomField.REGID_NAME
 
     def to_json(self):
         value = {'custom_field_id': self.field_id,
                  'value': self.value,
-                 'name': self.name,
                  }
         try:
             if self.value_id:
@@ -31,7 +30,9 @@ class BridgeCustomField(models.Model):
         super(BridgeCustomField, self).__init__(*args, **kwargs)
 
     def __str__(self):
-        return json.dumps(self.to_json())
+        data = self.to_json()
+        data["name"] = self.name
+        return json.dumps(data)
 
     class Meta:
         db_table = "restclients_bridge_custom_field"
@@ -54,30 +55,35 @@ class BridgeUser(models.Model):
     next_due_date = models.DateTimeField(null=True, default=None)
     completed_courses_count = models.IntegerField(default=-1)
 
+    def get_uid(self):
+        return "%s@uw.edu" % self.netid
+
     def has_course_summary(self):
         try:
             return self.completed_courses_count >= 0
         except AttributeError:
             return False
 
+    def has_bridge_id(self):
+        return self.bridge_id > 0
+
     def no_learning_history(self):
         return self.has_course_summary() and self.completed_courses_count == 0
 
-    def get_uid(self):
-        return "%s@uw.edu" % self.netid
-
-    def json_data(self):
-        custom_fields_json = []
-        for field in self.custom_fields:
-            custom_fields_json.append(field.to_json())
-
+    def json_data(self, omit_custom_fields=False):
+        # omit_custom_fields if it is empty
         ret_user = {"uid": self.get_uid(),
                     "full_name": self.full_name,
                     "email": self.email,
-                    "custom_fields": custom_fields_json
                     }
+        if not (len(self.custom_fields) == 0 and omit_custom_fields):
+            custom_fields_json = []
+            for field in self.custom_fields:
+                custom_fields_json.append(field.to_json())
+            ret_user["custom_fields"] = custom_fields_json
+
         try:
-            if self.bridge_id > 0:
+            if self.has_bridge_id():
                 ret_user["id"] = self.bridge_id
         except AttributeError:
             pass
@@ -102,7 +108,7 @@ class BridgeUser(models.Model):
 
     def to_json_patch(self):
         # for PATCH, PUT (update)
-        return {"user": self.json_data()}
+        return {"user": self.json_data(omit_custom_fields=True)}
 
     def __str__(self):
         json_data = self.json_data()

@@ -39,29 +39,6 @@ class TestBridgeUser(TestCase):
         self.assertEqual(author_uid_url('staff'),
                          AUTHOR_URL_PREFIX + '/uid%3Astaff%40uw%2Eedu')
 
-    def test_bridge_custom_field(self):
-        bcf = BridgeCustomField()
-        bcf.value_id = "1"
-        bcf.field_id = "5"
-        bcf.name = "REGID"
-        bcf.value = "787"
-        self.assertEqual(bcf.to_json(),
-                         {'id': '1',
-                          'value': '787',
-                          'name': 'REGID',
-                          'custom_field_id': '5'})
-        self.assertTrue(bcf.is_regid())
-        self.assertEqual(bcf.value, '787')
-
-        bcf = BridgeCustomField()
-        bcf.field_id = "5"
-        bcf.name = "REGID"
-        bcf.value = "787"
-        self.assertEqual(bcf.to_json(),
-                         {'custom_field_id': '5',
-                          'name': 'REGID',
-                          'value': '787'})
-
     def test_get_user(self):
         user_list = get_user('javerage', include_course_summary=False)
         self.assertEqual(len(user_list), 1)
