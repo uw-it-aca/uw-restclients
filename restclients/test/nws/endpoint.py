@@ -12,8 +12,8 @@ class NWSTestEndpoint(TestCase):
         self.assertEquals('222-222-3333', endpoint.endpoint_address)
         self.assertEquals('AT&T', endpoint.carrier)
         self.assertEquals('sms', endpoint.protocol)
-        self.assertEquals('javerage', endpoint.get_user_net_id())
-        self.assertEquals('sdf', endpoint.get_owner_net_id())
+        self.assertEquals('javerage', endpoint.user)
+        self.assertEquals('sdf', endpoint.owner)
         self.assertEquals(False, endpoint.active)
 
 
@@ -25,8 +25,7 @@ class NWSTestEndpoint(TestCase):
             endpoint.endpoint_id = None
             endpoint.endpoint_uri = None
 
-            response_status = nws.create_new_endpoint(endpoint)
-            self.assertEquals(201, response_status)
+            self.assertRaises(DataFailureException, nws.create_endpoint, endpoint)
 
     def test_endpoint_endpoint_id(self):
         with self.settings(

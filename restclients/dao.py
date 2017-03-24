@@ -8,6 +8,7 @@ from django.core.exceptions import *
 from restclients.dao_implementation.pws import PWS_DAO
 from restclients.dao_implementation.sws import SWS_DAO
 from restclients.dao_implementation.hfs import Hfs_DAO
+from restclients.dao_implementation.nws import NWS_DAO
 from restclients.dao_implementation.gws import File as GWSFile
 from restclients.dao_implementation.kws import File as KWSFile
 from restclients.dao_implementation.book import File as BookFile
@@ -15,7 +16,6 @@ from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.canvas import File as CanvasFile
 from restclients.dao_implementation.catalyst import File as CatalystFile
 from restclients.dao_implementation.mailman import File as MailmanFile
-from restclients.dao_implementation.nws import File as NWSFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
 from restclients.dao_implementation.trumba import FileSea
@@ -360,23 +360,6 @@ class SMS_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_SMS_DAO_CLASS', SMSLocal)
-
-
-class NWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('nws', url, headers)
-
-    def postURL(self, url, headers, body):
-        return self._postURL('nws', url, headers, body)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('nws', url, headers, body)
-
-    def deleteURL(self, url, headers):
-        return self._deleteURL('nws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_NWS_DAO_CLASS', NWSFile)
 
 
 class Mailman_DAO(MY_DAO):

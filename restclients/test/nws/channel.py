@@ -3,10 +3,11 @@ from django.conf import settings
 from restclients.nws import NWS
 from restclients.exceptions import DataFailureException
 from vm.v1.viewmodels import Channel
-from unittest2 import skipIf
+from unittest2 import skip, skipIf
 from datetime import datetime
 
 class NWSTestChannel(TestCase):
+    @skip("Not implemented")
     def test_create_channel(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
@@ -20,6 +21,7 @@ class NWSTestChannel(TestCase):
             response_status = nws.create_new_channel(channel)
             self.assertEquals(response_status, 201)
 
+    @skip("Not implemented")
     def test_update_channel(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
@@ -56,6 +58,7 @@ class NWSTestChannel(TestCase):
             channels = nws.get_channels_by_sln_year_quarter("uw_student_courseavailable", "12345", 2012, "autumn")
             self.assertEquals(len(channels), 1)
 
+    @skip("Not implemented")
     def test_terms_with_active_channels(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File',
@@ -70,8 +73,7 @@ class NWSTestChannel(TestCase):
             self.assertEquals(terms[1].year, 2013)
             self.assertEquals(terms[1].quarter, 'summer')
 
-
-
+    @skip("Not implemented")
     def test_channel_surrogate_id(self):
         with self.settings(
                 RESTCLIENTS_NWS_DAO_CLASS='restclients.dao_implementation.nws.File'):
