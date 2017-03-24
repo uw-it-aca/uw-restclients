@@ -12,8 +12,8 @@ class NWSTestEndpoint(TestCase):
         self.assertEquals('222-222-3333', endpoint.endpoint_address)
         self.assertEquals('AT&T', endpoint.carrier)
         self.assertEquals('sms', endpoint.protocol)
-        self.assertEquals('javerage', endpoint.user)
-        self.assertEquals('sdf', endpoint.owner)
+        self.assertEquals('javerage', endpoint.get_user_net_id())
+        self.assertEquals('sdf', endpoint.get_owner_net_id())
         self.assertEquals(False, endpoint.active)
 
 
