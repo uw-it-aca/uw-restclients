@@ -44,7 +44,7 @@ setup(
                       'UW-RestClients-SWS>=0.5.1,<1.0',
                       'UW-RestClients-PWS>=0.5,<1.0',
                       'UW-RestClients-HFS>=0.5,<1.0',
-                      'UW-RestClients-NWS>=0.5,<1.0',
+                      'UW-RestClients-NWS==0.5',
                       ],
     license='Apache License, Version 2.0',
     description=('Clients for a variety of RESTful web services '
