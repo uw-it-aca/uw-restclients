@@ -175,6 +175,56 @@ class TestBridgeUser(TestCase):
         except Exception as ex:
             self.assertEqual(ex.status, '404')
 
+    def test_change_uid(self):
+        self.assertRaises(DataFailureException,
+                          change_uid,
+                          195, "billchanged")
+
+        users = change_uid(17637, "billchanged")
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 0)
+
+        users = replace_uid("bill", "billchanged")
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 0)
+
+        users = replace_uid("oldbill", "billchanged", no_custom_fields=False)
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 1)
+        cus_field = users[0].custom_fields[0]
+        self.assertEqual(cus_field.value,
+                         "FBB38FE46A7C11D5A4AE0004AC494FFE")
+
+    def test_restore_user(self):
+        self.assertRaises(DataFailureException,
+                          restore_user_by_id,
+                          195)
+
+        self.assertRaises(DataFailureException,
+                          restore_user,
+                          'javerage')
+        users = restore_user_by_id(17637)
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 0)
+
+        users = restore_user("billchanged")
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 0)
+
+        users = restore_user_by_id(17637, no_custom_fields=False)
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 1)
+        cus_field = users[0].custom_fields[0]
+        self.assertEqual(cus_field.value,
+                         "FBB38FE46A7C11D5A4AE0004AC494FFE")
+
+        users = restore_user("billchanged", no_custom_fields=False)
+        self.verify_uid(users)
+        self.assertEqual(len(users[0].custom_fields), 1)
+        cus_field = users[0].custom_fields[0]
+        self.assertEqual(cus_field.value,
+                         "FBB38FE46A7C11D5A4AE0004AC494FFE")
+
     def test_update_user(self):
         orig_users = get_user('bill', include_course_summary=True)
         upded_users = update_user(orig_users[0])
@@ -187,14 +237,10 @@ class TestBridgeUser(TestCase):
         upded_users = update_user(orig_users[0])
         self.verify_bill(upded_users)
 
-    def test_change_uid(self):
-        self.verify_uid(change_uid(17637, "billchanged"))
-        self.verify_uid(replace_uid("bill", "billchanged"))
-
-    def test_restore_user(self):
-        self.verify_uid(restore_user_by_id(17637))
-        self.verify_uid(restore_user("billchanged"))
-
+        orig_users = get_user('javerage')
+        self.assertRaises(DataFailureException,
+                          update_user, orig_users[0])
+        
     def verify_uid(self, users):
         self.assertEqual(len(users), 1)
         self.assertEqual(users[0].bridge_id, 17637)

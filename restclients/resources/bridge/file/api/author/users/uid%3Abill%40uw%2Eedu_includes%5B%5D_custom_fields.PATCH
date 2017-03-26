@@ -40,25 +40,5 @@
        "loggedInAt":null,
        "links":{"custom_field_values":["2"]},
        "meta":{"can_masquerade":true}
-       },
-   {"id":"13",
-    "uid":"bill@uw.edu",
-    "hris_id":null,
-    "first_name":null,
-    "last_name":null,
-    "full_name":null,
-    "sortable_name":null,
-    "email":"bill@uw.edu",
-    "locale":"en",
-    "roles":[],
-    "name":"bill deleted",
-    "avatar_url":null,
-    "updated_at":"2016-09-06T17:53:25.754-07:00",
-    "deleted_at":"2016-07-26T10:54:22.710-07:00",
-    "unsubscribed":null,
-    "welcomedAt":null,
-    "loggedInAt":"2016-07-26T09:37:41.440-07:00",
-    "links":{"custom_field_values":[]},
-    "meta":{"can_masquerade":true}
-   }
-]}
+       }]
+}
