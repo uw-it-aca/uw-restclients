@@ -175,7 +175,7 @@ def update_user(bridge_user):
     if bridge_user.bridge_id:
         url = author_id_url(bridge_user.bridge_id)
     else:
-        url = author_uid_url(bridge_user.uwnetid)
+        url = author_uid_url(bridge_user.netid)
     resp = patch_resource(url + ("?%s" % CUSTOM_FIELD),
                           json.dumps(bridge_user.to_json_patch(),
                                      separators=(',', ':')))

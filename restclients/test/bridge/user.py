@@ -210,6 +210,7 @@ class TestBridgeUser(TestCase):
         users = restore_user("billchanged")
         self.verify_uid(users)
         self.assertEqual(len(users[0].custom_fields), 0)
+        self.assertIsNone(get_regid_from_custom_fields(users[0].custom_fields))
 
         users = restore_user_by_id(17637, no_custom_fields=False)
         self.verify_uid(users)
@@ -233,8 +234,12 @@ class TestBridgeUser(TestCase):
             str(upded_users[0].updated_at),
             '2016-09-08 13:58:20.635000-07:00')
 
-        orig_users = get_user('bill', include_course_summary=True)
-        upded_users = update_user(orig_users[0])
+        user = BridgeUser(netid='bill',
+                          first_name='Bill Average',
+                          last_name='Teacher',
+                          email='bill@u.washington.edu',
+                          full_name='Bill Average Teacher')
+        upded_users = update_user(user)
         self.verify_bill(upded_users)
 
         orig_users = get_user('javerage')
