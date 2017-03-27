@@ -24,14 +24,18 @@ class GWSGroupBasics(TestCase):
                       title="New ACA Tester")
         group.admins = [GroupUser(user_type="uwnetid", name="acadev")]
         group.readers = [GroupUser(user_type="none", name="dc=all")]
-        new_group = gws.create_group(group)
+
+        new_group = gws._group_from_xhtml(gws._xhtml_from_group(group))
+
         self.assertEquals(new_group.title, group.title)
 
     def test_update_group(self):
         gws = GWS()
         group = gws.get_group_by_id("u_acadev_tester")
         group.title = "ACA Tester"
-        new_group = gws.update_group(group)
+
+        new_group = gws._group_from_xhtml(gws._xhtml_from_group(group))
+
         self.assertEquals(new_group.title, group.title)
 
     def test_delete_group(self):
