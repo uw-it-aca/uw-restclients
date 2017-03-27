@@ -19,4 +19,3 @@ def rest_request_passfail_receiver(sender, **kwargs):
 
 def get_signal():
     return rest_request_passfail
-
