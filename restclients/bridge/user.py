@@ -57,7 +57,7 @@ def add_user(bridge_user):
                          ("?%s" % CUSTOM_FIELD),
                          json.dumps(bridge_user.to_json_post(),
                                     separators=(',', ':')))
-    return _process_json_resp_data(resp)
+    return _process_json_resp_data(resp, no_custom_fields=True)
 
 
 def change_uid(bridge_id, new_uwnetid, no_custom_fields=True):
