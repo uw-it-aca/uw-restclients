@@ -37,7 +37,6 @@ setup(
                       'pytz',
                       'pytimeparse',
                       'icalendar',
-                      'python-binary-memcached',
                       'UW-RestClients-Core>=0.8.2,<1.0',
                       'UW-RestClients-SWS>=0.5.1,<1.0',
                       'UW-RestClients-PWS>=0.5,<1.0',
