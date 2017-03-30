@@ -24,8 +24,7 @@ def delete_resource(url):
 
     if response.status != 204:
         # 204 is a successful deletion
-        logger.error(log_data)
-        raise DataFailureException(url, response.status, response.data)
+        _raise_exception(log_data, url, response)
 
     _log_resp(log_data, response.data)
     return response
@@ -36,8 +35,7 @@ def get_resource(url):
     log_data = "GET %s ==status==> %s" % (url, response.status)
 
     if response.status != 200:
-        logger.error(log_data)
-        raise DataFailureException(url, response.status, response.data)
+        _raise_exception(log_data, url, response)
 
     _log_resp(log_data, response.data)
     return response.data
@@ -51,9 +49,8 @@ def patch_resource(url, body):
     response = Bridge_DAO().patchURL(url, PHEADER, body)
     log_data = "PATCH %s %s ==status==> %s" % (url, body, response.status)
 
-    if not response.status == 200:
-        logger.error(log_data)
-        raise DataFailureException(url, response.status, response.data)
+    if response.status != 200:
+        _raise_exception(log_data, url, response)
 
     _log_resp(log_data, response.data)
     return response.data
@@ -69,8 +66,7 @@ def post_resource(url, body):
 
     if response.status != 200 and response.status != 201:
         # 201 Created
-        logger.error(log_data)
-        raise DataFailureException(url, response.status, response.data)
+        _raise_exception(log_data, url, response)
 
     _log_resp(log_data, response.data)
     return response.data
@@ -85,9 +81,8 @@ def put_resource(url, body):
     response = Bridge_DAO().putURL(url, PHEADER, body)
     log_data = "PUT %s %s ==status==> %s" % (url, body, response.status)
 
-    if not response.status == 200:
-        logger.error(log_data)
-        raise DataFailureException(url, response.status, response.data)
+    if response.status != 200:
+        _raise_exception(log_data, url, response)
 
     _log_resp(log_data, response.data)
     return response.data
@@ -96,3 +91,11 @@ def put_resource(url, body):
 def _log_resp(log_data, response_data):
     logger.info(log_data)
     logger.debug("%s ==data==> %s" % (log_data, response_data))
+
+
+def _raise_exception(log_data, url, response):
+    if response.status == 404:
+        logger.warning(log_data)
+    else:
+        logger.error(log_data)
+    raise DataFailureException(url, response.status, response.data)
