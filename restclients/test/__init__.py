@@ -1,4 +1,5 @@
 from django.test.utils import override_settings
+from uw_pws.util import fdao_pws_override
 
 
 FBOOK = 'restclients.dao_implementation.book.File'
@@ -36,9 +37,6 @@ fdao_libcurr_override = override_settings(
 FCANVAS = 'restclients.dao_implementation.canvas.File'
 fdao_canvas_override = override_settings(RESTCLIENTS_CANVAS_DAO_CLASS=FCANVAS)
 
-FPWS = 'restclients.dao_implementation.pws.File'
-fdao_pws_override = override_settings(RESTCLIENTS_PWS_DAO_CLASS=FPWS)
-
 FSWS = 'restclients.dao_implementation.sws.File'
 fdao_sws_override = override_settings(RESTCLIENTS_SWS_DAO_CLASS=FSWS)
 
@@ -65,3 +63,7 @@ fdao_uwnetid_override = override_settings(
 FMAILMAN = 'restclients.dao_implementation.mailman.File'
 fdao_mailman_override = override_settings(
     RESTCLIENTS_MAILMAN_DAO_CLASS=FMAILMAN)
+
+FUPASS = 'restclients.dao_implementation.upass.File'
+fdao_upass_override = override_settings(
+    RESTCLIENTS_UPASS_DAO_CLASS=FUPASS)

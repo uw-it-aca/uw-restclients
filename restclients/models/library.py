@@ -1,4 +1,4 @@
-from django.db import models
+from restclients_core import models
 
 
 class Library(models.Model):

@@ -1,9 +1,10 @@
-from django.db import models
+from restclients_core import models
+from django.db import models as dj_models
 import pickle
 from base64 import b64encode, b64decode
 import warnings
 
-from restclients.models.base import RestClientsModel
+from restclients.models.base import RestClientsModel, RestClientsDjangoModel
 from restclients.models.sws import Term as swsTerm
 from restclients.models.sws import Person as swsPerson
 from restclients.models.sws import FinalExam as swsFinalExam
@@ -21,6 +22,7 @@ from restclients.models.gws import GroupUser as gwsGroupUser
 from restclients.models.gws import GroupMember as gwsGroupMember
 from restclients.models.canvas import CanvasCourse as canvasCourse
 from restclients.models.canvas import CanvasEnrollment as canvasEnrollment
+from rc_django.models import CacheEntry, CacheEntryTimed
 
 
 # These aliases are here for backwards compatibility
@@ -113,47 +115,6 @@ def CanvasEnrollment(*args, **kwargs):
     return canvasEnrollment(*args, **kwargs)
 
 
-class CacheEntry(RestClientsModel):
-    service = models.CharField(max_length=50, db_index=True)
-    url = models.CharField(max_length=255, unique=True, db_index=True)
-    status = models.PositiveIntegerField()
-    header_pickle = models.TextField()
-    content = models.TextField()
-    headers = None
-
-    class Meta(RestClientsModel.Meta):
-        unique_together = ('service', 'url')
-
-    def getHeaders(self):
-        if self.headers is None:
-            if self.header_pickle is None:
-                self.headers = {}
-            else:
-                self.headers = pickle.loads(b64decode(self.header_pickle))
-        return self.headers
-
-    def setHeaders(self, headers):
-        self.headers = headers
-
-    def save(self, *args, **kwargs):
-        pickle_content = ""
-        if self.headers:
-            pickle_content = pickle.dumps(self.headers)
-        else:
-            pickle_content = pickle.dumps({})
-
-        self.header_pickle = b64encode(pickle_content)
-        super(CacheEntry, self).save(*args, **kwargs)
-
-
-class CacheEntryTimed(CacheEntry):
-    time_saved = models.DateTimeField()
-
-
-class CacheEntryExpires(CacheEntry):
-    time_expires = models.DateTimeField()
-
-
 class Book(RestClientsModel):
     isbn = models.CharField(max_length=15)
     title = models.CharField(max_length=255)
@@ -189,8 +150,8 @@ class BookAuthor(RestClientsModel):
         return data
 
 
-class MockAmazonSQSQueue(RestClientsModel):
-    name = models.CharField(max_length=80, unique=True, db_index=True)
+class MockAmazonSQSQueue(RestClientsDjangoModel):
+    name = dj_models.CharField(max_length=80, unique=True, db_index=True)
 
     def new_message(self, body=""):
         message = MockAmazonSQSMessage()
@@ -224,19 +185,19 @@ class MockAmazonSQSQueue(RestClientsModel):
         pass
 
 
-class MockAmazonSQSMessage(RestClientsModel):
-    body = models.CharField(max_length=8192)
-    queue = models.ForeignKey(MockAmazonSQSQueue,
-                              on_delete=models.PROTECT)
+class MockAmazonSQSMessage(RestClientsDjangoModel):
+    body = dj_models.CharField(max_length=8192)
+    queue = dj_models.ForeignKey(MockAmazonSQSQueue,
+                                 on_delete=models.PROTECT)
 
     def get_body(self):
         return self.body
 
 
-class SMSRequest(RestClientsModel):
-    body = models.CharField(max_length=8192)
-    to = models.CharField(max_length=40)
-    from_number = models.CharField(max_length=40)
+class SMSRequest(RestClientsDjangoModel):
+    body = dj_models.CharField(max_length=8192)
+    to = dj_models.CharField(max_length=40)
+    from_number = dj_models.CharField(max_length=40)
 
     def get_body(self):
         return self.body

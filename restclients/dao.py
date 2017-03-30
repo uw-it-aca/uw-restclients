@@ -5,16 +5,17 @@ except:
     from django.utils.importlib import import_module
 from django.conf import settings
 from django.core.exceptions import *
-from restclients.dao_implementation.pws import File as PWSFile
-from restclients.dao_implementation.sws import File as SWSFile
-from restclients.dao_implementation.gws import File as GWSFile
-from restclients.dao_implementation.kws import File as KWSFile
+from restclients.dao_implementation.pws import PWS_DAO
+from restclients.dao_implementation.sws import SWS_DAO
+from restclients.dao_implementation.hfs import Hfs_DAO
+from restclients.dao_implementation.gws import GWS_DAO
+from restclients.dao_implementation.nws import NWS_DAO
+from restclients.dao_implementation.kws import KWS_DAO
 from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.canvas import File as CanvasFile
 from restclients.dao_implementation.catalyst import File as CatalystFile
 from restclients.dao_implementation.mailman import File as MailmanFile
-from restclients.dao_implementation.nws import File as NWSFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
 from restclients.dao_implementation.trumba import FileSea
@@ -28,7 +29,6 @@ from restclients.dao_implementation.library.mylibinfo import (
 from restclients.dao_implementation.library.currics import (
     File as LibCurricsFile)
 from restclients.dao_implementation.myplan import File as MyPlanFile
-from restclients.dao_implementation.hfs import File as HfsFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
@@ -36,67 +36,82 @@ from restclients.dao_implementation.o365 import File as O365File
 from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
 from restclients.mock_http import MockHTTP
-from threading import currentThread
+from restclients_core.dao import MockDAO, DAO
 import logging
 import time
+import os
+from restclients_core.util.performance import PerformanceDegradation
 
 logger = logging.getLogger(__name__)
 
 
-class PerformanceDegradation(object):
-    _problem_data = {}
-    problems = None
+# This hack is in place for apps that haven't migrated to using the new core
+# approaches.  it adds django app dirs to the resource search paths, and
+# can monkey patch objects as needed.
+class LegacyAppHack(object):
+    has_run = False
 
     @classmethod
-    def set_problems(obj, problems):
-        thread = currentThread()
-        PerformanceDegradation._problem_data[thread] = problems
-
-    @classmethod
-    def clear_problems(obj):
-        thread = currentThread()
-        PerformanceDegradation._problem_data[thread] = None
-
-    @classmethod
-    def get_problems(obj):
-        thread = currentThread()
-
-        if thread in PerformanceDegradation._problem_data:
-            return PerformanceDegradation._problem_data[thread]
-
-        if hasattr(thread, 'parent'):
-            thread = thread.parent
-            if thread in PerformanceDegradation._problem_data:
-                return PerformanceDegradation._problem_data[thread]
-
-        return None
-
-    @classmethod
-    def get_response(obj, service, url):
-        problems = PerformanceDegradation.get_problems()
-        if not problems:
+    def add_app_paths(cls):
+        if cls.has_run:
             return
+        cls.has_run = True
 
-        delay = problems.get_load_time(service)
-        if delay:
-            time.sleep(float(delay))
+        dirs = []
+        try:
+            # Django >= 1.7
+            from django.apps import apps as installed_apps
 
-        status = problems.get_status(service)
-        content = problems.get_content(service)
+            for app in installed_apps.get_app_configs():
+                resource_dir = os.path.join(app.path, 'resources')
+                if os.path.isdir(resource_dir):
+                    if app.name == 'restclients':
+                        dirs.append(resource_dir)
+                    else:
+                        dirs.insert(0, resource_dir)
+        except:
+            try:
+                from importlib import import_module
+            except:
+                # python 2.6
+                from django.utils.importlib import import_module
 
-        if content and not status:
-            status = 200
+            for app in settings.INSTALLED_APPS:
+                try:
+                    mod = import_module(app)
+                except ImportError as e:
+                    msg = 'ImportError %s: %s' % (app, e.args[0])
+                    raise ImproperlyConfigured(msg)
 
-        if status:
-            response = MockHTTP()
-            response.status = int(status)
+                resource_dir = os.path.join(os.path.dirname(mod.__file__),
+                                            'resources')
+                if os.path.isdir(resource_dir):
+                    if app == 'restclients':
+                        dirs.append(resource_dir)
+                    else:
+                        dirs.insert(0, resource_dir)
 
-            if content:
-                response.data = content
+        for path in dirs:
+            MockDAO.register_mock_path(path)
 
-            return response
+    # Monkey patch the DAO class to support apps that checked _getDAO()
+    @classmethod
+    def add_dao_hack(cls):
+        def _getDAO(self):
+            class File(object):
+                pass
 
-        return None
+            class Live(object):
+                pass
+
+            if self.get_implementation().is_mock():
+                return File()
+            return Live()
+
+        DAO._getDAO = _getDAO
+
+LegacyAppHack.add_app_paths()
+LegacyAppHack.add_dao_hack()
 
 
 class DAO_BASE(object):
@@ -221,47 +236,6 @@ class Subdomain_DAO(MY_DAO):
         return response
 
 
-class SWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('sws', url, headers)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('sws', url, headers, body)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_SWS_DAO_CLASS', SWSFile)
-
-
-class PWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('pws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_PWS_DAO_CLASS', PWSFile)
-
-
-class KWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('kws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_KWS_DAO_CLASS', KWSFile)
-
-
-class GWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('gws', url, headers)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('gws', url, headers, body)
-
-    def deleteURL(self, url, headers):
-        return self._deleteURL('gws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_GWS_DAO_CLASS', GWSFile)
-
-
 class Book_DAO(MY_DAO):
     def getURL(self, url, headers):
         return self._getURL('book', url, headers)
@@ -364,31 +338,6 @@ class SMS_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_SMS_DAO_CLASS', SMSLocal)
-
-
-class NWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('nws', url, headers)
-
-    def postURL(self, url, headers, body):
-        return self._postURL('nws', url, headers, body)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('nws', url, headers, body)
-
-    def deleteURL(self, url, headers):
-        return self._deleteURL('nws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_NWS_DAO_CLASS', NWSFile)
-
-
-class Hfs_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('hfs', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_HFS_DAO_CLASS', HfsFile)
 
 
 class Mailman_DAO(MY_DAO):

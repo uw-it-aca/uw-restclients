@@ -1,1 +1,1 @@
-from restclients.sws.v5.section_status import get_section_status_by_label
+from uw_sws.section_status import get_section_status_by_label

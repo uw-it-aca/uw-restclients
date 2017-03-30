@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.dao import *
-from django.core.exceptions import *
+from restclients_core.exceptions import ImproperlyConfigured
 
 class SWSTestInvalidDAO(TestCase):
     def test_dao_response(self):
