@@ -8,9 +8,9 @@ from django.core.exceptions import *
 from restclients.dao_implementation.pws import PWS_DAO
 from restclients.dao_implementation.sws import SWS_DAO
 from restclients.dao_implementation.hfs import Hfs_DAO
+from restclients.dao_implementation.gws import GWS_DAO
 from restclients.dao_implementation.nws import NWS_DAO
-from restclients.dao_implementation.gws import File as GWSFile
-from restclients.dao_implementation.kws import File as KWSFile
+from restclients.dao_implementation.kws import KWS_DAO
 from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.canvas import File as CanvasFile
@@ -234,28 +234,6 @@ class Subdomain_DAO(MY_DAO):
                 return cache_post_response["response"]
 
         return response
-
-
-class KWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('kws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_KWS_DAO_CLASS', KWSFile)
-
-
-class GWS_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('gws', url, headers)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('gws', url, headers, body)
-
-    def deleteURL(self, url, headers):
-        return self._deleteURL('gws', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_GWS_DAO_CLASS', GWSFile)
 
 
 class Book_DAO(MY_DAO):
