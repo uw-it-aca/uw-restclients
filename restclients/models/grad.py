@@ -27,6 +27,7 @@ class GradTerm(models.Model):
 
     def __init__(self):
         self.terms = []
+        super(GradTerm, self).__init__()
 
     def json_data(self):
         return {"year": self.year,
@@ -195,6 +196,7 @@ class GradCommittee(models.Model):
 
     def __init__(self):
         self.members = []   # GradCommitteeMember
+        super(GradCommittee, self).__init__()
 
     def json_data(self):
         data = {
@@ -240,6 +242,7 @@ class GradLeave(models.Model):
 
     def __init__(self):
         self.terms = []
+        super(GradLeave, self).__init__()
 
     def is_status_approved(self):
         return self.status == self.APPROVED
