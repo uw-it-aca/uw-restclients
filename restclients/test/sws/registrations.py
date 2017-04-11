@@ -45,7 +45,7 @@ class SWSTestRegistrations(TestCase):
 
             registrations = get_all_registrations_by_section(section)
 
-            self.assertEquals(len(registrations), 1)
+            self.assertEquals(len(registrations), 2)
             javerage_reg = registrations[0]
             self.assertEquals(javerage_reg.person.uwnetid, 'javerage')
             self.assertEquals(javerage_reg.is_active, False)
