@@ -82,7 +82,7 @@ class SWSTest(TestCase):
             registrations = sws.get_active_registrations_for_section(section)
             self.assertEquals(len(registrations), 0)
             registrations = sws.get_all_registrations_for_section(section)
-            self.assertEquals(len(registrations), 1)
+            self.assertEquals(len(registrations), 2)
 
             term = sws.get_current_term()
             sws.schedule_for_regid_and_term('9136CCB8F66711D5BE060004AC494FFE',
