@@ -37,7 +37,7 @@ setup(
                       'pytz',
                       'pytimeparse',
                       'icalendar',
-                      'UW-RestClients-Core>=0.8.2,<1.0',
+                      'UW-RestClients-Core>=0.8.5,<1.0',
                       'UW-RestClients-SWS>=0.5.3,<1.0',
                       'UW-RestClients-PWS>=0.5,<1.0',
                       'UW-RestClients-GWS>=0.1,<1.0',
