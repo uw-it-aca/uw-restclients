@@ -5,6 +5,7 @@ except:
     from django.utils.importlib import import_module
 from django.conf import settings
 from django.core.exceptions import *
+
 from restclients.dao_implementation.pws import PWS_DAO
 from restclients.dao_implementation.sws import SWS_DAO
 from restclients.dao_implementation.hfs import Hfs_DAO
@@ -12,9 +13,9 @@ from restclients.dao_implementation.gws import GWS_DAO
 from restclients.dao_implementation.nws import NWS_DAO
 from restclients.dao_implementation.kws import KWS_DAO
 from restclients.dao_implementation.canvas import Canvas_DAO
+from restclients.dao_implementation.catalyst import Catalyst_DAO
 from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import File as BridgeFile
-from restclients.dao_implementation.catalyst import File as CatalystFile
 from restclients.dao_implementation.mailman import File as MailmanFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
@@ -262,14 +263,6 @@ class Bridge_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_BRIDGE_DAO_CLASS', BridgeFile)
-
-
-class Catalyst_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('catalyst', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_CATALYST_DAO_CLASS', CatalystFile)
 
 
 class Hrpws_DAO(MY_DAO):

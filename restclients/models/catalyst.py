@@ -1,30 +1,6 @@
 from restclients_core import models
 from restclients.models.sws import Section
-
-
-class Gradebook(models.Model):
-    gradebook_id = models.IntegerField()
-    name = models.CharField(max_length=250)
-    url = models.CharField(max_length=250)
-
-    class Meta:
-        db_table = "restclients_catalyst_gradebook"
-
-
-class GradebookParticipant(models.Model):
-    participant_id = models.IntegerField()
-    person_id = models.CharField(max_length=100)
-    class_grade = models.CharField(max_length=250)
-    notes = models.CharField(max_length=5000)
-
-    def json_data(self):
-        return {"participant_id": self.participant_id,
-                "person_id": self.person_id,
-                "class_grade": self.class_grade,
-                "notes": self.notes}
-
-    class Meta:
-        db_table = "restclients_catalyst_gradebookparticipant"
+from uw_catalyst.models import GradebookParticipant
 
 
 class CourseGradeData(models.Model):
