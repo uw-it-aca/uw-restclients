@@ -36,9 +36,9 @@
        "updated_at":"2016-08-08T13:58:20.635-07:00",
        "deleted_at":null,
        "unsubscribed":null,
-       "welcomedAt":null,
-       "loggedInAt":null,
-       "next_due_date":null,
+       "welcomedAt":"2016-08-08T13:58:20.635-07:00",
+       "loggedInAt":"2016-08-08T13:58:20.635-07:00",
+       "next_due_date":"2016-08-08T13:58:20.635-07:00",
        "completed_courses_count":0,
        "links":{
          "custom_field_values":["2"]

@@ -10,6 +10,8 @@ from uw_sws.exceptions import (InvalidCanvasSection,
                                InvalidCanvasIndependentStudyCourse,
                                InvalidSectionID, InvalidSectionURL)
 
+from uw_nws.exceptions import InvalidUUID
+
 
 class PhoneNumberRequired(Exception):
     """Exception for missing phone number."""
@@ -18,11 +20,6 @@ class PhoneNumberRequired(Exception):
 
 class InvalidPhoneNumber(Exception):
     """Exception for invalid phone numbers."""
-    pass
-
-
-class InvalidUUID(Exception):
-    """Exception for invalid UUID."""
     pass
 
 

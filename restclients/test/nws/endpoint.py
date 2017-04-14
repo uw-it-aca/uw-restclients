@@ -25,8 +25,7 @@ class NWSTestEndpoint(TestCase):
             endpoint.endpoint_id = None
             endpoint.endpoint_uri = None
 
-            response_status = nws.create_new_endpoint(endpoint)
-            self.assertEquals(201, response_status)
+            self.assertRaises(DataFailureException, nws.create_endpoint, endpoint)
 
     def test_endpoint_endpoint_id(self):
         with self.settings(

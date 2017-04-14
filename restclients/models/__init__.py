@@ -22,6 +22,7 @@ from restclients.models.gws import GroupUser as gwsGroupUser
 from restclients.models.gws import GroupMember as gwsGroupMember
 from restclients.models.canvas import CanvasCourse as canvasCourse
 from restclients.models.canvas import CanvasEnrollment as canvasEnrollment
+from rc_django.models import CacheEntry, CacheEntryTimed
 
 
 # These aliases are here for backwards compatibility
@@ -112,49 +113,6 @@ def CanvasCourse(*args, **kwargs):
 def CanvasEnrollment(*args, **kwargs):
     deprecation("Use restclients.models.canvas.CanvasEnrollment")
     return canvasEnrollment(*args, **kwargs)
-
-
-class CacheEntry(RestClientsDjangoModel):
-    service = dj_models.CharField(max_length=50, db_index=True)
-    url = dj_models.CharField(max_length=255, unique=True, db_index=True)
-    status = dj_models.PositiveIntegerField()
-    header_pickle = dj_models.TextField()
-    content = dj_models.TextField()
-    headers = None
-
-    class Meta(RestClientsDjangoModel.Meta):
-        unique_together = ('service', 'url')
-
-    def getHeaders(self):
-        if self.headers is None:
-            if self.header_pickle is None:
-                self.headers = {}
-            else:
-                self.headers = pickle.loads(b64decode(self.header_pickle))
-        return self.headers
-
-    def setHeaders(self, headers):
-        self.headers = headers
-
-    def save(self, *args, **kwargs):
-        pickle_content = ""
-        if self.headers:
-            pickle_content = pickle.dumps(self.headers)
-        else:
-            pickle_content = pickle.dumps({})
-
-        self.header_pickle = b64encode(pickle_content)
-        super(CacheEntry, self).save(*args, **kwargs)
-
-
-class CacheEntryTimed(CacheEntry):
-    def __init__(self,  *args, **kwargs):
-        super(RestClientsDjangoModel, self).__init__(*args, **kwargs)
-    time_saved = dj_models.DateTimeField()
-
-
-class CacheEntryExpires(CacheEntry):
-    time_expires = dj_models.DateTimeField()
 
 
 class Book(RestClientsModel):
