@@ -14,6 +14,8 @@ from restclients.dao_implementation.nws import NWS_DAO
 from restclients.dao_implementation.kws import KWS_DAO
 from restclients.dao_implementation.canvas import Canvas_DAO
 from restclients.dao_implementation.catalyst import Catalyst_DAO
+from restclients.dao_implementation.library.mylibinfo import MyLib_DAO
+from restclients.dao_implementation.library.currics import SubjectGuide_DAO
 from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import File as BridgeFile
 from restclients.dao_implementation.mailman import File as MailmanFile
@@ -25,10 +27,6 @@ from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.grad import File as GradFile
 from restclients.dao_implementation.hrpws import File as HrpwsFile
-from restclients.dao_implementation.library.mylibinfo import (
-    File as MyLibInfoFile)
-from restclients.dao_implementation.library.currics import (
-    File as LibCurricsFile)
 from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
@@ -323,24 +321,6 @@ class Mailman_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_MAILMAN_DAO_CLASS',
                                MailmanFile)
-
-
-class MyLibInfo_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('libraries', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_LIBRARIES_DAO_CLASS',
-                               MyLibInfoFile)
-
-
-class LibCurrics_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('libcurrics', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_LIBCURRICS_DAO_CLASS',
-                               LibCurricsFile)
 
 
 class MyPlan_DAO(MY_DAO):
