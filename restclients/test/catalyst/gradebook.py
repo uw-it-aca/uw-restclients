@@ -1,10 +1,16 @@
 from django.test import TestCase
 from django.conf import settings
 from restclients.sws import section as sws_section
-from restclients.catalyst.gradebook import get_participants_for_section
+from restclients.catalyst.gradebook import (
+    get_participants_for_section, valid_gradebook_id)
 from restclients.exceptions import DataFailureException
 
+
 class CatalystTestGradebook(TestCase):
+    def test_valid_gradebook_id(self):
+        self.assertEquals(valid_gradebook_id(12345), True)
+        self.assertEquals(valid_gradebook_id(''), False)
+
     def test_participants_for_section(self):
         with self.settings(
                 RESTCLIENTS_CATALYST_DAO_CLASS='restclients.dao_implementation.catalyst.File',
