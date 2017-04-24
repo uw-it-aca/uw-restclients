@@ -4,7 +4,9 @@ from uw_gws.utilities import fdao_gws_override
 from uw_sws.util import fdao_sws_override
 from uw_kws.utilities import fdao_kws_override
 from uw_canvas.utilities import fdao_canvas_override
-
+from uw_libraries.util import (
+    fdao_mylib_override as fdao_libacc_override,
+    fdao_subject_guide_override as fdao_libcurr_override)
 
 
 FBOOK = 'restclients.dao_implementation.book.File'
@@ -24,14 +26,6 @@ fdao_hrp_override = override_settings(RESTCLIENTS_HRPWS_DAO_CLASS=FHRP)
 
 FIAS = 'restclients.dao_implementation.iasystem.File'
 fdao_ias_override = override_settings(RESTCLIENTS_IASYSTEM_DAO_CLASS=FIAS)
-
-FLIB_ACC = 'restclients.dao_implementation.library.mylibinfo.File'
-fdao_libacc_override = override_settings(
-    RESTCLIENTS_LIBRARIES_DAO_CLASS=FLIB_ACC)
-
-FLIB_CUR = 'restclients.dao_implementation.library.currics.File'
-fdao_libcurr_override = override_settings(
-    RESTCLIENTS_LIBCURRICS_DAO_CLASS=FLIB_CUR)
 
 FTRUMBA = 'restclients.dao_implementation.trumba.CalendarFile'
 fdao_trumba_override = override_settings(
