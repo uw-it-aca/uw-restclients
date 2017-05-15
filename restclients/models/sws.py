@@ -4,6 +4,6 @@ from uw_sws.models import (Person, Entity, LastEnrolled, StudentAddress,
                            SectionStatus, Registration, SectionMeeting,
                            StudentGrades, StudentCourseGrade, ClassSchedule,
                            Campus, College, Department, Curriculum,
-                           GradeRoster, GradeRosterItem,
                            GradeSubmissionDelegate, NoticeAttribute, Notice,
                            Finance, Enrollment, Major, Minor)
+from uw_sws_graderoster import GradeRoster, GradeRosterItem
