@@ -173,7 +173,7 @@ class TestBridgeUser(TestCase):
         try:
             reps = delete_user("staff")
         except Exception as ex:
-            self.assertEqual(ex.status, '404')
+            self.assertEqual(ex.status, 404)
 
     def test_change_uid(self):
         self.assertRaises(DataFailureException,

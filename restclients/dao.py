@@ -17,7 +17,7 @@ from restclients.dao_implementation.catalyst import Catalyst_DAO
 from restclients.dao_implementation.library.mylibinfo import MyLib_DAO
 from restclients.dao_implementation.library.currics import SubjectGuide_DAO
 from restclients.dao_implementation.book import File as BookFile
-from restclients.dao_implementation.bridge import File as BridgeFile
+from restclients.dao_implementation.bridge import Bridge_DAO
 from restclients.dao_implementation.mailman import File as MailmanFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
@@ -241,26 +241,6 @@ class Book_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_BOOK_DAO_CLASS', BookFile)
-
-
-class Bridge_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('bridge', url, headers)
-
-    def patchURL(self, url, headers, body):
-        return self._patchURL('bridge', url, headers, body)
-
-    def putURL(self, url, headers, body):
-        return self._putURL('bridge', url, headers, body)
-
-    def postURL(self, url, headers, body):
-        return self._postURL('bridge', url, headers, body)
-
-    def deleteURL(self, url, headers):
-        return self._deleteURL('bridge', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_BRIDGE_DAO_CLASS', BridgeFile)
 
 
 class Hrpws_DAO(MY_DAO):
