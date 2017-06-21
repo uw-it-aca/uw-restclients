@@ -50,6 +50,7 @@ setup(
                       'UW-RestClients-Libraries>=0.1,<1.0',
                       'UW-RestClients-Bridge>=0.1,<1.0',
                       'UW-RestClients-Django-Utils>=0.5,<1.0',
+                      'UW-RestClients-IASystem>=0.1,<1.0',
                       ],
     license='Apache License, Version 2.0',
     description=('Clients for a variety of RESTful web services '
@@ -65,4 +66,3 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
 )
-

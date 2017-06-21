@@ -30,7 +30,6 @@ from restclients.dao_implementation.hrpws import File as HrpwsFile
 from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
-from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.dao_implementation.o365 import File as O365File
 from restclients.dao_implementation.upass import File as UPassFile
 from restclients.cache_implementation import NoCache
@@ -370,14 +369,6 @@ class TrumbaTac_DAO(MY_DAO):
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_TRUMBA_TAC_DAO_CLASS',
                                FileTac)
-
-
-class IASYSTEM_DAO(Subdomain_DAO):
-    def getURL(self, url, headers, subdomain):
-        return self._getURL('iasystem', url, headers, subdomain)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_IASYSTEM_DAO_CLASS', IASystemFile)
 
 
 class O365_DAO(MY_DAO):
