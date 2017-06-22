@@ -38,6 +38,7 @@ setup(
                       'pytimeparse',
                       'icalendar',
                       'UW-RestClients-Core>=0.8.5,<1.0',
+                      'UW-RestClients-Grad>=0.1,<1.0',
                       'UW-RestClients-SWS>=1.0,<2.0',
                       'UW-RestClients-PWS>=0.5,<1.0',
                       'UW-RestClients-GWS>=0.1,<1.0',
@@ -65,4 +66,3 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
 )
-
