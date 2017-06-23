@@ -45,6 +45,7 @@ setup(
                       'UW-RestClients-NWS>=0.51,<1.0',
                       'UW-RestClients-KWS>=0.1,<1.0',
                       'UW-RestClients-Canvas>=0.3,<1.0',
+                      'UW-RestClients-UWNetID>=0.2,<1.0',
                       'UW-RestClients-Catalyst>=0.1,<1.0',
                       'UW-RestClients-Graderoster>=0.3,<1.0',
                       'UW-RestClients-Libraries>=0.1,<1.0',
@@ -65,4 +66,3 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
 )
-
