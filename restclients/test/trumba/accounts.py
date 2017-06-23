@@ -14,8 +14,6 @@ from restclients.trumba.exceptions import AccountNameEmpty, AccountNotExist,\
     InvalidEmail, InvalidPermissionLevel, FailedToClosePublisher,\
     NoAllowedPermission, ErrorCreatingEditor, NoDataReturned, UnknownError,\
     UnexpectedError
-from restclients.test import fdao_trumba_sea_override,\
-    fdao_trumba_bot_override, fdao_trumba_tac_override
 
 
 ADD_ACC_URL = "/service/accounts.asmx/CreateEditor?"
@@ -23,9 +21,6 @@ DEL_ACC_URL = "/service/accounts.asmx/CloseEditor?"
 SET_PERM_URL = "/service/calendars.asmx/SetPermissions?"
 
 
-@fdao_trumba_sea_override
-@fdao_trumba_bot_override
-@fdao_trumba_tac_override
 class TrumbaTestAccounts(TestCase):
 
     def test_make_add_account_url(self):

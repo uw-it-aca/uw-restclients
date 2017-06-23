@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Response xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/">
-  <ResponseMessage Code="3015" Description="Permission level not allowed for editor accounts" Level="Error" />
-</Response>

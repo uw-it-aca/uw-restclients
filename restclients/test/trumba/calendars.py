@@ -5,13 +5,8 @@ from restclients.models.trumba import is_view_permission,\
     is_higher_permission
 import restclients.trumba.calendar as Calendar
 from restclients.trumba.exceptions import TrumbaException, CalendarNotExist, CalendarOwnByDiffAccount, NoDataReturned, UnknownError, UnexpectedError
-from restclients.test import fdao_trumba_sea_override,\
-    fdao_trumba_bot_override, fdao_trumba_tac_override
 
 
-@fdao_trumba_sea_override
-@fdao_trumba_bot_override
-@fdao_trumba_tac_override
 class TrumbaTestCalendars(TestCase):
 
     def test_get_bot_calendars_normal_cases(self):
