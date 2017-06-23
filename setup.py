@@ -42,6 +42,7 @@ setup(
                       'UW-RestClients-PWS>=0.5,<1.0',
                       'UW-RestClients-GWS>=0.1,<1.0',
                       'UW-RestClients-HFS>=0.5,<1.0',
+                      'UW-RestClients-Bookstore>=0.2,<1.0',
                       'UW-RestClients-NWS>=0.51,<1.0',
                       'UW-RestClients-KWS>=0.1,<1.0',
                       'UW-RestClients-Canvas>=0.3,<1.0',
@@ -65,4 +66,3 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
 )
-
