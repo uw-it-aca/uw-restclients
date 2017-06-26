@@ -12,6 +12,8 @@ from restclients.dao_implementation.hfs import Hfs_DAO
 from restclients.dao_implementation.gws import GWS_DAO
 from restclients.dao_implementation.nws import NWS_DAO
 from restclients.dao_implementation.kws import KWS_DAO
+from restclients.dao_implementation.trumba import TrumbaCalendar_DAO,\
+            TrumbaBot_DAO, TrumbaSea_DAO, TrumbaTac_DAO
 from restclients.dao_implementation.canvas import Canvas_DAO
 from restclients.dao_implementation.catalyst import Catalyst_DAO
 from restclients.dao_implementation.library.mylibinfo import MyLib_DAO
@@ -21,10 +23,6 @@ from restclients.dao_implementation.bridge import Bridge_DAO
 from restclients.dao_implementation.mailman import File as MailmanFile
 from restclients.dao_implementation.sms import Local as SMSLocal
 from restclients.dao_implementation.amazon_sqs import Local as SQSLocal
-from restclients.dao_implementation.trumba import FileSea
-from restclients.dao_implementation.trumba import FileBot
-from restclients.dao_implementation.trumba import FileTac
-from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.grad import File as GradFile
 from restclients.dao_implementation.hrpws import File as HrpwsFile
 from restclients.dao_implementation.myplan import File as MyPlanFile
@@ -320,56 +318,6 @@ class Uwnetid_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_UWNETID_DAO_CLASS', UwnetidFile)
-
-
-class TrumbaCalendar_DAO(MY_DAO):
-    def getURL(self, url, headers=None):
-        return self._getURL('calendar', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_CALENDAR_DAO_CLASS', CalendarFile)
-
-
-class TrumbaBot_DAO(MY_DAO):
-    service_id = FileBot().get_path_prefix()
-
-    def getURL(self, url, headers):
-        return self._getURL(TrumbaBot_DAO.service_id, url, headers)
-
-    def postURL(self, url, headers, body):
-        return self._postURL(TrumbaBot_DAO.service_id, url, headers, body)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_TRUMBA_BOT_DAO_CLASS',
-                               FileBot)
-
-
-class TrumbaSea_DAO(MY_DAO):
-    service_id = FileSea().get_path_prefix()
-
-    def getURL(self, url, headers):
-        return self._getURL(TrumbaSea_DAO.service_id, url, headers)
-
-    def postURL(self, url, headers, body):
-        return self._postURL(TrumbaSea_DAO.service_id, url, headers, body)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_TRUMBA_SEA_DAO_CLASS',
-                               FileSea)
-
-
-class TrumbaTac_DAO(MY_DAO):
-    service_id = FileTac().get_path_prefix()
-
-    def getURL(self, url, headers):
-        return self._getURL(TrumbaTac_DAO.service_id, url, headers)
-
-    def postURL(self, url, headers, body):
-        return self._postURL(TrumbaTac_DAO.service_id, url, headers, body)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_TRUMBA_TAC_DAO_CLASS',
-                               FileTac)
 
 
 class IASYSTEM_DAO(Subdomain_DAO):
