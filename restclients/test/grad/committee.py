@@ -26,7 +26,7 @@ class CommitteeTest(TestCase):
                          "MASTER OF PUBLIC HEALTH (EPIDEMIOLOGY)")
         self.assertEqual(committee.major_full_name, "ANTH")
         self.assertEqual(committee.start_date,
-                         datetime.datetime(2012, 12, 7, 8, 26, 14))
+                         datetime.datetime(2012, 12, 7, 8, 26, 14, 770000))
         self.assertEqual(len(committee.members), 1)
 
         committee = requests[1]

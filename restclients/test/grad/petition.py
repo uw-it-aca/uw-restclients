@@ -19,9 +19,9 @@ class PetitionTest(TestCase):
         self.assertEqual(petition.description,
                          "Master's degree - Extend six year limit")
         self.assertEqual(petition.submit_date,
-                         datetime.datetime(2013, 5, 11, 11, 25, 35))
+                         datetime.datetime(2013, 5, 11, 11, 25, 35, 917000))
         self.assertEqual(petition.decision_date,
-                         datetime.datetime(2013, 6, 10, 16, 32, 28))
+                         datetime.datetime(2013, 6, 10, 16, 32, 28, 640000))
         self.assertEqual(petition.dept_recommend, "approve")
         self.assertEqual(petition.gradschool_decision, "approved")
         self.assertTrue(petition.is_dept_approve())
