@@ -19,7 +19,7 @@ class LeaveTest(TestCase):
         self.assertEqual(leave.reason,
                          "Dissertation/Thesis research/writing")
         self.assertEqual(leave.submit_date,
-                         datetime.datetime(2012, 9, 10, 9, 40, 03))
+                         datetime.datetime(2012, 9, 10, 9, 40, 03, 360000))
         self.assertEqual(leave.status, "paid")
         self.assertTrue(leave.is_status_paid())
         self.assertFalse(leave.is_status_approved())

@@ -18,7 +18,7 @@ class DegreeTest(TestCase):
         self.assertIsNotNone(degree.json_data())
         self.assertEqual(degree.req_type, "Masters Request")
         self.assertEqual(degree.submit_date,
-                         datetime.datetime(2015, 3, 11, 20, 53, 32))
+                         datetime.datetime(2015, 3, 11, 20, 53, 32, 733000))
         self.assertEqual(
             degree.degree_title,
             "MASTER OF LANDSCAPE ARCHITECTURE/MASTER OF ARCHITECTURE")
