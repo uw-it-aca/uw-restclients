@@ -12,6 +12,7 @@ from restclients.dao_implementation.hfs import Hfs_DAO
 from restclients.dao_implementation.gws import GWS_DAO
 from restclients.dao_implementation.nws import NWS_DAO
 from restclients.dao_implementation.kws import KWS_DAO
+from restclients.dao_implementation.grad import Grad_DAO as GRAD_DAO
 from restclients.dao_implementation.canvas import Canvas_DAO
 from restclients.dao_implementation.catalyst import Catalyst_DAO
 from restclients.dao_implementation.library.mylibinfo import MyLib_DAO
@@ -25,7 +26,6 @@ from restclients.dao_implementation.trumba import FileSea
 from restclients.dao_implementation.trumba import FileBot
 from restclients.dao_implementation.trumba import FileTac
 from restclients.dao_implementation.trumba import CalendarFile
-from restclients.dao_implementation.grad import File as GradFile
 from restclients.dao_implementation.hrpws import File as HrpwsFile
 from restclients.dao_implementation.myplan import File as MyPlanFile
 from restclients.dao_implementation.uwnetid import File as UwnetidFile
@@ -249,14 +249,6 @@ class Hrpws_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_HRPWS_DAO_CLASS', HrpwsFile)
-
-
-class Grad_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('grad', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_GRAD_DAO_CLASS', GradFile)
 
 
 class R25_DAO(MY_DAO):
