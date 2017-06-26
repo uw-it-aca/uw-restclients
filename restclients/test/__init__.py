@@ -8,6 +8,7 @@ from uw_libraries.util import (
     fdao_mylib_override as fdao_libacc_override,
     fdao_subject_guide_override as fdao_libcurr_override)
 from uw_bridge.util import fdao_bridge_override
+from uw_uwnetid.util import fdao_uwnetid_override
 
 
 FBOOK = 'restclients.dao_implementation.book.File'
@@ -40,10 +41,6 @@ fdao_trumba_bot_override = override_settings(
 FTRUMBA_TAC = 'restclients.dao_implementation.trumba.FileTac'
 fdao_trumba_tac_override = override_settings(
     RESTCLIENTS_TRUMBA_TAC_DAO_CLASS=FTRUMBA_TAC)
-
-FUWNETID = 'restclients.dao_implementation.uwnetid.File'
-fdao_uwnetid_override = override_settings(
-    RESTCLIENTS_UWNETID_DAO_CLASS=FUWNETID)
 
 FMAILMAN = 'restclients.dao_implementation.mailman.File'
 fdao_mailman_override = override_settings(

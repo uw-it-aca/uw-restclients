@@ -6,6 +6,7 @@ except:
 from django.conf import settings
 from django.core.exceptions import *
 
+from restclients.dao_implementation.uwnetid import UWNetID_DAO as Uwnetid_DAO
 from restclients.dao_implementation.pws import PWS_DAO
 from restclients.dao_implementation.sws import SWS_DAO
 from restclients.dao_implementation.hfs import Hfs_DAO
@@ -28,7 +29,6 @@ from restclients.dao_implementation.trumba import CalendarFile
 from restclients.dao_implementation.grad import File as GradFile
 from restclients.dao_implementation.hrpws import File as HrpwsFile
 from restclients.dao_implementation.myplan import File as MyPlanFile
-from restclients.dao_implementation.uwnetid import File as UwnetidFile
 from restclients.dao_implementation.r25 import File as R25File
 from restclients.dao_implementation.iasystem import File as IASystemFile
 from restclients.dao_implementation.o365 import File as O365File
@@ -309,17 +309,6 @@ class MyPlan_DAO(MY_DAO):
 
     def _getDAO(self):
         return self._getModule('RESTCLIENTS_MYPLAN_DAO_CLASS', MyPlanFile)
-
-
-class Uwnetid_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('uwnetid', url, headers)
-
-    def postURL(self, url, headers, body):
-        return self._postURL('uwnetid', url, headers, body)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_UWNETID_DAO_CLASS', UwnetidFile)
 
 
 class TrumbaCalendar_DAO(MY_DAO):
