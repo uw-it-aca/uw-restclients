@@ -12,11 +12,11 @@ from restclients.dao_implementation.hfs import Hfs_DAO
 from restclients.dao_implementation.gws import GWS_DAO
 from restclients.dao_implementation.nws import NWS_DAO
 from restclients.dao_implementation.kws import KWS_DAO
+from restclients.dao_implementation.book import Book_DAO
 from restclients.dao_implementation.canvas import Canvas_DAO
 from restclients.dao_implementation.catalyst import Catalyst_DAO
 from restclients.dao_implementation.library.mylibinfo import MyLib_DAO
 from restclients.dao_implementation.library.currics import SubjectGuide_DAO
-from restclients.dao_implementation.book import File as BookFile
 from restclients.dao_implementation.bridge import Bridge_DAO
 from restclients.dao_implementation.mailman import File as MailmanFile
 from restclients.dao_implementation.sms import Local as SMSLocal
@@ -233,14 +233,6 @@ class Subdomain_DAO(MY_DAO):
                 return cache_post_response["response"]
 
         return response
-
-
-class Book_DAO(MY_DAO):
-    def getURL(self, url, headers):
-        return self._getURL('book', url, headers)
-
-    def _getDAO(self):
-        return self._getModule('RESTCLIENTS_BOOK_DAO_CLASS', BookFile)
 
 
 class Hrpws_DAO(MY_DAO):

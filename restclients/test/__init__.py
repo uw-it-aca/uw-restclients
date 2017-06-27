@@ -8,10 +8,7 @@ from uw_libraries.util import (
     fdao_mylib_override as fdao_libacc_override,
     fdao_subject_guide_override as fdao_libcurr_override)
 from uw_bridge.util import fdao_bridge_override
-
-
-FBOOK = 'restclients.dao_implementation.book.File'
-fdao_bookstore_override = override_settings(RESTCLIENTS_BOOK_DAO_CLASS=FBOOK)
+from uw_bookstore.util import fdao_bookstore_override
 
 FGRAD = 'restclients.dao_implementation.grad.File'
 fdao_grad_override = override_settings(RESTCLIENTS_GRAD_DAO_CLASS=FGRAD)

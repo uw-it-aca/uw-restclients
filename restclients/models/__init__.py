@@ -4,6 +4,7 @@ import pickle
 from base64 import b64encode, b64decode
 import warnings
 
+from uw_bookstore.models import Book, BookAuthor
 from restclients.models.base import RestClientsModel, RestClientsDjangoModel
 from restclients.models.sws import Term as swsTerm
 from restclients.models.sws import Person as swsPerson
@@ -113,41 +114,6 @@ def CanvasCourse(*args, **kwargs):
 def CanvasEnrollment(*args, **kwargs):
     deprecation("Use restclients.models.canvas.CanvasEnrollment")
     return canvasEnrollment(*args, **kwargs)
-
-
-class Book(RestClientsModel):
-    isbn = models.CharField(max_length=15)
-    title = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
-    used_price = models.DecimalField(max_digits=7, decimal_places=2)
-    is_required = models.NullBooleanField()
-    notes = models.TextField()
-    cover_image_url = models.CharField(max_length=2048)
-
-    def json_data(self):
-        data = {
-            'isbn': self.isbn,
-            'title': self.title,
-            'authors': [],
-            'price': self.price,
-            'used_price': self.used_price,
-            'is_required': self.is_required,
-            'notes': self.notes,
-            'cover_image_url': self.cover_image_url,
-        }
-
-        for author in self.authors:
-            data["authors"].append(author.json_data())
-        return data
-
-
-class BookAuthor(RestClientsModel):
-    name = models.CharField(max_length=255)
-
-    def json_data(self):
-        data = {'name': self.name}
-
-        return data
 
 
 class MockAmazonSQSQueue(RestClientsDjangoModel):
